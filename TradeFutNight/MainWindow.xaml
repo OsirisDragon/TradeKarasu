@@ -1,0 +1,13 @@
+﻿<dx:ThemedWindow x:Class="TradeFutNight.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:view="clr-namespace:TradeFutNight.Views"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    WindowStartupLocation="CenterScreen"
+    UseLayoutRounding="True"
+    WindowState="Maximized"
+    dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap" ShowIcon="False"
+    Title="期貨夜盤"
+    Width="1280" Height="810">
+    <!--<view:MainUI />-->
+</dx:ThemedWindow>
