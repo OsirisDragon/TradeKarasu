@@ -6,11 +6,8 @@
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
     xmlns:myTypes="clr-namespace:TradeFutNight.Views"
     xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.Prefix3"
-    xmlns:crossModel="clr-namespace:CrossModel;assembly=CrossModel"
     x:Class="TradeFutNight.Views.Prefix3.U_30111"
     mc:Ignorable="d"
     d:DesignHeight="450" d:DesignWidth="800" FontSize="14" Margin="1,1,1,1">
@@ -29,12 +26,10 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.07*" />
+            <RowDefinition Height="0.02*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="0.2*" />
         </Grid.RowDefinitions>
-        <dxe:TextEdit Grid.Row="0" x:Name="txtTest" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" />
-        <dx:SimpleButton Grid.Row="0" Content="SimpleButton" HorizontalAlignment="Left" Height="21" Margin="155,0,0,0" VerticalAlignment="Top" Width="102" />
         <dxg:GridControl Grid.Row="1" x:Name="gridMain" ItemsSource="{Binding MainGridData}" AutoGenerateColumns="None" EnableSmartColumnsGeneration="True" HorizontalAlignment="Left"
                          VerticalAlignment="Stretch">
             <dxg:GridControl.View>
@@ -86,13 +81,15 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
         </dxg:GridControl>
-        <TextBlock Grid.Row="2"
+        <ScrollViewer Grid.Row="2">
+            <TextBlock 
                    x:Name="txtMemo"
                    TextWrapping="Wrap"
                    Foreground="OrangeRed"
                    xml:space="preserve">
 註1：「價差上限」功能僅適用於ETF與STF，ETF與STF合格價差計算方式為max（價格*到期月份價差限制*0.01,價差上限），本公司交易系統可接受價差為max（價格*到期月份價差限制*0.01,價差上限）*「報價價差放寬倍數」。
 註2：「到期月份價差限制」，除ETF與STF外，合格價差為（最小跳動點*造市報價規定）（例如：造市規定4tick，該商品最小跳動為0.25，到期月份價差限制則要設定為1（4*0.25），本公司交易系統可接受價差為「到期月份價差限制」*「報價價差放寬倍數」。
-        </TextBlock>
+            </TextBlock>
+        </ScrollViewer>
     </Grid>
 </myTypes:UserControlParent>

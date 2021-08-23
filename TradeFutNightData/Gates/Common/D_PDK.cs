@@ -16,6 +16,14 @@ namespace TradeFutNightData.Gates.Common
 
     public class D_PDK<T> : ParentGate
     {
+        public PDK getByParamKey(string paramKey)
+        {
+            var query = _das.DataConn.GetTable<PDK>()
+                .Where(c => c.PDK_PARAM_KEY == paramKey);
+
+            return query.SingleOrDefault();
+        }
+
         public IEnumerable<PDK> ListAll()
         {
             var query = _das.DataConn.GetTable<PDK>()

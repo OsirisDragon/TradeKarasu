@@ -111,6 +111,19 @@ namespace TradeFutNight.Views.Prefix3
                     {
                         resultItem.AppendErrorMessage($"{item.SLT_KIND_ID}的權利金上限不能小於權利金下限");
                     }
+
+                    using (var das = Factory.CreateDalSession())
+                    {
+                        var dPDK = new D_PDK(das);
+                        var pdk = dPDK.getByParamKey(item.SLT_KIND_ID);
+                        if(pdk.PDK_SUBTYPE == 'E')
+                        {
+                            if(pdk.PDK_PRICE_FLUC != 'F')
+                            {
+                                resultItem.AppendErrorMessage("匯率類的商品僅可選擇「固定點數」");
+                            }
+                        }
+                    }
                 }
 
                 if (resultItem.HasError)
