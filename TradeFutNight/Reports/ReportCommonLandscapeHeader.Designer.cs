@@ -302,7 +302,7 @@
             this.ReportTitle});
             this.ReportUnit = DevExpress.XtraReports.UI.ReportUnit.Pixels;
             this.SnapGridSize = 12.5F;
-            this.Version = "19.1";
+            this.Version = "19.2";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
         }

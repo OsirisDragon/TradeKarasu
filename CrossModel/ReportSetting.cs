@@ -6,14 +6,14 @@ namespace CrossModel
     public class ReportSetting
     {
         public string HeaderColumnsFontName = "標楷體";
-        public float HeaderColumnsFontSize = 10;
+        public float HeaderColumnsFontSize = 11;
         public float HeaderColumnsRowHeight = 40f;
 
-        public string ContentColumnsFontName = "微軟正黑體";
-        public float ContentColumnsFontSize = 10;
+        public string ContentColumnsFontName = "標楷體";
+        public float ContentColumnsFontSize = 11;
 
         public string FooterMemoFontName = "標楷體";
-        public float FooterMemoFontSize = 10;
+        public float FooterMemoFontSize = 11;
 
         public DateTime OcfDate { get; set; }
 

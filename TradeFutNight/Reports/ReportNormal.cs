@@ -23,11 +23,6 @@ namespace TradeFutNight.Reports
             return new ReportCommonLandscape<T>(exportData, columns, rptSetting);
         }
 
-        //public static ReportCommonPortrait CreateCommonPortrait<T>(ReportSetting rptSetting)
-        //{
-        //    return new ReportCommonPortrait(rptSetting);
-        //}
-
         public static XRTable CreateHeaderColumnsTable(ReportSetting rptSetting, GridColumnCollection columns)
         {
             XRTable table = new XRTable();
@@ -46,10 +41,10 @@ namespace TradeFutNight.Reports
 
                 if (col.Width != 0)
                 {
-                    cell.WidthF = (float)(col.Width.Value * 0.87f);
+                    cell.WidthF = (float)(col.Width.Value * 1f);
                 }
 
-                if (!String.IsNullOrEmpty(col.EditSettings.DisplayFormat))
+                if (col.EditSettings != null && !String.IsNullOrEmpty(col.EditSettings.DisplayFormat))
                 {
                     cell.TextFormatString = col.EditSettings.DisplayFormat;
                 }
@@ -90,7 +85,7 @@ namespace TradeFutNight.Reports
             {
                 XRTableCell cell = new XRTableCell();
 
-                if (col.FieldName != null)
+                if (!string.IsNullOrWhiteSpace(col.FieldName))
                 {
                     if (col.EditSettings is ComboBoxEditSettings)
                     {
@@ -102,7 +97,7 @@ namespace TradeFutNight.Reports
                         //if (!string.IsNullOrEmpty(expressForeColor))
                         //    cell.ExpressionBindings.Add(new ExpressionBinding("ForeColor", expressForeColor));
                     }
-                    else if (!String.IsNullOrEmpty(col.EditSettings.DisplayFormat))
+                    else if (col.EditSettings != null && !String.IsNullOrEmpty(col.EditSettings.DisplayFormat))
                     {
                         //string format = "{0:" + col.EditSettings.DisplayFormat + "}";
                         cell.DataBindings.Add("Text", exportData, col.FieldName, col.EditSettings.DisplayFormat);
@@ -120,6 +115,11 @@ namespace TradeFutNight.Reports
                 }
                 else
                 {
+                    if(col.Name == "rowNumber")
+                    {
+                        cell.Summary.Running = SummaryRunning.Report;
+                        cell.Summary.Func = SummaryFunc.RecordNumber;
+                    }
                     //switch (col.CustomAttribute.SpecialColumnType)
                     //{
                     //    case SpecialColumnType.RecordNumber:
@@ -139,7 +139,7 @@ namespace TradeFutNight.Reports
 
                 if (col.Width != 0)
                 {
-                    cell.WidthF = (float)(col.Width.Value * 0.87f);
+                    cell.WidthF = (float)(col.Width.Value * 1f);
                 }
 
                 cell.Font = new Font(rptSetting.ContentColumnsFontName, rptSetting.ContentColumnsFontSize);
