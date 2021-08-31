@@ -53,6 +53,10 @@ namespace TradeFutNight.Views.Prefix3
             {
                 _vm.Open();
                 MagicalHats.LogToDb(UserID, ProgramID, MessageConst.Open);
+                Dispatcher.Invoke(() =>
+                {
+                    Insert();
+                });
             });
             await task;
         }

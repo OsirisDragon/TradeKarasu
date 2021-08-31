@@ -37,24 +37,26 @@
             <dxg:GridControl.View>
                 <dxg:TableView x:Name="gridView" ShowTotalSummary="False" ShowGroupPanel="False"  IsColumnMenuEnabled="False" Margin="0,0,0,0" ScrollViewer.HorizontalScrollBarVisibility="Visible" PrintAutoWidth="False" />
             </dxg:GridControl.View>
-            <dxg:GridColumn FieldName="TPPINTD_FIRST_KIND_ID" HorizontalHeaderContentAlignment="Center" IsSmart="True" Header="第一支腳&#xA;契約代碼" Width="80" />
-            <dxg:GridColumn FieldName="TPPINTD_FIRST_MONTH" HorizontalHeaderContentAlignment="Center" IsSmart="True" Header="第一支腳&#xA;月份序號" Width="80" />
-            <dxg:GridColumn FieldName="TPPINTD_SECOND_KIND_ID" HorizontalHeaderContentAlignment="Center" IsSmart="True" Header="第二支腳&#xA;契約代碼" Width="80" />
-            <dxg:GridColumn FieldName="TPPINTD_SECOND_MONTH" HorizontalHeaderContentAlignment="Center" IsSmart="True" Header="第二支腳&#xA;月份序號" Width="80" />
-            <dxg:GridColumn FieldName="TPPINTD_M_PRICE_LIMIT" HorizontalHeaderContentAlignment="Center" IsSmart="True" Header="偏離幅度濾網&#xA;(正式)(%)" Width="100" />
-            <dxg:GridColumn FieldName="TPPINTD_M_PRICE_LIMIT_F" HorizontalHeaderContentAlignment="Center" IsSmart="True" Header="偏離幅度濾網&#xA;(試撮)(%)" Width="100" />
-            <dxg:GridColumn FieldName="TPPINTD_M_INTERVAL" HorizontalHeaderContentAlignment="Center" IsSmart="True" Header="成交&#xA;間隔毫秒" Width="80" />
-            <dxg:GridColumn FieldName="TPPINTD_ACCU_QNTY" HorizontalHeaderContentAlignment="Center" IsSmart="True" Header="最小&#xA;累計口數" Width="80" />
-            <dxg:GridColumn FieldName="TPPINTD_M_PRICE_FILTER" HorizontalHeaderContentAlignment="Center" IsSmart="True" Header="成交價濾網 (%)" Width="110" />
-            <dxg:GridColumn FieldName="TPPINTD_BS_PRICE_FILTER" HorizontalHeaderContentAlignment="Center" IsSmart="True"  Header="買賣中價濾網 (%)" />
-            <dxg:GridColumn FieldName="TPPINTD_UNIT" HorizontalHeaderContentAlignment="Center" IsSmart="True" Header="動態退單&#xA;百分比" Width="80" />
+            <dxg:GridColumn FieldName="TPPINTD_FIRST_KIND_ID"  Header="第一支腳&#xA;契約代碼" Width="80" />
+            <dxg:GridColumn FieldName="TPPINTD_FIRST_MONTH"  Header="第一支腳&#xA;月份序號" Width="80" />
+            <dxg:GridColumn FieldName="TPPINTD_SECOND_KIND_ID"  Header="第二支腳&#xA;契約代碼" Width="80" />
+            <dxg:GridColumn FieldName="TPPINTD_SECOND_MONTH"  Header="第二支腳&#xA;月份序號" Width="80" />
+            <dxg:GridColumn FieldName="TPPINTD_M_PRICE_LIMIT"  Header="偏離幅度濾網&#xA;(正式)(%)" Width="100" />
+            <dxg:GridColumn FieldName="TPPINTD_M_PRICE_LIMIT_F"  Header="偏離幅度濾網&#xA;(試撮)(%)" Width="100" />
+            <dxg:GridColumn FieldName="TPPINTD_M_INTERVAL"  Header="成交&#xA;間隔毫秒" Width="80" />
+            <dxg:GridColumn FieldName="TPPINTD_ACCU_QNTY"  Header="最小&#xA;累計口數" Width="80" />
+            <dxg:GridColumn FieldName="TPPINTD_M_PRICE_FILTER"  Header="成交價濾網 (%)" Width="110" />
+            <dxg:GridColumn FieldName="TPPINTD_BS_PRICE_FILTER"   Header="買賣中價濾網 (%)" />
+            <dxg:GridColumn FieldName="TPPINTD_UNIT"  Header="動態退單&#xA;百分比" Width="80" />
         </dxg:GridControl>
-        <TextBlock Grid.Row="1"
+        <ScrollViewer Grid.Row="2">
+            <TextBlock Grid.Row="1"
                    x:Name="txtMemo"
                    TextWrapping="Wrap"
                    Foreground="OrangeRed"
                    xml:space="preserve" Margin="0,0,0,0">
 註1:月份序號依到期月份由近至遠排序，例如TXF及MXF為1至5，週契約皆為1。單式單第二支腳契約代號請空白，第二支腳月份序號請填0。複式單第一支腳月份序號請填近月，第二支腳月份序號請填遠月。如該契約不適用開盤成交價偏離幅度請填0。
-        </TextBlock>
+            </TextBlock>
+        </ScrollViewer>
     </Grid>
 </myTypes:UserControlParent>
