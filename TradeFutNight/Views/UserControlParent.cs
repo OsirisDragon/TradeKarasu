@@ -33,15 +33,20 @@ namespace TradeFutNight.Views
         {
             get
             {
-                // Design設計介面的時候不要
-                if (DesignerProperties.GetIsInDesignMode(this))
+                bool isInDesignMode = false;
+
+                Dispatcher.Invoke(() =>
+                {
+                    isInDesignMode = DesignerProperties.GetIsInDesignMode(this);
+                });
+
+                // Designer設計介面的時候不要取值，因為會有出現畫面上的顯示錯誤
+                if (isInDesignMode)
                 {
                     return null;
                 }
-                else
-                {
-                    return MagicalHats.Ocf;
-                }
+
+                return MagicalHats.Ocf;
             }
             set { }
         }
