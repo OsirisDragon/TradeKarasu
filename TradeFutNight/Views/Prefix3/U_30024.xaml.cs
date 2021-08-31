@@ -180,6 +180,16 @@ namespace TradeFutNight.Views.Prefix3
                 reportGate.Print();
 
                 VmMainUi.HideLoadingWindow();
+
+                foreach (var item in trackableData.AddedItems)
+                {
+                    if (item.TPPINTD_SECOND_KIND_ID == "" && item.TPPINTD_SECOND_MONTH == 0)
+                    {
+                        MessageBoxExService.Instance().Info("請執行C1400變更除息影響點數!");
+                        break;
+                    }
+                }
+
                 MessageBoxExService.Instance().Info(MessageConst.ProcessSuccess);
                 CloseWindow();
             });
