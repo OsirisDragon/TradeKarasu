@@ -1,8 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid">
-    <!--DevExpress的Header的Column，當滑鼠移過去的時候欄位會變成灰色，這個就是設定當滑鼠移過去時候不要變色-->
-    <!--https://supportcenter.devexpress.com/ticket/details/t965368/gridcolumn-headerstyle-when-allowsorting-disabled-->
+
+    <Style TargetType="dxg:GridColumnHeader">
+        <Setter Property="Background" Value="LightCyan" />
+    </Style>
     <Style TargetType="dxg:GridColumn">
         <Setter Property="HorizontalHeaderContentAlignment" Value="Center"></Setter>
         <Setter Property="AllowSorting" Value="False"></Setter>
@@ -10,20 +12,5 @@
         <Setter Property="AllowMoving" Value="False"></Setter>
         <Setter Property="AllowResizing" Value="False"></Setter>
         <Setter Property="IsSmart" Value="True"></Setter>
-        <Style.Triggers>
-            <Trigger Property="AllowSorting" Value="False">
-                <Setter Property="HeaderStyle">
-                    <Setter.Value>
-                        <Style TargetType="dxg:BaseGridHeader">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="{x:Null}" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
-        </Style.Triggers>
     </Style>
 </ResourceDictionary>
