@@ -4,7 +4,7 @@
     {
         Query,
         Insert,
-        Update,
+        Save,
         Delete,
         Print,
         Confirm

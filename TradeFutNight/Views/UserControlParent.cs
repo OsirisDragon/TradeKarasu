@@ -2,6 +2,7 @@
 using CrossModel.Enum;
 using DataEngine;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,11 +29,27 @@ namespace TradeFutNight.Views
 
         public string UserName { get { return MagicalHats.UserName; } set { } }
 
-        public OCF Ocf { get { return MagicalHats.Ocf; } set { } }
+        public OCF Ocf
+        {
+            get
+            {
+                // Design設計介面的時候不要
+                if (DesignerProperties.GetIsInDesignMode(this))
+                {
+                    return null;
+                }
+                else
+                {
+                    return MagicalHats.Ocf;
+                }
+            }
+            set { }
+        }
 
         public string ExportFilePath
         {
             get { return _exportFilePath; }
+
             set { _exportFilePath = value; }
         }
 
@@ -62,10 +79,14 @@ namespace TradeFutNight.Views
                 countJSW = listJSW.Count();
             }
 
+            // 預設可以列印
+            VmMainUi.IsButtonPrintEnabled = true;
+
             // 如果都沒有JSW的話，就讓程式不可執行
             if (countJSW == 0)
+            {
                 return false;
-
+            }
             // 如果JSW只有一筆的話，就看那筆可不可以執行
             else if (countJSW == 1)
             {
