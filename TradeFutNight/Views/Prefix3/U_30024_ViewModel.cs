@@ -30,7 +30,7 @@ namespace TradeFutNight.Views.Prefix3
                 cfg.CreateMap<TPPINTD, UIModel_30024>().ReverseMap();
             }));
 
-            MainGridData = MainGridData.ToList().AsTrackable();
+            MainGridData = new ObservableCollection<UIModel_30024>().ToList().AsTrackable();
         }
 
         public void Insert()

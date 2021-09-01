@@ -37,9 +37,29 @@
             <dxg:GridControl.View>
                 <dxg:TableView x:Name="gridView" ShowTotalSummary="False" ShowGroupPanel="False"  IsColumnMenuEnabled="False" Margin="0,0,0,0" ScrollViewer.HorizontalScrollBarVisibility="Visible" PrintAutoWidth="False" />
             </dxg:GridControl.View>
-            <dxg:GridColumn FieldName="TPPINTD_FIRST_KIND_ID"  Header="第一支腳&#xA;契約代碼" Width="80" />
+            <dxg:GridColumn Name="rowNumber" Header="編號" AllowEditing="False" Width="40">
+                <dxg:GridColumn.CellTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock Text="{DXBinding 'RowData.RowHandle.Value + 1'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </dxg:GridColumn.CellTemplate>
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn FieldName="TPPINTD_FIRST_KIND_ID"  Header="第一支腳&#xA;契約代碼" Width="80">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings CharacterCasing="Upper" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
             <dxg:GridColumn FieldName="TPPINTD_FIRST_MONTH"  Header="第一支腳&#xA;月份序號" Width="80" />
-            <dxg:GridColumn FieldName="TPPINTD_SECOND_KIND_ID"  Header="第二支腳&#xA;契約代碼" Width="80" />
+            <dxg:GridColumn FieldName="TPPINTD_SECOND_KIND_ID"  Header="第二支腳&#xA;契約代碼" Width="80">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings CharacterCasing="Upper" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
             <dxg:GridColumn FieldName="TPPINTD_SECOND_MONTH"  Header="第二支腳&#xA;月份序號" Width="80" />
             <dxg:GridColumn FieldName="TPPINTD_M_PRICE_LIMIT"  Header="偏離幅度濾網&#xA;(正式)(%)" Width="100" />
             <dxg:GridColumn FieldName="TPPINTD_M_PRICE_LIMIT_F"  Header="偏離幅度濾網&#xA;(試撮)(%)" Width="100" />
