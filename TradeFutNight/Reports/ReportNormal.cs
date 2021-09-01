@@ -115,21 +115,11 @@ namespace TradeFutNight.Reports
                 }
                 else
                 {
-                    if(col.Name == "rowNumber")
+                    if (col.Name == "rowNumber")
                     {
                         cell.Summary.Running = SummaryRunning.Report;
                         cell.Summary.Func = SummaryFunc.RecordNumber;
                     }
-                    //switch (col.CustomAttribute.SpecialColumnType)
-                    //{
-                    //    case SpecialColumnType.RecordNumber:
-                    //        cell.Summary.Running = SummaryRunning.Report;
-                    //        cell.Summary.Func = SummaryFunc.RecordNumber;
-                    //        break;
-
-                    //    default:
-                    //        break;
-                    //}
                 }
 
                 if (col.HorizontalHeaderContentAlignment != System.Windows.HorizontalAlignment.Left)
@@ -150,10 +140,10 @@ namespace TradeFutNight.Reports
 
                 cell.Padding = paddingInfo;
 
-                //if (col.CustomAttribute != null && col.CustomAttribute.IsMerge)
-                //{
-                //    cell.ProcessDuplicatesMode = ProcessDuplicatesMode.Merge;
-                //}
+                if (col.AllowCellMerge.HasValue && col.AllowCellMerge.Value)
+                {
+                    cell.ProcessDuplicatesMode = ProcessDuplicatesMode.Merge;
+                }
 
                 row.Cells.Add(cell);
             }

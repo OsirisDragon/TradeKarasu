@@ -21,12 +21,12 @@ namespace TradeFutNight.Interfaces
 
         Task Save();
 
-        void Export();
+        Task Export();
 
-        void Print();
+        Task Print();
 
-        void PrintIndex();
+        Task PrintIndex();
 
-        void PrintStock();
+        Task PrintStock();
     }
 }

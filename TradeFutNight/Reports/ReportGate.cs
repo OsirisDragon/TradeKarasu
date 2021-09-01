@@ -1,6 +1,7 @@
 ﻿using DevExpress.Xpf.Printing;
 using DevExpress.XtraPrinting.Caching;
 using DevExpress.XtraReports.UI;
+using System.Threading.Tasks;
 
 namespace TradeFutNight.Reports
 {
@@ -24,15 +25,30 @@ namespace TradeFutNight.Reports
             //_cachedReportSource.PrintingSystem.ShowPrintStatusDialog = false;
         }
 
-        public void ExportPdf(string filePath)
+        public async Task<ReportGate> CreateDocument()
         {
-            _cachedReportSource.CreateDocument();
-            new PdfStreamingExporter(_report, true).Export(filePath);
+            await _cachedReportSource.CreateDocumentAsync();
+            return this;
         }
 
-        public void Print()
+        public async Task ExportPdf(string filePath)
         {
-            PrintHelper.PrintDirect(_cachedReportSource);
+            var task = Task.Run(() =>
+            {
+                new PdfStreamingExporter(_report, true).Export(filePath);
+            });
+
+            await task;
+        }
+
+        public async Task Print()
+        {
+            var task = Task.Run(() =>
+            {
+                PrintHelper.PrintDirect(_cachedReportSource);
+            });
+
+            await task;
         }
     }
 }

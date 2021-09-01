@@ -167,67 +167,86 @@ namespace TradeFutNight.Views
             }
         }
 
-        private void BtnPrint_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        private async void BtnPrint_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
         {
             try
             {
+                _vm.IsLoadingVisible = true;
+
                 var activeItem = dockLayoutManagerMain.LayoutController.ActiveItem;
 
                 if (activeItem != null)
                 {
-                    ((IViewSword)(((DocumentPanel)activeItem).Control)).Print();
+                    await ((IViewSword)(((DocumentPanel)activeItem).Control)).Print();
                 }
+
+                _vm.IsLoadingVisible = false;
             }
             catch (Exception ex)
             {
+                _vm.IsLoadingVisible = false;
                 MessageBoxExService.Instance().Error(ex.Message);
             }
         }
 
-        private void BtnPrintIndex_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        private async void BtnPrintIndex_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
         {
             try
             {
+                _vm.IsLoadingVisible = true;
+
                 var activeItem = dockLayoutManagerMain.LayoutController.ActiveItem;
 
                 if (activeItem != null)
                 {
-                    ((IViewSword)(((DocumentPanel)activeItem).Control)).PrintIndex();
+                    await ((IViewSword)(((DocumentPanel)activeItem).Control)).PrintIndex();
                 }
+
+                _vm.IsLoadingVisible = false;
             }
             catch (Exception ex)
             {
+                _vm.IsLoadingVisible = false;
                 MessageBoxExService.Instance().Error(ex.Message);
             }
         }
 
-        private void BtnPrintStock_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        private async void BtnPrintStock_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
         {
             try
             {
+                _vm.IsLoadingVisible = true;
+
                 var activeItem = dockLayoutManagerMain.LayoutController.ActiveItem;
 
                 if (activeItem != null)
                 {
-                    ((IViewSword)(((DocumentPanel)activeItem).Control)).PrintStock();
+                    await ((IViewSword)(((DocumentPanel)activeItem).Control)).PrintStock();
                 }
+
+                _vm.IsLoadingVisible = false;
             }
             catch (Exception ex)
             {
+                _vm.IsLoadingVisible = false;
                 MessageBoxExService.Instance().Error(ex.Message);
             }
         }
 
-        private void BtnExport_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        private async void BtnExport_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
         {
             try
             {
+                _vm.IsLoadingVisible = true;
+
                 var activeItem = dockLayoutManagerMain.LayoutController.ActiveItem;
 
                 if (activeItem != null)
                 {
-                    ((IViewSword)(((DocumentPanel)activeItem).Control)).Export();
+                    await ((IViewSword)(((DocumentPanel)activeItem).Control)).Export();
                 }
+
+                _vm.IsLoadingVisible = false;
             }
             catch (Exception ex)
             {
@@ -239,8 +258,8 @@ namespace TradeFutNight.Views
         {
             try
             {
-                var programID = "30024";
-                var programName = "造市者報價限制檔新增";
+                var programID = "30112";
+                var programName = "造市者報價限制檔查詢、刪除";
 
                 await OpenProgram(programID, programName);
             }

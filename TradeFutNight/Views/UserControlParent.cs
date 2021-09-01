@@ -5,20 +5,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using TradeFutNight.Common;
 using TradeFutNightData.Gates.Common;
 using TradeFutNightData.Models.Common;
-using TradeUtility;
 
 namespace TradeFutNight.Views
 {
     public partial class UserControlParent : UserControl
     {
-        private string _exportFilePath;
-
         protected MainUI_ViewModel VmMainUi { get; set; }
         protected MainUI MainUi { get; set; }
 
@@ -40,7 +35,7 @@ namespace TradeFutNight.Views
                     isInDesignMode = DesignerProperties.GetIsInDesignMode(this);
                 });
 
-                // Designer設計介面的時候不要取值，因為會有出現畫面上的顯示錯誤
+                // Designer設計介面的時候不要取值，因為會出現xaml設計畫面上的顯示錯誤
                 if (isInDesignMode)
                 {
                     return null;
@@ -53,9 +48,24 @@ namespace TradeFutNight.Views
 
         public string ExportFilePath
         {
-            get { return _exportFilePath; }
+            get
+            {
+                bool isInDesignMode = false;
 
-            set { _exportFilePath = value; }
+                Dispatcher.Invoke(() =>
+                {
+                    isInDesignMode = DesignerProperties.GetIsInDesignMode(this);
+                });
+
+                // Designer設計介面的時候不要取值，因為會出現xaml設計畫面上的顯示錯誤
+                if (isInDesignMode)
+                {
+                    return null;
+                }
+
+                return Path.Combine(AppSettings.LocalReportDirectory, MagicalHats.UniformFileName(AppSettings.SystemType, ProgramID, "", FileType.Pdf));
+            }
+            set { }
         }
 
         public UserControlParent()
@@ -68,8 +78,6 @@ namespace TradeFutNight.Views
             ProgramName = programName;
             VmMainUi = vmMainUi;
             MainUi = mainUi;
-
-            ExportFilePath = Path.Combine(AppSettings.LocalReportDirectory, MagicalHats.UniformFileName(AppSettings.SystemType, ProgramID, "", FileType.Pdf)); ;
         }
 
         public bool IsCanRunProgram()

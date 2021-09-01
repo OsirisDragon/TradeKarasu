@@ -1,5 +1,7 @@
 ﻿using ChangeTracking;
 using CrossModel;
+using CrossModel.Enum;
+using DevExpress.XtraPrinting;
 using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
@@ -16,16 +18,16 @@ using TradeFutNightData.Models.Common;
 namespace TradeFutNight.Views.Prefix3
 {
     /// <summary>
-    /// U_30111.xaml 的互動邏輯
+    /// U_30112.xaml 的互動邏輯
     /// </summary>
-    public partial class U_30111 : UserControlParent, IViewSword
+    public partial class U_30112 : UserControlParent, IViewSword
     {
-        private U_30111_ViewModel _vm;
+        private U_30112_ViewModel _vm;
 
-        public U_30111()
+        public U_30112()
         {
             InitializeComponent();
-            _vm = (U_30111_ViewModel)DataContext;
+            _vm = (U_30112_ViewModel)DataContext;
         }
 
         public void InitialSetting(string programID, string programName, MainUI_ViewModel vmMainUi, MainUI mainUi)
@@ -64,7 +66,7 @@ namespace TradeFutNight.Views.Prefix3
 
         public void Delete()
         {
-            bool isNeedConfirm = false;
+            bool isNeedConfirm = true;
             var selectedItem = gridMain.SelectedItem;
             if (selectedItem != null)
             {
@@ -98,38 +100,10 @@ namespace TradeFutNight.Views.Prefix3
                 var resultItem = new ResultItem();
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
 
-                if (trackableData.AddedItems.Count() == 0)
+                if (trackableData.DeletedItems.Count() == 0)
                 {
                     VmMainUi.HideLoadingWindow();
-                    MessageBoxExService.Instance().Error(MessageConst.NoAddedData);
-                    return false;
-                }
-
-                foreach (var item in trackableData.AddedItems)
-                {
-                    if (item.SLT_MAX < item.SLT_MIN)
-                    {
-                        resultItem.AppendErrorMessage($"{item.SLT_KIND_ID}的權利金上限不能小於權利金下限");
-                    }
-
-                    using (var das = Factory.CreateDalSession())
-                    {
-                        var dPDK = new D_PDK(das);
-                        var pdk = dPDK.getByParamKey(item.SLT_KIND_ID);
-                        if (pdk.PDK_SUBTYPE == 'E')
-                        {
-                            if (pdk.PDK_PRICE_FLUC != 'F')
-                            {
-                                resultItem.AppendErrorMessage("匯率類的商品僅可選擇「固定點數」");
-                            }
-                        }
-                    }
-                }
-
-                if (resultItem.HasError)
-                {
-                    VmMainUi.HideLoadingWindow();
-                    MessageBoxExService.Instance().Error(resultItem.ErrorMessage);
+                    MessageBoxExService.Instance().Error(MessageConst.NoDeletedData);
                     return false;
                 }
 
@@ -147,7 +121,7 @@ namespace TradeFutNight.Views.Prefix3
             var task = Task.Run(async () =>
             {
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = _vm.MapperInstance.Map<IList<SLT>>(trackableData.AddedItems);
+                var domainData = _vm.MapperInstance.Map<IList<SLT>>(trackableData.DeletedItems);
 
                 using (var das = Factory.CreateDalSession())
                 {
@@ -156,7 +130,7 @@ namespace TradeFutNight.Views.Prefix3
                     try
                     {
                         var dSlt = new D_SLT(das);
-                        dSlt.Insert(domainData);
+                        dSlt.Delete(domainData);
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -171,7 +145,7 @@ namespace TradeFutNight.Views.Prefix3
                     }
                 }
 
-                var report = CreateReport(domainData);
+                var report = CreateReport(domainData, OperationType.Save);
                 var reportGate = await new ReportGate(report).CreateDocument();
                 await reportGate.ExportPdf(ExportFilePath);
                 await reportGate.Print();
@@ -180,18 +154,34 @@ namespace TradeFutNight.Views.Prefix3
                 MessageBoxExService.Instance().Info(MessageConst.ProcessSuccess);
                 CloseWindow();
             });
-
             await task;
         }
 
-        private XtraReport CreateReport<T>(IList<T> data)
+        private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
         {
             string memo = "";
             Dispatcher.Invoke(() =>
             {
                 memo = txtMemo.Text;
             });
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, ProgramID + "–" + ProgramName, UserName, memo, Ocf.OCF_DATE, true, false, true);
+
+            string reportTitle = ProgramID + "–" + ProgramName;
+
+            switch (operationType)
+            {
+                case OperationType.Save:
+                    reportTitle = reportTitle.Replace("查詢、", "");
+                    break;
+
+                case OperationType.Print:
+                    reportTitle = reportTitle.Replace("、刪除", "");
+                    break;
+
+                default:
+                    break;
+            }
+
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, memo, Ocf.OCF_DATE, true, false, true);
             var reportCommon = ReportNormal.CreateCommonLandscape(data, gridMain.Columns, rptSetting);
 
             return reportCommon;
@@ -207,8 +197,11 @@ namespace TradeFutNight.Views.Prefix3
         public async Task Print()
         {
             gridView.CloseEditor();
-            await Task.FromResult<object>(null);
-            throw new NotImplementedException();
+
+            var report = CreateReport(_vm.MainGridData, OperationType.Print);
+            var reportGate = await new ReportGate(report).CreateDocument();
+            await reportGate.ExportPdf(ExportFilePath);
+            await reportGate.Print();
         }
 
         public async Task PrintIndex()

@@ -11,11 +11,11 @@ using TradeFutNightData.Models.Common;
 
 namespace TradeFutNight.Views.Prefix3
 {
-    public class U_30111_ViewModel : ViewModelBase
+    public class U_30112_ViewModel : ViewModelBase
     {
         public Mapper MapperInstance { get; set; }
 
-        public IList<UIModel_30111> MainGridData
+        public IList<UIModel_30112> MainGridData
         {
             get { return GetProperty(() => MainGridData); }
             set { SetProperty(() => MainGridData, value); }
@@ -33,9 +33,9 @@ namespace TradeFutNight.Views.Prefix3
             set { SetProperty(() => SltPriceFlucItemInfos, value); }
         }
 
-        public U_30111_ViewModel()
+        public U_30112_ViewModel()
         {
-            MainGridData = new ObservableCollection<UIModel_30111>();
+            MainGridData = new ObservableCollection<UIModel_30112>();
             PdkParamKeysCanQuote = new ObservableCollection<ItemInfo>();
             SltPriceFlucItemInfos = new ObservableCollection<ItemInfo>();
         }
@@ -44,15 +44,15 @@ namespace TradeFutNight.Views.Prefix3
         {
             MapperInstance = new Mapper(new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<SLT, UIModel_30111>().ReverseMap();
+                cfg.CreateMap<SLT, UIModel_30112>().ReverseMap();
             }));
 
-            MainGridData = new ObservableCollection<UIModel_30111>().ToList().AsTrackable();
+            MainGridData = new ObservableCollection<UIModel_30112>().ToList().AsTrackable();
 
             using (var das = Factory.CreateDalSession())
             {
-                //var dSlt = new D_SLT(das);
-                //MainGridData = MapperInstance.Map<IList<UIModel_30111>>(dSlt.ListAll()).AsTrackable();
+                var dSlt = new D_SLT(das);
+                MainGridData = MapperInstance.Map<IList<UIModel_30112>>(dSlt.ListAll()).AsTrackable();
 
                 var dPdk = new D_PDK(das);
                 PdkParamKeysCanQuote = dPdk.ListDistinctParamKeyCanQuote().Select(c => new ItemInfo() { Text = c.PDK_PARAM_KEY, Value = c.PDK_PARAM_KEY }).ToList();
@@ -66,16 +66,16 @@ namespace TradeFutNight.Views.Prefix3
 
         public void Insert()
         {
-            MainGridData.Insert(0, new UIModel_30111());
+            MainGridData.Insert(0, new UIModel_30112());
         }
 
         public void Delete(object item)
         {
-            MainGridData.Remove((UIModel_30111)item);
+            MainGridData.Remove((UIModel_30112)item);
         }
     }
 
-    public class UIModel_30111 : SLT
+    public class UIModel_30112 : SLT
     {
     }
 }
