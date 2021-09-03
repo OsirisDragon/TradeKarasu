@@ -147,7 +147,7 @@ namespace TradeFutNight.Views.Prefix3
         {
             VmMainUi.LoadingText = MessageConst.LoadingStatusSaving;
 
-            var task = Task.Run(() =>
+            var task = Task.Run(async () =>
             {
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
                 var domainData = _vm.MapperInstance.Map<IList<TPPINTD>>(trackableData.AddedItems);
@@ -175,9 +175,9 @@ namespace TradeFutNight.Views.Prefix3
                 }
 
                 var report = CreateReport(domainData);
-                var reportGate = new ReportGate(report);
-                reportGate.ExportPdf(ExportFilePath);
-                reportGate.Print();
+                var reportGate = await new ReportGate(report).CreateDocument();
+                await reportGate.ExportPdf(ExportFilePath);
+                await reportGate.Print();
 
                 VmMainUi.HideLoadingWindow();
 
@@ -210,27 +210,31 @@ namespace TradeFutNight.Views.Prefix3
             return reportCommon;
         }
 
-        public void Export()
+        public async Task Export()
         {
             gridView.CloseEditor();
+            await Task.FromResult<object>(null);
             throw new NotImplementedException();
         }
 
-        public void Print()
+        public async Task Print()
         {
             gridView.CloseEditor();
+            await Task.FromResult<object>(null);
             throw new NotImplementedException();
         }
 
-        public void PrintIndex()
+        public async Task PrintIndex()
         {
             gridView.CloseEditor();
+            await Task.FromResult<object>(null);
             throw new NotImplementedException();
         }
 
-        public void PrintStock()
+        public async Task PrintStock()
         {
             gridView.CloseEditor();
+            await Task.FromResult<object>(null);
             throw new NotImplementedException();
         }
     }

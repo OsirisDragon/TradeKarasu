@@ -7,6 +7,7 @@
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:myTypes="clr-namespace:TradeFutNight.Views"
     xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.Prefix3"
+    xmlns:c="clr-namespace:TradeFutNight.Common"
     x:Class="TradeFutNight.Views.Prefix3.U_30111"
     mc:Ignorable="d"
     d:DesignHeight="450" d:DesignWidth="800" FontSize="14" Margin="1,1,1,1">
@@ -30,58 +31,58 @@
             <RowDefinition Height="0.2*" />
         </Grid.RowDefinitions>
         <dxg:GridControl Grid.Row="1" x:Name="gridMain" ItemsSource="{Binding MainGridData}" AutoGenerateColumns="None" EnableSmartColumnsGeneration="True" HorizontalAlignment="Left"
-                         VerticalAlignment="Stretch">
+                         VerticalAlignment="Stretch" SelectionMode="Row" CurrentItem="{Binding Path=CurrentItem, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
             <dxg:GridControl.View>
                 <dxg:TableView x:Name="gridView" ShowTotalSummary="False" ShowGroupPanel="False"  IsColumnMenuEnabled="False" />
             </dxg:GridControl.View>
-            <dxg:GridColumn FieldName="SLT_KIND_ID" Header="商品種類" Width="80" HorizontalHeaderContentAlignment="Center" AllowSorting="False"  AllowColumnFiltering="False" AllowMoving="False" AllowResizing="False" IsSmart="True">
+            <dxg:GridColumn FieldName="SLT_KIND_ID" Header="商品種類" Width="80" c:CustomProp.NotNullNotEmpty="True">
                 <dxg:GridColumn.EditSettings>
                     <dxe:ComboBoxEditSettings ItemsSource="{Binding PdkParamKeysCanQuote}" DisplayMember="Text" ValueMember="Value" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
-            <dxg:GridColumn FieldName="SLT_MIN" Header="權利金下限" Width="90" HorizontalHeaderContentAlignment="Center" AllowSorting="False" AllowColumnFiltering="False" AllowMoving="False" AllowResizing="False" IsSmart="True">
+            <dxg:GridColumn FieldName="SLT_MIN" Header="權利金下限" Width="90">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
-            <dxg:GridColumn FieldName="SLT_MAX" Header="權利金上限" Width="90" HorizontalHeaderContentAlignment="Center" AllowSorting="False" AllowColumnFiltering="False" AllowMoving="False" AllowResizing="False" IsSmart="True">
+            <dxg:GridColumn FieldName="SLT_MAX" Header="權利金上限" Width="90">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
-            <dxg:GridColumn FieldName="SLT_SPREAD_LONG" Header="商品月份&#xA;序號" Width="70" HorizontalHeaderContentAlignment="Center" AllowSorting="False" AllowColumnFiltering="False" AllowMoving="False" AllowResizing="False" IsSmart="True">
+            <dxg:GridColumn FieldName="SLT_SPREAD_LONG" Header="商品月份&#xA;序號" Width="70">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Center" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
-            <dxg:GridColumn FieldName="SLT_SPREAD" Header="到期月份&#xA;價差限制" Width="80" HorizontalHeaderContentAlignment="Center" AllowSorting="False" AllowColumnFiltering="False" AllowMoving="False" AllowResizing="False" IsSmart="True">
+            <dxg:GridColumn FieldName="SLT_SPREAD" Header="到期月份&#xA;價差限制" Width="80">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Right" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
-            <dxg:GridColumn FieldName="SLT_SPREAD_MULTI" Header="報價價差&#xA;放寬倍數" Width="80" HorizontalHeaderContentAlignment="Center" AllowSorting="False" AllowColumnFiltering="False" AllowMoving="False" AllowResizing="False" IsSmart="True">
+            <dxg:GridColumn FieldName="SLT_SPREAD_MULTI" Header="報價價差&#xA;放寬倍數" Width="80">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Right" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
-            <dxg:GridColumn FieldName="SLT_SPREAD_MAX" Header="價差上限" Width="80" HorizontalHeaderContentAlignment="Center" AllowSorting="False" AllowColumnFiltering="False" AllowMoving="False" AllowResizing="False" IsSmart="True">
+            <dxg:GridColumn FieldName="SLT_SPREAD_MAX" Header="價差上限" Width="80">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Right" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
-            <dxg:GridColumn FieldName="SLT_VALID_QNTY" Header="最小買賣&#xA;報價數" Width="80" HorizontalHeaderContentAlignment="Center" AllowSorting="False" AllowColumnFiltering="False" AllowMoving="False" AllowResizing="False" IsSmart="True">
+            <dxg:GridColumn FieldName="SLT_VALID_QNTY" Header="最小買賣&#xA;報價數" Width="80">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Right" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
-            <dxg:GridColumn FieldName="SLT_PRICE_FLUC" Header="價差計算&#xA;方式" Width="80" HorizontalHeaderContentAlignment="Center" AllowSorting="False" AllowColumnFiltering="False" AllowMoving="False" AllowResizing="False" IsSmart="True">
+            <dxg:GridColumn FieldName="SLT_PRICE_FLUC" Header="價差計算&#xA;方式" Width="80">
                 <dxg:GridColumn.EditSettings>
                     <dxe:ComboBoxEditSettings ItemsSource="{Binding SltPriceFlucItemInfos}" DisplayMember="Text" ValueMember="Value" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
         </dxg:GridControl>
         <ScrollViewer Grid.Row="2">
-            <TextBlock 
+            <TextBlock
                    x:Name="txtMemo"
                    TextWrapping="Wrap"
                    Foreground="OrangeRed"

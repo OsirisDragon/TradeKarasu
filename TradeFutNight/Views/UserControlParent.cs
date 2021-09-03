@@ -1,10 +1,13 @@
 ﻿using CrossModel;
 using CrossModel.Enum;
 using DataEngine;
+using DevExpress.Xpf.Grid;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Controls;
 using TradeFutNight.Common;
 using TradeFutNightData.Gates.Common;
@@ -226,6 +229,40 @@ namespace TradeFutNight.Views
         public void DbLog(string programID, string userID, string messageContent, DalSession das)
         {
             new D_LOGF(das).Insert(UserID, programID, messageContent);
+        }
+
+        public bool CheckNotNullNotEmpty<T>(GridControl grid, ViewModelParent<T> vm)
+        {
+            for (int i = 0; i < grid.VisibleRowCount; i++)
+            {
+                int rowHandle = grid.GetRowHandleByVisibleIndex(i);
+                int listIndex = grid.GetListIndexByRowHandle(rowHandle);
+                var item = vm.MainGridData[listIndex];
+
+                foreach (PropertyInfo prop in item.GetType().GetProperties())
+                {
+                    var type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+                    if (type == typeof(string))
+                    {
+                        var colName = prop.Name;
+                        var col = grid.Columns[colName];
+                        if (col != null)
+                        {
+                            if (CustomProp.GetNotNullNotEmpty(col))
+                            {
+                                if (prop.GetValue(item) == null || prop.GetValue(item).ToString().Trim() == "")
+                                {
+                                    vm.SetCurrentAndSelectedItem(item);
+                                    MessageBoxExService.Instance().Error($"{col.Header}不允許空值");
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return true;
         }
 
         public void CloseWindow()

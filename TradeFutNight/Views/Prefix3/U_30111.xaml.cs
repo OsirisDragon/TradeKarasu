@@ -86,8 +86,13 @@ namespace TradeFutNight.Views.Prefix3
 
             gridView.CloseEditor();
 
+            if (!CheckNotNullNotEmpty(gridMain, _vm))
+                return false;
+
             var task = Task.Run(() =>
             {
+                var resultItem = new ResultItem();
+
                 if (!IsCanRunProgram())
                 {
                     VmMainUi.HideLoadingWindow();
@@ -95,7 +100,6 @@ namespace TradeFutNight.Views.Prefix3
                     return false;
                 }
 
-                var resultItem = new ResultItem();
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
 
                 if (trackableData.AddedItems.Count() == 0)
@@ -116,7 +120,7 @@ namespace TradeFutNight.Views.Prefix3
                     {
                         var dPDK = new D_PDK(das);
                         var pdk = dPDK.getByParamKey(item.SLT_KIND_ID);
-                        if (pdk.PDK_SUBTYPE == 'E')
+                        if (pdk != null && pdk.PDK_SUBTYPE == 'E')
                         {
                             if (pdk.PDK_PRICE_FLUC != 'F')
                             {

@@ -30,7 +30,7 @@
             <RowDefinition Height="0.2*" />
         </Grid.RowDefinitions>
         <dxg:GridControl Grid.Row="1" x:Name="gridMain" ItemsSource="{Binding MainGridData}" AutoGenerateColumns="None" EnableSmartColumnsGeneration="True" HorizontalAlignment="Left"
-                         VerticalAlignment="Stretch">
+                         VerticalAlignment="Stretch" SelectionMode="Row" CurrentItem="{Binding Path=CurrentItem, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
             <dxg:GridControl.View>
                 <dxg:TableView x:Name="gridView" ShowTotalSummary="False" ShowGroupPanel="False"  IsColumnMenuEnabled="False" AllowEditing="False" />
             </dxg:GridControl.View>

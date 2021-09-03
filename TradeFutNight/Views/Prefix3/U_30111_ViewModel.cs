@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using ChangeTracking;
 using CrossModel;
-using DevExpress.Mvvm;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,16 +10,8 @@ using TradeFutNightData.Models.Common;
 
 namespace TradeFutNight.Views.Prefix3
 {
-    public class U_30111_ViewModel : ViewModelBase
+    public class U_30111_ViewModel : ViewModelParent<UIModel_30111>
     {
-        public Mapper MapperInstance { get; set; }
-
-        public IList<UIModel_30111> MainGridData
-        {
-            get { return GetProperty(() => MainGridData); }
-            set { SetProperty(() => MainGridData, value); }
-        }
-
         public IList<ItemInfo> PdkParamKeysCanQuote
         {
             get { return GetProperty(() => PdkParamKeysCanQuote); }
@@ -51,9 +42,6 @@ namespace TradeFutNight.Views.Prefix3
 
             using (var das = Factory.CreateDalSession())
             {
-                //var dSlt = new D_SLT(das);
-                //MainGridData = MapperInstance.Map<IList<UIModel_30111>>(dSlt.ListAll()).AsTrackable();
-
                 var dPdk = new D_PDK(das);
                 PdkParamKeysCanQuote = dPdk.ListDistinctParamKeyCanQuote().Select(c => new ItemInfo() { Text = c.PDK_PARAM_KEY, Value = c.PDK_PARAM_KEY }).ToList();
             }

@@ -129,11 +129,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\CustomProp.cs" />
     <Compile Include="Common\MagicalHats.cs" />
     <Compile Include="Common\MessageDisplay.cs" />
     <Compile Include="Interfaces\IMessageBoxExService.cs" />
     <Compile Include="Interfaces\IViewSword.cs" />
-    <Compile Include="Order.cs" />
     <Compile Include="Reports\ReportCommonLandscapeBase.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -149,7 +149,6 @@
     <Compile Include="Reports\ReportNormal.cs" />
     <Compile Include="Common\MessageBoxExService.cs" />
     <Compile Include="Reports\ReportGate.cs" />
-    <Compile Include="TestViewModel.cs" />
     <Compile Include="ViewModels\ViewModel1.cs" />
     <Compile Include="ViewModels\ViewModel2.cs" />
     <Compile Include="ViewModels\ViewModel3.cs" />
@@ -168,14 +167,9 @@
       <DependentUpon>U_30112.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Prefix3\U_30112_ViewModel.cs" />
-    <Compile Include="Views\temp.xaml.cs">
-      <DependentUpon>temp.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MainUI_ViewModel.cs" />
     <Compile Include="Views\UserControlParent.cs" />
-    <Compile Include="Views\View1.xaml.cs">
-      <DependentUpon>View1.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Views\ViewModelParent.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -205,14 +199,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ShareStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\temp.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\View1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

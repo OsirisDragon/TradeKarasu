@@ -5,12 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
     xmlns:myTypes="clr-namespace:TradeFutNight.Views"
     xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.Prefix3"
-    xmlns:crossModel="clr-namespace:CrossModel;assembly=CrossModel"
     x:Class="TradeFutNight.Views.Prefix3.U_30024"
     mc:Ignorable="d"
     d:DesignHeight="450" d:DesignWidth="800" FontSize="14" Margin="1,1,1,1">
@@ -33,7 +29,7 @@
             <RowDefinition Height="0.2*" />
         </Grid.RowDefinitions>
         <dxg:GridControl Grid.Row="0" x:Name="gridMain" ItemsSource="{Binding MainGridData}" AutoGenerateColumns="None" EnableSmartColumnsGeneration="True" HorizontalAlignment="Left"
-                         VerticalAlignment="Stretch">
+                         VerticalAlignment="Stretch" SelectionMode="Row" CurrentItem="{Binding Path=CurrentItem, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
             <dxg:GridControl.View>
                 <dxg:TableView x:Name="gridView" ShowTotalSummary="False" ShowGroupPanel="False"  IsColumnMenuEnabled="False" Margin="0,0,0,0" ScrollViewer.HorizontalScrollBarVisibility="Visible" PrintAutoWidth="False" />
             </dxg:GridControl.View>

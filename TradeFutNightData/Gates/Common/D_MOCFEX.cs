@@ -12,7 +12,10 @@ namespace TradeFutNightData.Gates.Common
 {
     public class D_MOCFEX : D_MOCFEX<MOCFEX>
     {
-        public D_MOCFEX(DalSession das) { this._das = das; }
+        public D_MOCFEX(DalSession das)
+        {
+            this._das = das;
+        }
     }
 
     public class D_MOCFEX<T> : ParentGate
@@ -41,22 +44,22 @@ namespace TradeFutNightData.Gates.Common
 
         public void Save(IEnumerable<MOCFEX> data)
         {
-            foreach (var item in data)
-            {
-                if(item.RowAction == RowAction.Insert)
-                {
-                    _das.DataConn.Insert(item);
-                }
-                else if(item.RowAction == RowAction.Update)
-                {
-                    _das.DataConn.GetTable<MOCFEX>()
-                    .Where(c => c.MOCFEX_DATE == item.MOCFEX_DATE)
-                    .Set(c => c.MOCFEX_CBOE_OPEN_CODE, item.MOCFEX_CBOE_OPEN_CODE)
-                    .Set(c => c.MOCFEX_USER_ID, item.MOCFEX_USER_ID)
-                    .Set(c => c.MOCFEX_W_TIME, item.MOCFEX_W_TIME)
-                    .Update();
-                }
-            }
+            //foreach (var item in data)
+            //{
+            //    if(item.RowAction == RowAction.Insert)
+            //    {
+            //        _das.DataConn.Insert(item);
+            //    }
+            //    else if(item.RowAction == RowAction.Update)
+            //    {
+            //        _das.DataConn.GetTable<MOCFEX>()
+            //        .Where(c => c.MOCFEX_DATE == item.MOCFEX_DATE)
+            //        .Set(c => c.MOCFEX_CBOE_OPEN_CODE, item.MOCFEX_CBOE_OPEN_CODE)
+            //        .Set(c => c.MOCFEX_USER_ID, item.MOCFEX_USER_ID)
+            //        .Set(c => c.MOCFEX_W_TIME, item.MOCFEX_W_TIME)
+            //        .Update();
+            //    }
+            //}
         }
     }
 }

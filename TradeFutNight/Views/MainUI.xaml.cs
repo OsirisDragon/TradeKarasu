@@ -258,8 +258,8 @@ namespace TradeFutNight.Views
         {
             try
             {
-                var programID = "30112";
-                var programName = "造市者報價限制檔查詢、刪除";
+                var programID = "30111";
+                var programName = "造市者報價限制檔新增";
 
                 await OpenProgram(programID, programName);
             }
