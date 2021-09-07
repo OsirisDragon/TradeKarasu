@@ -91,6 +91,9 @@ namespace TradeFutNight.Views.Prefix3
 
             gridView.CloseEditor();
 
+            if (!CheckNotNullNotEmpty(gridMain, _vm))
+                return false;
+
             var task = Task.Run(() =>
             {
                 if (!IsCanRunProgram())
