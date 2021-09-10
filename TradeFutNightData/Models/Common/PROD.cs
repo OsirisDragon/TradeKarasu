@@ -40,9 +40,9 @@ namespace TradeFutNightData.Models.Common
         public decimal? PROD_FALL_PRICE1 { get; set; } // smallmoney
         public decimal? PROD_RAISE_PRICE2 { get; set; } // smallmoney
         public decimal? PROD_FALL_PRICE2 { get; set; } // smallmoney
-        public sbyte? PROD_SPREAD_CODE { get; set; } // tinyint
+        public byte? PROD_SPREAD_CODE { get; set; } // tinyint
         public char? PROD_DAY_TRADE_CODE { get; set; } // char(1)
-        public sbyte? PROD_OSW_GRP { get; set; } // tinyint
+        public byte? PROD_OSW_GRP { get; set; } // tinyint
         public DateTime? PROD_OI_DATE { get; set; } // datetime
         public int? PROD_OPEN_INTEREST { get; set; } // int
         public string PROD_ID_LONG { get; set; } // char(20)

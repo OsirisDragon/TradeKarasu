@@ -50,7 +50,7 @@ namespace TradeFutNightData.Models.Common
         public DateTime? PDK_W_TIME { get; set; } // datetime
         public decimal? PDK_SELF_FEE { get; set; } // smallmoney
         public decimal? PDK_MARKET_FEE { get; set; } // smallmoney
-        public sbyte PDK_SCALE { get; set; } // tinyint
+        public byte PDK_SCALE { get; set; } // tinyint
         public char PDK_BROADCAST { get; set; } // char(1)
         public char PDK_PRICE_FLUC { get; set; } // char(1)
         public char PDK_SUBTYPE { get; set; } // char(1)
@@ -65,11 +65,11 @@ namespace TradeFutNightData.Models.Common
         public char PDK_STATUS_CODE { get; set; } // char(1)
         public char PDK_SERIES_CODE { get; set; } // char(1)
         public string PDK_COOL_GRP_ID { get; set; } // char(2)
-        public sbyte PDK_PLIMIT_CODE { get; set; } // tinyint
-        public sbyte PDK_SHORT_STEP { get; set; } // tinyint
+        public byte PDK_PLIMIT_CODE { get; set; } // tinyint
+        public byte PDK_SHORT_STEP { get; set; } // tinyint
         public char PDK_CURRENCY_TYPE { get; set; } // char(1)
         public string PDK_PARAM_KEY { get; set; } // char(3)
-        public sbyte PDK_PRICE_SCALE { get; set; } // tinyint
+        public byte PDK_PRICE_SCALE { get; set; } // tinyint
         public char PDK_QUOTE_CODE { get; set; } // char(1)
         public char PDK_DAY_TRADE_CODE { get; set; } // char(1)
         public short PDK_DAY_TRADE_MONTH { get; set; } // smallint
@@ -96,10 +96,10 @@ namespace TradeFutNightData.Models.Common
         public char PDK_FSP_CONFIRM { get; set; } // char(1)
         public string PDK_BTRD_STOCK_ID { get; set; } // char(6)
         public char? PDK_REMARK { get; set; } // char(1)
-        public sbyte PDK_MARKET_OPEN { get; set; } // tinyint
+        public byte PDK_MARKET_OPEN { get; set; } // tinyint
         public decimal? PDK_RAISE_LIMIT9 { get; set; } // smallmoney
         public decimal? PDK_FALL_LIMIT9 { get; set; } // smallmoney
-        public sbyte PDK_LONG_STEP { get; set; } // tinyint
+        public byte PDK_LONG_STEP { get; set; } // tinyint
         public char PDK_END_SESSION { get; set; } // char(1)
         public char PDK_EXEMPT_CODE { get; set; } // char(1)
         public char? PDK_STOCK_PRICE_FLUC { get; set; } // char(1)
