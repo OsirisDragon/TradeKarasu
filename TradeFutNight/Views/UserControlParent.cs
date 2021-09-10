@@ -242,24 +242,42 @@ namespace TradeFutNight.Views
                 foreach (PropertyInfo prop in item.GetType().GetProperties())
                 {
                     var type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
-                    if (type == typeof(string))
+
+                    var colName = prop.Name;
+                    var col = grid.Columns[colName];
+                    if (col != null)
                     {
-                        var colName = prop.Name;
-                        var col = grid.Columns[colName];
-                        if (col != null)
+                        if (CustomProp.GetNotNullNotEmpty(col))
                         {
-                            if (CustomProp.GetNotNullNotEmpty(col))
+                            if (prop.GetValue(item) == null || prop.GetValue(item).ToString().Trim() == "")
                             {
-                                if (prop.GetValue(item) == null || prop.GetValue(item).ToString().Trim() == "")
-                                {
-                                    vm.SetCurrentAndSelectedItem(item);
-                                    MessageBoxExService.Instance().Error($"{col.Header}不允許空值");
-                                    return false;
-                                }
+                                vm.SetCurrentAndSelectedItem(item);
+                                MessageBoxExService.Instance().Error($"{col.Header}不允許空值");
+                                return false;
                             }
                         }
                     }
                 }
+            }
+
+            return true;
+        }
+
+        protected bool BaseCheck<T>(CheckSettings settings, GridControl gridControl, ViewModelParent<T> vm)
+        {
+            VmMainUi.LoadingText = MessageConst.LoadingStatusChecking;
+
+            gridControl.View.CloseEditor();
+
+            if (!gridControl.View.CommitEditing())
+            {
+                MessageBoxExService.Instance().Error(MessageConst.IsNotValidData);
+                return false;
+            }
+
+            if (settings.IsCheckNotNullNotEmpty)
+            {
+                if (!CheckNotNullNotEmpty(gridControl, vm)) return false;
             }
 
             return true;

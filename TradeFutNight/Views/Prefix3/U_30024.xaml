@@ -7,6 +7,7 @@
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:myTypes="clr-namespace:TradeFutNight.Views"
     xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.Prefix3"
+    xmlns:c="clr-namespace:TradeFutNight.Common"
     x:Class="TradeFutNight.Views.Prefix3.U_30024"
     mc:Ignorable="d"
     d:DesignHeight="450" d:DesignWidth="800" FontSize="14" Margin="1,1,1,1">
@@ -45,12 +46,12 @@
                     <dxe:TextEditSettings HorizontalContentAlignment="Center" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
-            <dxg:GridColumn FieldName="TPPINTD_FIRST_KIND_ID"  Header="第一支腳&#xA;契約代碼" Width="80">
+            <dxg:GridColumn FieldName="TPPINTD_FIRST_KIND_ID"  Header="第一支腳&#xA;契約代碼" Width="80" c:CustomProp.NotNullNotEmpty="True">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings CharacterCasing="Upper" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
-            <dxg:GridColumn FieldName="TPPINTD_FIRST_MONTH"  Header="第一支腳&#xA;月份序號" Width="80" />
+            <dxg:GridColumn FieldName="TPPINTD_FIRST_MONTH"  Header="第一支腳&#xA;月份序號" Width="80"  c:CustomProp.NotNullNotEmpty="True" />
             <dxg:GridColumn FieldName="TPPINTD_SECOND_KIND_ID"  Header="第二支腳&#xA;契約代碼" Width="80">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings CharacterCasing="Upper" />
