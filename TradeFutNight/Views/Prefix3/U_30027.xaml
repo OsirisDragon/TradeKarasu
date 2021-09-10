@@ -79,6 +79,7 @@
                 <dxg:GridColumn.EditSettings>
                     <dxe:ComboBoxEditSettings
                         DisplayMember="Text"
+                        IsTextEditable="False"
                         ItemsSource="{Binding IdxGroupInfos}"
                         ValueMember="Value" />
                 </dxg:GridColumn.EditSettings>
@@ -91,6 +92,7 @@
                 <dxg:GridColumn.EditSettings>
                     <dxe:ComboBoxEditSettings
                         DisplayMember="Text"
+                        IsTextEditable="False"
                         ItemsSource="{Binding TypeInfos}"
                         ValueMember="Value" />
                 </dxg:GridColumn.EditSettings>

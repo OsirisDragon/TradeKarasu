@@ -10,17 +10,17 @@ namespace TradeFutNightData.Models.Common
         public virtual string TPPINTD_FIRST_KIND_ID { get; set; } // char(4)
 
         [PrimaryKey]
-        public virtual sbyte TPPINTD_FIRST_MONTH { get; set; } // tinyint
+        public virtual byte TPPINTD_FIRST_MONTH { get; set; } // tinyint
 
         [PrimaryKey]
         public virtual string TPPINTD_SECOND_KIND_ID { get; set; } // char(4)
 
         [PrimaryKey]
-        public virtual sbyte TPPINTD_SECOND_MONTH { get; set; } // tinyint
+        public virtual byte TPPINTD_SECOND_MONTH { get; set; } // tinyint
 
         public virtual decimal TPPINTD_M_PRICE_LIMIT { get; set; } // smallmoney
         public virtual int TPPINTD_M_INTERVAL { get; set; } // int
-        public virtual sbyte TPPINTD_ACCU_QNTY { get; set; } // tinyint
+        public virtual byte TPPINTD_ACCU_QNTY { get; set; } // tinyint
         public virtual decimal TPPINTD_M_PRICE_FILTER { get; set; } // smallmoney
         public virtual decimal TPPINTD_BS_PRICE_FILTER { get; set; } // smallmoney
         public virtual decimal TPPINTD_DIVIDEND_POINTS { get; set; } // smallmoney

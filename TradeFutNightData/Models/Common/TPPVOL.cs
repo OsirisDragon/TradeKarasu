@@ -12,13 +12,13 @@ namespace TradeFutNightData.Models.Common
         public virtual decimal TPPVOL_REMOVE_COUNT { get; set; } // smallmoney
         public virtual decimal TPPVOL_GROWTH_RATE { get; set; } // smallmoney
         public virtual decimal TPPVOL_INCREASE_RATE { get; set; } // smallmoney
-        public virtual sbyte TPPVOL_SEND_COUNT { get; set; } // tinyint
+        public virtual byte TPPVOL_SEND_COUNT { get; set; } // tinyint
         public virtual string TPPVOL_USER_ID { get; set; } // char(5)
         public virtual DateTime TPPVOL_W_TIME { get; set; } // datetime
         public virtual decimal? TPPVOL_SEND_THRESHOLD { get; set; } // smallmoney
 
         [PrimaryKey]
-        public virtual sbyte? TPPVOL_INDEX_GRP { get; set; } // tinyint
+        public virtual byte? TPPVOL_INDEX_GRP { get; set; } // tinyint
 
         public virtual decimal TPPVOL_UP_DOWN_RATE { get; set; } // smallmoney
     }

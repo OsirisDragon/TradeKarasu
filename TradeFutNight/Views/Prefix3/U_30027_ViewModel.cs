@@ -38,10 +38,11 @@ namespace TradeFutNight.Views.Prefix3
             MainGridData = new ObservableCollection<UIModel_30027>().ToList().AsTrackable();
 
             var idxGroupInfos = new List<ItemInfo>();
-            idxGroupInfos.Add(new ItemInfo() { Text = "其他", Value = (sbyte)0 });
-            idxGroupInfos.Add(new ItemInfo() { Text = "上市/櫃", Value = (sbyte)1 });
-            idxGroupInfos.Add(new ItemInfo() { Text = "日本", Value = (sbyte)3 });
-            idxGroupInfos.Add(new ItemInfo() { Text = "美國", Value = (sbyte)5 });
+            idxGroupInfos.Add(new ItemInfo() { Text = "其他", Value = (byte)0 });
+            idxGroupInfos.Add(new ItemInfo() { Text = "上市/櫃", Value = (byte)1 });
+            idxGroupInfos.Add(new ItemInfo() { Text = "日本", Value = (byte)3 });
+            idxGroupInfos.Add(new ItemInfo() { Text = "美國", Value = (byte)5 });
+            idxGroupInfos.Add(new ItemInfo() { Text = "英國", Value = (byte)6 });
             IdxGroupInfos = idxGroupInfos;
 
             var typeInfos = new List<ItemInfo>();
@@ -51,6 +52,7 @@ namespace TradeFutNight.Views.Prefix3
             typeInfos.Add(new ItemInfo() { Text = "日經VIX", Value = "JNIV" });
             typeInfos.Add(new ItemInfo() { Text = "JPX東證期貨漲跌幅", Value = "TOPX" });
             typeInfos.Add(new ItemInfo() { Text = "CME E-mini S&P500期貨漲跌幅", Value = "SPX" });
+            typeInfos.Add(new ItemInfo() { Text = "ICE FTSE 100指數期貨漲跌幅", Value = "FTSE" });
             TypeInfos = typeInfos;
         }
 
@@ -58,6 +60,7 @@ namespace TradeFutNight.Views.Prefix3
         {
             MainGridData.Insert(0, new UIModel_30027()
             {
+                TPPVOL_INDEX_GRP = null,
                 TPPVOL_TYPE = ""
             });
         }
