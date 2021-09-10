@@ -61,7 +61,7 @@ namespace TradeFutNight.Views.Prefix3
             MainGridData.Insert(0, new UIModel_30027()
             {
                 TPPVOL_INDEX_GRP = null,
-                TPPVOL_TYPE = ""
+                TPPVOL_TYPE = null
             });
         }
 

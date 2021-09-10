@@ -91,7 +91,7 @@ namespace TradeFutNight.Views.Prefix3
 
             gridView.CloseEditor();
 
-            if (!CheckNotNullNotEmpty(gridMain, _vm))
+            if (!BaseCheck(new CheckSettings() { IsCheckNotNullNotEmpty = true }, gridMain, _vm))
                 return false;
 
             var task = Task.Run(() =>
