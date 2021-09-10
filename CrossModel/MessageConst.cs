@@ -19,6 +19,7 @@ namespace CrossModel
         public static string NoAddedData = "沒有需要新增的資料";
         public static string NoChangedData = "沒有需要異動的資料";
         public static string NoDeletedData = "沒有需要刪除的資料";
+        public static string IsNotValidData = "輸入的資料不正確";
         public static string Completed = "COMPLETED";
         public static string IsCanRun = "IS_CAN_RUN";
         public static string Open = "OPEN";
