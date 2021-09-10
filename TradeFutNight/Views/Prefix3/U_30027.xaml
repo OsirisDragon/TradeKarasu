@@ -100,11 +100,7 @@
             <dxg:GridColumn
                 Width="80"
                 FieldName="TPPVOL_REMOVE_COUNT"
-                Header="去除極端值&#xA;筆數">
-                <dxg:GridColumn.EditSettings>
-                    <dxe:TextEditSettings CharacterCasing="Upper" />
-                </dxg:GridColumn.EditSettings>
-            </dxg:GridColumn>
+                Header="去除極端值&#xA;筆數" />
             <dxg:GridColumn
                 Width="80"
                 FieldName="TPPVOL_GROWTH_RATE"

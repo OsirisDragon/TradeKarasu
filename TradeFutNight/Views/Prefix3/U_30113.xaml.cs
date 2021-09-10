@@ -1,12 +1,13 @@
 ﻿using ChangeTracking;
 using CrossModel;
-using DevExpress.DataProcessing;
+using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
@@ -17,16 +18,16 @@ using TradeFutNightData.Models.Common;
 namespace TradeFutNight.Views.Prefix3
 {
     /// <summary>
-    /// U_30024.xaml 的互動邏輯
+    /// U_30113.xaml 的互動邏輯
     /// </summary>
-    public partial class U_30024 : UserControlParent, IViewSword
+    public partial class U_30113 : UserControlParent, IViewSword
     {
-        private U_30024_ViewModel _vm;
+        private U_30113_ViewModel _vm;
 
-        public U_30024()
+        public U_30113()
         {
             InitializeComponent();
-            _vm = (U_30024_ViewModel)DataContext;
+            _vm = (U_30113_ViewModel)DataContext;
         }
 
         public void InitialSetting(string programID, string programName, MainUI_ViewModel vmMainUi, MainUI mainUi)
@@ -53,10 +54,6 @@ namespace TradeFutNight.Views.Prefix3
             {
                 _vm.Open();
                 MagicalHats.LogToDb(UserID, ProgramID, MessageConst.Open);
-                Dispatcher.Invoke(() =>
-                {
-                    Insert();
-                });
             });
             await task;
         }
@@ -69,7 +66,7 @@ namespace TradeFutNight.Views.Prefix3
 
         public void Delete()
         {
-            bool isNeedConfirm = false;
+            bool isNeedConfirm = true;
             var selectedItem = gridMain.SelectedItem;
             if (selectedItem != null)
             {
@@ -101,31 +98,34 @@ namespace TradeFutNight.Views.Prefix3
 
                 var resultItem = new ResultItem();
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
+                var checkItems = trackableData.ChangedItems;
 
-                if (trackableData.AddedItems.Count() == 0)
+                if (checkItems.Count() == 0)
                 {
                     VmMainUi.HideLoadingWindow();
-                    MessageBoxExService.Instance().Error(MessageConst.NoAddedData);
+                    MessageBoxExService.Instance().Error(MessageConst.NoChangedData);
                     return false;
                 }
 
-                foreach (var item in trackableData.AddedItems)
+                foreach (var item in checkItems)
                 {
-                    if (item.TPPINTD_SECOND_MONTH > 0 && string.IsNullOrEmpty(item.TPPINTD_SECOND_KIND_ID))
+                    if (item.SLT_MAX < item.SLT_MIN)
                     {
-                        resultItem.AppendErrorMessage($"請輸入第{trackableData.AsEnumerable().IndexOf(item) + 1}筆的第二支腳契約代碼");
+                        resultItem.AppendErrorMessage($"{item.SLT_KIND_ID}的權利金上限不能小於權利金下限");
                     }
 
-                    if (!string.IsNullOrEmpty(item.TPPINTD_SECOND_KIND_ID) && item.TPPINTD_SECOND_MONTH <= 0)
+                    using (var das = Factory.CreateDalSession())
                     {
-                        resultItem.AppendErrorMessage($"請輸入第{trackableData.AsEnumerable().IndexOf(item) + 1}筆的第二支腳月份序號");
+                        var dPDK = new D_PDK(das);
+                        var pdk = dPDK.getByParamKey(item.SLT_KIND_ID);
+                        if (pdk != null && pdk.PDK_SUBTYPE == 'E')
+                        {
+                            if (pdk.PDK_PRICE_FLUC != 'F')
+                            {
+                                resultItem.AppendErrorMessage("匯率類的商品僅可選擇「固定點數」");
+                            }
+                        }
                     }
-
-                    Dispatcher.Invoke(() =>
-                    {
-                        item.TPPINTD_USER_ID = UserID;
-                        item.TPPINTD_W_TIME = DateTime.Now;
-                    });
                 }
 
                 if (resultItem.HasError)
@@ -149,7 +149,7 @@ namespace TradeFutNight.Views.Prefix3
             var task = Task.Run(async () =>
             {
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = _vm.MapperInstance.Map<IList<TPPINTD>>(trackableData.AddedItems);
+                var domainData = CustomMapper(trackableData.ChangedItems);
 
                 using (var das = Factory.CreateDalSession())
                 {
@@ -157,8 +157,8 @@ namespace TradeFutNight.Views.Prefix3
 
                     try
                     {
-                        var dTppintd = new D_TPPINTD(das);
-                        dTppintd.Insert(domainData);
+                        var dSlt = new D_SLT(das);
+                        dSlt.Update(domainData);
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -173,37 +173,58 @@ namespace TradeFutNight.Views.Prefix3
                     }
                 }
 
-                var report = CreateReport(domainData);
+                var report = CreateReport(domainData, OperationType.Save);
                 var reportGate = await new ReportGate(report).CreateDocument();
                 await reportGate.ExportPdf(ExportFilePath);
                 await reportGate.Print();
 
                 VmMainUi.HideLoadingWindow();
-
-                foreach (var item in trackableData.AddedItems)
-                {
-                    if (item.TPPINTD_SECOND_KIND_ID == "" && item.TPPINTD_SECOND_MONTH == 0)
-                    {
-                        MessageBoxExService.Instance().Info("請執行C1400變更除息影響點數!");
-                        break;
-                    }
-                }
-
                 MessageBoxExService.Instance().Info(MessageConst.ProcessSuccess);
                 CloseWindow();
             });
-
             await task;
         }
 
-        private XtraReport CreateReport<T>(IList<T> data)
+        private IList<SLT> CustomMapper(IEnumerable<UIModel_30113> items)
+        {
+            var listResult = new List<SLT>();
+            foreach (var item in items)
+            {
+                var newItem = _vm.MapperInstance.Map<SLT>(item);
+
+                var trackItem = item.CastToIChangeTrackable();
+                newItem.OriginalData = trackItem.GetOriginal();
+                listResult.Add(newItem);
+            }
+
+            return listResult;
+        }
+
+        private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
         {
             string memo = "";
             Dispatcher.Invoke(() =>
             {
                 memo = txtMemo.Text;
             });
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, ProgramID + "–" + ProgramName, UserName, memo, Ocf.OCF_DATE, true, false, true);
+
+            string reportTitle = ProgramID + "–" + ProgramName;
+
+            switch (operationType)
+            {
+                case OperationType.Save:
+
+                    break;
+
+                case OperationType.Print:
+
+                    break;
+
+                default:
+                    break;
+            }
+
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, memo, Ocf.OCF_DATE, true, false, true);
             var reportCommon = ReportNormal.CreateCommonLandscape(data, gridMain.Columns, rptSetting);
 
             return reportCommon;
@@ -219,8 +240,11 @@ namespace TradeFutNight.Views.Prefix3
         public async Task Print()
         {
             gridView.CloseEditor();
-            await Task.FromResult<object>(null);
-            throw new NotImplementedException();
+
+            var report = CreateReport(_vm.MainGridData, OperationType.Print);
+            var reportGate = await new ReportGate(report).CreateDocument();
+            await reportGate.ExportPdf(ExportFilePath);
+            await reportGate.Print();
         }
 
         public async Task PrintIndex()
@@ -235,6 +259,26 @@ namespace TradeFutNight.Views.Prefix3
             gridView.CloseEditor();
             await Task.FromResult<object>(null);
             throw new NotImplementedException();
+        }
+
+        private async void BtnQuery_Click(object sender, RoutedEventArgs e)
+        {
+            var button = ((Button)sender);
+            button.IsEnabled = false;
+
+            if (cbKindId.SelectedItem != null)
+            {
+                var selectedItem = (ItemInfo)cbKindId.SelectedItem;
+
+                var task = Task.Run(async () =>
+                {
+                    await _vm.Query(selectedItem.Value.ToString());
+                });
+
+                await task;
+            }
+
+            button.IsEnabled = true;
         }
     }
 }

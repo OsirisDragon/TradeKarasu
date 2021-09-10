@@ -84,9 +84,8 @@ namespace TradeFutNight.Views.Prefix3
 
         public async Task<bool> CheckField()
         {
-            VmMainUi.LoadingText = MessageConst.LoadingStatusChecking;
-
-            gridView.CloseEditor();
+            if (!BaseCheck(new CheckSettings() { IsCheckNotNullNotEmpty = false }, gridMain, _vm))
+                return false;
 
             var task = Task.Run(() =>
             {

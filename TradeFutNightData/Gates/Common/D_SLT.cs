@@ -1,5 +1,4 @@
-﻿using Dapper;
-using DataEngine;
+﻿using DataEngine;
 using LinqToDB;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +48,7 @@ namespace TradeFutNightData.Gates.Common
             }
         }
 
-        public void Update(IEnumerable<SLT> data)
+        public void Update(IList<SLT> data)
         {
             foreach (var item in data)
             {

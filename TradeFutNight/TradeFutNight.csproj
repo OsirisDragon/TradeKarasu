@@ -149,9 +149,6 @@
     <Compile Include="Reports\ReportNormal.cs" />
     <Compile Include="Common\MessageBoxExService.cs" />
     <Compile Include="Reports\ReportGate.cs" />
-    <Compile Include="ViewModels\ViewModel1.cs" />
-    <Compile Include="ViewModels\ViewModel2.cs" />
-    <Compile Include="ViewModels\ViewModel3.cs" />
     <Compile Include="Views\MainUI.xaml.cs">
       <DependentUpon>MainUI.xaml</DependentUpon>
     </Compile>
@@ -167,9 +164,13 @@
       <DependentUpon>U_30111.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Prefix3\U_30111_ViewModel.cs" />
+    <Compile Include="Views\Prefix3\U_30113.xaml.cs">
+      <DependentUpon>U_30113.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Prefix3\U_30112.xaml.cs">
       <DependentUpon>U_30112.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Prefix3\U_30113_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30112_ViewModel.cs" />
     <Compile Include="Views\MainUI_ViewModel.cs" />
     <Compile Include="Views\UserControlParent.cs" />
@@ -201,6 +202,10 @@
     <Page Include="Views\Prefix3\U_30111.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Views\Prefix3\U_30113.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Prefix3\U_30112.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -1,6 +1,7 @@
 ﻿using CrossModel;
 using CrossModel.Enum;
 using DataEngine;
+using DevExpress.Mvvm;
 using DevExpress.Xpf.Grid;
 using System;
 using System.Collections.Generic;
@@ -95,9 +96,6 @@ namespace TradeFutNight.Views
                 countJSW = listJSW.Count();
             }
 
-            // 預設可以列印
-            VmMainUi.IsButtonPrintEnabled = true;
-
             // 如果都沒有JSW的話，就讓程式不可執行
             if (countJSW == 0)
             {
@@ -164,11 +162,13 @@ namespace TradeFutNight.Views
                                 {
                                     VmMainUi.IsButtonSaveEnabled = true;
                                     VmMainUi.IsButtonDeleteEnabled = true;
+                                    VmMainUi.IsButtonPrintEnabled = true;
                                 }
                                 else
                                 {
                                     VmMainUi.IsButtonSaveEnabled = false;
                                     VmMainUi.IsButtonDeleteEnabled = false;
+                                    VmMainUi.IsButtonPrintEnabled = true;
                                 }
 
                                 break;
@@ -290,6 +290,27 @@ namespace TradeFutNight.Views
 
             // 如果要關閉整個程式的話
             //Application.Current.Dispatcher.Invoke(() => { Application.Current.Shutdown(886); });
+        }
+
+        /// <summary>
+        /// DevExpress的GridView用的改變格子資料後的觸發事件
+        /// </summary>
+        protected void view_CellValueChanged(object sender, CellValueChangedEventArgs e)
+        {
+            var view = ((GridViewBase)sender);
+            view.CommitEditing();
+            var gridControl = ((GridControl)(((GridViewBase)sender).Parent));
+
+            // 如果有加ModifyMark這個欄位的話，會給它一個自訂符號的註記
+            var col = gridControl.Columns.GetColumnByFieldName("ModifyMark");
+            if (col != null)
+            {
+                string modifyMarkStyle = CustomProp.GetModifyMarkStyle(col);
+
+                view.CellValueChanged -= new CellValueChangedEventHandler(view_CellValueChanged);
+                gridControl.SetCellValue(e.RowHandle, col, modifyMarkStyle);
+                view.CellValueChanged += new CellValueChangedEventHandler(view_CellValueChanged);
+            }
         }
     }
 }

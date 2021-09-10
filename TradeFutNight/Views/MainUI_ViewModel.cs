@@ -64,6 +64,11 @@ namespace TradeFutNight.Views
         {
         }
 
+        public void ShowLoadingWindow()
+        {
+            IsLoadingVisible = true;
+        }
+
         public void HideLoadingWindow()
         {
             IsLoadingVisible = false;

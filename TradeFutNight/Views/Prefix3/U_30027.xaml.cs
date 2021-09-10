@@ -1,6 +1,5 @@
 ﻿using ChangeTracking;
 using CrossModel;
-using DevExpress.DataProcessing;
 using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
@@ -87,10 +86,6 @@ namespace TradeFutNight.Views.Prefix3
 
         public async Task<bool> CheckField()
         {
-            VmMainUi.LoadingText = MessageConst.LoadingStatusChecking;
-
-            gridView.CloseEditor();
-
             if (!BaseCheck(new CheckSettings() { IsCheckNotNullNotEmpty = true }, gridMain, _vm))
                 return false;
 

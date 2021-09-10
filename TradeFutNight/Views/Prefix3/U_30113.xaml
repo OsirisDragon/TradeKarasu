@@ -1,5 +1,5 @@
 ﻿<myTypes:UserControlParent
-    x:Class="TradeFutNight.Views.Prefix3.U_30111"
+    x:Class="TradeFutNight.Views.Prefix3.U_30113"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:c="clr-namespace:TradeFutNight.Common"
@@ -15,7 +15,7 @@
     FontSize="14"
     mc:Ignorable="d">
     <myTypes:UserControlParent.DataContext>
-        <myTypesPrefix:U_30111_ViewModel />
+        <myTypesPrefix:U_30113_ViewModel />
     </myTypes:UserControlParent.DataContext>
     <myTypes:UserControlParent.Resources>
         <ResourceDictionary>
@@ -29,10 +29,34 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.02*" />
+            <RowDefinition Height="0.06*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="0.2*" />
         </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Label
+                Width="65"
+                Margin="10,0,10,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center">
+                商品種類：
+            </Label>
+            <dxe:ComboBoxEdit
+                x:Name="cbKindId"
+                Width="100"
+                Height="30"
+                DisplayMember="Text"
+                ItemsSource="{Binding PdkParamKeysCanQuote}"
+                ValueMember="Value" />
+            <Button
+                x:Name="btnQuery"
+                Width="60"
+                Height="30"
+                Margin="10,0,10,0"
+                Click="BtnQuery_Click">
+                查詢
+            </Button>
+        </StackPanel>
         <dxg:GridControl
             x:Name="gridMain"
             Grid.Row="1"
@@ -47,17 +71,39 @@
             <dxg:GridControl.View>
                 <dxg:TableView
                     x:Name="gridView"
+                    AllowEditing="True"
+                    CellValueChanged="view_CellValueChanged"
                     IsColumnMenuEnabled="False"
                     ShowGroupPanel="False"
                     ShowTotalSummary="False" />
             </dxg:GridControl.View>
             <dxg:GridColumn
+                Name="rowNumber"
+                Width="40"
+                AllowEditing="False"
+                Header="編號">
+                <dxg:GridColumn.CellTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{DXBinding 'RowData.RowHandle.Value + 1'}" />
+                        </Grid>
+                    </DataTemplate>
+                </dxg:GridColumn.CellTemplate>
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
                 Width="80"
-                c:CustomProp.NotNullNotEmpty="True"
+                AllowCellMerge="True"
                 FieldName="SLT_KIND_ID"
                 Header="商品種類">
                 <dxg:GridColumn.EditSettings>
                     <dxe:ComboBoxEditSettings
+                        HorizontalContentAlignment="Center"
                         DisplayMember="Text"
                         ItemsSource="{Binding PdkParamKeysCanQuote}"
                         ValueMember="Value" />
@@ -128,6 +174,21 @@
                         DisplayMember="Text"
                         ItemsSource="{Binding SltPriceFlucItemInfos}"
                         ValueMember="Value" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="20"
+                c:CustomProp.ModifyMarkStyle="*"
+                AllowEditing="false"
+                FieldName="ModifyMark"
+                Header="">
+                <dxg:GridColumn.HeaderStyle>
+                    <Style TargetType="Control">
+                        <Setter Property="Background" Value="Transparent" />
+                    </Style>
+                </dxg:GridColumn.HeaderStyle>
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
         </dxg:GridControl>
