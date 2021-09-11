@@ -130,6 +130,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\CustomProp.cs" />
+    <Compile Include="Common\DropDownItems.cs" />
     <Compile Include="Common\MagicalHats.cs" />
     <Compile Include="Common\MessageDisplay.cs" />
     <Compile Include="Interfaces\IMessageBoxExService.cs" />
