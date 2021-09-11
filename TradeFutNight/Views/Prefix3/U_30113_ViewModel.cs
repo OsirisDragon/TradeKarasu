@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using TradeFutNight.Common;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Common;
 using TradeFutNightData.Models.Common;
@@ -28,8 +29,6 @@ namespace TradeFutNight.Views.Prefix3
         public U_30113_ViewModel()
         {
             MainGridData = new ObservableCollection<UIModel_30113>();
-            PdkParamKeysCanQuote = new ObservableCollection<ItemInfo>();
-            SltPriceFlucItemInfos = new ObservableCollection<ItemInfo>();
         }
 
         public void Open()
@@ -41,16 +40,8 @@ namespace TradeFutNight.Views.Prefix3
 
             MainGridData = new ObservableCollection<UIModel_30113>().ToList().AsTrackable();
 
-            using (var das = Factory.CreateDalSession())
-            {
-                var dPdk = new D_PDK(das);
-                PdkParamKeysCanQuote = dPdk.ListDistinctParamKeyCanQuote().Select(c => new ItemInfo() { Text = c.PDK_PARAM_KEY, Value = c.PDK_PARAM_KEY }).ToList();
-            }
-
-            var priceFlucItemInfos = new List<ItemInfo>();
-            priceFlucItemInfos.Add(new ItemInfo() { Text = "百分比", Value = 'P' });
-            priceFlucItemInfos.Add(new ItemInfo() { Text = "固定點數", Value = 'F' });
-            SltPriceFlucItemInfos = priceFlucItemInfos;
+            PdkParamKeysCanQuote = DropDownItems.PdkParamKeysCanQuote();
+            SltPriceFlucItemInfos = DropDownItems.PriceFlucItem();
         }
 
         public void Insert()

@@ -9,7 +9,7 @@ using TradeFutNightData.Models.Common;
 
 namespace TradeFutNight.Views.Prefix3
 {
-    public class U_30027_ViewModel : ViewModelParent<UIModel_30027>
+    public class U_30038_ViewModel : ViewModelParent<UIModel_30038>
     {
         public IList<ItemInfo> IdxGroupInfos
         {
@@ -17,45 +17,37 @@ namespace TradeFutNight.Views.Prefix3
             set { SetProperty(() => IdxGroupInfos, value); }
         }
 
-        public IList<ItemInfo> TypeInfos
+        public U_30038_ViewModel()
         {
-            get { return GetProperty(() => TypeInfos); }
-            set { SetProperty(() => TypeInfos, value); }
-        }
-
-        public U_30027_ViewModel()
-        {
-            MainGridData = new ObservableCollection<UIModel_30027>();
+            MainGridData = new ObservableCollection<UIModel_30038>();
         }
 
         public void Open()
         {
             MapperInstance = new Mapper(new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<TPPVOL, UIModel_30027>().ReverseMap();
+                cfg.CreateMap<TPPDK, UIModel_30038>().ReverseMap();
             }));
 
-            MainGridData = new ObservableCollection<UIModel_30027>().ToList().AsTrackable();
+            MainGridData = new ObservableCollection<UIModel_30038>().ToList().AsTrackable();
             IdxGroupInfos = DropDownItems.TppIndexGrp();
-            TypeInfos = DropDownItems.TppType();
         }
 
         public void Insert()
         {
-            MainGridData.Insert(0, new UIModel_30027()
+            MainGridData.Insert(0, new UIModel_30038()
             {
-                TPPVOL_INDEX_GRP = null,
-                TPPVOL_TYPE = null
+                TPPDK_INDEX_GRP = null
             });
         }
 
         public void Delete(object item)
         {
-            MainGridData.Remove((UIModel_30027)item);
+            MainGridData.Remove((UIModel_30038)item);
         }
     }
 
-    public class UIModel_30027 : TPPVOL
+    public class UIModel_30038 : TPPDK
     {
     }
 }
