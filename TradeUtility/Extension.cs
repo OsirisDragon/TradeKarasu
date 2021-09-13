@@ -23,5 +23,15 @@ namespace TradeUtility
                 }
             }
         }
+
+        public static string ToDateStr(this DateTime item)
+        {
+            return item.ToString("yyyy/MM/dd");
+        }
+
+        public static string ToDateTimeStr(this DateTime item)
+        {
+            return item.ToString("yyyy/MM/dd HH:mm:ss");
+        }
     }
 }

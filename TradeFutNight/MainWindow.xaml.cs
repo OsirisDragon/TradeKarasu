@@ -2,6 +2,7 @@
 using CrossModel.Enum;
 using System;
 using System.IO;
+using System.Text;
 using TradeFutNight.Common;
 using TradeFutNight.Views;
 using TradeFutNightData;
@@ -16,6 +17,10 @@ namespace TradeFutNight
         public MainWindow()
         {
             InitializeComponent();
+
+            // AseClient add custom charset support
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            Encoding.RegisterProvider(new EncodingProviderForBig5());
 
             DataBaseEngine.Initial();
 
@@ -53,18 +58,23 @@ namespace TradeFutNight
 
             this.Content = mainUi;
         }
+    }
 
-        //const double AdditionalCaptionOffset = 26d;
-        //static Action<ThemedWindow, double> setCaptionHeight;
-        //static MainWindow()
-        //{
-        //    WindowChrome.CaptionHeightProperty.OverrideMetadata(typeof(MainWindow), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnCaptionHeightPropertyChanged)));
-        //    setCaptionHeight = ReflectionHelper.CreateFieldSetter<ThemedWindow, double>(typeof(ThemedWindow), "captionHeight", BindingFlags.Instance | BindingFlags.NonPublic);
-        //}
-        //static void OnCaptionHeightPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    ((MainWindow)d).OnCaptionHeightChanged((double)e.NewValue, (double)e.OldValue);
-        //}
-        //void OnCaptionHeightChanged(double eOldValue, double eNewValue) { setCaptionHeight(this, WindowChrome.GetCaptionHeight(this) + AdditionalCaptionOffset); }
+    /// <summary>
+    /// 加入不同語系
+    /// https://github.com/DataAction/AdoNetCore.AseClient/wiki/Add-custom-charset-support
+    /// </summary>
+    internal class EncodingProviderForBig5 : EncodingProvider
+    {
+        public override Encoding GetEncoding(int codepage)
+        {
+            return null; // we're only matching on name, not codepage
+        }
+
+        public override Encoding GetEncoding(string name)
+        {
+            // 這裡不判斷name是不是cp950，因為Sybase的server回傳的name會是ISO-8859-1，我覺得應該是資料庫的人設定錯誤的關係
+            return Encoding.GetEncoding(950);
+        }
     }
 }

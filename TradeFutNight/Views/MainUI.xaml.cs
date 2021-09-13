@@ -2,6 +2,7 @@
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Editors;
+using Shield.File;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,7 +12,7 @@ using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Common;
-using TradeFutNightData.Models.Common;
+using TradeUtility;
 
 namespace TradeFutNight.Views
 {
@@ -35,6 +36,12 @@ namespace TradeFutNight.Views
             InitializeComponent();
             _vm = new MainUI_ViewModel();
             DataContext = _vm;
+
+            txnTxnId.Focus();
+
+            barBottomDataBase.Content = "資料庫：" + SettingFile.Database.Futures_AH.ConnectionName;
+            barBottomUser.Content = "使用者：" + MagicalHats.UserID + " " + MagicalHats.UserName;
+            barBottomDate.Content = "日期：" + MagicalHats.Ocf.OCF_DATE.ToDateStr();
         }
 
         public async Task OpenProgram(string programID, string programName)
@@ -311,28 +318,27 @@ namespace TradeFutNight.Views
             }
         }
 
-        private async void TxnId_KeyDown(object sender, KeyEventArgs e)
+        private async void TxtTxnId_KeyDown(object sender, KeyEventArgs e)
         {
-            string txnID, txnName;
-            TXN txnQuery;
             if (e.Key == Key.Enter)
             {
-                txnID = ((TextEdit)sender).EditValue.ToString();
+                var txtTxnID = ((TextEdit)sender).EditValue.ToString();
+
                 using (var das = Factory.CreateDalSession())
                 {
-                    txnQuery = new D_TXN(das).Get(txnID);
-                }
-                if (txnQuery != null)
-                {
-                    txnName = txnQuery.TXN_NAME;
-                    try
+                    var txn = new D_TXN(das).Get(txtTxnID);
+
+                    if (txn != null)
                     {
-                        await OpenProgram(txnID, txnName);
-                    }
-                    catch (Exception ex)
-                    {
-                        _vm.IsLoadingVisible = false;
-                        MessageBoxExService.Instance().Error(ex.Message);
+                        try
+                        {
+                            await OpenProgram(txtTxnID, txn.TXN_NAME);
+                        }
+                        catch (Exception ex)
+                        {
+                            _vm.IsLoadingVisible = false;
+                            MessageBoxExService.Instance().Error(ex.Message);
+                        }
                     }
                 }
             }
