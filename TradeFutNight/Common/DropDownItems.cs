@@ -49,5 +49,13 @@ namespace TradeFutNight.Common
                     c => new ItemInfo() { Text = c.PDK_PARAM_KEY, Value = c.PDK_PARAM_KEY }).ToList();
             }
         }
+
+        public static IList<ItemInfo> MordKindIdType()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "非股票類", Value = 'K' });
+            result.Add(new ItemInfo() { Text = "股票關聯KEY值", Value = 'P' });
+            return result;
+        }
     }
 }
