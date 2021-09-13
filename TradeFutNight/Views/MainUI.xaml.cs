@@ -1,6 +1,7 @@
 ﻿using CrossModel;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Docking;
+using DevExpress.Xpf.Editors;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -8,6 +9,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
+using TradeFutNightData;
+using TradeFutNightData.Gates.Common;
+using TradeFutNightData.Models.Common;
 
 namespace TradeFutNight.Views
 {
@@ -258,7 +262,7 @@ namespace TradeFutNight.Views
         {
             try
             {
-                var programID = "30111";
+                var programID = "30027";
                 var programName = "造市者報價限制檔新增";
 
                 await OpenProgram(programID, programName);
@@ -303,6 +307,33 @@ namespace TradeFutNight.Views
                 if (isCanRun)
                 {
                     dockLayoutManagerMain.LayoutController.Activate(e.Item);
+                }
+            }
+        }
+
+        private async void TxnId_KeyDown(object sender, KeyEventArgs e)
+        {
+            string txnID, txnName;
+            TXN txnQuery;
+            if (e.Key == Key.Enter)
+            {
+                txnID = ((TextEdit)sender).EditValue.ToString();
+                using (var das = Factory.CreateDalSession())
+                {
+                    txnQuery = new D_TXN(das).Get(txnID);
+                }
+                if (txnQuery != null)
+                {
+                    txnName = txnQuery.TXN_NAME;
+                    try
+                    {
+                        await OpenProgram(txnID, txnName);
+                    }
+                    catch (Exception ex)
+                    {
+                        _vm.IsLoadingVisible = false;
+                        MessageBoxExService.Instance().Error(ex.Message);
+                    }
                 }
             }
         }
