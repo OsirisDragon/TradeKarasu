@@ -249,7 +249,7 @@ namespace TradeFutNight.Views
                     {
                         if (CustomProp.GetNotNullNotEmpty(col))
                         {
-                            if (prop.GetValue(item) == null || prop.GetValue(item).ToString().Trim() == "")
+                            if (prop.GetValue(item) == null || prop.GetValue(item).ToString().Trim() == "" || prop.GetValue(item).ToString().Trim() == "\0")
                             {
                                 vm.SetCurrentAndSelectedItem(item);
                                 MessageBoxExService.Instance().Error($"{col.Header}不允許空值");
