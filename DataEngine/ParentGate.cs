@@ -83,5 +83,21 @@ namespace DataEngine
 
             return resultCommand;
         }
+
+        public virtual void Insert<T>(IEnumerable<T> data)
+        {
+            foreach (var item in data)
+            {
+                _das.DataConn.Insert(item);
+            }
+        }
+
+        public virtual void Delete<T>(IEnumerable<T> data)
+        {
+            foreach (var item in data)
+            {
+                _das.DataConn.Delete(item);
+            }
+        }
     }
 }
