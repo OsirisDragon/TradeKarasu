@@ -26,28 +26,23 @@ namespace TradeFutNightData.Gates.Common
             return query.ToList();
         }
 
+        /// <summary>
+        /// 抓取單式資料
+        /// </summary>
+        public IList<TPPINTD> ListSingleKind()
+        {
+            var query = _das.DataConn.GetTable<TPPINTD>().Where(c => c.TPPINTD_SECOND_KIND_ID == "" && c.TPPINTD_SECOND_MONTH == 0)
+                .OrderBy(c => c.TPPINTD_FIRST_KIND_ID).ThenBy(c => c.TPPINTD_FIRST_MONTH);
+
+            return query.ToList();
+        }
+
         public IEnumerable<TPPINTD> ListByKindID(string TPPINTD_FIRST_KIND_ID, string TPPINTD_SECOND_KIND_ID)
         {
             var query = _das.DataConn.GetTable<TPPINTD>().Where(c => c.TPPINTD_FIRST_KIND_ID == TPPINTD_FIRST_KIND_ID && c.TPPINTD_SECOND_KIND_ID == TPPINTD_SECOND_KIND_ID)
                 .OrderBy(c => c.TPPINTD_FIRST_KIND_ID).ThenBy(c => c.TPPINTD_SECOND_KIND_ID);
 
             return query.ToList();
-        }
-
-        public void Insert(IEnumerable<T> data)
-        {
-            foreach (var item in data)
-            {
-                _das.DataConn.Insert(item);
-            }
-        }
-
-        public void Delete(IEnumerable<T> data)
-        {
-            foreach (var item in data)
-            {
-                _das.DataConn.Delete(item);
-            }
         }
 
         public void Update(IEnumerable<TPPINTD> data)

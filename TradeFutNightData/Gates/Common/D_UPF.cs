@@ -7,10 +7,13 @@ namespace TradeFutNightData.Gates.Common
 {
     public class D_UPF : D_UPF<UPF>
     {
-        public D_UPF(DalSession das) { this._das = das; }
+        public D_UPF(DalSession das)
+        {
+            this._das = das;
+        }
     }
 
-    public class D_UPF<T>: ParentGate
+    public class D_UPF<T> : ParentGate
     {
         public UPF Get(string userID)
         {
@@ -24,9 +27,9 @@ namespace TradeFutNightData.Gates.Common
 
             var upf = Get(userID);
 
-            if(upf != null)
+            if (upf != null)
             {
-                if(upf.UPF_PASSWORD == password)
+                if (upf.UPF_PASSWORD == password)
                 {
                     result = true;
                 }

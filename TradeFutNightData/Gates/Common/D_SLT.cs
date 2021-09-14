@@ -32,22 +32,6 @@ namespace TradeFutNightData.Gates.Common
             return query.ToList();
         }
 
-        public void Insert(IEnumerable<T> data)
-        {
-            foreach (var item in data)
-            {
-                _das.DataConn.Insert(item);
-            }
-        }
-
-        public void Delete(IEnumerable<T> data)
-        {
-            foreach (var item in data)
-            {
-                _das.DataConn.Delete(item);
-            }
-        }
-
         public void Update(IList<SLT> data)
         {
             foreach (var item in data)
