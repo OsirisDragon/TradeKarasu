@@ -52,5 +52,24 @@ namespace TradeFutNightData.Gates.Common
 
             return query.ToList();
         }
+
+        public IList<PDK> ListDistinctParamKeyStock()
+        {
+            var query = _das.DataConn.GetTable<PDK>()
+                .Where(c => c.PDK_SUBTYPE == 'S')
+                .OrderBy(c => c.PDK_PARAM_KEY)
+                .Select(c => new PDK() { PDK_PARAM_KEY = c.PDK_PARAM_KEY }).Distinct();
+
+            return query.ToList();
+        }
+
+        public IList<PDK> ListDistinctKindIdNotStock()
+        {
+            var query = _das.DataConn.GetTable<PDK>()
+                .Where(c => c.PDK_SUBTYPE != 'S')
+                .Select(c => new PDK() { PDK_KIND_ID = c.PDK_KIND_ID }).Distinct();
+
+            return query.ToList();
+        }
     }
 }
