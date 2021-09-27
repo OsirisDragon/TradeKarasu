@@ -1,7 +1,6 @@
 ﻿using CrossModel;
 using CrossModel.Enum;
 using DataEngine;
-using DevExpress.Mvvm;
 using DevExpress.Xpf.Grid;
 using System;
 using System.Collections.Generic;

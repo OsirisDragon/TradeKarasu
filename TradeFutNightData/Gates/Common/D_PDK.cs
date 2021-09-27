@@ -33,6 +33,15 @@ namespace TradeFutNightData.Gates.Common
             return query.ToList();
         }
 
+        public IEnumerable<PDK> ListNotExpire()
+        {
+            var query = _das.DataConn.GetTable<PDK>()
+                .Where(c => c.PDK_EXPIRE_CODE != 'Y')
+                .OrderBy(c => c.PDK_KIND_ID);
+
+            return query.ToList();
+        }
+
         public IEnumerable<PDK> ListDistinctParamKey()
         {
             var query = _das.DataConn.GetTable<PDK>()

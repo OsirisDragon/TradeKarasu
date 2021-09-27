@@ -37,7 +37,7 @@ namespace TradeFutNight.Views
             _vm = new MainUI_ViewModel();
             DataContext = _vm;
 
-            txnTxnId.Focus();
+            txtTxnId.Focus();
 
             barBottomDataBase.Content = "資料庫：" + SettingFile.Database.Futures_AH.ConnectionName;
             barBottomUser.Content = "使用者：" + MagicalHats.UserID + " " + MagicalHats.UserName;
@@ -322,7 +322,7 @@ namespace TradeFutNight.Views
         {
             if (e.Key == Key.Enter)
             {
-                var txtTxnID = ((TextEdit)sender).EditValue.ToString();
+                var txtTxnID = ((TextBox)sender).Text.Trim();
 
                 using (var das = Factory.CreateDalSession())
                 {

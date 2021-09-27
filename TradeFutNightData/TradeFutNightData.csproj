@@ -3,10 +3,18 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>    
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\Specific\PrefixA\DTO_A9920.cs" />
+  </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\CrossModel\CrossModel.csproj" />
     <ProjectReference Include="..\DataEngine\DataEngine.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Models\Specific\PrefixA\" />
   </ItemGroup>
 
 </Project>

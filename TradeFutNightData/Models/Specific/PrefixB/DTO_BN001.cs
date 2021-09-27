@@ -1,7 +1,7 @@
 ﻿using System;
 using CrossModel;
 
-namespace TradeFutNightData.Models.Specific
+namespace TradeFutNightData.Models.Specific.PrefixB
 {
     public class DTO_BN001 : DtoParent<DTO_BN001>
     {

@@ -4,13 +4,16 @@ using LinqToDB;
 using System.Collections.Generic;
 using System.Linq;
 using TradeFutNightData.Models.Common;
-using TradeFutNightData.Models.Specific;
+using TradeFutNightData.Models.Specific.PrefixB;
 
 namespace TradeFutNightData.Gates.Common
 {
-    public class D_FMIF<T>: ParentGate
+    public class D_FMIF<T> : ParentGate
     {
-        public D_FMIF(DalSession das) { this._das = das; }
+        public D_FMIF(DalSession das)
+        {
+            this._das = das;
+        }
 
         public int ClearSettlePriceByMarketClose(string pdkMarketClose)
         {

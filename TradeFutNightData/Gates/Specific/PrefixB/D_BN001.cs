@@ -2,9 +2,9 @@
 using DataEngine;
 using System;
 using System.Collections.Generic;
-using TradeFutNightData.Models.Specific;
+using TradeFutNightData.Models.Specific.PrefixB;
 
-namespace TradeFutNightData.Gates.Common
+namespace TradeFutNightData.Gates.Specific.PrefixB
 {
     public class D_BN001 : D_BN001<DTO_BN001>
     {

@@ -14,9 +14,14 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <Style TargetType="{x:Type dxb:BarButtonItemLinkControl}">
-            <Setter Property="Width" Value="50" />
-        </Style>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type dxb:BarButtonItemLinkControl}">
+                <Setter Property="Width" Value="50" />
+            </Style>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ShareStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <DockPanel LastChildFill="True">
@@ -116,12 +121,14 @@
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0" Orientation="Horizontal">
                                 <Label Margin="5,0,10,0" VerticalAlignment="Center">作業代號</Label>
-                                <dxe:TextEdit
-                                    Name="txnTxnId"
+                                <TextBox
+                                    Name="txtTxnId"
                                     Width="80"
-                                    Height="30"
+                                    HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    HorizontalContentAlignment="Center"
+                                    CharacterCasing="Upper"
+                                    InputMethod.IsInputMethodEnabled="False"
+                                    InputMethod.PreferredImeState="Off"
                                     KeyDown="TxtTxnId_KeyDown" />
                             </StackPanel>
 

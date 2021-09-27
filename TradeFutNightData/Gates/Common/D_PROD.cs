@@ -4,7 +4,7 @@ using LinqToDB;
 using System.Collections.Generic;
 using System.Linq;
 using TradeFutNightData.Models.Common;
-using TradeFutNightData.Models.Specific;
+using TradeFutNightData.Models.Specific.PrefixB;
 
 namespace TradeFutNightData.Gates.Common
 {

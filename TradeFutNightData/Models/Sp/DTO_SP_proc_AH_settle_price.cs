@@ -1,7 +1,7 @@
 ﻿using System;
 using CrossModel;
 
-namespace TradeFutNightData.Models.Specific
+namespace TradeFutNightData.Models.Sp
 {
     public class DTO_SP_proc_AH_settle_price : DtoParent<DTO_SP_proc_AH_settle_price>
     {
