@@ -176,6 +176,10 @@
       <DependentUpon>U_30111.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Prefix3\U_30111_ViewModel.cs" />
+    <Compile Include="Views\Prefix3\U_30025.xaml.cs">
+      <DependentUpon>U_30025.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix3\U_30025_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30113.xaml.cs">
       <DependentUpon>U_30113.xaml</DependentUpon>
     </Compile>
@@ -222,6 +226,10 @@
     <Page Include="Views\Prefix3\U_30111.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Views\Prefix3\U_30025.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Prefix3\U_30113.xaml">
       <Generator>MSBuild:Compile</Generator>

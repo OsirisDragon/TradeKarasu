@@ -1,8 +1,7 @@
 ﻿<myTypes:UserControlParent
-    x:Class="TradeFutNight.Views.Prefix3.U_30024"
+    x:Class="TradeFutNight.Views.Prefix3.U_30025"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:c="clr-namespace:TradeFutNight.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
@@ -12,10 +11,10 @@
     Margin="1,1,1,1"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontSize="14"
+    FontSize="12"
     mc:Ignorable="d">
     <myTypes:UserControlParent.DataContext>
-        <myTypesPrefix:U_30024_ViewModel />
+        <myTypesPrefix:U_30025_ViewModel />
     </myTypes:UserControlParent.DataContext>
     <myTypes:UserControlParent.Resources>
         <ResourceDictionary>
@@ -24,17 +23,58 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </myTypes:UserControlParent.Resources>
-    <Grid Margin="0,0,0,0">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="0.06*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="0.2*" />
         </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Label
+                Width="95"
+                Margin="10,0,10,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center">
+                第一支腳契約：
+            </Label>
+            <dxe:ComboBoxEdit
+                x:Name="cbFirstKindId"
+                Width="100"
+                Height="30"
+                DisplayMember="Text"
+                ItemsSource="{Binding TPPINTDFirstKindId}"
+                Text="全部"
+                ValueMember="Value" />
+            <Label
+                Width="95"
+                Margin="10,0,10,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center">
+                第二支腳契約：
+            </Label>
+            <dxe:ComboBoxEdit
+                x:Name="cbSecondKindId"
+                Width="100"
+                Height="30"
+                DisplayMember="Text"
+                ItemsSource="{Binding TPPINTDSecondKindId}"
+                Text="全部"
+                ValueMember="Value" />
+            <Button
+                x:Name="btnQuery"
+                Width="60"
+                Height="30"
+                Margin="10,0,10,0"
+                Click="BtnQuery_Click">
+                查詢
+            </Button>
+        </StackPanel>
         <dxg:GridControl
             x:Name="gridMain"
-            Grid.Row="0"
+            Grid.Row="1"
             HorizontalAlignment="Left"
             VerticalAlignment="Stretch"
             AutoGenerateColumns="None"
@@ -46,10 +86,8 @@
             <dxg:GridControl.View>
                 <dxg:TableView
                     x:Name="gridView"
-                    Margin="0,0,0,0"
+                    AllowEditing="False"
                     IsColumnMenuEnabled="False"
-                    PrintAutoWidth="False"
-                    ScrollViewer.HorizontalScrollBarVisibility="Visible"
                     ShowGroupPanel="False"
                     ShowTotalSummary="False" />
             </dxg:GridControl.View>
@@ -73,66 +111,89 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="80"
-                c:CustomProp.NotNullNotEmpty="True"
+                Width="70"
                 FieldName="TPPINTD_FIRST_KIND_ID"
                 Header="第一支腳&#xA;契約代碼">
                 <dxg:GridColumn.EditSettings>
-                    <dxe:TextEditSettings CharacterCasing="Upper" />
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="80"
-                c:CustomProp.NotNullNotEmpty="True"
+                Width="70"
                 FieldName="TPPINTD_FIRST_MONTH"
-                Header="第一支腳&#xA;月份序號" />
+                Header="第一支腳&#xA;月份序號">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
             <dxg:GridColumn
-                Width="80"
+                Width="70"
                 FieldName="TPPINTD_SECOND_KIND_ID"
                 Header="第二支腳&#xA;契約代碼">
                 <dxg:GridColumn.EditSettings>
-                    <dxe:TextEditSettings CharacterCasing="Upper" />
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="80"
+                Width="70"
                 FieldName="TPPINTD_SECOND_MONTH"
-                Header="第二支腳&#xA;月份序號" />
+                Header="第二支腳&#xA;月份序號">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
             <dxg:GridColumn
-                Width="100"
+                Width="90"
                 FieldName="TPPINTD_M_PRICE_LIMIT"
                 Header="偏離幅度濾網&#xA;(正式)(%)" />
             <dxg:GridColumn
-                Width="100"
+                Width="90"
                 FieldName="TPPINTD_M_PRICE_LIMIT_F"
                 Header="偏離幅度濾網&#xA;(試撮)(%)" />
             <dxg:GridColumn
-                Width="80"
+                Width="70"
                 FieldName="TPPINTD_M_INTERVAL"
                 Header="成交&#xA;間隔毫秒" />
             <dxg:GridColumn
-                Width="80"
+                Width="70"
                 FieldName="TPPINTD_ACCU_QNTY"
                 Header="最小&#xA;累計口數" />
             <dxg:GridColumn
-                Width="110"
+                Width="70"
                 FieldName="TPPINTD_M_PRICE_FILTER"
-                Header="成交價濾網 (%)" />
-            <dxg:GridColumn FieldName="TPPINTD_BS_PRICE_FILTER" Header="買賣中價濾網 (%)" />
+                Header="成交價&#xA;濾網 (%)" />
             <dxg:GridColumn
                 Width="80"
+                FieldName="TPPINTD_BS_PRICE_FILTER"
+                Header="買賣中價&#xA;濾網 (%)" />
+            <dxg:GridColumn
+                Width="70"
                 FieldName="TPPINTD_UNIT"
                 Header="動態退單&#xA;百分比" />
             <dxg:GridColumn
-                Width="80"
+                Width="70"
                 FieldName="TPPINTD_FOREIGN_INTERVAL"
                 Header="國外成交&#xA;間隔毫秒" />
+            <dxg:GridColumn
+                Width="65"
+                FieldName="TPPINTD_USER_ID"
+                Header="員工代碼">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="150"
+                FieldName="TPPINTD_W_TIME"
+                Header="寫檔時間">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings DisplayFormat="yyyy/MM/dd HH:mm:ss" HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
         </dxg:GridControl>
         <ScrollViewer Grid.Row="2">
             <TextBlock
                 x:Name="txtMemo"
-                Grid.Row="1"
-                Margin="0,0,0,0"
                 xml:space="preserve"
                 Foreground="OrangeRed"
                 TextWrapping="Wrap">
