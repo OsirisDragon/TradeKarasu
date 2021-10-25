@@ -28,17 +28,12 @@ namespace TradeFutNight.Views.Prefix3
             _vm = (U_30111_ViewModel)DataContext;
         }
 
-        public void InitialSetting(string programID, string programName, MainUI_ViewModel vmMainUi, MainUI mainUi)
-        {
-            base.Init(programID, programName, vmMainUi, mainUi);
-        }
-
         public async Task<bool> IsCanRun()
         {
             var task = Task.Run(() =>
             {
                 var isCanRun = IsCanRunProgram();
-                MagicalHats.LogToDb(UserID, ProgramID, MessageConst.IsCanRun + ":" + isCanRun.ToString().ToUpper());
+                DbLog(MessageConst.IsCanRun + ":" + isCanRun.ToString().ToUpper());
                 return isCanRun;
             });
             await task;
@@ -51,7 +46,7 @@ namespace TradeFutNight.Views.Prefix3
             var task = Task.Run(() =>
             {
                 _vm.Open();
-                MagicalHats.LogToDb(UserID, ProgramID, MessageConst.Open);
+                DbLog(MessageConst.Open);
             });
             await task;
         }
@@ -160,7 +155,7 @@ namespace TradeFutNight.Views.Prefix3
 
                         UpdateAccessPermission(ProgramID, das);
 
-                        DbLog(ProgramID, UserID, MessageConst.Completed, das);
+                        DbLog(MessageConst.Completed, das);
 
                         das.Commit();
                     }
@@ -172,7 +167,7 @@ namespace TradeFutNight.Views.Prefix3
                 }
 
                 var report = CreateReport(domainData);
-                var reportGate = await new ReportGate(report).CreateDocument();
+                var reportGate = await new ReportGate(report).CreateDocumentAsync();
                 await reportGate.ExportPdf(ExportFilePath);
                 await reportGate.Print();
 

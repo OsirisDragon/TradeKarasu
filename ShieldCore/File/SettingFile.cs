@@ -22,7 +22,14 @@ namespace Shield.File
             }
             set
             {
+            }
+        }
 
+        public static SettingAuth Auth
+        {
+            get
+            {
+                return Setting.Auth;
             }
         }
 
@@ -50,11 +57,16 @@ namespace Shield.File
 
                 if (String.IsNullOrEmpty(FilePath))
                 {
-                    // WinForm用
                     path = Directory.GetCurrentDirectory() + @"\Setting.xml";
                 }
 
                 _Setting = SDerializer.XmlToObject<Setting>(path);
+
+                if (Setting.Auth != null)
+                {
+                    if (Setting.Auth != null)
+                        GetConnectionInfo(Setting.Auth);
+                }
 
                 if (Setting.Database != null)
                 {
@@ -98,12 +110,12 @@ namespace Shield.File
                         GetConnectionInfo(Setting.Database.Tfxm_AH);
                 }
 
-                if(Setting.Download != null)
+                if (Setting.Download != null)
                 {
                     GetConnectionInfo(Setting.Download);
                 }
 
-                if(Setting.Uploads != null)
+                if (Setting.Uploads != null)
                 {
                     foreach (SettingDatabaseInfo info in Setting.Uploads)
                     {
@@ -128,6 +140,17 @@ namespace Shield.File
             return conn;
         }
 
+        private static void GetConnectionInfo(SettingAuth settingAuth)
+        {
+            SettingConnection connection = GetConnectionString(settingAuth.AdDomain);
+            if (connection == null)
+            {
+                throw new Exception("在Setting.xml裡面找不到Connection為" + settingAuth.AdDomain + "的設定");
+            }
+
+            settingAuth.DomainUrl = connection.ConnectionString;
+        }
+
         private static void GetConnectionInfo(SettingDatabaseInfo dbInfo)
         {
             try
@@ -135,7 +158,7 @@ namespace Shield.File
                 string originConnectionString;
 
                 SettingConnection connection = GetConnectionString(dbInfo.ConnectionName);
-                if(connection == null)
+                if (connection == null)
                 {
                     throw new Exception("在Setting.xml裡面找不到Connection為" + dbInfo.ConnectionName + "的設定");
                 }

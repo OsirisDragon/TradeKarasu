@@ -7,7 +7,6 @@ using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 
 namespace TradeFutNight.Reports
 {
@@ -87,6 +86,14 @@ namespace TradeFutNight.Reports
 
                 if (!string.IsNullOrWhiteSpace(col.FieldName))
                 {
+                    if (col.EditSettings is CheckEditSettings)
+                    {
+                        var checkBox = new XRCheckBox();
+                        checkBox.DataBindings.Add("CheckState", exportData, col.FieldName);
+                        checkBox.LocationF = new PointF(10, 0);
+                        checkBox.Borders = BorderSide.None;
+                        cell.Controls.Add(checkBox);
+                    }
                     if (col.EditSettings is ComboBoxEditSettings)
                     {
                         var expressText = TransformExpress(col, ExpressionType.Text);
@@ -122,10 +129,7 @@ namespace TradeFutNight.Reports
                     }
                 }
 
-                if (col.HorizontalHeaderContentAlignment != System.Windows.HorizontalAlignment.Left)
-                {
-                    cell.TextAlignment = TransformAlignment(col.ActualHorizontalContentAlignment);
-                }
+                cell.TextAlignment = TransformAlignment(col.ActualHorizontalContentAlignment);
 
                 if (col.Width != 0)
                 {
@@ -144,6 +148,20 @@ namespace TradeFutNight.Reports
                 {
                     cell.ProcessDuplicatesMode = ProcessDuplicatesMode.Merge;
                 }
+
+                #region cell color
+
+                // 如果該欄位ReadOnly
+                if (col.ReadOnly)
+                {
+                    // 且有設定CellStyle的話，像設定ShareStyle.xaml裡面的CellStyleReadOnlyChangeColor這種如果ReadOnly就變顏色的設定的話
+                    if (col.CellStyle != null)
+                    {
+                        cell.BackColor = Color.LightGray;
+                    }
+                }
+
+                #endregion cell color
 
                 row.Cells.Add(cell);
             }
@@ -204,7 +222,7 @@ namespace TradeFutNight.Reports
 
         private static TextAlignment TransformAlignment(System.Windows.HorizontalAlignment align)
         {
-            TextAlignment resultAlign = TextAlignment.TopLeft;
+            TextAlignment resultAlign = TextAlignment.MiddleLeft;
 
             switch (align)
             {
@@ -212,15 +230,15 @@ namespace TradeFutNight.Reports
                     break;
 
                 case System.Windows.HorizontalAlignment.Center:
-                    resultAlign = TextAlignment.TopCenter;
+                    resultAlign = TextAlignment.MiddleCenter;
                     break;
 
                 case System.Windows.HorizontalAlignment.Left:
-                    resultAlign = TextAlignment.TopLeft;
+                    resultAlign = TextAlignment.MiddleLeft;
                     break;
 
                 case System.Windows.HorizontalAlignment.Right:
-                    resultAlign = TextAlignment.TopRight;
+                    resultAlign = TextAlignment.MiddleRight;
                     break;
 
                 default:

@@ -1,0 +1,7 @@
+<?xml version="1.0" standalone="yes"?>
+<mapp instanceId = "mapp.1">
+<HostLink            path="mex_ip.xml"/>
+<HeartbeatInterval   val="5000"/>
+<HeartbeatCounter    val="12"/>
+</mapp>
+

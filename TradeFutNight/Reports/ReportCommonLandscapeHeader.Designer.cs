@@ -59,7 +59,7 @@
             // BottomMargin
             // 
             this.BottomMargin.Dpi = 96F;
-            this.BottomMargin.HeightF = 9.6F;
+            this.BottomMargin.HeightF = 1.400024F;
             this.BottomMargin.Name = "BottomMargin";
             // 
             // Detail
@@ -78,7 +78,7 @@
             this.pageInfoMain,
             this.pictureBoxTitle});
             this.Detail.Dpi = 96F;
-            this.Detail.HeightF = 96F;
+            this.Detail.HeightF = 99.19998F;
             this.Detail.Name = "Detail";
             // 
             // lblHeaderUserName
@@ -86,7 +86,7 @@
             this.lblHeaderUserName.Dpi = 96F;
             this.lblHeaderUserName.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "?UserName")});
-            this.lblHeaderUserName.Font = new System.Drawing.Font("標楷體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblHeaderUserName.Font = new System.Drawing.Font("標楷體", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.lblHeaderUserName.LocationFloat = new DevExpress.Utils.PointFloat(987F, 69.23999F);
             this.lblHeaderUserName.Multiline = true;
             this.lblHeaderUserName.Name = "lblHeaderUserName";
@@ -102,7 +102,7 @@
             this.lblHeaderReportID.Dpi = 96F;
             this.lblHeaderReportID.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "?ReportID")});
-            this.lblHeaderReportID.Font = new System.Drawing.Font("標楷體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblHeaderReportID.Font = new System.Drawing.Font("標楷體", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.lblHeaderReportID.LocationFloat = new DevExpress.Utils.PointFloat(83.00001F, 42.99001F);
             this.lblHeaderReportID.Multiline = true;
             this.lblHeaderReportID.Name = "lblHeaderReportID";
@@ -116,7 +116,7 @@
             // lblHeaderReportIDDisplay
             // 
             this.lblHeaderReportIDDisplay.Dpi = 96F;
-            this.lblHeaderReportIDDisplay.Font = new System.Drawing.Font("標楷體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblHeaderReportIDDisplay.Font = new System.Drawing.Font("標楷體", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.lblHeaderReportIDDisplay.LocationFloat = new DevExpress.Utils.PointFloat(0F, 42.99001F);
             this.lblHeaderReportIDDisplay.Multiline = true;
             this.lblHeaderReportIDDisplay.Name = "lblHeaderReportIDDisplay";
@@ -130,7 +130,7 @@
             // lblHeaderOperateTimeDisplay
             // 
             this.lblHeaderOperateTimeDisplay.Dpi = 96F;
-            this.lblHeaderOperateTimeDisplay.Font = new System.Drawing.Font("標楷體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblHeaderOperateTimeDisplay.Font = new System.Drawing.Font("標楷體", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.lblHeaderOperateTimeDisplay.LocationFloat = new DevExpress.Utils.PointFloat(0F, 69.23999F);
             this.lblHeaderOperateTimeDisplay.Multiline = true;
             this.lblHeaderOperateTimeDisplay.Name = "lblHeaderOperateTimeDisplay";
@@ -146,7 +146,7 @@
             this.lblHeaderOperateTime.Dpi = 96F;
             this.lblHeaderOperateTime.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Now()")});
-            this.lblHeaderOperateTime.Font = new System.Drawing.Font("標楷體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblHeaderOperateTime.Font = new System.Drawing.Font("標楷體", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.lblHeaderOperateTime.LocationFloat = new DevExpress.Utils.PointFloat(83.29089F, 69.23999F);
             this.lblHeaderOperateTime.Multiline = true;
             this.lblHeaderOperateTime.Name = "lblHeaderOperateTime";
@@ -163,8 +163,8 @@
             this.lblHeaderChineseDatetime.Dpi = 96F;
             this.lblHeaderChineseDatetime.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "?OcfRocDate")});
-            this.lblHeaderChineseDatetime.Font = new System.Drawing.Font("標楷體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.lblHeaderChineseDatetime.LocationFloat = new DevExpress.Utils.PointFloat(311.291F, 47.16F);
+            this.lblHeaderChineseDatetime.Font = new System.Drawing.Font("標楷體", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblHeaderChineseDatetime.LocationFloat = new DevExpress.Utils.PointFloat(311.291F, 52.23999F);
             this.lblHeaderChineseDatetime.Multiline = true;
             this.lblHeaderChineseDatetime.Name = "lblHeaderChineseDatetime";
             this.lblHeaderChineseDatetime.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
@@ -179,8 +179,8 @@
             this.lblHeaderOperateDate.Dpi = 96F;
             this.lblHeaderOperateDate.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "GetDate(Today())")});
-            this.lblHeaderOperateDate.Font = new System.Drawing.Font("標楷體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.lblHeaderOperateDate.LocationFloat = new DevExpress.Utils.PointFloat(311.291F, 69.24F);
+            this.lblHeaderOperateDate.Font = new System.Drawing.Font("標楷體", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblHeaderOperateDate.LocationFloat = new DevExpress.Utils.PointFloat(311.291F, 74.31999F);
             this.lblHeaderOperateDate.Multiline = true;
             this.lblHeaderOperateDate.Name = "lblHeaderOperateDate";
             this.lblHeaderOperateDate.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
@@ -194,7 +194,7 @@
             // lblPageDisplay
             // 
             this.lblPageDisplay.Dpi = 96F;
-            this.lblPageDisplay.Font = new System.Drawing.Font("標楷體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblPageDisplay.Font = new System.Drawing.Font("標楷體", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.lblPageDisplay.LocationFloat = new DevExpress.Utils.PointFloat(903.9999F, 42.99001F);
             this.lblPageDisplay.Multiline = true;
             this.lblPageDisplay.Name = "lblPageDisplay";
@@ -208,7 +208,7 @@
             // lblHeaderUserNameDisplay
             // 
             this.lblHeaderUserNameDisplay.Dpi = 96F;
-            this.lblHeaderUserNameDisplay.Font = new System.Drawing.Font("標楷體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblHeaderUserNameDisplay.Font = new System.Drawing.Font("標楷體", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.lblHeaderUserNameDisplay.LocationFloat = new DevExpress.Utils.PointFloat(903.9999F, 69.23999F);
             this.lblHeaderUserNameDisplay.Multiline = true;
             this.lblHeaderUserNameDisplay.Name = "lblHeaderUserNameDisplay";
@@ -224,8 +224,8 @@
             this.lblHeaderTitle.Dpi = 96F;
             this.lblHeaderTitle.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "?ReportTitle")});
-            this.lblHeaderTitle.Font = new System.Drawing.Font("標楷體", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.lblHeaderTitle.LocationFloat = new DevExpress.Utils.PointFloat(311.291F, 25.08F);
+            this.lblHeaderTitle.Font = new System.Drawing.Font("標楷體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblHeaderTitle.LocationFloat = new DevExpress.Utils.PointFloat(311.291F, 30.16F);
             this.lblHeaderTitle.Multiline = true;
             this.lblHeaderTitle.Name = "lblHeaderTitle";
             this.lblHeaderTitle.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
@@ -238,10 +238,12 @@
             // pageInfoMain
             // 
             this.pageInfoMain.Dpi = 96F;
+            this.pageInfoMain.Font = new System.Drawing.Font("標楷體", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.pageInfoMain.LocationFloat = new DevExpress.Utils.PointFloat(987F, 42.99001F);
             this.pageInfoMain.Name = "pageInfoMain";
             this.pageInfoMain.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
             this.pageInfoMain.SizeF = new System.Drawing.SizeF(96F, 22.08001F);
+            this.pageInfoMain.StylePriority.UseFont = false;
             this.pageInfoMain.StylePriority.UseTextAlignment = false;
             this.pageInfoMain.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
@@ -249,7 +251,7 @@
             // 
             this.pictureBoxTitle.Dpi = 96F;
             this.pictureBoxTitle.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("pictureBoxTitle.ImageSource"));
-            this.pictureBoxTitle.LocationFloat = new DevExpress.Utils.PointFloat(311.291F, 3F);
+            this.pictureBoxTitle.LocationFloat = new DevExpress.Utils.PointFloat(311.291F, 8.079994F);
             this.pictureBoxTitle.Name = "pictureBoxTitle";
             this.pictureBoxTitle.SizeF = new System.Drawing.SizeF(449.9948F, 22.08F);
             this.pictureBoxTitle.Sizing = DevExpress.XtraPrinting.ImageSizeMode.Squeeze;
@@ -291,7 +293,7 @@
             this.Dpi = 96F;
             this.Font = new System.Drawing.Font("Arial", 9.75F);
             this.Landscape = true;
-            this.Margins = new System.Drawing.Printing.Margins(10, 10, 10, 10);
+            this.Margins = new System.Drawing.Printing.Margins(10, 10, 10, 1);
             this.PageHeight = 794;
             this.PageWidth = 1123;
             this.PaperKind = System.Drawing.Printing.PaperKind.A4;

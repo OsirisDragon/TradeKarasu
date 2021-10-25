@@ -8,6 +8,6 @@
     WindowState="Maximized"
     dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap" ShowIcon="False"
     Title="期貨夜盤"
-    Width="1280" Height="810">
+    Width="1280" Height="810" Closed="ThemedWindow_Closed">
     <!--<view:MainUI />-->
 </dx:ThemedWindow>

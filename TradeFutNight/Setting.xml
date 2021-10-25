@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Setting>
+  <Auth>
+    <!--AD-->
+    <AdDomain>DOMAIN_TEST</AdDomain>
+  </Auth>
   <Database>
     <!--交易系統-->
     <Futures>
@@ -27,6 +31,14 @@
   <ConnectionStrings>
     <!--交易系統-->
     <!--測試環境區段-->
+
+    <!--AD-->
+    <Connection>
+      <Name>DOMAIN_TEST</Name>
+      <ConnectionString>taifex.com.tw</ConnectionString>
+    </Connection>
+
+    <!--DB-->
     <Connection>
       <Name>TRADE_DEV_01_FUT</Name>
       <ConnectionString>Data Source=192.168.67.111;Port=7100;Database=futures;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
@@ -79,6 +91,13 @@
       <Name>TFXM_AH_TEST</Name>
       <ConnectionString>Data Source=192.168.178.96;Port=17000;Database=TFXM2;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
       <ProviderName>Sybase.Data.AseClient</ProviderName>
+    </Connection>
+
+    <!--PROD-->
+    <!--AD-->
+    <Connection>
+      <Name>DOMAIN_PROD</Name>
+      <ConnectionString>taifexprod.com.tw</ConnectionString>
     </Connection>
   </ConnectionStrings>
 </Setting>

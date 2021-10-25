@@ -21,6 +21,7 @@ namespace CrossModel
         public static string NoDeletedData = "沒有需要刪除的資料";
         public static string IsNotValidData = "輸入的資料不正確";
         public static string Completed = "COMPLETED";
+        public static string SendMsg = "SEND_MSG";
         public static string IsCanRun = "IS_CAN_RUN";
         public static string Open = "OPEN";
         public static string Save = "SAVE";

@@ -122,7 +122,6 @@ namespace TradeFutNight.Reports
             else
             {
                 FooterMemoVisible = false;
-                ReportFooterVisible = false;
             }
 
             // 註解的字體大小

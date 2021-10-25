@@ -225,9 +225,18 @@ namespace TradeFutNight.Views
             dJSW.UpdateJswByJrf(programID);
         }
 
-        public void DbLog(string programID, string userID, string messageContent, DalSession das)
+        public void DbLog(string messageContent, DalSession das)
         {
-            new D_LOGF(das).Insert(UserID, programID, messageContent);
+            new D_LOGF(das).Insert(UserID, ProgramID, messageContent);
+        }
+
+        public void DbLog(string messageContent)
+        {
+            using (var das = new DalSession())
+            {
+                var dLogf = new D_LOGF(das);
+                dLogf.Insert(UserID, ProgramID, messageContent);
+            }
         }
 
         public bool CheckNotNullNotEmpty<T>(GridControl grid, ViewModelParent<T> vm)

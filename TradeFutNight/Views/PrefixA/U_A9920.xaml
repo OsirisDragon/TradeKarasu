@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:c="clr-namespace:TradeFutNight.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
@@ -125,7 +126,7 @@
                         CellValueChanged="view_CellValueChanged" />
                 </dxg:GridControl.View>
                 <dxg:GridColumn
-                    Width="50"
+                    Width="40"
                     FieldName="IsChecked"
                     Header="勾選">
                     <dxg:GridColumn.EditSettings>
@@ -135,11 +136,13 @@
                 <dxg:GridColumn
                     Width="80"
                     FieldName="TPPADJ_PROD_ID"
-                    Header="商品代號" />
+                    Header="商品代號"
+                    ReadOnly="True" />
                 <dxg:GridColumn
                     Width="80"
                     FieldName="TPPADJ_SETTLE_DATE"
-                    Header="交割年月" />
+                    Header="交割年月"
+                    ReadOnly="True" />
                 <dxg:GridColumn
                     Width="80"
                     CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
@@ -147,7 +150,7 @@
                     Header="偏離幅度濾&#xA;網(正式)(%)"
                     ReadOnly="{Binding IsReadOnlyTPPADJ_M_PRICE_LIMIT}">
                     <dxg:GridColumn.EditSettings>
-                        <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
+                        <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.0000" />
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
                 <dxg:GridColumn
@@ -157,7 +160,7 @@
                     Header="開盤成交價&#xA;偏離幅度試撮(%)"
                     ReadOnly="{Binding IsReadOnlyTPPADJ_M_PRICE_LIMIT_F}">
                     <dxg:GridColumn.EditSettings>
-                        <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
+                        <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.0000" />
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
                 <dxg:GridColumn
@@ -187,7 +190,7 @@
                     Header="成交價濾&#xA;網(%)"
                     ReadOnly="{Binding IsReadOnlyTPPADJ_M_PRICE_FILTER}">
                     <dxg:GridColumn.EditSettings>
-                        <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
+                        <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.0000" />
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
                 <dxg:GridColumn
@@ -197,7 +200,7 @@
                     Header="買賣中價&#xA;濾網(%)"
                     ReadOnly="{Binding IsReadOnlyTPPADJ_BS_PRICE_FILTER}">
                     <dxg:GridColumn.EditSettings>
-                        <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
+                        <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.0000" />
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
                 <dxg:GridColumn
@@ -207,16 +210,17 @@
                     Header="開盤基準價"
                     ReadOnly="{Binding IsReadOnlyTPPADJ_THERICAL_P_REF}">
                     <dxg:GridColumn.EditSettings>
-                        <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
+                        <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.0000" />
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
                 <dxg:GridColumn
-                    Width="85"
+                    Width="90"
+                    CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                     FieldName="TPPADJ_SPREAD"
                     Header="理論調整項/&#xA;價差"
                     ReadOnly="{Binding IsReadOnlyTPPADJ_SPREAD}">
                     <dxg:GridColumn.EditSettings>
-                        <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
+                        <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.0000" />
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
             </dxg:GridControl>
@@ -260,7 +264,13 @@
                     Click="BtnCheck_Click">
                     勾
                 </Button>
-                <Button Grid.Row="5" Grid.Column="2">不勾</Button>
+                <Button
+                    Name="btnUnCheck"
+                    Grid.Row="5"
+                    Grid.Column="2"
+                    Click="BtnUnCheck_Click">
+                    不勾
+                </Button>
             </Grid>
         </StackPanel>
         <Grid Grid.Row="1">

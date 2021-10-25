@@ -1,6 +1,8 @@
 ﻿using CrossModel.Enum;
 using DataEngine;
+using Eagle;
 using System;
+using System.Windows.Threading;
 using TradeFutNightData.Gates.Common;
 using TradeFutNightData.Models.Common;
 
@@ -29,15 +31,19 @@ namespace TradeFutNight.Common
         }
 
         public static string UserID { get; set; }
+        public static string UserAD { get; set; }
         public static string UserName { get; set; }
 
-        public static void LogToDb(string userID, string logItem, string keyData)
+        /// <summary>
+        /// 送出一個Mex訊息測試一下看有沒有成功送出去
+        /// </summary>
+        public static void CheckMsgServerConnection()
         {
-            using (var das = new DalSession())
-            {
-                var dLogf = new D_LOGF(das);
-                dLogf.Insert(userID, logItem, keyData);
-            }
+            IEagleGate eagleGate = new MexGate() { Subject = "CheckMsgServerConnection", Key = "all" };
+            EagleArgs ea = new EagleArgs();
+            ea.AddEagleContent(new EagleContent() { Item = "Hello", Value = "World" });
+            eagleGate.Send(ea);
+            eagleGate.Stop();
         }
 
         public static string UniformFileName(SystemType systemType, string programID, string fileDescription, FileType fileType)

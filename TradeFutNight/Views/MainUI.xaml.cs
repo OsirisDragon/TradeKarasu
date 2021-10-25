@@ -1,7 +1,6 @@
 ﻿using CrossModel;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Docking;
-using DevExpress.Xpf.Editors;
 using Shield.File;
 using System;
 using System.Threading.Tasks;
@@ -42,6 +41,8 @@ namespace TradeFutNight.Views
             barBottomDataBase.Content = "資料庫：" + SettingFile.Database.Futures_AH.ConnectionName;
             barBottomUser.Content = "使用者：" + MagicalHats.UserID + " " + MagicalHats.UserName;
             barBottomDate.Content = "日期：" + MagicalHats.Ocf.OCF_DATE.ToDateStr();
+
+            MagicalHats.CheckMsgServerConnection();
         }
 
         public async Task OpenProgram(string programID, string programName)

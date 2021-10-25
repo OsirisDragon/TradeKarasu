@@ -8,6 +8,8 @@ namespace Shield.Mapping
     [XmlRoot(Namespace = "", IsNullable = false)]
     public partial class Setting
     {
+        public SettingAuth Auth { get; set; }
+
         public SettingDatabase Database { get; set; }
 
         public SettingDatabaseInfo Download { get; set; }
@@ -19,6 +21,19 @@ namespace Shield.Mapping
 
         [XmlArrayItem("Item", IsNullable = false)]
         public SettingDatabaseInfo[] Uploads { get; set; }
+    }
+
+    [System.SerializableAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+    public partial class SettingAuth
+    {
+        public string AdDomain { get; set; }
+
+        /// <summary>
+        /// 這個屬性沒有對應到XML，給值是在程式裡給值
+        /// </summary>
+        public string DomainUrl { get; set; }
     }
 
     [System.SerializableAttribute()]

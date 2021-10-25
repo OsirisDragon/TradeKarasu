@@ -9,7 +9,10 @@ namespace TradeFutNightData.Gates.Common
 {
     public class D_JSW : D_JSW<JSW>
     {
-        public D_JSW(DalSession das) { this._das = das; }
+        public D_JSW(DalSession das)
+        {
+            this._das = das;
+        }
     }
 
     public class D_JSW<T> : ParentGate
@@ -30,7 +33,7 @@ namespace TradeFutNightData.Gates.Common
             var dJRF = new D_JRF(_das);
             var jrf = dJRF.GetTopOne(TXN_ID);
 
-            if(jrf != null)
+            if (jrf != null)
             {
                 char jobType = jrf.JRF_ORIG_JOB_TYPE;
 

@@ -26,6 +26,7 @@ namespace TradeFutNight
 
             // 暫時設定在這邊
             MagicalHats.UserID = "Q0001";
+            MagicalHats.UserAD = "helloWorld";
             MagicalHats.UserName = "希耶斯塔";
 
             AppSettings.SysShortAliasID = "F";
@@ -57,6 +58,11 @@ namespace TradeFutNight
             }
 
             this.Content = mainUi;
+        }
+
+        private void ThemedWindow_Closed(object sender, EventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
         }
     }
 

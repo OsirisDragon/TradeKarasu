@@ -2,12 +2,15 @@
 using CrossModel;
 using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
+using Eagle;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using TradeFutNight.Auth;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
@@ -30,17 +33,12 @@ namespace TradeFutNight.Views.PrefixA
             _vm = (U_A9920_ViewModel)DataContext;
         }
 
-        public void InitialSetting(string programID, string programName, MainUI_ViewModel vmMainUi, MainUI mainUi)
-        {
-            base.Init(programID, programName, vmMainUi, mainUi);
-        }
-
         public async Task<bool> IsCanRun()
         {
             var task = Task.Run(() =>
             {
                 var isCanRun = IsCanRunProgram();
-                MagicalHats.LogToDb(UserID, ProgramID, MessageConst.IsCanRun + ":" + isCanRun.ToString().ToUpper());
+                DbLog(MessageConst.IsCanRun + ":" + isCanRun.ToString().ToUpper());
                 return isCanRun;
             });
             await task;
@@ -53,7 +51,7 @@ namespace TradeFutNight.Views.PrefixA
             var task = Task.Run(() =>
             {
                 _vm.Open();
-                MagicalHats.LogToDb(UserID, ProgramID, MessageConst.Open);
+                DbLog(MessageConst.Open);
             });
             await task;
         }
@@ -84,55 +82,40 @@ namespace TradeFutNight.Views.PrefixA
 
         public async Task<bool> CheckField()
         {
-            if (!BaseCheck(new CheckSettings() { IsCheckNotNullNotEmpty = true }, gridMain, _vm))
+            if (!BaseCheck(new CheckSettings() { IsCheckNotNullNotEmpty = false }, gridMain, _vm))
                 return false;
 
             var task = Task.Run(() =>
             {
                 if (!IsCanRunProgram())
                 {
-                    VmMainUi.HideLoadingWindow();
                     MessageBoxExService.Instance().Error(MessageConst.NotAllowedExcute);
                     return false;
                 }
 
                 var resultItem = new ResultItem();
-                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var checkItems = trackableData.ChangedItems;
 
-                if (checkItems.Count() == 0)
+                var countIsChecked = _vm.MainGridData.Count(c => c.IsChecked == true);
+                if (countIsChecked == 0)
                 {
-                    VmMainUi.HideLoadingWindow();
-                    MessageBoxExService.Instance().Error(MessageConst.NoChangedData);
+                    MessageBoxExService.Instance().Error("請勾選契約代碼");
                     return false;
                 }
 
-                //foreach (var item in checkItems)
-                //{
-                //    if (item.TPPADJ_MAX < item.TPPADJ_MIN)
-                //    {
-                //        resultItem.AppendErrorMessage($"{item.TPPADJ_KIND_ID}的權利金上限不能小於權利金下限");
-                //    }
-
-                //    using (var das = Factory.CreateDalSession())
-                //    {
-                //        var dPDK = new D_PDK(das);
-                //        var pdk = dPDK.getByParamKey(item.TPPADJ_KIND_ID);
-                //        if (pdk != null && pdk.PDK_SUBTYPE == 'E')
-                //        {
-                //            if (pdk.PDK_PRICE_FLUC != 'F')
-                //            {
-                //                resultItem.AppendErrorMessage("匯率類的商品僅可選擇「固定點數」");
-                //            }
-                //        }
-                //    }
-                //}
-
-                if (resultItem.HasError)
+                if (!_vm.IsReadOnlyTPPADJ_M_PRICE_LIMIT && !_vm.IsReadOnlyTPPADJ_M_PRICE_LIMIT_F && !_vm.IsReadOnlyTPPADJ_M_INTERVAL && !_vm.IsReadOnlyTPPADJ_ACCU_QNTY
+                && !_vm.IsReadOnlyTPPADJ_M_PRICE_FILTER && !_vm.IsReadOnlyTPPADJ_BS_PRICE_FILTER && !_vm.IsReadOnlyTPPADJ_THERICAL_P_REF && !_vm.IsReadOnlyTPPADJ_SPREAD)
                 {
-                    VmMainUi.HideLoadingWindow();
-                    MessageBoxExService.Instance().Error(resultItem.ErrorMessage);
+                    MessageBoxExService.Instance().Error("請勾選要更改的欄位");
                     return false;
+                }
+
+                // 需第2組帳號及密碼覆核
+                // 如果是早上07:30到08:30，就不用第二人，因為那時太早可能只有一人值班
+                // 如果不是這段時間，就要雙重驗證
+                if (!(DateTime.Now.TimeOfDay >= new TimeSpan(7, 30, 0) && DateTime.Now.TimeOfDay <= new TimeSpan(8, 30, 0)))
+                {
+                    if (!new AuthGate().ShowAuthDouble())
+                        return false;
                 }
 
                 return true;
@@ -148,8 +131,38 @@ namespace TradeFutNight.Views.PrefixA
 
             var task = Task.Run(async () =>
             {
-                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = CustomMapper(trackableData.ChangedItems);
+                var mainData = _vm.MainGridData.Where(c => c.IsChecked == true).ToList();
+
+                // 先列印確認表
+                var report = CreateReport(mainData, OperationType.Confirm);
+                var reportGate = await new ReportGate(report).CreateDocumentAsync();
+                await reportGate.ExportPdf(ExportFilePath);
+                await reportGate.Print();
+
+                VmMainUi.HideLoadingWindow();
+                if (MessageBoxExService.Instance().Confirm("請確認資料無誤後，再按是繼續執行") != MessageBoxResult.Yes)
+                    return;
+
+                // 將沒有勾選的欄位的值設為Null
+                foreach (var item in mainData)
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        if (_vm.IsReadOnlyTPPADJ_M_PRICE_LIMIT) item.TPPADJ_M_PRICE_LIMIT = null;
+                        if (_vm.IsReadOnlyTPPADJ_M_PRICE_LIMIT_F) item.TPPADJ_M_PRICE_LIMIT_F = null;
+                        if (_vm.IsReadOnlyTPPADJ_M_INTERVAL) item.TPPADJ_M_INTERVAL = null;
+                        if (_vm.IsReadOnlyTPPADJ_ACCU_QNTY) item.TPPADJ_ACCU_QNTY = null;
+                        if (_vm.IsReadOnlyTPPADJ_M_PRICE_FILTER) item.TPPADJ_M_PRICE_FILTER = null;
+                        if (_vm.IsReadOnlyTPPADJ_BS_PRICE_FILTER) item.TPPADJ_BS_PRICE_FILTER = null;
+                        if (_vm.IsReadOnlyTPPADJ_THERICAL_P_REF) item.TPPADJ_THERICAL_P_REF = null;
+                        if (_vm.IsReadOnlyTPPADJ_SPREAD) item.TPPADJ_SPREAD = null;
+
+                        item.TPPADJ_USER_ID = UserID;
+                        item.TPPADJ_W_TIME = DateTime.Now;
+                    });
+                }
+
+                MagicalHats.CheckMsgServerConnection();
 
                 using (var das = Factory.CreateDalSession())
                 {
@@ -157,12 +170,14 @@ namespace TradeFutNight.Views.PrefixA
 
                     try
                     {
-                        //var dTPPADJ = new D_TPPADJ(das);
-                        //dTPPADJ.Update(domainData);
+                        var domainData = CustomMapper<TPPADJ>(mainData);
+
+                        var dTPPADJ = new D_TPPADJ(das);
+                        dTPPADJ.Insert(domainData);
 
                         UpdateAccessPermission(ProgramID, das);
 
-                        DbLog(ProgramID, UserID, MessageConst.Completed, das);
+                        DbLog(MessageConst.Completed, das);
 
                         das.Commit();
                     }
@@ -173,8 +188,10 @@ namespace TradeFutNight.Views.PrefixA
                     }
                 }
 
-                var report = CreateReport(domainData, OperationType.Save);
-                var reportGate = await new ReportGate(report).CreateDocument();
+                SendMsgToServer(mainData);
+
+                report = CreateReport(mainData, OperationType.Save);
+                reportGate = await new ReportGate(report).CreateDocumentAsync();
                 await reportGate.ExportPdf(ExportFilePath);
                 await reportGate.Print();
 
@@ -185,13 +202,12 @@ namespace TradeFutNight.Views.PrefixA
             await task;
         }
 
-        private IList<TPPADJ> CustomMapper(IEnumerable<UIModel_A9920> items)
+        private IList<T> CustomMapper<T>(IEnumerable<UIModel_A9920> items) where T : TPPADJ
         {
-            var listResult = new List<TPPADJ>();
+            var listResult = new List<T>();
             foreach (var item in items)
             {
-                var newItem = _vm.MapperInstance.Map<TPPADJ>(item);
-
+                var newItem = _vm.MapperInstance.Map<T>(item);
                 var trackItem = item.CastToIChangeTrackable();
                 newItem.OriginalData = trackItem.GetOriginal();
                 listResult.Add(newItem);
@@ -200,23 +216,79 @@ namespace TradeFutNight.Views.PrefixA
             return listResult;
         }
 
+        private void SendMsgToServer(List<UIModel_A9920> mainData)
+        {
+            string subject = "";
+            if (AppSettings.SystemType == SystemType.FutDay || AppSettings.SystemType == SystemType.FutNight)
+                subject = "TFX.FUT.PROD.PDKBREAK.OP";
+            else if (AppSettings.SystemType == SystemType.OptDay || AppSettings.SystemType == SystemType.OptNight)
+                subject = "TFX.OPT.PROD.PDKBREAK.OP";
+
+            IEagleGate eagleGate = new MexGate() { Subject = subject, Key = "all" };
+
+            // 每一筆都要發送mex訊息
+            foreach (var item in mainData)
+            {
+                string nodeMsgType = "9";
+                string nodeStatus = "0";
+                string nodeOrderResumeTime = "";
+                var nodeMatchResumeTime = new Dictionary<string, string>();
+
+                // 若為選擇權就填月份，其他填0
+                if (AppSettings.SystemType == SystemType.FutDay || AppSettings.SystemType == SystemType.FutNight)
+                    nodeOrderResumeTime = "0";
+                else if (AppSettings.SystemType == SystemType.OptDay || AppSettings.SystemType == SystemType.OptNight)
+                    nodeOrderResumeTime = item.TPPADJ_SETTLE_DATE;
+
+                // 組成各項參數的JSON
+                if (!_vm.IsReadOnlyTPPADJ_M_PRICE_LIMIT && item.TPPADJ_M_PRICE_LIMIT.HasValue) nodeMatchResumeTime.Add("TPPINTD_M_PRICE_LIMIT", item.TPPADJ_M_PRICE_LIMIT.ToString().Trim());
+                if (!_vm.IsReadOnlyTPPADJ_M_PRICE_LIMIT_F && item.TPPADJ_M_PRICE_LIMIT_F.HasValue) nodeMatchResumeTime.Add("TPPINTD_M_PRICE_LIMIT_F", item.TPPADJ_M_PRICE_LIMIT_F.ToString().Trim());
+                if (!_vm.IsReadOnlyTPPADJ_M_INTERVAL && item.TPPADJ_M_INTERVAL.HasValue) nodeMatchResumeTime.Add("TPPINTD_M_INTERVAL", item.TPPADJ_M_INTERVAL.ToString().Trim());
+                if (!_vm.IsReadOnlyTPPADJ_ACCU_QNTY && item.TPPADJ_ACCU_QNTY.HasValue) nodeMatchResumeTime.Add("TPPINTD_ACCU_QNTY", item.TPPADJ_ACCU_QNTY.ToString().Trim());
+                if (!_vm.IsReadOnlyTPPADJ_M_PRICE_FILTER && item.TPPADJ_M_PRICE_FILTER.HasValue) nodeMatchResumeTime.Add("TPPINTD_M_PRICE_FILTER", item.TPPADJ_M_PRICE_FILTER.ToString().Trim());
+                if (!_vm.IsReadOnlyTPPADJ_BS_PRICE_FILTER && item.TPPADJ_BS_PRICE_FILTER.HasValue) nodeMatchResumeTime.Add("TPPINTD_BS_PRICE_FILTER", item.TPPADJ_BS_PRICE_FILTER.ToString().Trim());
+                if (!_vm.IsReadOnlyTPPADJ_THERICAL_P_REF && item.TPPADJ_THERICAL_P_REF.HasValue) nodeMatchResumeTime.Add("TPPBP_THERICAL_P_REF", item.TPPADJ_THERICAL_P_REF.ToString().Trim());
+                if (!_vm.IsReadOnlyTPPADJ_SPREAD && item.TPPADJ_SPREAD.HasValue) nodeMatchResumeTime.Add("SPREAD_PRICE", item.TPPADJ_SPREAD.ToString().Trim());
+
+                EagleArgs ea = new EagleArgs();
+
+                ea.AddEagleContent(new EagleContent() { Item = "TYPE", Value = item.TPPADJ_TYPE });
+                ea.AddEagleContent(new EagleContent() { Item = "PROD_ID", Value = item.TPPADJ_PROD_ID });
+                ea.AddEagleContent(new EagleContent() { Item = "MSG_TYPE", Value = nodeMsgType });
+                ea.AddEagleContent(new EagleContent() { Item = "STATUS", Value = nodeStatus });
+
+                // 這個是預計生效日期，空值就是立即生效
+                ea.AddEagleContent(new EagleContent() { Item = "TRADE_DATE", Value = "" });
+
+                // 雖然這個欄位是TRADE_PAUSE_TIME，但後端伺服器MEX制定人說要傳生效時間這個欄位，空值就是立即生效
+                ea.AddEagleContent(new EagleContent() { Item = "TRADE_PAUSE_TIME", Value = "" });
+
+                // 雖然這個欄位是ORDER_RESUME_TIME，但後端伺服器MEX制定人說如果tpphalt_type為M(目前只有選擇權會有M)的話，要傳月份這個欄位
+                ea.AddEagleContent(new EagleContent() { Item = "ORDER_RESUME_TIME", Value = nodeOrderResumeTime });
+
+                // 雖然這個欄位是MATCH_RESUME_TIME，但後端伺服器MEX制定人說要傳參數的JSON
+                ea.AddEagleContent(new EagleContent() { Item = "MATCH_RESUME_TIME", Value = JsonConvert.SerializeObject(nodeMatchResumeTime, Newtonsoft.Json.Formatting.None) });
+
+                eagleGate.Send(ea);
+            }
+
+            eagleGate.Stop();
+
+            DbLog(MessageConst.SendMsg + ":" + eagleGate.Subject);
+        }
+
         private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
         {
             string memo = "";
-            Dispatcher.Invoke(() =>
-            {
-                memo = txtMemo.Text;
-            });
-
             string reportTitle = ProgramID + "–" + ProgramName;
 
             switch (operationType)
             {
-                case OperationType.Save:
-
+                case OperationType.Confirm:
+                    reportTitle += "–" + "確認表";
                     break;
 
-                case OperationType.Print:
+                case OperationType.Save:
 
                     break;
 
@@ -224,7 +296,7 @@ namespace TradeFutNight.Views.PrefixA
                     break;
             }
 
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, memo, Ocf.OCF_DATE, true, false, true);
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, memo, Ocf.OCF_DATE, true, true, true);
             var reportCommon = ReportNormal.CreateCommonLandscape(data, gridMain.Columns, rptSetting);
 
             return reportCommon;
@@ -242,7 +314,7 @@ namespace TradeFutNight.Views.PrefixA
             gridView.CloseEditor();
 
             var report = CreateReport(_vm.MainGridData, OperationType.Print);
-            var reportGate = await new ReportGate(report).CreateDocument();
+            var reportGate = await new ReportGate(report).CreateDocumentAsync();
             await reportGate.ExportPdf(ExportFilePath);
             await reportGate.Print();
         }
@@ -259,77 +331,6 @@ namespace TradeFutNight.Views.PrefixA
             gridView.CloseEditor();
             await Task.FromResult<object>(null);
             throw new NotImplementedException();
-        }
-
-        private async void BtnQuery_Click(object sender, RoutedEventArgs e)
-        {
-            //var button = ((Button)sender);
-            //button.IsEnabled = false;
-
-            //if (cbKindId.SelectedItem != null)
-            //{
-            //    var selectedItem = (ItemInfo)cbKindId.SelectedItem;
-
-            //    var task = Task.Run(async () =>
-            //    {
-            //        await _vm.Query(selectedItem.Value.ToString());
-            //    });
-
-            //    await task;
-            //}
-
-            //button.IsEnabled = true;
-        }
-
-        private void ChkBox_Checked(object sender, RoutedEventArgs e)
-        {
-            ChangeGridColumnCheckBoxReadOnly((CheckBox)sender, false);
-        }
-
-        private void ChkBox_UnChecked(object sender, RoutedEventArgs e)
-        {
-            ChangeGridColumnCheckBoxReadOnly((CheckBox)sender, true);
-        }
-
-        private void ChangeGridColumnCheckBoxReadOnly(CheckBox chkBox, bool isCheck)
-        {
-            switch (chkBox.Name)
-            {
-                case "chkBoxTPPADJ_M_PRICE_LIMIT":
-                    _vm.IsReadOnlyTPPADJ_M_PRICE_LIMIT = isCheck;
-                    break;
-
-                case "chkBoxTPPADJ_M_PRICE_LIMIT_F":
-                    _vm.IsReadOnlyTPPADJ_M_PRICE_LIMIT_F = isCheck;
-                    break;
-
-                case "chkBoxTPPADJ_M_INTERVAL":
-                    _vm.IsReadOnlyTPPADJ_M_INTERVAL = isCheck;
-                    break;
-
-                case "chkBoxTPPADJ_ACCU_QNTY":
-                    _vm.IsReadOnlyTPPADJ_ACCU_QNTY = isCheck;
-                    break;
-
-                case "chkBoxTPPADJ_M_PRICE_FILTER":
-                    _vm.IsReadOnlyTPPADJ_M_PRICE_FILTER = isCheck;
-                    break;
-
-                case "chkBoxTPPADJ_BS_PRICE_FILTER":
-                    _vm.IsReadOnlyTPPADJ_BS_PRICE_FILTER = isCheck;
-                    break;
-
-                case "chkBoxTPPADJ_THERICAL_P_REF":
-                    _vm.IsReadOnlyTPPADJ_THERICAL_P_REF = isCheck;
-                    break;
-
-                case "chkBoxTPPADJ_SPREAD":
-                    _vm.IsReadOnlyTPPADJ_SPREAD = isCheck;
-                    break;
-
-                default:
-                    break;
-            }
         }
 
         private void ComboCategorys_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -387,6 +388,11 @@ namespace TradeFutNight.Views.PrefixA
             CheckHelper(true);
         }
 
+        private void BtnUnCheck_Click(object sender, RoutedEventArgs e)
+        {
+            CheckHelper(false);
+        }
+
         private void CheckHelper(bool isCheck)
         {
             // 勾或不勾
@@ -398,9 +404,9 @@ namespace TradeFutNight.Views.PrefixA
             // 如果第二層選全部，就把第二層的每一個商品組成字串
             if (selectedItemDetail == "全部")
             {
-                foreach (ComboBoxItem item in comboDetails.Items)
+                foreach (var item in comboDetails.Items)
                 {
-                    selectedItemDetail += item.Content.ToString();
+                    selectedItemDetail += item.ToString();
                 }
             }
 

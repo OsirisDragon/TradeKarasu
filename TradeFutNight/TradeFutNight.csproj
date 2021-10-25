@@ -96,6 +96,9 @@
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -132,6 +135,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Auth\AuthDoubleWithoutCard.xaml.cs">
+      <DependentUpon>AuthDoubleWithoutCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Auth\AuthGate.cs" />
     <Compile Include="Common\CustomProp.cs" />
     <Compile Include="Common\DropDownItems.cs" />
     <Compile Include="Common\MagicalHats.cs" />
@@ -191,6 +198,10 @@
     <Compile Include="Views\PrefixA\U_A9920_ViewModel.cs" />
     <Compile Include="Views\UserControlParent.cs" />
     <Compile Include="Views\ViewModelParent.cs" />
+    <Page Include="Auth\AuthDoubleWithoutCard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -258,6 +269,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -286,6 +298,10 @@
       <Project>{4C5BDA78-7799-49B6-BC4B-ED3289FF9EB1}</Project>
       <Name>DataEngine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Eagle\Eagle.csproj">
+      <Project>{06352537-8f4f-4039-8fb0-fcc33c2317fb}</Project>
+      <Name>Eagle</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ShieldCore\ShieldCore.csproj">
       <Project>{37e69aad-89c3-43e2-83ae-022c350470f0}</Project>
       <Name>ShieldCore</Name>
@@ -307,6 +323,14 @@
   <ItemGroup>
     <Folder Include="Reports\Prefix2\" />
     <Folder Include="Reports\Prefix3\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="mapp.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mex_ip.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

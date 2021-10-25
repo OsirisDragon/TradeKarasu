@@ -22,6 +22,10 @@ namespace TradeFutNight.Common
             {
                 instance = new MessageBoxExService();
                 DXMessageBoxLocalizer.Active = new CustomeDxMessageBox();
+
+                // DevExpress暫時性的修正，等到我們裝的DevExpress的版本等於或超過20.1.12後，就可以拿掉這段
+                // https://supportcenter.devexpress.com/ticket/details/t981871/themedmessagebox-in-windows-forms-loses-top-most-when-clicking-on-the-taskbar-icon
+                Window.TopmostProperty.OverrideMetadata(typeof(ThemedMessageBoxWindow), new FrameworkPropertyMetadata(true));
             }
 
             return instance;
@@ -37,7 +41,7 @@ namespace TradeFutNight.Common
         public MessageBoxResult Confirm(string content)
         {
             MessageBoxResult result = MessageBoxResult.None;
-            Application.Current.Dispatcher.Invoke(() => { result = ThemedMessageBox.Show(MessageConst.Attention, content, MessageBoxButton.YesNo, MessageBoxImage.Question); });
+            Application.Current.Dispatcher.Invoke(() => { result = ThemedMessageBox.Show(title: MessageConst.Attention, text: content, messageBoxButtons: MessageBoxButton.YesNo, image: MessageBoxImage.Question); });
             return result;
         }
 
