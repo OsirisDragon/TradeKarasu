@@ -39,9 +39,16 @@ namespace TradeFutNightData.Gates.Common
 
         public IEnumerable<TPPINTD> ListByKindID(string TPPINTD_FIRST_KIND_ID, string TPPINTD_SECOND_KIND_ID)
         {
-            var query = _das.DataConn.GetTable<TPPINTD>().Where(c => c.TPPINTD_FIRST_KIND_ID == TPPINTD_FIRST_KIND_ID && c.TPPINTD_SECOND_KIND_ID == TPPINTD_SECOND_KIND_ID)
-                .OrderBy(c => c.TPPINTD_FIRST_KIND_ID).ThenBy(c => c.TPPINTD_SECOND_KIND_ID);
-
+            IQueryable<TPPINTD> query = _das.DataConn.GetTable<TPPINTD>()
+                .OrderByDescending(c => c.TPPINTD_FIRST_KIND_ID).ThenBy(c => c.TPPINTD_FIRST_MONTH).ThenByDescending(c => c.TPPINTD_SECOND_KIND_ID).ThenBy(c => c.TPPINTD_SECOND_MONTH);
+            if (TPPINTD_FIRST_KIND_ID != "%")
+            {
+                query = query.Where(c => c.TPPINTD_FIRST_KIND_ID == TPPINTD_FIRST_KIND_ID);
+            }
+            if (TPPINTD_SECOND_KIND_ID != "%")
+            {
+                query = query.Where(c => c.TPPINTD_SECOND_KIND_ID == TPPINTD_SECOND_KIND_ID);
+            }
             return query.ToList();
         }
 
@@ -65,10 +72,30 @@ namespace TradeFutNightData.Gates.Common
                     .Set(c => c.TPPINTD_M_PRICE_FILTER, item.TPPINTD_M_PRICE_FILTER)
                     .Set(c => c.TPPINTD_BS_PRICE_FILTER, item.TPPINTD_BS_PRICE_FILTER)
                     .Set(c => c.TPPINTD_UNIT, item.TPPINTD_UNIT)
+                    .Set(c => c.TPPINTD_FOREIGN_INTERVAL, item.TPPINTD_FOREIGN_INTERVAL)
                     .Set(c => c.TPPINTD_USER_ID, item.TPPINTD_USER_ID)
                     .Set(c => c.TPPINTD_W_TIME, DateTime.Now)
                     .Update();
             }
+        }
+
+        public IEnumerable<TPPINTD> ListFirstKindID()
+        {
+            var query = _das.DataConn.GetTable<TPPINTD>()
+                .OrderBy(c => c.TPPINTD_FIRST_KIND_ID)
+                .Select(c => new TPPINTD() { TPPINTD_FIRST_KIND_ID = c.TPPINTD_FIRST_KIND_ID }).Distinct();
+
+            return query.ToList();
+        }
+
+        public IEnumerable<TPPINTD> ListSecondKindID()
+        {
+            var query = _das.DataConn.GetTable<TPPINTD>()
+                .OrderBy(c => c.TPPINTD_SECOND_KIND_ID)
+                .Where(c => c.TPPINTD_SECOND_KIND_ID != "")
+                .Select(c => new TPPINTD() { TPPINTD_SECOND_KIND_ID = c.TPPINTD_SECOND_KIND_ID }).Distinct();
+
+            return query.ToList();
         }
     }
 }

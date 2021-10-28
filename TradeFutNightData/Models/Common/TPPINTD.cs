@@ -29,5 +29,7 @@ namespace TradeFutNightData.Models.Common
         public virtual decimal TPPINTD_UNIT { get; set; } // decimal(11, 7)
         public virtual decimal TPPINTD_M_PRICE_LIMIT_F { get; set; } // smallmoney
         public virtual string TPPINTD_KIND_ID_FUT { get; set; } // char(4)
+
+        public virtual int TPPINTD_FOREIGN_INTERVAL { get; set; }
     }
 }
