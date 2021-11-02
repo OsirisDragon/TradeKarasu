@@ -29,7 +29,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.06*" />
+            <RowDefinition Height="35" />
             <RowDefinition Height="*" />
             <RowDefinition Height="0.2*" />
         </Grid.RowDefinitions>
@@ -145,11 +145,11 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="90"
+                Width="100"
                 FieldName="TPPINTD_M_PRICE_LIMIT"
                 Header="偏離幅度濾網&#xA;(正式)(%)" />
             <dxg:GridColumn
-                Width="90"
+                Width="100"
                 FieldName="TPPINTD_M_PRICE_LIMIT_F"
                 Header="偏離幅度濾網&#xA;(試撮)(%)" />
             <dxg:GridColumn
@@ -183,8 +183,9 @@
                 xml:space="preserve"
                 Foreground="OrangeRed"
                 TextWrapping="Wrap">
-註1：「價差上限」功能僅適用於ETF與STF，ETF與STF合格價差計算方式為max（價格*到期月份價差限制*0.01,價差上限），本公司交易系統可接受價差為max（價格*到期月份價差限制*0.01,價差上限）*「報價價差放寬倍數」。
-註2：「到期月份價差限制」，除ETF與STF外，合格價差為（最小跳動點*造市報價規定）（例如：造市規定4tick，該商品最小跳動為0.25，到期月份價差限制則要設定為1（4*0.25），本公司交易系統可接受價差為「到期月份價差限制」*「報價價差放寬倍數」。
+註1:月份序號依到期月份由近至遠排序，例如TXF及MXF為1至5，週契約皆為1。單式單第二支腳契約代號請空白，第二支腳月份序號請填0。複式單第一支腳月份序號請填近月，第二支腳月份序號請填遠月。如該契約不適用開盤成交價偏離幅度請填0。
+註2:成交價濾網代表「前一筆有效成交價應介於有效委買委賣報價中價加減一定範圍」，其中一定範圍即本功能所設定之參數，例如若參數設為0.4%、有效委買委賣報價中價為10,000點，則前一筆有效成交價應介於9,960點(=10000-10000*0.4%)～10,040點(=10000+10000*0.4%)間，若前一筆成交價為10,010點則符合成交價濾網
+註3:買賣價差濾網代表[(委託量加權平均委賣價格÷委託量加權平均委買價格)-1]需&lt;=一定比例，其中一定比例即本功能所設定之參數，例如若參數設為0.8%、委託量加權平均委賣價為10050點、委託量加權平均委買價為10000點，則[(10050÷10000)-1]=0.5%&lt;0.8%，則符合買賣價差濾網。
             </TextBlock>
         </ScrollViewer>
     </Grid>
