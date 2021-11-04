@@ -187,12 +187,16 @@
       <DependentUpon>U_30025.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Prefix3\U_30025_ViewModel.cs" />
+    <Compile Include="Views\Prefix3\U_30026.xaml.cs">
+      <DependentUpon>U_30026.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Prefix3\U_30113.xaml.cs">
       <DependentUpon>U_30113.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Prefix3\U_30112.xaml.cs">
       <DependentUpon>U_30112.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Prefix3\U_30026_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30113_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30112_ViewModel.cs" />
     <Compile Include="Views\MainUI_ViewModel.cs" />
@@ -246,6 +250,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Prefix3\U_30026.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Prefix3\U_30113.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -277,7 +285,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
