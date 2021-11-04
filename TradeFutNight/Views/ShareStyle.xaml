@@ -41,7 +41,8 @@
     <Style x:Key="CellStyleReadOnlyChangeColor" TargetType="dxg:LightweightCellEditor">
         <Style.Triggers>
             <DataTrigger Binding="{Binding Column.ReadOnly}" Value="True">
-                <Setter Property="Background" Value="Gray" />
+                <Setter Property="Background" Value="WhiteSmoke" />
+                <Setter Property="IsEnabled" Value="False" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
