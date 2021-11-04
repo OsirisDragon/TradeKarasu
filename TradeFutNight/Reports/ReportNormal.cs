@@ -22,6 +22,11 @@ namespace TradeFutNight.Reports
             return new ReportCommonLandscape<T>(exportData, columns, rptSetting);
         }
 
+        public static ReportCommonPortrait<T> CreateCommonPortrait<T>(IList<T> exportData, GridColumnCollection columns, ReportSetting rptSetting)
+        {
+            return new ReportCommonPortrait<T>(exportData, columns, rptSetting);
+        }
+
         public static XRTable CreateHeaderColumnsTable(ReportSetting rptSetting, GridColumnCollection columns)
         {
             XRTable table = new XRTable();

@@ -2,7 +2,6 @@
 using DevExpress.XtraPrinting.Caching;
 using DevExpress.XtraReports.UI;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace TradeFutNight.Reports
 {
