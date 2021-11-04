@@ -85,7 +85,10 @@ namespace TradeFutNight.Views
 
             bool isCanRun = await IsCanRun(panel);
             if (!isCanRun)
+            {
+                CloseWindow();
                 return;
+            }
 
             await viewInstance.Open();
 
@@ -116,7 +119,7 @@ namespace TradeFutNight.Views
 
         public void CloseLeftPanel()
         {
-            dockLayoutManagerMain.DockController.Close(layoutPanelLeft);
+            layoutPanelLeft.Visibility = Visibility.Collapsed;
         }
 
         private void BtnInsert_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)

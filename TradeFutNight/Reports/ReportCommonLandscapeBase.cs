@@ -1,16 +1,9 @@
-﻿using System;
-using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
-using DevExpress.XtraReports.UI;
-using DevExpress.XtraReports.Parameters;
-using System.IO;
-using TradeUtility;
-using CrossModel;
-using CrossModel.Enum;
+﻿using CrossModel;
 using DevExpress.Xpf.Grid;
-using TradeFutNight.Common;
+using DevExpress.XtraReports.Parameters;
+using DevExpress.XtraReports.UI;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows;
 
 namespace TradeFutNight.Reports

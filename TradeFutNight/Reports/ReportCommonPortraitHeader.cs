@@ -1,10 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
-using DevExpress.XtraReports.UI;
-
-namespace TradeFutNight.Reports
+﻿namespace TradeFutNight.Reports
 {
     public partial class ReportCommonPortraitHeader : DevExpress.XtraReports.UI.XtraReport
     {
@@ -12,6 +6,5 @@ namespace TradeFutNight.Reports
         {
             InitializeComponent();
         }
-
     }
 }

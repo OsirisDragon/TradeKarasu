@@ -1,14 +1,10 @@
-﻿using System;
-using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
-using DevExpress.XtraReports.UI;
+﻿using CrossModel;
+using DevExpress.Xpf.Grid;
 using DevExpress.XtraReports.Parameters;
-using CrossModel;
-using System.IO;
-using TradeUtility;
-using CrossModel.Enum;
-using TradeFutNight.Common;
+using DevExpress.XtraReports.UI;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows;
 
 namespace TradeFutNight.Reports
 {
@@ -88,14 +84,12 @@ namespace TradeFutNight.Reports
         }
     }
 
-    public partial class ReportCommonPortrait : ReportCommonPortraitBase
+    public partial class ReportCommonPortrait<T> : ReportCommonLandscapeBase
     {
         public string DefaultPdfFilePath { get; set; }
 
-        public ReportCommonPortrait(ReportSetting rptSetting) : base()
+        public ReportCommonPortrait(IList<T> exportData, GridColumnCollection columns, ReportSetting rptSetting) : base()
         {
-            DefaultPdfFilePath = Path.Combine(rptSetting.ReportDirectory, MagicalHats.UniformFileName(rptSetting.SystemType, rptSetting.ReportID, "", FileType.Pdf));
-
             Parameter paramOcfDate = Parameters["OcfRocDate"];
             paramOcfDate.Visible = false;
             paramOcfDate.Value = "中華民國 " + (rptSetting.OcfDate.Year - 1911) + " 年 " + rptSetting.OcfDate.ToString("MM 月 dd 日 ");
@@ -121,7 +115,6 @@ namespace TradeFutNight.Reports
             else
             {
                 FooterMemoVisible = false;
-                ReportFooterVisible = false;
             }
 
             // 註解的字體大小
@@ -132,17 +125,13 @@ namespace TradeFutNight.Reports
             HasConfirmPerson = rptSetting.HasConfirmPerson;
             HasManagerPerson = rptSetting.HasManagerPerson;
 
-            GetGroupHeaderColumns().Controls.Add(ReportNormal.CreateHeaderColumnsTable(rptSetting, rptSetting.ViewModel.DataGridColumns));
-            GetDetailBand().Controls.Add(ReportNormal.CreateContentTable(this, rptSetting, rptSetting.ViewModel.DataGridColumns));
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                GetGroupHeaderColumns().Controls.Add(ReportNormal.CreateHeaderColumnsTable(rptSetting, columns));
+                GetDetailBand().Controls.Add(ReportNormal.CreateContentTable(exportData, rptSetting, columns));
+            });
 
-            this.DataSource = rptSetting.ViewModel.MainData;
-        }
-
-        public string ExportToPdf()
-        {
-            this.ExportToPdf(DefaultPdfFilePath);
-
-            return DefaultPdfFilePath;
+            this.DataSource = exportData;
         }
     }
 }

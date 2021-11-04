@@ -145,11 +145,23 @@
     <Compile Include="Common\MessageDisplay.cs" />
     <Compile Include="Interfaces\IMessageBoxExService.cs" />
     <Compile Include="Interfaces\IViewSword.cs" />
+    <Compile Include="Reports\ReportCommonPortraitBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportCommonPortraitBase.Designer.cs">
+      <DependentUpon>ReportCommonPortraitBase.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reports\ReportCommonLandscapeBase.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\ReportCommonLandscapeBase.Designer.cs">
       <DependentUpon>ReportCommonLandscapeBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportCommonPortraitHeader.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportCommonPortraitHeader.Designer.cs">
+      <DependentUpon>ReportCommonPortraitHeader.cs</DependentUpon>
     </Compile>
     <Compile Include="Reports\ReportCommonLandscapeHeader.cs">
       <SubType>Component</SubType>
@@ -309,12 +321,19 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ReportCommonPortraitBase.resx">
+      <DependentUpon>ReportCommonPortraitBase.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\ReportCommonLandscapeBase.resx">
       <DependentUpon>ReportCommonLandscapeBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ReportCommonPortraitHeader.resx">
+      <DependentUpon>ReportCommonPortraitHeader.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\ReportCommonLandscapeHeader.resx">
       <DependentUpon>ReportCommonLandscapeHeader.cs</DependentUpon>

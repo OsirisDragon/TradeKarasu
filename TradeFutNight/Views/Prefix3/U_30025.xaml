@@ -28,7 +28,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.06*" />
+            <RowDefinition Height="35" />
             <RowDefinition Height="*" />
             <RowDefinition Height="0.2*" />
         </Grid.RowDefinitions>
@@ -187,7 +187,7 @@
                 FieldName="TPPINTD_W_TIME"
                 Header="寫檔時間">
                 <dxg:GridColumn.EditSettings>
-                    <dxe:TextEditSettings DisplayFormat="yyyy/MM/dd HH:mm:ss" HorizontalContentAlignment="Center" />
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd HH:mm:ss" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
         </dxg:GridControl>
