@@ -176,7 +176,23 @@
                 Width="70"
                 FieldName="TPPINTD_FOREIGN_INTERVAL"
                 Header="國外成交&#xA;間隔毫秒" />
+            <dxg:GridColumn
+                Width="20"
+                c:CustomProp.ModifyMarkStyle="*"
+                AllowEditing="false"
+                FieldName="ModifyMark"
+                Header="">
+                <dxg:GridColumn.HeaderStyle>
+                    <Style TargetType="Control">
+                        <Setter Property="Background" Value="Transparent" />
+                    </Style>
+                </dxg:GridColumn.HeaderStyle>
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
         </dxg:GridControl>
+
         <ScrollViewer Grid.Row="2">
             <TextBlock
                 x:Name="txtMemo"
