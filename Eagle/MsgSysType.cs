@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace Eagle
 {
-    public class EagleContent
+    public enum MsgSysType
     {
-        public string Item;
-        public object Value;
+        FutDay,
+        FutNight,
+        OptDay,
+        OptNight
     }
 }

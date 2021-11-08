@@ -13,16 +13,22 @@ namespace Eagle
 
         string Key { get; set; }
 
-        Task<EagleResult> Send(EagleArgs args);
+        EagleResult Send();
 
-        EagleResult SendByExternal(EagleArgs args);
+        EagleResult SendAndReceiveData(string subscribeSubject, string subscribeKey, int waitSecond);
 
-        EagleResult Receive(EagleArgs args);
+        //EagleResult SendMultiple();
 
-        void Stop();
+        void AddArgument(EagleArgs args);
 
-        event OnMessageArrivedEventHandler OnMessageArrived;
+        List<List<EagleContent>> GetListEagleContent();
 
-        event OnStatusdEventHandler OnStatus;
+        //void GenerateBatchJson(EagleArgs args);
+
+        //EagleResult Receive(EagleArgs args);
+
+        //event OnMessageArrivedEventHandler OnMessageArrived;
+
+        //event OnStatusdEventHandler OnStatus;
     }
 }

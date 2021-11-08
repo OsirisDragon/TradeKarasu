@@ -1,4 +1,4 @@
-﻿using iMAppX;
+﻿//using iMAppX;
 using System.Collections.Generic;
 
 namespace Eagle
@@ -11,7 +11,7 @@ namespace Eagle
         public string Path;
 
         public int OnMessageArrivedNumber;
-        public OnMessageArrived OnMessageArrived;
+        //public OnMessageArrived OnMessageArrived;
 
         public int OnStatusMsg;
         public int OnStatusParam1;
@@ -38,35 +38,35 @@ namespace Eagle
         }
     }
 
-    public class OnMessageArrived
-    {
-        public Subscriber OnMessageArrivedSubscriber;
-        public MTreeX OnMessageArrivedMTreeX;
+    //public class OnMessageArrived
+    //{
+    //    public Subscriber OnMessageArrivedSubscriber;
+    //    public MTreeX OnMessageArrivedMTreeX;
 
-        public OnMessageArrived(MTreeX tree, Subscriber subscriber)
-        {
-            OnMessageArrivedMTreeX = tree;
-            OnMessageArrivedSubscriber = subscriber;
-        }
+    //    public OnMessageArrived(MTreeX tree, Subscriber subscriber)
+    //    {
+    //        OnMessageArrivedMTreeX = tree;
+    //        OnMessageArrivedSubscriber = subscriber;
+    //    }
 
-        public T GetValue<T>(string item)
-        {
-            object myResult = null;
+    //    public T GetValue<T>(string item)
+    //    {
+    //        object myResult = null;
 
-            if (typeof(T) == typeof(int))
-            {
-                myResult = OnMessageArrivedMTreeX.get_int(item);
-            }
-            else if (typeof(T) == typeof(string))
-            {
-                myResult = OnMessageArrivedMTreeX.get_char(item).ToString().TrimEnd('\0');
-            }
-            else if (typeof(T) == typeof(double))
-            {
-                myResult = OnMessageArrivedMTreeX.get_double(item);
-            }
+    //        if (typeof(T) == typeof(int))
+    //        {
+    //            myResult = OnMessageArrivedMTreeX.get_int(item);
+    //        }
+    //        else if (typeof(T) == typeof(string))
+    //        {
+    //            myResult = OnMessageArrivedMTreeX.get_char(item).ToString().TrimEnd('\0');
+    //        }
+    //        else if (typeof(T) == typeof(double))
+    //        {
+    //            myResult = OnMessageArrivedMTreeX.get_double(item);
+    //        }
 
-            return (T)myResult;
-        }
-    }
+    //        return (T)myResult;
+    //    }
+    //}
 }
