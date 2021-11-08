@@ -32,7 +32,6 @@
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
             this.PageHeader = new DevExpress.XtraReports.UI.PageHeaderBand();
-            this.xrSubreportHeader = new DevExpress.XtraReports.UI.XRSubreport();
             this.OcfRocDate = new DevExpress.XtraReports.Parameters.Parameter();
             this.UserName = new DevExpress.XtraReports.Parameters.Parameter();
             this.ReportID = new DevExpress.XtraReports.Parameters.Parameter();
@@ -46,6 +45,7 @@
             this.tableCellConfirmPerson = new DevExpress.XtraReports.UI.XRTableCell();
             this.tableCellManagerPerson = new DevExpress.XtraReports.UI.XRTableCell();
             this.GroupHeaderColumns = new DevExpress.XtraReports.UI.GroupHeaderBand();
+            this.xrSubreportHeader = new DevExpress.XtraReports.UI.XRSubreport();
             ((System.ComponentModel.ISupportInitialize)(this.tableFooter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
@@ -74,18 +74,6 @@
             this.PageHeader.Dpi = 96F;
             this.PageHeader.HeightF = 105F;
             this.PageHeader.Name = "PageHeader";
-            // 
-            // xrSubreportHeader
-            // 
-            this.xrSubreportHeader.Dpi = 96F;
-            this.xrSubreportHeader.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
-            this.xrSubreportHeader.Name = "xrSubreportHeader";
-            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("OcfRocDate", this.OcfRocDate));
-            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("UserName", this.UserName));
-            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("ReportID", this.ReportID));
-            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("ReportTitle", this.ReportTitle));
-            this.xrSubreportHeader.ReportSource = new TradeFutNight.Reports.ReportCommonLandscapeHeader();
-            this.xrSubreportHeader.SizeF = new System.Drawing.SizeF(754F, 105F);
             // 
             // OcfRocDate
             // 
@@ -126,7 +114,7 @@
             // tableFooter
             // 
             this.tableFooter.Dpi = 96F;
-            this.tableFooter.LocationFloat = new DevExpress.Utils.PointFloat(0F, 7F);
+            this.tableFooter.LocationFloat = new DevExpress.Utils.PointFloat(0F, 3F);
             this.tableFooter.Name = "tableFooter";
             this.tableFooter.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
             this.tableFooter.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
@@ -204,6 +192,18 @@
             this.GroupHeaderColumns.HeightF = 9.6F;
             this.GroupHeaderColumns.Name = "GroupHeaderColumns";
             this.GroupHeaderColumns.RepeatEveryPage = true;
+            // 
+            // xrSubreportHeader
+            // 
+            this.xrSubreportHeader.Dpi = 96F;
+            this.xrSubreportHeader.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
+            this.xrSubreportHeader.Name = "xrSubreportHeader";
+            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("OcfRocDate", this.OcfRocDate));
+            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("UserName", this.UserName));
+            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("ReportID", this.ReportID));
+            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("ReportTitle", this.ReportTitle));
+            this.xrSubreportHeader.ReportSource = new TradeFutNight.Reports.ReportCommonPortraitHeader();
+            this.xrSubreportHeader.SizeF = new System.Drawing.SizeF(754F, 105F);
             // 
             // ReportCommonPortraitBase
             // 

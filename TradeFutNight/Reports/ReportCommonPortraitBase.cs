@@ -84,7 +84,7 @@ namespace TradeFutNight.Reports
         }
     }
 
-    public partial class ReportCommonPortrait<T> : ReportCommonLandscapeBase
+    public partial class ReportCommonPortrait<T> : ReportCommonPortraitBase
     {
         public string DefaultPdfFilePath { get; set; }
 
