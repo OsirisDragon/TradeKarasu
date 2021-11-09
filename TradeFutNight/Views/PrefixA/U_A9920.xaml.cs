@@ -163,7 +163,7 @@ namespace TradeFutNight.Views.PrefixA
                     });
                 }
 
-                MagicalHats.CheckMsgServerConnection();
+                if (!MagicalHats.CheckMsgServerConnection()) return;
 
                 using (var das = Factory.CreateDalSession())
                 {
