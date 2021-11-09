@@ -103,7 +103,7 @@ namespace TradeFutNight.Views.Prefix3
                     return false;
                 }
 
-                foreach (var item in trackableData.AddedItems)
+                foreach (var item in trackableData.ChangedItems)
                 {
                     Dispatcher.Invoke(() =>
                     {

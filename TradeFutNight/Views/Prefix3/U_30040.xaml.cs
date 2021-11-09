@@ -19,16 +19,16 @@ using TradeFutNightData.Models.Common;
 namespace TradeFutNight.Views.Prefix3
 {
     /// <summary>
-    /// U_30026.xaml 的互動邏輯
+    /// U_30040.xaml 的互動邏輯
     /// </summary>
-    public partial class U_30026 : UserControlParent, IViewSword
+    public partial class U_30040 : UserControlParent, IViewSword
     {
-        private U_30026_ViewModel _vm;
+        private U_30040_ViewModel _vm;
 
-        public U_30026()
+        public U_30040()
         {
             InitializeComponent();
-            _vm = (U_30026_ViewModel)DataContext;
+            _vm = (U_30040_ViewModel)DataContext;
         }
 
         public async Task<bool> IsCanRun()
@@ -105,20 +105,10 @@ namespace TradeFutNight.Views.Prefix3
 
                 foreach (var item in trackableData.ChangedItems)
                 {
-                    if (item.TPPINTD_SECOND_MONTH > 0 && string.IsNullOrEmpty(item.TPPINTD_SECOND_KIND_ID))
-                    {
-                        resultItem.AppendErrorMessage($"請輸入第{trackableData.AsEnumerable().IndexOf(item) + 1}筆的第二支腳契約代碼");
-                    }
-
-                    if (!string.IsNullOrEmpty(item.TPPINTD_SECOND_KIND_ID) && item.TPPINTD_SECOND_MONTH <= 0)
-                    {
-                        resultItem.AppendErrorMessage($"請輸入第{trackableData.AsEnumerable().IndexOf(item) + 1}筆的第二支腳月份序號");
-                    }
-
                     Dispatcher.Invoke(() =>
                     {
-                        item.TPPINTD_USER_ID = UserID;
-                        item.TPPINTD_W_TIME = DateTime.Now;
+                        item.TPPDK_USER_ID = UserID;
+                        item.TPPDK_W_TIME = DateTime.Now;
                     });
                 }
 
@@ -151,8 +141,8 @@ namespace TradeFutNight.Views.Prefix3
 
                     try
                     {
-                        var dTppintd = new D_TPPINTD(das);
-                        dTppintd.Update(domainData);
+                        var dTPPDK = new D_TPPDK(das);
+                        dTPPDK.Update(domainData);
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -179,12 +169,12 @@ namespace TradeFutNight.Views.Prefix3
             await task;
         }
 
-        private IList<TPPINTD> CustomMapper(IEnumerable<UIModel_30026> items)
+        private IList<TPPDK> CustomMapper(IEnumerable<UIModel_30040> items)
         {
-            var listResult = new List<TPPINTD>();
+            var listResult = new List<TPPDK>();
             foreach (var item in items)
             {
-                var newItem = _vm.MapperInstance.Map<TPPINTD>(item);
+                var newItem = _vm.MapperInstance.Map<TPPDK>(item);
 
                 var trackItem = item.CastToIChangeTrackable();
                 newItem.OriginalData = trackItem.GetOriginal();
@@ -196,12 +186,6 @@ namespace TradeFutNight.Views.Prefix3
 
         private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
         {
-            string memo = "";
-            Dispatcher.Invoke(() =>
-            {
-                memo = txtMemo.Text;
-            });
-
             string reportTitle = ProgramID + "–" + ProgramName;
 
             switch (operationType)
@@ -218,8 +202,8 @@ namespace TradeFutNight.Views.Prefix3
                     break;
             }
 
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, memo, Ocf.OCF_DATE, true, false, true);
-            var reportCommon = ReportNormal.CreateCommonLandscape(data, gridMain.Columns, rptSetting);
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, "", Ocf.OCF_DATE, true, false, true);
+            var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain.Columns, rptSetting);
 
             return reportCommon;
         }
@@ -253,27 +237,6 @@ namespace TradeFutNight.Views.Prefix3
             gridView.CloseEditor();
             await Task.FromResult<object>(null);
             throw new NotImplementedException();
-        }
-
-        private async void BtnQuery_Click(object sender, RoutedEventArgs e)
-        {
-            var button = ((Button)sender);
-            button.IsEnabled = false;
-
-            if (cbFirstKindId.SelectedItem != null && cbSecondKindId.SelectedItem != null)
-            {
-                var firstSelectedItem = (ItemInfo)cbFirstKindId.SelectedItem;
-                var secondSelectedItem = (ItemInfo)cbSecondKindId.SelectedItem;
-
-                var task = Task.Run(async () =>
-                {
-                    await _vm.Query(firstSelectedItem.Value.ToString(), secondSelectedItem.Value.ToString());
-                });
-
-                await task;
-            }
-
-            button.IsEnabled = true;
         }
     }
 }
