@@ -1,7 +1,7 @@
 ﻿using ChangeTracking;
 using CrossModel;
 using CrossModel.Enum;
-using DevExpress.DataProcessing;
+using DevExpress.XtraPrinting;
 using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
@@ -19,16 +19,21 @@ using TradeFutNightData.Models.Common;
 namespace TradeFutNight.Views.Prefix3
 {
     /// <summary>
-    /// U_30029.xaml 的互動邏輯
+    /// U_30055.xaml 的互動邏輯
     /// </summary>
-    public partial class U_30029 : UserControlParent, IViewSword
+    public partial class U_30055 : UserControlParent, IViewSword
     {
-        private U_30029_ViewModel _vm;
+        private U_30055_ViewModel _vm;
 
-        public U_30029()
+        public U_30055()
         {
             InitializeComponent();
-            _vm = (U_30029_ViewModel)DataContext;
+            _vm = (U_30055_ViewModel)DataContext;
+        }
+
+        public void InitialSetting(string programID, string programName, MainUI_ViewModel vmMainUi, MainUI mainUi)
+        {
+            base.Init(programID, programName, vmMainUi, mainUi);
         }
 
         public async Task<bool> IsCanRun()
@@ -80,7 +85,7 @@ namespace TradeFutNight.Views.Prefix3
 
         public async Task<bool> CheckField()
         {
-            if (!BaseCheck(new CheckSettings() { IsCheckNotNullNotEmpty = true }, gridMain, _vm))
+            if (!BaseCheck(new CheckSettings() { IsCheckNotNullNotEmpty = false }, gridMain, _vm))
                 return false;
 
             var task = Task.Run(() =>
@@ -94,28 +99,11 @@ namespace TradeFutNight.Views.Prefix3
 
                 var resultItem = new ResultItem();
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var checkItems = trackableData.ChangedItems;
 
-                if (checkItems.Count() == 0)
+                if (trackableData.DeletedItems.Count() == 0)
                 {
                     VmMainUi.HideLoadingWindow();
-                    MessageBoxExService.Instance().Error(MessageConst.NoChangedData);
-                    return false;
-                }
-
-                foreach (var item in trackableData.ChangedItems)
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        item.TPPVOL_USER_ID = UserID;
-                        item.TPPVOL_W_TIME = DateTime.Now;
-                    });
-                }
-
-                if (resultItem.HasError)
-                {
-                    VmMainUi.HideLoadingWindow();
-                    MessageBoxExService.Instance().Error(resultItem.ErrorMessage);
+                    MessageBoxExService.Instance().Error(MessageConst.NoDeletedData);
                     return false;
                 }
 
@@ -133,7 +121,7 @@ namespace TradeFutNight.Views.Prefix3
             var task = Task.Run(async () =>
             {
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = CustomMapper(trackableData.ChangedItems);
+                var domainData = _vm.MapperInstance.Map<IList<MORD>>(trackableData.DeletedItems);
 
                 using (var das = Factory.CreateDalSession())
                 {
@@ -141,8 +129,8 @@ namespace TradeFutNight.Views.Prefix3
 
                     try
                     {
-                        var dTPPVOL = new D_TPPVOL(das);
-                        dTPPVOL.Update(domainData);
+                        var dMORD = new D_MORD(das);
+                        dMORD.Delete(domainData);
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -169,21 +157,6 @@ namespace TradeFutNight.Views.Prefix3
             await task;
         }
 
-        private IList<TPPVOL> CustomMapper(IEnumerable<UIModel_30029> items)
-        {
-            var listResult = new List<TPPVOL>();
-            foreach (var item in items)
-            {
-                var newItem = _vm.MapperInstance.Map<TPPVOL>(item);
-
-                var trackItem = item.CastToIChangeTrackable();
-                newItem.OriginalData = trackItem.GetOriginal();
-                listResult.Add(newItem);
-            }
-
-            return listResult;
-        }
-
         private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
         {
             string reportTitle = ProgramID + "–" + ProgramName;
@@ -191,11 +164,11 @@ namespace TradeFutNight.Views.Prefix3
             switch (operationType)
             {
                 case OperationType.Save:
-
+                    reportTitle = reportTitle.Replace("查詢、", "");
                     break;
 
                 case OperationType.Print:
-
+                    reportTitle = reportTitle.Replace("、刪除", "");
                     break;
 
                 default:
@@ -203,6 +176,7 @@ namespace TradeFutNight.Views.Prefix3
             }
 
             var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, "", Ocf.OCF_DATE, true, false, true);
+            rptSetting.HeaderColumnsFontSize = 10;
             var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain.Columns, rptSetting);
 
             return reportCommon;
