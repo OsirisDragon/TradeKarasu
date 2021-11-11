@@ -47,6 +47,13 @@ namespace TradeFutNight.Views.PrefixA
             return task.Result;
         }
 
+        public override void ControlSetting()
+        {
+            base.ControlSetting();
+            VmMainUi.IsButtonInsertEnabled = false;
+            VmMainUi.IsButtonDeleteEnabled = false;
+        }
+
         public async Task Open()
         {
             var task = Task.Run(() =>
@@ -55,6 +62,7 @@ namespace TradeFutNight.Views.PrefixA
                 DbLog(MessageConst.Open);
             });
             await task;
+            ControlSetting();
         }
 
         public void Insert()

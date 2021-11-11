@@ -105,24 +105,6 @@ namespace TradeFutNight.Views
             {
                 JSW oJSW = listJSW.Single();
 
-                #region 設定個別的Button是否可按
-
-                switch (oJSW.JSW_TYPE)
-                {
-                    case 'I':
-                        VmMainUi.IsButtonSaveEnabled = true;
-                        VmMainUi.IsButtonInsertEnabled = true;
-                        VmMainUi.IsButtonDeleteEnabled = true;
-                        VmMainUi.IsButtonPrintEnabled = false;
-                        break;
-
-                    case 'U':
-                        VmMainUi.IsButtonSaveEnabled = true;
-                        break;
-                }
-
-                #endregion 設定個別的Button是否可按
-
                 if (oJSW.JSW_SW_CODE == 'Y')
                 {
                     return true;
@@ -148,7 +130,72 @@ namespace TradeFutNight.Views
                     }
 
                     preValue = item.JSW_SW_CODE;
+                }
 
+                if (isAllRecordSame)
+                {
+                    if (listJSW.First().JSW_SW_CODE == 'Y')
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+
+        public virtual void ControlSetting()
+        {
+            IEnumerable<JSW> listJSW;
+            int countJSW = 0;
+
+            using (var das = new DalSession())
+            {
+                var dJSW = new D_JSW(das);
+                listJSW = dJSW.ListByID(ProgramID);
+                countJSW = listJSW.Count();
+            }
+
+            // 如果都沒有JSW的話，就讓程式不可執行
+            if (countJSW == 0)
+            {
+                return;
+            }
+            // 如果JSW只有一筆的話，就看那筆可不可以執行
+            else if (countJSW == 1)
+            {
+                JSW oJSW = listJSW.Single();
+
+                #region 設定個別的Button是否可按
+
+                switch (oJSW.JSW_TYPE)
+                {
+                    case 'I':
+                        VmMainUi.IsButtonSaveEnabled = true;
+                        VmMainUi.IsButtonInsertEnabled = true;
+                        VmMainUi.IsButtonDeleteEnabled = true;
+                        VmMainUi.IsButtonPrintEnabled = false;
+                        break;
+
+                    case 'U':
+                        VmMainUi.IsButtonSaveEnabled = true;
+                        break;
+                }
+
+                #endregion 設定個別的Button是否可按
+            }
+            // 如果有2筆以上的話，就看是不是全部Y或是全部N，全部Y就是可執行，全部N就是不可執行
+            // 如果有Y也有N也是可執行(這種通常是有Q的這種，Q打開其他沒開的話就是可以查詢但不能刪除或儲存)
+            else
+            {
+                foreach (var item in listJSW)
+                {
                     #region 設定個別的Button是否可按
 
                     // 如果只有兩筆，就是D或Q這種
@@ -199,22 +246,6 @@ namespace TradeFutNight.Views
                     }
 
                     #endregion 設定個別的Button是否可按
-                }
-
-                if (isAllRecordSame)
-                {
-                    if (listJSW.First().JSW_SW_CODE == 'Y')
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return true;
                 }
             }
         }
