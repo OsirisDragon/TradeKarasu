@@ -175,6 +175,10 @@
     <Compile Include="Views\MainUI.xaml.cs">
       <DependentUpon>MainUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Prefix3\U_30040_ViewModel.cs" />
+    <Compile Include="Views\Prefix3\U_30040.xaml.cs">
+      <DependentUpon>U_30040.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Prefix3\U_30039_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30039.xaml.cs">
       <DependentUpon>U_30039.xaml</DependentUpon>
@@ -250,6 +254,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Prefix3\U_30040.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Prefix3\U_30039.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -321,7 +329,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

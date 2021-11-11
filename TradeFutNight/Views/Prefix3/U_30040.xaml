@@ -1,0 +1,154 @@
+﻿<myTypes:UserControlParent
+    x:Class="TradeFutNight.Views.Prefix3.U_30040"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:TradeFutNight.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:myTypes="clr-namespace:TradeFutNight.Views"
+    xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.Prefix3"
+    Margin="1,1,1,1"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    FontSize="14"
+    mc:Ignorable="d">
+    <myTypes:UserControlParent.DataContext>
+        <myTypesPrefix:U_30040_ViewModel />
+    </myTypes:UserControlParent.DataContext>
+    <myTypes:UserControlParent.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\ShareStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </myTypes:UserControlParent.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="0.2*" />
+        </Grid.RowDefinitions>
+        <dxg:GridControl
+            x:Name="gridMain"
+            Grid.Row="0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Stretch"
+            AutoGenerateColumns="None"
+            CurrentItem="{Binding Path=CurrentItem, Mode=TwoWay}"
+            EnableSmartColumnsGeneration="True"
+            ItemsSource="{Binding MainGridData}"
+            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
+            SelectionMode="Row">
+            <dxg:GridControl.View>
+                <dxg:TableView
+                    x:Name="gridView"
+                    AllowEditing="True"
+                    CellValueChanged="view_CellValueChanged"
+                    IsColumnMenuEnabled="False"
+                    ShowGroupPanel="False"
+                    ShowTotalSummary="False" />
+            </dxg:GridControl.View>
+            <dxg:GridColumn
+                Name="rowNumber"
+                Width="40"
+                AllowEditing="False"
+                Header="編號">
+                <dxg:GridColumn.CellTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{DXBinding 'RowData.RowHandle.Value + 1'}" />
+                        </Grid>
+                    </DataTemplate>
+                </dxg:GridColumn.CellTemplate>
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="80"
+                CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
+                FieldName="TPPDK_KIND_ID"
+                Header="契約代碼"
+                ReadOnly="True">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings CharacterCasing="Upper" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="120"
+                c:CustomProp.NotNullNotEmpty="True"
+                FieldName="TPPDK_INDEX_GRP"
+                Header="指標群組">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:ComboBoxEditSettings
+                        DisplayMember="Text"
+                        IsTextEditable="False"
+                        ItemsSource="{Binding IdxGroupInfos}"
+                        ValueMember="Value" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+
+            <dxg:GridColumn
+                Width="80"
+                FieldName="TPPDK_MULTI"
+                Header="量化放寬&#xA;倍數" />
+            <dxg:GridColumn
+                Width="100"
+                FieldName="TPPDK_THERICAL_P_INTERVAL"
+                Header="理論價&#xA;計算秒數" />
+            <dxg:GridColumn
+                Width="65"
+                CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
+                FieldName="TPPDK_USER_ID"
+                Header="員工代碼"
+                ReadOnly="True">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="150"
+                CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
+                FieldName="TPPDK_W_TIME"
+                Header="寫檔時間"
+                ReadOnly="True">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd HH:mm:ss" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="20"
+                c:CustomProp.ModifyMarkStyle="*"
+                AllowEditing="false"
+                FieldName="ModifyMark"
+                Header="">
+                <dxg:GridColumn.HeaderStyle>
+                    <Style TargetType="Control">
+                        <Setter Property="Background" Value="Transparent" />
+                    </Style>
+                </dxg:GridColumn.HeaderStyle>
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+        </dxg:GridControl>
+        <ScrollViewer Grid.Row="2">
+            <TextBlock
+                x:Name="txtMemo"
+                Grid.Row="1"
+                Margin="0,0,0,0"
+                xml:space="preserve"
+                Foreground="OrangeRed"
+                TextWrapping="Wrap">
+註：「理論價計算秒數」代表TX、MTX最近月契約於夜盤時段，各別透過計算N秒鐘成交價之簡單算術平均數，作為TX、MTX最近月契約理論價，參數N為使用者自行設定，參數設定或調整需於前一日完成，次一個交易日才會生效，無法盤中臨時修改
+            </TextBlock>
+        </ScrollViewer>
+    </Grid>
+</myTypes:UserControlParent>
