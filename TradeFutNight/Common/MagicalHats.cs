@@ -2,6 +2,7 @@
 using DataEngine;
 using Eagle;
 using System;
+using System.IO;
 using System.Windows.Threading;
 using TradeFutNightData.Gates.Common;
 using TradeFutNightData.Models.Common;
@@ -37,13 +38,22 @@ namespace TradeFutNight.Common
         /// <summary>
         /// 送出一個Mex訊息測試一下看有沒有成功送出去
         /// </summary>
-        public static void CheckMsgServerConnection()
+        public static bool CheckMsgServerConnection()
         {
-            IEagleGate eagleGate = new MexGate() { Subject = "CheckMsgServerConnection", Key = "all" };
-            EagleArgs ea = new EagleArgs();
-            ea.AddEagleContent(new EagleContent() { Item = "Hello", Value = "World" });
-            eagleGate.Send(ea);
-            eagleGate.Stop();
+            try
+            {
+                IEagleGate eagleGate = new MexGate(MsgSysType.FutNight, "CheckMsgServerConnection", "all");
+                EagleArgs ea = new EagleArgs();
+                ea.AddEagleContent(new EagleContent() { Item = "Hello", Value = "World" });
+                eagleGate.AddArgument(ea);
+                eagleGate.Send();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBoxExService.Instance().Error(ex.Message);
+                return false;
+            }
         }
 
         public static string UniformFileName(SystemType systemType, string programID, string fileDescription, FileType fileType)

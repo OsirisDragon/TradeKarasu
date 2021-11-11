@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Eagle.MexGate;
+﻿using System.Collections.Generic;
 
 namespace Eagle
 {
@@ -13,16 +8,12 @@ namespace Eagle
 
         string Key { get; set; }
 
-        Task<EagleResult> Send(EagleArgs args);
+        EagleResult Send();
 
-        EagleResult SendByExternal(EagleArgs args);
+        EagleResult SendAndReceiveData(string subscribeSubject, string subscribeKey, int waitSecond);
 
-        EagleResult Receive(EagleArgs args);
+        void AddArgument(EagleArgs args);
 
-        void Stop();
-
-        event OnMessageArrivedEventHandler OnMessageArrived;
-
-        event OnStatusdEventHandler OnStatus;
+        List<List<EagleContent>> GetListEagleContent();
     }
 }

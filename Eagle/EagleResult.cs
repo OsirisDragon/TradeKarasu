@@ -10,6 +10,7 @@ namespace Eagle
     {
         public EagleStatus EagleStatus = EagleStatus.Fail;
         public string ErrorMessage = "";
+        public string ReceiveData = "";
     }
 
     public enum EagleStatus

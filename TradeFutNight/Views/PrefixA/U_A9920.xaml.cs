@@ -17,6 +17,7 @@ using TradeFutNight.Reports;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Common;
 using TradeFutNightData.Models.Common;
+using TradeUtility;
 
 namespace TradeFutNight.Views.PrefixA
 {
@@ -162,7 +163,7 @@ namespace TradeFutNight.Views.PrefixA
                     });
                 }
 
-                MagicalHats.CheckMsgServerConnection();
+                if (!MagicalHats.CheckMsgServerConnection()) return;
 
                 using (var das = Factory.CreateDalSession())
                 {
@@ -224,7 +225,7 @@ namespace TradeFutNight.Views.PrefixA
             else if (AppSettings.SystemType == SystemType.OptDay || AppSettings.SystemType == SystemType.OptNight)
                 subject = "TFX.OPT.PROD.PDKBREAK.OP";
 
-            IEagleGate eagleGate = new MexGate() { Subject = subject, Key = "all" };
+            IEagleGate eagleGate = new MexGate(MsgSysType.FutNight, subject, "all");
 
             // 每一筆都要發送mex訊息
             foreach (var item in mainData)
@@ -267,12 +268,14 @@ namespace TradeFutNight.Views.PrefixA
                 ea.AddEagleContent(new EagleContent() { Item = "ORDER_RESUME_TIME", Value = nodeOrderResumeTime });
 
                 // 雖然這個欄位是MATCH_RESUME_TIME，但後端伺服器MEX制定人說要傳參數的JSON
-                ea.AddEagleContent(new EagleContent() { Item = "MATCH_RESUME_TIME", Value = JsonConvert.SerializeObject(nodeMatchResumeTime, Newtonsoft.Json.Formatting.None) });
+                // 且這裡的JSON的值的部分，全部都要用雙引號包起來，就算是數字也一樣，這是因為後端伺服器MEX制定人他們要這樣
+                // 但因為這裡是用string的dictionart產生JSON，所以都會有雙引號，另外再透過呼叫function把雙引號改成3個雙引號，傳入到exe的參數才會留者這個雙引號
+                ea.AddEagleContent(new EagleContent() { Item = "MATCH_RESUME_TIME", Value = JsonHelper.ToJsonStringWithQuoteForExeArguments(nodeMatchResumeTime) });
 
-                eagleGate.Send(ea);
+                eagleGate.AddArgument(ea);
             }
 
-            eagleGate.Stop();
+            eagleGate.Send();
 
             DbLog(MessageConst.SendMsg + ":" + eagleGate.Subject);
         }
@@ -431,5 +434,30 @@ namespace TradeFutNight.Views.PrefixA
 
             MessageBoxExService.Instance().Info("OK");
         }
+
+        /// <summary>
+        /// 這是為了30063而寫的，只是先在這邊測試，等到30063開始寫再移過去
+        /// </summary>
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            IEagleGate eagleGate = new MexGate(MsgSysType.FutNight, "TFX.FXM.TXR.QUERY", "all");
+            EagleArgs ea = new EagleArgs();
+            ea.AddEagleContent(new EagleContent() { Item = "QuerySingle", Value = "all" });
+            eagleGate.AddArgument(ea);
+            string result = eagleGate.SendAndReceiveData("FXM.TFX.TXR.RESULT", "all", 3000).ReceiveData;
+            var mexReceivedData = JsonConvert.DeserializeObject<List<MexReceivedData>>(result);
+        }
+    }
+
+    /// <summary>
+    /// 這是為了30063而寫的，只是先在這邊測試，等到30063開始寫再移過去
+    /// </summary>
+    public class MexReceivedData
+    {
+        public string type { get; set; }
+        public int bid { get; set; }
+        public int ask { get; set; }
+        public string time { get; set; }
+        public int price { get; set; }
     }
 }

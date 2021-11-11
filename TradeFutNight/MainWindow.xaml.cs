@@ -55,6 +55,9 @@ namespace TradeFutNight
                 mainUi.CloseLeftPanel();
                 this.WindowState = System.Windows.WindowState.Normal;
                 this.Title = "期貨夜盤" + "-" + directOpenProgramID + "-" + directOpenProgramName;
+                //this.Topmost = true;
+                //this.WindowStyle = System.Windows.WindowStyle.ToolWindow;
+                //this.ShowInTaskbar = false;
             }
 
             this.Content = mainUi;
