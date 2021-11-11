@@ -103,10 +103,37 @@ namespace TradeFutNight.Views.Prefix3
                     return false;
                 }
 
+                List<PDK> pdkNotStock = null;
+                List<PDK> pdkStock = null;
+                using (var das = Factory.CreateDalSession())
+                {
+                    var dPdk = new D_PDK(das);
+                    // 非股票類
+                    pdkNotStock = dPdk.ListDistinctKindIdNotStock().ToList();
+                    // 股票關聯KEY值
+                    pdkStock = dPdk.ListDistinctParamKeyStock().ToList();
+                }
+
                 foreach (var item in trackableData.ChangedItems)
                 {
                     Dispatcher.Invoke(() =>
                     {
+                        if (item.MORD_KIND_ID_TYPE == 'K')
+                        {
+                            var count = pdkNotStock.Where(x => x.PDK_KIND_ID == item.MORD_KIND_ID).Count();
+                            if (count == 0)
+                            {
+                                resultItem.AppendErrorMessage($"{item.MORD_KIND_ID}不是非股票類的代碼");
+                            }
+                        }
+                        else if (item.MORD_KIND_ID_TYPE == 'P')
+                        {
+                            var count = pdkStock.Where(x => x.PDK_PARAM_KEY == item.MORD_KIND_ID).Count();
+                            if (count == 0)
+                            {
+                                resultItem.AppendErrorMessage($"{item.MORD_KIND_ID}不是股票關聯KEY值的代碼，期貨應是STF或ETF，選擇權應是STC或ETC");
+                            }
+                        }
                         item.MORD_USER_ID = UserID;
                         item.MORD_W_TIME = DateTime.Now;
                     });
