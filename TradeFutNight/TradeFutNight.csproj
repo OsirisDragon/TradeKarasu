@@ -175,6 +175,14 @@
     <Compile Include="Views\MainUI.xaml.cs">
       <DependentUpon>MainUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Prefix3\U_30056_ViewModel.cs" />
+    <Compile Include="Views\Prefix3\U_30056.xaml.cs">
+      <DependentUpon>U_30056.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix3\U_30055_ViewModel.cs" />
+    <Compile Include="Views\Prefix3\U_30055.xaml.cs">
+      <DependentUpon>U_30055.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Prefix3\U_30040_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30040.xaml.cs">
       <DependentUpon>U_30040.xaml</DependentUpon>
@@ -253,6 +261,14 @@
     <Page Include="Views\MainUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Prefix3\U_30056.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix3\U_30055.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Prefix3\U_30040.xaml">
       <Generator>MSBuild:Compile</Generator>

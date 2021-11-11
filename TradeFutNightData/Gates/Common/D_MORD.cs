@@ -22,7 +22,7 @@ namespace TradeFutNightData.Gates.Common
         {
             var query = _das.DataConn.GetTable<MORD>();
 
-            return query.ToList();
+            return query.OrderByDescending(q => q.MORD_KIND_ID_TYPE).ThenBy(q => q.MORD_KIND_ID).ThenBy(q => q.MORD_SPREAD_CODE).ToList();
         }
 
         public void Update(IEnumerable<MORD> data)

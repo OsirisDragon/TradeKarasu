@@ -19,16 +19,16 @@ using TradeFutNightData.Models.Common;
 namespace TradeFutNight.Views.Prefix3
 {
     /// <summary>
-    /// U_30029.xaml 的互動邏輯
+    /// U_30056.xaml 的互動邏輯
     /// </summary>
-    public partial class U_30029 : UserControlParent, IViewSword
+    public partial class U_30056 : UserControlParent, IViewSword
     {
-        private U_30029_ViewModel _vm;
+        private U_30056_ViewModel _vm;
 
-        public U_30029()
+        public U_30056()
         {
             InitializeComponent();
-            _vm = (U_30029_ViewModel)DataContext;
+            _vm = (U_30056_ViewModel)DataContext;
         }
 
         public async Task<bool> IsCanRun()
@@ -103,12 +103,39 @@ namespace TradeFutNight.Views.Prefix3
                     return false;
                 }
 
+                List<PDK> pdkNotStock = null;
+                List<PDK> pdkStock = null;
+                using (var das = Factory.CreateDalSession())
+                {
+                    var dPdk = new D_PDK(das);
+                    // 非股票類
+                    pdkNotStock = dPdk.ListDistinctKindIdNotStock().ToList();
+                    // 股票關聯KEY值
+                    pdkStock = dPdk.ListDistinctParamKeyStock().ToList();
+                }
+
                 foreach (var item in trackableData.ChangedItems)
                 {
                     Dispatcher.Invoke(() =>
                     {
-                        item.TPPVOL_USER_ID = UserID;
-                        item.TPPVOL_W_TIME = DateTime.Now;
+                        if (item.MORD_KIND_ID_TYPE == 'K')
+                        {
+                            var count = pdkNotStock.Where(x => x.PDK_KIND_ID == item.MORD_KIND_ID).Count();
+                            if (count == 0)
+                            {
+                                resultItem.AppendErrorMessage($"{item.MORD_KIND_ID}不是非股票類的代碼");
+                            }
+                        }
+                        else if (item.MORD_KIND_ID_TYPE == 'P')
+                        {
+                            var count = pdkStock.Where(x => x.PDK_PARAM_KEY == item.MORD_KIND_ID).Count();
+                            if (count == 0)
+                            {
+                                resultItem.AppendErrorMessage($"{item.MORD_KIND_ID}不是股票關聯KEY值的代碼，期貨應是STF或ETF，選擇權應是STC或ETC");
+                            }
+                        }
+                        item.MORD_USER_ID = UserID;
+                        item.MORD_W_TIME = DateTime.Now;
                     });
                 }
 
@@ -141,8 +168,8 @@ namespace TradeFutNight.Views.Prefix3
 
                     try
                     {
-                        var dTPPVOL = new D_TPPVOL(das);
-                        dTPPVOL.Update(domainData);
+                        var dMORD = new D_MORD(das);
+                        dMORD.Update(domainData);
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -169,12 +196,12 @@ namespace TradeFutNight.Views.Prefix3
             await task;
         }
 
-        private IList<TPPVOL> CustomMapper(IEnumerable<UIModel_30029> items)
+        private IList<MORD> CustomMapper(IEnumerable<UIModel_30056> items)
         {
-            var listResult = new List<TPPVOL>();
+            var listResult = new List<MORD>();
             foreach (var item in items)
             {
-                var newItem = _vm.MapperInstance.Map<TPPVOL>(item);
+                var newItem = _vm.MapperInstance.Map<MORD>(item);
 
                 var trackItem = item.CastToIChangeTrackable();
                 newItem.OriginalData = trackItem.GetOriginal();
