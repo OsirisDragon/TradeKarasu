@@ -44,6 +44,11 @@ namespace TradeFutNight.Views.Prefix3
             return task.Result;
         }
 
+        public override void ControlSetting()
+        {
+            base.ControlSetting();
+        }
+
         public async Task Open()
         {
             var task = Task.Run(() =>
@@ -52,6 +57,7 @@ namespace TradeFutNight.Views.Prefix3
                 DbLog(MessageConst.Open);
             });
             await task;
+            ControlSetting();
         }
 
         public void Insert()

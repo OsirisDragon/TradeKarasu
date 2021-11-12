@@ -31,11 +31,6 @@ namespace TradeFutNight.Views.Prefix3
             _vm = (U_30028_ViewModel)DataContext;
         }
 
-        public void InitialSetting(string programID, string programName, MainUI_ViewModel vmMainUi, MainUI mainUi)
-        {
-            base.Init(programID, programName, vmMainUi, mainUi);
-        }
-
         public async Task<bool> IsCanRun()
         {
             var task = Task.Run(() =>
@@ -49,6 +44,11 @@ namespace TradeFutNight.Views.Prefix3
             return task.Result;
         }
 
+        public override void ControlSetting()
+        {
+            base.ControlSetting();
+        }
+
         public async Task Open()
         {
             var task = Task.Run(() =>
@@ -57,6 +57,7 @@ namespace TradeFutNight.Views.Prefix3
                 DbLog(MessageConst.Open);
             });
             await task;
+            ControlSetting();
         }
 
         public void Insert()

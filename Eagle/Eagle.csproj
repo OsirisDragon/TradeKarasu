@@ -47,18 +47,8 @@
     <Compile Include="EagleResult.cs" />
     <Compile Include="IEagleGate.cs" />
     <Compile Include="MexGate.cs" />
+    <Compile Include="MsgSysType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="iMAppX">
-      <Guid>{1DC2CABF-7CB4-4D33-BECD-B89683571B9B}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>2</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

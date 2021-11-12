@@ -48,6 +48,61 @@ namespace Eagle
 
             return myReturnValue;
         }
+
+        public static string RunAndReceiveData(string filePath, string commandArgs)
+        {
+            string myReturnValue = "";
+
+            using (new ErrorModeContext(ErrorModes.FailCriticalErrors | ErrorModes.NoGpFaultErrorBox))
+            {
+                using (Process process = new Process())
+                {
+                    ProcessStartInfo processInfo = new ProcessStartInfo();
+
+                    processInfo.FileName = filePath;
+                    processInfo.Arguments = commandArgs;
+                    processInfo.RedirectStandardOutput = true;
+                    processInfo.RedirectStandardError = true;
+                    processInfo.RedirectStandardInput = true;
+                    processInfo.UseShellExecute = false;
+                    processInfo.CreateNoWindow = true;
+                    processInfo.WorkingDirectory = Path.GetDirectoryName(filePath);
+
+                    process.StartInfo = processInfo;
+                    process.Start();
+
+                    string myOutput = process.StandardOutput.ReadToEnd();
+                    string myError = process.StandardError.ReadToEnd();
+
+                    process.WaitForExit();
+
+                    if (myError != "")
+                    {
+                        throw new Exception(myError);
+                    }
+
+                    if (myOutput != "")
+                    {
+                        myReturnValue = getBetween(myOutput, "@@ReceivedData-START@@", "@@ReceivedData-END@@");
+                    }
+                }
+            }
+
+            return myReturnValue;
+        }
+
+        public static string getBetween(string strSource, string strStart, string strEnd)
+        {
+            if (strSource.Contains(strStart) && strSource.Contains(strEnd))
+            {
+                int Start, End;
+                Start = strSource.IndexOf(strStart, 0) + strStart.Length;
+                End = strSource.IndexOf(strEnd, Start);
+                return strSource.Substring(Start, End - Start);
+            }
+
+            return "";
+        }
     }
 
     public class ErrorModeContext : IDisposable
