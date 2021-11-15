@@ -128,7 +128,10 @@ namespace TradeFutNight.Reports
             Application.Current.Dispatcher.Invoke(() =>
             {
                 GetGroupHeaderColumns().Controls.Add(ReportNormal.CreateHeaderColumnsTable(rptSetting, columns));
-                GetDetailBand().Controls.Add(ReportNormal.CreateContentTable(exportData, rptSetting, columns));
+
+                // 如果有資料才要產生內容
+                if (exportData.Count > 0)
+                    GetDetailBand().Controls.Add(ReportNormal.CreateContentTable(exportData, rptSetting, columns));
             });
 
             this.DataSource = exportData;
