@@ -14,6 +14,7 @@ namespace CrossModel
         public static string Attention = "注意";
         public static string ProcessResult = "處理結果";
         public static string ProcessSuccess = "處理完成，請保留單據以備查核";
+        public static string PrintSuccess = "印表完成";
         public static string ConfirmDelete = "確認是否要刪除此筆資料?";
         public static string NotAllowedExcute = "時點不允許執行此交易";
         public static string NoAddedData = "沒有需要新增的資料";
