@@ -1,20 +1,19 @@
 ﻿using AutoMapper;
 using ChangeTracking;
+using CrossModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
 using System.IO;
 using System.Linq;
-using TradeFutNight.Common;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Common;
 using TradeFutNightData.Models.Common;
 
-namespace TradeFutNight.Views.Prefix3
+namespace TradeFutNight.Views.PrefixC
 {
     public class U_C9902_ViewModel : ViewModelParent<UIModel_C9902>
     {
-        public IList<FileInfo> FileGridData
+        public IList<UIModel_C9902_File> FileGridData
         {
             get { return GetProperty(() => FileGridData); }
             set { SetProperty(() => FileGridData, value); }
@@ -23,7 +22,7 @@ namespace TradeFutNight.Views.Prefix3
         public U_C9902_ViewModel()
         {
             MainGridData = new ObservableCollection<UIModel_C9902>();
-            FileGridData = new ObservableCollection<FileInfo>();
+            FileGridData = new ObservableCollection<UIModel_C9902_File>();
         }
 
         public void Open()
@@ -34,28 +33,34 @@ namespace TradeFutNight.Views.Prefix3
             }));
 
             MainGridData = new ObservableCollection<UIModel_C9902>().ToList().AsTrackable();
-            FileGridData = new ObservableCollection<FileInfo>().ToList();
+            FileGridData = new ObservableCollection<UIModel_C9902_File>().ToList();
 
             using (var das = Factory.CreateDalSession())
             {
                 var dJCF = new D_JCF(das);
-                MainGridData = MapperInstance.Map<IList<UIModel_C9902>>(dJCF.ListByID("B")).AsTrackable();
+                MainGridData = MapperInstance.Map<IList<UIModel_C9902>>(dJCF.ListNotStartWith("B")).AsTrackable();
             }
 
-            string path = $@"C:\future_night\{ MagicalHats.Ocf.OCF_DATE.ToString("yyyyMMdd")}\";
-            string[] check = { "50301", "50302", "50303", "52303" };
+            string[] checkItem = { "50301", "50302", "50303", "52303" };
             string checkPatern;
-            List<FileInfo> fileList = new List<FileInfo>();
-            foreach (string item in check)
+            var fileList = new List<UIModel_C9902_File>();
+
+            var rowNumber = 1;
+            foreach (string item in checkItem)
             {
                 checkPatern = $"*{item}*.pdf";
-                string[] files = Directory.GetFiles(path, checkPatern, SearchOption.AllDirectories);
+                string[] files = Directory.GetFiles(AppSettings.LocalReportDirectory, checkPatern, SearchOption.AllDirectories);
                 if (files != null)
                 {
                     foreach (var file in files)
                     {
-                        FileInfo fileInfo = new FileInfo(file);
-                        fileList.Add(fileInfo);
+                        var fileInfo = new FileInfo(file);
+                        var uiModelFile = new UIModel_C9902_File();
+                        uiModelFile.RowNumber = rowNumber++;
+                        uiModelFile.DirectoryName = fileInfo.DirectoryName;
+                        uiModelFile.Name = fileInfo.Name;
+
+                        fileList.Add(uiModelFile);
                     }
                 }
             }
@@ -75,5 +80,12 @@ namespace TradeFutNight.Views.Prefix3
 
     public class UIModel_C9902 : JCF
     {
+    }
+
+    public class UIModel_C9902_File
+    {
+        public virtual int RowNumber { get; set; }
+        public virtual string DirectoryName { get; set; }
+        public virtual string Name { get; set; }
     }
 }

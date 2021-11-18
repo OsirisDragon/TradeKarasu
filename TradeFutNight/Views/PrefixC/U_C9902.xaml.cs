@@ -1,22 +1,15 @@
-﻿using ChangeTracking;
-using CrossModel;
-using CrossModel.Enum;
-using DevExpress.XtraPrinting;
-using DevExpress.XtraReports.UI;
+﻿using CrossModel;
+using DevExpress.Xpf.Grid;
+using DevExpress.Xpf.Printing;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
-using TradeFutNightData;
-using TradeFutNightData.Gates.Common;
-using TradeFutNightData.Models.Common;
 
-namespace TradeFutNight.Views.Prefix3
+namespace TradeFutNight.Views.PrefixC
 {
     /// <summary>
     /// U_C9902.xaml 的互動邏輯
@@ -29,11 +22,6 @@ namespace TradeFutNight.Views.Prefix3
         {
             InitializeComponent();
             _vm = (U_C9902_ViewModel)DataContext;
-        }
-
-        public void InitialSetting(string programID, string programName, MainUI_ViewModel vmMainUi, MainUI mainUi)
-        {
-            base.Init(programID, programName, vmMainUi, mainUi);
         }
 
         public async Task<bool> IsCanRun()
@@ -49,6 +37,13 @@ namespace TradeFutNight.Views.Prefix3
             return task.Result;
         }
 
+        public override void ControlSetting()
+        {
+            base.ControlSetting();
+            VmMainUi.IsButtonDeleteEnabled = false;
+            VmMainUi.IsButtonSaveEnabled = false;
+        }
+
         public async Task Open()
         {
             var task = Task.Run(() =>
@@ -57,6 +52,7 @@ namespace TradeFutNight.Views.Prefix3
                 DbLog(MessageConst.Open);
             });
             await task;
+            ControlSetting();
         }
 
         public void Insert()
@@ -97,16 +93,6 @@ namespace TradeFutNight.Views.Prefix3
                     return false;
                 }
 
-                var resultItem = new ResultItem();
-                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-
-                if (trackableData.DeletedItems.Count() == 0)
-                {
-                    VmMainUi.HideLoadingWindow();
-                    MessageBoxExService.Instance().Error(MessageConst.NoDeletedData);
-                    return false;
-                }
-
                 return true;
             });
             await task;
@@ -118,54 +104,10 @@ namespace TradeFutNight.Views.Prefix3
         {
             VmMainUi.LoadingText = MessageConst.LoadingStatusSaving;
 
-            var task = Task.Run(async () =>
+            var task = Task.Run(() =>
             {
-                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = _vm.MapperInstance.Map<IList<JCF>>(trackableData.DeletedItems);
-
-                using (var das = Factory.CreateDalSession())
-                {
-                    das.Begin();
-
-                    try
-                    {
-                        var dJCF = new D_JCF(das);
-                        dJCF.Delete(domainData);
-
-                        UpdateAccessPermission(ProgramID, das);
-
-                        DbLog(MessageConst.Completed, das);
-
-                        das.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        das.Rollback();
-                        throw ex;
-                    }
-                }
-
-                var report = CreateReport(domainData, OperationType.Save);
-                var reportGate = await new ReportGate(report).CreateDocumentAsync();
-                await reportGate.ExportPdf(ExportFilePath);
-                await reportGate.Print();
-
-                VmMainUi.HideLoadingWindow();
-                MessageBoxExService.Instance().Info(MessageConst.ProcessSuccess);
-                CloseWindow();
             });
             await task;
-        }
-
-        private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
-        {
-            string reportTitle = ProgramID + "–" + ProgramName;
-
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, "", Ocf.OCF_DATE, true, false, true);
-            rptSetting.HeaderColumnsFontSize = 10;
-            var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain2.Columns, rptSetting);
-
-            return reportCommon;
         }
 
         public async Task Export()
@@ -179,10 +121,26 @@ namespace TradeFutNight.Views.Prefix3
         {
             gridView.CloseEditor();
 
-            var report = CreateReport(_vm.FileGridData, OperationType.Print);
-            var reportGate = await new ReportGate(report).CreateDocumentAsync();
+            List<TemplatedLink> links = new List<TemplatedLink>();
+
+            if (_vm.MainGridData.Count != 0)
+                links.Add(new PrintableControlLink((TableView)gridMain.View) { });
+
+            if (_vm.FileGridData.Count != 0)
+                links.Add(new PrintableControlLink((TableView)gridFile.View) { ReportHeaderTemplate = Resources["reportHeaderGridFile"] as DataTemplate });
+
+            CompositeLink compositeLink = new CompositeLink(links);
+            compositeLink.Margins = new System.Drawing.Printing.Margins(20, 20, 10, 10);
+            compositeLink.PaperKind = System.Drawing.Printing.PaperKind.A4;
+            compositeLink.DocumentName = ProgramID + "–" + ProgramName;
+
+            var reportGate = new ReportGate(compositeLink);
             await reportGate.ExportPdf(ExportFilePath);
             await reportGate.Print();
+
+            MessageBoxExService.Instance().Info(MessageConst.PrintSuccess);
+
+            await Task.Yield();
         }
 
         public async Task PrintIndex()

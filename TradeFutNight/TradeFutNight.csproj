@@ -412,6 +412,7 @@
   <ItemGroup>
     <Folder Include="Reports\Prefix2\" />
     <Folder Include="Reports\Prefix3\" />
+    <Folder Include="Reports\PrefixC\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="mapp.xml">

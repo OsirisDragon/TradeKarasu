@@ -1,5 +1,4 @@
-﻿using Dapper;
-using DataEngine;
+﻿using DataEngine;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -17,9 +16,9 @@ namespace TradeFutNightData.Gates.Common
 
     public class D_JCF<T> : ParentGate
     {
-        public IEnumerable<JCF> ListByID(string JCF_JOB_ID)
+        public IEnumerable<JCF> ListNotStartWith(string compareStr)
         {
-            var query = _das.DataConn.GetTable<JCF>().Where(c => !c.JCF_JOB_ID.Contains(JCF_JOB_ID));
+            var query = _das.DataConn.GetTable<JCF>().Where(c => !c.JCF_JOB_ID.StartsWith(compareStr));
             return query.ToList();
         }
     }
