@@ -49,6 +49,8 @@ namespace TradeFutNight.Views.Prefix3
 
         public async Task Open()
         {
+            ControlSetting();
+
             var task = Task.Run(() =>
             {
                 _vm.Open();
@@ -59,7 +61,6 @@ namespace TradeFutNight.Views.Prefix3
                 });
             });
             await task;
-            ControlSetting();
         }
 
         public void Insert()
