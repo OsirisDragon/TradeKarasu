@@ -8,9 +8,11 @@ namespace CrossModel
         public string HeaderColumnsFontName = "標楷體";
         public float HeaderColumnsFontSize = 11;
         public float HeaderColumnsRowHeight = 40f;
+        public float HeaderColumnsWidthScaleFactor = 1f;
 
         public string ContentColumnsFontName = "標楷體";
         public float ContentColumnsFontSize = 11;
+        public float ContentColumnsWidthScaleFactor = 1f;
 
         public string FooterMemoFontName = "標楷體";
         public float FooterMemoFontSize = 11;

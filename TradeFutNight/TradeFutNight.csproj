@@ -243,6 +243,10 @@
       <DependentUpon>U_A9920.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PrefixA\U_A9920_ViewModel.cs" />
+    <Compile Include="Views\PrefixC\U_C9902.xaml.cs">
+      <DependentUpon>U_C9902.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrefixC\U_C9902_ViewModel.cs" />
     <Compile Include="Views\UserControlParent.cs" />
     <Compile Include="Views\ViewModelParent.cs" />
     <Page Include="Auth\AuthDoubleWithoutCard.xaml">
@@ -333,6 +337,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\PrefixC\U_C9902.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\ShareStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -412,6 +420,7 @@
   <ItemGroup>
     <Folder Include="Reports\Prefix2\" />
     <Folder Include="Reports\Prefix3\" />
+    <Folder Include="Reports\PrefixC\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="mapp.xml">

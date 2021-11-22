@@ -32,13 +32,6 @@ namespace TradeFutNight.Common
             return instance;
         }
 
-        public MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon)
-        {
-            MessageBoxResult result = MessageBoxResult.None;
-            Application.Current.Dispatcher.Invoke(() => { result = ThemedMessageBox.Show(caption, messageBoxText, button, icon); });
-            return result;
-        }
-
         public MessageBoxResult Confirm(string content)
         {
             MessageBoxResult result = MessageBoxResult.None;
@@ -53,14 +46,21 @@ namespace TradeFutNight.Common
         public MessageBoxResult Error(string content)
         {
             MessageBoxResult result = MessageBoxResult.None;
-            Application.Current.Dispatcher.Invoke(() => { result = ThemedMessageBox.Show(MessageConst.Attention, content, MessageBoxButton.OK, MessageBoxImage.Error); });
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                result = ThemedMessageBox.Show(title: MessageConst.Attention, text: content, messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error, owner: Application.Current.MainWindow);
+            });
+
             return result;
         }
 
         public MessageBoxResult Info(string content)
         {
             MessageBoxResult result = MessageBoxResult.None;
-            Application.Current.Dispatcher.Invoke(() => { result = ThemedMessageBox.Show(MessageConst.ProcessResult, content, MessageBoxButton.OK, MessageBoxImage.Information); });
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                result = ThemedMessageBox.Show(title: MessageConst.ProcessResult, text: content, messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Information, owner: Application.Current.MainWindow);
+            });
             return result;
         }
     }
