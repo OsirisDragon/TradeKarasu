@@ -85,5 +85,23 @@ namespace TradeFutNight.Common
                 return result;
             }
         }
+
+        public static IList<ItemInfo> PhaltType()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "P：契約", Value = 'P' });
+            result.Add(new ItemInfo() { Text = "I：商品", Value = 'I' });
+            return result;
+        }
+
+        public static IList<ItemInfo> PhaltMsgType()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "1：期貨資訊異常", Value = '1' });
+            result.Add(new ItemInfo() { Text = "2：標的市場暫停", Value = '2' });
+            result.Add(new ItemInfo() { Text = "3：個股訊息面暫停", Value = '3' });
+            result.Add(new ItemInfo() { Text = "4：盤後契約尚未完成", Value = '4' });
+            return result;
+        }
     }
 }

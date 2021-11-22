@@ -48,6 +48,7 @@ namespace TradeFutNight.Views.Prefix3
 
         public async Task Open()
         {
+            ControlSetting();
             var task = Task.Run(() =>
             {
                 _vm.Open();
@@ -58,7 +59,6 @@ namespace TradeFutNight.Views.Prefix3
                 });
             });
             await task;
-            ControlSetting();
         }
 
         public void Insert()
@@ -109,15 +109,15 @@ namespace TradeFutNight.Views.Prefix3
                     return false;
                 }
 
-                List<PDK> pdkNotStock = null;
-                List<PDK> pdkStock = null;
+                IList<PDK> pdkNotStock = null;
+                IList<PDK> pdkStock = null;
                 using (var das = Factory.CreateDalSession())
                 {
                     var dPdk = new D_PDK(das);
                     // 非股票類
-                    pdkNotStock = dPdk.ListDistinctKindIdNotStock().ToList();
+                    pdkNotStock = dPdk.ListDistinctKindIdNotStock();
                     // 股票關聯KEY值
-                    pdkStock = dPdk.ListDistinctParamKeyStock().ToList();
+                    pdkStock = dPdk.ListDistinctParamKeyStock();
                 }
 
                 foreach (var item in trackableData.AddedItems)
@@ -126,7 +126,7 @@ namespace TradeFutNight.Views.Prefix3
                     {
                         if (item.MORD_KIND_ID_TYPE == 'K')
                         {
-                            var count = pdkNotStock.Where(x => x.PDK_KIND_ID == item.MORD_KIND_ID).Count();
+                            var count = pdkNotStock.Count(x => x.PDK_KIND_ID == item.MORD_KIND_ID);
                             if (count == 0)
                             {
                                 resultItem.AppendErrorMessage($"{item.MORD_KIND_ID}不是非股票類的代碼");
@@ -134,7 +134,7 @@ namespace TradeFutNight.Views.Prefix3
                         }
                         else if (item.MORD_KIND_ID_TYPE == 'P')
                         {
-                            var count = pdkStock.Where(x => x.PDK_PARAM_KEY == item.MORD_KIND_ID).Count();
+                            var count = pdkStock.Count(x => x.PDK_PARAM_KEY == item.MORD_KIND_ID);
                             if (count == 0)
                             {
                                 resultItem.AppendErrorMessage($"{item.MORD_KIND_ID}不是股票關聯KEY值的代碼，期貨應是STF或ETF，選擇權應是STC或ETC");

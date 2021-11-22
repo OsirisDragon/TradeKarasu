@@ -116,7 +116,7 @@
                         ItemWidth="0.31*">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="0.05*" />
+                                <RowDefinition Height="35" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0" Orientation="Horizontal">

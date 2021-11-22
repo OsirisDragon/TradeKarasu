@@ -7,6 +7,8 @@
         Save,
         Delete,
         Print,
+        PrintIndex,
+        PrintStock,
         Confirm
     }
 }
