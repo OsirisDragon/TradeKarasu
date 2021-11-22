@@ -30,7 +30,7 @@ namespace TradeFutNightData.Gates.Specific.PrefixA
             var p = new DynamicParameters();
             p.Add("@START_DATE", START_DATE);
             p.Add("@END_DATE", END_DATE);
-            p.Add("@PROD_ID", PROD_ID);
+            p.Add("@PROD_ID", PROD_ID + "%");
 
             var result = _das.Conn.Query<T>(BuildCommand<T>(sql, p));
 
