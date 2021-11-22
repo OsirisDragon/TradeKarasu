@@ -45,7 +45,7 @@ namespace TradeFutNight.Reports
 
                 if (col.Width != 0)
                 {
-                    cell.WidthF = (float)(col.Width.Value * 1f);
+                    cell.WidthF = (float)(col.Width.Value * rptSetting.HeaderColumnsWidthScaleFactor);
                 }
 
                 if (col.EditSettings != null && !String.IsNullOrEmpty(col.EditSettings.DisplayFormat))
@@ -138,7 +138,7 @@ namespace TradeFutNight.Reports
 
                 if (col.Width != 0)
                 {
-                    cell.WidthF = (float)(col.Width.Value * 1f);
+                    cell.WidthF = (float)(col.Width.Value * rptSetting.ContentColumnsWidthScaleFactor);
                 }
 
                 cell.Font = new Font(rptSetting.ContentColumnsFontName, rptSetting.ContentColumnsFontSize);
