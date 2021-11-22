@@ -103,5 +103,31 @@ namespace TradeFutNight.Common
             result.Add(new ItemInfo() { Text = "4：盤後契約尚未完成", Value = '4' });
             return result;
         }
+
+        public static IList<ItemInfo> TpphaltMsgType()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "暫停動態退單", Value = '1' });
+            result.Add(new ItemInfo() { Text = "放寬退單倍數", Value = '2' });
+            return result;
+        }
+
+        public static IList<ItemInfo> TpphaltType()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "契約", Value = 'P' });
+            result.Add(new ItemInfo() { Text = "單式商品", Value = 'I' });
+            result.Add(new ItemInfo() { Text = "複式商品", Value = 'S' });
+            return result;
+        }
+
+        public static IList<ItemInfo> TpphaltRange()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "上下限", Value = '0' });
+            result.Add(new ItemInfo() { Text = "上限", Value = '1' });
+            result.Add(new ItemInfo() { Text = "下限", Value = '2' });
+            return result;
+        }
     }
 }
