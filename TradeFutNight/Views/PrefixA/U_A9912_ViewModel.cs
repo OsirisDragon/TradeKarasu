@@ -27,6 +27,12 @@ namespace TradeFutNight.Views.PrefixA
             set { SetProperty(() => EndDate, value); }
         }
 
+        public string ProdId
+        {
+            get { return GetProperty(() => ProdId); }
+            set { SetProperty(() => ProdId, value); }
+        }
+
         public IList<ItemInfo> PhaltTypeInfos
         {
             get { return GetProperty(() => PhaltTypeInfos); }
@@ -54,7 +60,7 @@ namespace TradeFutNight.Views.PrefixA
             using (var das = Factory.CreateDalSession())
             {
                 var dA9912 = new D_A9912<UIModel_A9912>(das);
-                MainGridData = dA9912.ListByDate(StartDate, EndDate, "").ToList();
+                MainGridData = dA9912.ListByDate(StartDate, EndDate, ProdId).ToList();
             }
             PhaltTypeInfos = DropDownItems.PhaltType();
             PhaltMsgTypeInfos = DropDownItems.PhaltMsgType();
@@ -68,14 +74,14 @@ namespace TradeFutNight.Views.PrefixA
         {
         }
 
-        public async Task Query(string prodId)
+        public async Task Query()
         {
             var task = Task.Run(() =>
             {
                 using (var das = Factory.CreateDalSession())
                 {
                     var dA9912 = new D_A9912<UIModel_A9912>(das);
-                    MainGridData = dA9912.ListByDate(StartDate, EndDate, prodId).ToList();
+                    MainGridData = dA9912.ListByDate(StartDate, EndDate, ProdId).ToList();
                 }
             });
 

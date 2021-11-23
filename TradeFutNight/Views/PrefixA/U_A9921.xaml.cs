@@ -2,6 +2,7 @@
 using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -16,16 +17,16 @@ using TradeUtility;
 namespace TradeFutNight.Views.PrefixA
 {
     /// <summary>
-    /// U_A9912.xaml 的互動邏輯
+    /// U_A9921.xaml 的互動邏輯
     /// </summary>
-    public partial class U_A9912 : UserControlParent, IViewSword
+    public partial class U_A9921 : UserControlParent, IViewSword
     {
-        private U_A9912_ViewModel _vm;
+        private U_A9921_ViewModel _vm;
 
-        public U_A9912()
+        public U_A9921()
         {
             InitializeComponent();
-            _vm = (U_A9912_ViewModel)DataContext;
+            _vm = (U_A9921_ViewModel)DataContext;
         }
 
         public async Task<bool> IsCanRun()
@@ -47,8 +48,6 @@ namespace TradeFutNight.Views.PrefixA
             VmMainUi.IsButtonSaveEnabled = false;
             VmMainUi.IsButtonDeleteEnabled = false;
             VmMainUi.IsButtonPrintEnabled = true;
-            VmMainUi.IsButtonPrintIndexEnabled = true;
-            VmMainUi.IsButtonPrintStockEnabled = true;
 
             _vm.StartDate = _vm.EndDate = Ocf.OCF_DATE;
             _vm.ProdId = "";
@@ -61,12 +60,13 @@ namespace TradeFutNight.Views.PrefixA
             var task = Task.Run(() =>
             {
                 _vm.Open();
+
                 DbLog(MessageConst.Open);
             });
             await task;
             if (_vm.MainGridData.Count == 0)
             {
-                MessageBoxExService.Instance().Info("本日無暫停交易商品");
+                MessageBoxExService.Instance().Info("本日無動態退單商品");
             }
         }
 
@@ -107,8 +107,11 @@ namespace TradeFutNight.Views.PrefixA
                     break;
             }
 
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, "", Ocf.OCF_DATE, true, false, true);
-            rptSetting.HeaderColumnsFontSize = 10;
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, "", Ocf.OCF_DATE, true, true, true);
+            rptSetting.HeaderColumnsFontSize = 9;
+            rptSetting.ContentColumnsFontSize = 9;
+            rptSetting.ContentColumnsWidthScaleFactor = 0.95f;
+            rptSetting.HeaderColumnsWidthScaleFactor = 0.95f;
             var reportCommon = ReportNormal.CreateCommonLandscape(data, gridMain.Columns, rptSetting);
 
             return reportCommon;
@@ -166,7 +169,7 @@ namespace TradeFutNight.Views.PrefixA
 
             if (_vm.MainGridData.Count == 0)
             {
-                MessageBoxExService.Instance().Info("查無暫停交易商品");
+                MessageBoxExService.Instance().Info("查無資料");
             }
 
             button.IsEnabled = true;

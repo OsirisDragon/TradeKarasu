@@ -1,18 +1,15 @@
 ﻿using AutoMapper;
-using CrossModel;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using TradeFutNight.Common;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Specific.PrefixA;
 using TradeFutNightData.Models.Common;
 
 namespace TradeFutNight.Views.PrefixA
 {
-    public class U_A9916_ViewModel : ViewModelParent<UIModel_A9916>
+    public class U_A9921_ViewModel : ViewModelParent<UIModel_A9921>
     {
         public DateTime StartDate
         {
@@ -32,44 +29,23 @@ namespace TradeFutNight.Views.PrefixA
             set { SetProperty(() => ProdId, value); }
         }
 
-        public IList<ItemInfo> TpphaltTypeInfos
+        public U_A9921_ViewModel()
         {
-            get { return GetProperty(() => TpphaltTypeInfos); }
-            set { SetProperty(() => TpphaltTypeInfos, value); }
-        }
-
-        public IList<ItemInfo> TpphaltMsgTypeInfos
-        {
-            get { return GetProperty(() => TpphaltMsgTypeInfos); }
-            set { SetProperty(() => TpphaltMsgTypeInfos, value); }
-        }
-
-        public IList<ItemInfo> TpphaltRangeInfos
-        {
-            get { return GetProperty(() => TpphaltRangeInfos); }
-            set { SetProperty(() => TpphaltRangeInfos, value); }
-        }
-
-        public U_A9916_ViewModel()
-        {
-            MainGridData = new ObservableCollection<UIModel_A9916>();
+            MainGridData = new ObservableCollection<UIModel_A9921>();
         }
 
         public void Open()
         {
             MapperInstance = new Mapper(new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<TPPHALT, UIModel_A9916>().ReverseMap();
+                cfg.CreateMap<TPPADJ, UIModel_A9921>().ReverseMap();
             }));
 
             using (var das = Factory.CreateDalSession())
             {
-                var dA9916 = new D_A9916<UIModel_A9916>(das);
-                MainGridData = dA9916.ListByDate(StartDate, EndDate, ProdId).ToList();
+                var dA9921 = new D_A9921<UIModel_A9921>(das);
+                MainGridData = dA9921.ListByDate(StartDate, EndDate, ProdId).ToList();
             }
-            TpphaltTypeInfos = DropDownItems.TpphaltType();
-            TpphaltMsgTypeInfos = DropDownItems.TpphaltMsgType();
-            TpphaltRangeInfos = DropDownItems.TpphaltRange();
         }
 
         public void Insert()
@@ -86,8 +62,8 @@ namespace TradeFutNight.Views.PrefixA
             {
                 using (var das = Factory.CreateDalSession())
                 {
-                    var dA9916 = new D_A9916<UIModel_A9916>(das);
-                    MainGridData = dA9916.ListByDate(StartDate, EndDate, ProdId).ToList();
+                    var dA9921 = new D_A9921<UIModel_A9921>(das);
+                    MainGridData = dA9921.ListByDate(StartDate, EndDate, ProdId).ToList();
                 }
             });
 
@@ -95,7 +71,7 @@ namespace TradeFutNight.Views.PrefixA
         }
     }
 
-    public class UIModel_A9916 : TPPHALT
+    public class UIModel_A9921 : TPPADJ
     {
         public virtual string PDK_SUBTYPE { get; set; } // char(6)
     }
