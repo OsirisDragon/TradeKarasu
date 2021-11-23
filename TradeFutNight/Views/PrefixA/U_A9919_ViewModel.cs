@@ -23,6 +23,12 @@ namespace TradeFutNight.Views.PrefixA
             set { SetProperty(() => EndDate, value); }
         }
 
+        public string ProdId
+        {
+            get { return GetProperty(() => ProdId); }
+            set { SetProperty(() => ProdId, value); }
+        }
+
         public U_A9919_ViewModel()
         {
             MainGridData = new ObservableCollection<UIModel_A9919>();
@@ -38,7 +44,7 @@ namespace TradeFutNight.Views.PrefixA
             using (var das = Factory.CreateDalSession())
             {
                 var dA9919 = new D_A9919<UIModel_A9919>(das);
-                MainGridData = dA9919.ListByDate(StartDate, EndDate, "").ToList();
+                MainGridData = dA9919.ListByDate(StartDate, EndDate, ProdId).ToList();
             }
         }
 
@@ -50,14 +56,14 @@ namespace TradeFutNight.Views.PrefixA
         {
         }
 
-        public async Task Query(string prodId)
+        public async Task Query()
         {
             var task = Task.Run(() =>
             {
                 using (var das = Factory.CreateDalSession())
                 {
                     var dA9919 = new D_A9919<UIModel_A9919>(das);
-                    MainGridData = dA9919.ListByDate(StartDate, EndDate, prodId).ToList();
+                    MainGridData = dA9919.ListByDate(StartDate, EndDate, ProdId).ToList();
                 }
             });
 

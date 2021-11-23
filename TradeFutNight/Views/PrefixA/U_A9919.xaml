@@ -76,6 +76,7 @@
                 Width="70"
                 Height="30"
                 CharacterCasing="Upper"
+                EditValue="{Binding ProdId}"
                 NullText=""
                 NullValue="" />
             <Button
