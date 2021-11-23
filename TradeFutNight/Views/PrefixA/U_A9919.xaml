@@ -1,5 +1,5 @@
 ﻿<myTypes:UserControlParent
-    x:Class="TradeFutNight.Views.PrefixA.U_A9912"
+    x:Class="TradeFutNight.Views.PrefixA.U_A9919"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -14,7 +14,7 @@
     FontSize="14"
     mc:Ignorable="d">
     <myTypes:UserControlParent.DataContext>
-        <myTypesPrefix:U_A9912_ViewModel />
+        <myTypesPrefix:U_A9919_ViewModel />
     </myTypes:UserControlParent.DataContext>
     <myTypes:UserControlParent.Resources>
         <ResourceDictionary>
@@ -127,29 +127,16 @@
             </dxg:GridColumn>
             <dxg:GridColumn
                 Width="90"
-                FieldName="PHALT_TRADE_DATE"
-                Header="交易量歸屬&#xA;日期"
+                FieldName="MHALT_TRADE_DATE"
+                Header="交易日期"
                 ReadOnly="True">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="80"
-                FieldName="PHALT_TYPE"
-                Header="商品類別"
-                ReadOnly="True">
-                <dxg:GridColumn.EditSettings>
-                    <dxe:ComboBoxEditSettings
-                        DisplayMember="Text"
-                        IsTextEditable="False"
-                        ItemsSource="{Binding PhaltTypeInfos}"
-                        ValueMember="Value" />
-                </dxg:GridColumn.EditSettings>
-            </dxg:GridColumn>
-            <dxg:GridColumn
-                Width="80"
-                FieldName="PHALT_PROD_ID"
+                Width="70"
+                FieldName="MHALT_KIND_ID"
                 Header="商品代號"
                 ReadOnly="True">
                 <dxg:GridColumn.EditSettings>
@@ -157,22 +144,9 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="180"
-                FieldName="PHALT_MSG_TYPE"
-                Header="訊息類別"
-                ReadOnly="True">
-                <dxg:GridColumn.EditSettings>
-                    <dxe:ComboBoxEditSettings
-                        DisplayMember="Text"
-                        IsTextEditable="False"
-                        ItemsSource="{Binding PhaltMsgTypeInfos}"
-                        ValueMember="Value" />
-                </dxg:GridColumn.EditSettings>
-            </dxg:GridColumn>
-            <dxg:GridColumn
                 Width="90"
-                FieldName="PHALT_TRADE_PAUSE_DATE"
-                Header="暫停實際&#xA;日期"
+                FieldName="MHALT_PAUSE_DATE"
+                Header="放寬/縮小&#xA;日期"
                 ReadOnly="True">
                 <dxg:GridColumn.HeaderStyle>
                     <Style TargetType="dxg:GridColumnHeader">
@@ -185,9 +159,9 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="70"
-                FieldName="PHALT_TRADE_PAUSE_TIME"
-                Header="暫停交易&#xA;時間"
+                Width="80"
+                FieldName="MHALT_PAUSE_TIME"
+                Header="放寬/縮小&#xA;時間"
                 ReadOnly="True">
                 <dxg:GridColumn.HeaderStyle>
                     <Style TargetType="dxg:GridColumnHeader">
@@ -200,39 +174,37 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
+                Width="80"
+                FieldName="MHALT_SPREAD_MULTI"
+                Header="報價價差&#xA;放寬倍數"
+                ReadOnly="True" />
+            <dxg:GridColumn
+                Width="65"
+                FieldName="MHALT_VALID_QNTY_MULTI"
+                Header="報價口數&#xA;縮小倍數"
+                ReadOnly="True" />
+
+            <dxg:GridColumn
                 Width="90"
-                FieldName="PHALT_TRADE_RESUME_DATE"
-                Header="恢復實際&#xA;日期"
-                ReadOnly="True">
-                <dxg:GridColumn.EditSettings>
-                    <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd" />
-                </dxg:GridColumn.EditSettings>
-            </dxg:GridColumn>
+                FieldName="MHALT_QUOTE_DURATION_MULTI"
+                Header="報價持續秒數縮小倍數"
+                ReadOnly="True" />
+
             <dxg:GridColumn
-                Width="70"
-                FieldName="PHALT_TRADE_RESUME_TIME"
-                Header="恢復公告&#xA;時間"
+                Width="60"
+                FieldName="MHALT_USER_ID"
+                Header="異動&#xA;人員"
                 ReadOnly="True">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Center" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="70"
-                FieldName="PHALT_ORDER_RESUME_TIME"
-                Header="恢復收單&#xA;時間"
-                ReadOnly="True">
+                Width="150"
+                FieldName="MHALT_W_TIME"
+                Header="異動時間">
                 <dxg:GridColumn.EditSettings>
-                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
-                </dxg:GridColumn.EditSettings>
-            </dxg:GridColumn>
-            <dxg:GridColumn
-                Width="70"
-                FieldName="PHALT_MATCH_RESUME_TIME"
-                Header="恢復開盤&#xA;時間"
-                ReadOnly="True">
-                <dxg:GridColumn.EditSettings>
-                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd HH:mm:ss" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
         </dxg:GridControl>

@@ -19,8 +19,10 @@ namespace TradeFutNightData.Gates.Specific.PrefixA
 		                        B.PDK_SUBTYPE
                         FROM PHALT A
                         LEFT JOIN PDK B ON A.PHALT_PROD_ID = B.PDK_KIND_ID
-                        WHERE
-                        ( (@START_DATE  IS NULL OR PHALT_TRADE_DATE >= @START_DATE) AND (@END_DATE IS NULL OR PHALT_TRADE_DATE <= @END_DATE) )
+                        WHERE(
+                                            (@START_DATE  IS NULL OR PHALT_TRADE_DATE >= @START_DATE)
+                                  AND (@END_DATE IS NULL OR PHALT_TRADE_DATE <= @END_DATE)
+                        )
                         AND ( @PROD_ID = '' OR PHALT_PROD_ID = @PROD_ID )
                         ORDER BY PHALT_TRADE_DATE DESC, PHALT_PROD_ID ASC, PHALT_TRADE_PAUSE_DATE DESC
                         ";
