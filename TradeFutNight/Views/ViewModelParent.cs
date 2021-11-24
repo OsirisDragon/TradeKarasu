@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DevExpress.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 
@@ -25,6 +26,11 @@ namespace TradeFutNight.Views
         {
             get { return GetProperty(() => SelectedItem); }
             set { SetProperty(() => SelectedItem, value); }
+        }
+
+        public DateTime DefaultMinDateTime
+        {
+            get { return new DateTime(2000, 1, 1); }
         }
 
         public virtual void SetCurrentAndSelectedItem(T item)

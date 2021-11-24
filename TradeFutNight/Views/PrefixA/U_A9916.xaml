@@ -39,15 +39,17 @@
                 VerticalAlignment="Center">
                 交易日期：
             </Label>
-            <dxe:TextEdit
+            <dxe:DateEdit
                 Name="txtStartDate"
                 Width="100"
                 Height="30"
                 HorizontalContentAlignment="Center"
+                AllowDefaultButton="False"
                 EditValue="{Binding StartDate}"
                 Mask="yyyy/MM/dd"
                 MaskType="DateTimeAdvancingCaret"
-                MaskUseAsDisplayFormat="True" />
+                MaskUseAsDisplayFormat="True"
+                MinValue="{Binding DefaultMinDateTime}" />
             <Label
                 Width="10"
                 Margin="5,5,5,5"
@@ -55,15 +57,17 @@
                 VerticalAlignment="Center">
                 ~
             </Label>
-            <dxe:TextEdit
+            <dxe:DateEdit
                 Name="txtEndDate"
                 Width="100"
                 Height="30"
                 HorizontalContentAlignment="Center"
+                AllowDefaultButton="False"
                 EditValue="{Binding EndDate}"
                 Mask="yyyy/MM/dd"
                 MaskType="DateTimeAdvancingCaret"
-                MaskUseAsDisplayFormat="True" />
+                MaskUseAsDisplayFormat="True"
+                MinValue="{Binding DefaultMinDateTime}" />
             <Label
                 Width="70"
                 Margin="40,6,5,5"

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ChangeTracking;
 using CrossModel;
+using DevExpress.Mvvm.DataAnnotations;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -12,39 +13,45 @@ using TradeFutNightData.Models.Common;
 
 namespace TradeFutNight.Views.Prefix3
 {
-    public class U_30040_ViewModel : ViewModelParent<UIModel_30040>
+    public class U_30036_ViewModel : ViewModelParent<UIModel_30036>
     {
-        public IList<ItemInfo> IdxGroupInfos
+        public string CmNo
         {
-            get { return GetProperty(() => IdxGroupInfos); }
-            set { SetProperty(() => IdxGroupInfos, value); }
+            get { return GetProperty(() => CmNo); }
+            set { SetProperty(() => CmNo, value); }
         }
 
-        public U_30040_ViewModel()
+        public IList<ItemInfo> CcmSubtype
         {
-            MainGridData = new ObservableCollection<UIModel_30040>();
+            get { return GetProperty(() => CcmSubtype); }
+            set { SetProperty(() => CcmSubtype, value); }
+        }
+
+        public U_30036_ViewModel()
+        {
+            MainGridData = new ObservableCollection<UIModel_30036>();
         }
 
         public async void Open()
         {
             MapperInstance = new Mapper(new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<TPPDK, UIModel_30040>().ReverseMap();
+                cfg.CreateMap<CCM, UIModel_30036>().ReverseMap();
             }));
 
             await Query();
 
-            IdxGroupInfos = DropDownItems.TppIndexGrp();
+            CcmSubtype = DropDownItems.SubtypeCode();
         }
 
         public void Insert()
         {
-            MainGridData.Insert(0, new UIModel_30040());
+            MainGridData.Insert(0, new UIModel_30036());
         }
 
         public void Delete(object item)
         {
-            MainGridData.Remove((UIModel_30040)item);
+            MainGridData.Remove((UIModel_30036)item);
         }
 
         public async Task Query()
@@ -53,8 +60,8 @@ namespace TradeFutNight.Views.Prefix3
             {
                 using (var das = Factory.CreateDalSession())
                 {
-                    var dTPPDK = new D_TPPDK(das);
-                    MainGridData = MapperInstance.Map<IList<UIModel_30040>>(dTPPDK.ListAll()).AsTrackable();
+                    var dCCM = new D_CCM(das);
+                    MainGridData = MapperInstance.Map<IList<UIModel_30036>>(dCCM.ListByCmNo(CmNo)).AsTrackable();
                 }
             });
 
@@ -62,7 +69,7 @@ namespace TradeFutNight.Views.Prefix3
         }
     }
 
-    public class UIModel_30040 : TPPDK
+    public class UIModel_30036 : CCM
     {
     }
 }

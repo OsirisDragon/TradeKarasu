@@ -34,18 +34,14 @@ namespace TradeFutNight.Views.PrefixA
             MainGridData = new ObservableCollection<UIModel_A9919>();
         }
 
-        public void Open()
+        public async void Open()
         {
             MapperInstance = new Mapper(new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<MHALT, UIModel_A9919>().ReverseMap();
             }));
 
-            using (var das = Factory.CreateDalSession())
-            {
-                var dA9919 = new D_A9919<UIModel_A9919>(das);
-                MainGridData = dA9919.ListByDate(StartDate, EndDate, ProdId).ToList();
-            }
+            await Query();
         }
 
         public void Insert()
