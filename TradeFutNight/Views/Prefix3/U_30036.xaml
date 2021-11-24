@@ -11,18 +11,18 @@
     Margin="1,1,1,1"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontSize="12"
+    FontSize="14"
     mc:Ignorable="d">
     <myTypes:UserControlParent.DataContext>
         <myTypesPrefix:U_30036_ViewModel />
     </myTypes:UserControlParent.DataContext>
-    <!--<myTypes:UserControlParent.Resources>
+    <myTypes:UserControlParent.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="..\ShareStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </myTypes:UserControlParent.Resources>-->
+    </myTypes:UserControlParent.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />

@@ -11,7 +11,7 @@
     Margin="1,1,1,1"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontSize="12"
+    FontSize="14"
     mc:Ignorable="d">
     <myTypes:UserControlParent.DataContext>
         <myTypesPrefix:U_30025_ViewModel />
@@ -143,11 +143,11 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="90"
+                Width="100"
                 FieldName="TPPINTD_M_PRICE_LIMIT"
                 Header="偏離幅度濾網&#xA;(正式)(%)" />
             <dxg:GridColumn
-                Width="90"
+                Width="100"
                 FieldName="TPPINTD_M_PRICE_LIMIT_F"
                 Header="偏離幅度濾網&#xA;(試撮)(%)" />
             <dxg:GridColumn
@@ -163,19 +163,19 @@
                 FieldName="TPPINTD_M_PRICE_FILTER"
                 Header="成交價&#xA;濾網 (%)" />
             <dxg:GridColumn
-                Width="75"
+                Width="80"
                 FieldName="TPPINTD_BS_PRICE_FILTER"
                 Header="買賣中價&#xA;濾網 (%)" />
             <dxg:GridColumn
-                Width="65"
+                Width="70"
                 FieldName="TPPINTD_UNIT"
                 Header="動態退單&#xA;百分比" />
             <dxg:GridColumn
-                Width="65"
+                Width="70"
                 FieldName="TPPINTD_FOREIGN_INTERVAL"
                 Header="國外成交&#xA;間隔毫秒" />
             <dxg:GridColumn
-                Width="60"
+                Width="70"
                 FieldName="TPPINTD_USER_ID"
                 Header="員工代碼">
                 <dxg:GridColumn.EditSettings>
