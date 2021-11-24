@@ -129,5 +129,17 @@ namespace TradeFutNight.Common
             result.Add(new ItemInfo() { Text = "下限", Value = '2' });
             return result;
         }
+
+        public static IList<ItemInfo> SubtypeCode()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "指數", Value = 'I' });
+            result.Add(new ItemInfo() { Text = "股票", Value = 'S' });
+            result.Add(new ItemInfo() { Text = "商品", Value = 'C' });
+            result.Add(new ItemInfo() { Text = "公債", Value = 'B' });
+            result.Add(new ItemInfo() { Text = "利率", Value = 'R' });
+            result.Add(new ItemInfo() { Text = "滙率", Value = 'E' });
+            return result;
+        }
     }
 }

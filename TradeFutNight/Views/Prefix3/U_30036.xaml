@@ -1,5 +1,5 @@
 ﻿<myTypes:UserControlParent
-    x:Class="TradeFutNight.Views.PrefixA.U_A9919"
+    x:Class="TradeFutNight.Views.Prefix3.U_30036"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,22 +7,22 @@
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:myTypes="clr-namespace:TradeFutNight.Views"
-    xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.PrefixA"
+    xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.Prefix3"
     Margin="1,1,1,1"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontSize="14"
+    FontSize="12"
     mc:Ignorable="d">
     <myTypes:UserControlParent.DataContext>
-        <myTypesPrefix:U_A9919_ViewModel />
+        <myTypesPrefix:U_30036_ViewModel />
     </myTypes:UserControlParent.DataContext>
-    <myTypes:UserControlParent.Resources>
+    <!--<myTypes:UserControlParent.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="..\ShareStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </myTypes:UserControlParent.Resources>
+    </myTypes:UserControlParent.Resources>-->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -33,54 +33,20 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Label
-                Width="70"
-                Margin="10,6,5,5"
+                Width="95"
+                Margin="10,0,10,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center">
-                交易日期：
+                結算會員代號：
             </Label>
-            <dxe:DateEdit
-                Name="txtStartDate"
-                Width="100"
-                Height="30"
-                HorizontalContentAlignment="Center"
-                AllowDefaultButton="False"
-                EditValue="{Binding StartDate}"
-                Mask="yyyy/MM/dd"
-                MaskType="DateTimeAdvancingCaret"
-                MaskUseAsDisplayFormat="True"
-                MinValue="{Binding DefaultMinDateTime}" />
-            <Label
-                Width="10"
-                Margin="5,5,5,5"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center">
-                ~
-            </Label>
-            <dxe:DateEdit
-                Name="txtEndDate"
-                Width="100"
-                Height="30"
-                HorizontalContentAlignment="Center"
-                AllowDefaultButton="False"
-                EditValue="{Binding EndDate}"
-                Mask="yyyy/MM/dd"
-                MaskType="DateTimeAdvancingCaret"
-                MaskUseAsDisplayFormat="True"
-                MinValue="{Binding DefaultMinDateTime}" />
-            <Label
-                Width="70"
-                Margin="40,6,5,5"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center">
-                商品代號：
-            </Label>
+
             <dxe:TextEdit
-                Name="txtProdId"
+                Name="txtCmNo"
                 Width="70"
                 Height="30"
                 CharacterCasing="Upper"
-                EditValue="{Binding ProdId}"
+                EditValue="{Binding CmNo}"
+                MaxLength="4"
                 NullText=""
                 NullValue="" />
             <Button
@@ -106,7 +72,9 @@
             <dxg:GridControl.View>
                 <dxg:TableView
                     x:Name="gridView"
+                    AllowCellMerge="True"
                     AllowEditing="False"
+                    CellMerge="GridView_CellMerge"
                     IsColumnMenuEnabled="False"
                     ShowGroupPanel="False"
                     ShowTotalSummary="False" />
@@ -131,82 +99,47 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="90"
-                FieldName="MHALT_TRADE_DATE"
-                Header="交易日期"
-                ReadOnly="True">
+                Width="100"
+                AllowCellMerge="True"
+                FieldName="CCM_FCM_NO"
+                Header="期貨商代號">
                 <dxg:GridColumn.EditSettings>
-                    <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd" />
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
                 Width="70"
-                FieldName="MHALT_KIND_ID"
-                Header="商品代號"
-                ReadOnly="True">
+                FieldName="CCM_CM_NO"
+                Header="結算會員">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Center" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="90"
-                FieldName="MHALT_PAUSE_DATE"
-                Header="放寬/縮小&#xA;日期"
-                ReadOnly="True">
-                <dxg:GridColumn.HeaderStyle>
-                    <Style TargetType="dxg:GridColumnHeader">
-                        <Setter Property="Foreground" Value="Red" />
-                        <Setter Property="Background" Value="LightCyan" />
-                    </Style>
-                </dxg:GridColumn.HeaderStyle>
+                Width="70"
+                FieldName="CCM_SUBTYPE"
+                Header="商品種類">
                 <dxg:GridColumn.EditSettings>
-                    <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd" />
+                    <dxe:ComboBoxEditSettings
+                        HorizontalContentAlignment="Center"
+                        DisplayMember="Text"
+                        IsTextEditable="False"
+                        ItemsSource="{Binding CcmSubtype}"
+                        ValueMember="Value" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="80"
-                FieldName="MHALT_PAUSE_TIME"
-                Header="放寬/縮小&#xA;時間"
-                ReadOnly="True">
-                <dxg:GridColumn.HeaderStyle>
-                    <Style TargetType="dxg:GridColumnHeader">
-                        <Setter Property="Foreground" Value="Red" />
-                        <Setter Property="Background" Value="LightCyan" />
-                    </Style>
-                </dxg:GridColumn.HeaderStyle>
+                Width="70"
+                FieldName="CCM_USER_ID"
+                Header="異動人員">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Center" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
-            <dxg:GridColumn
-                Width="80"
-                FieldName="MHALT_SPREAD_MULTI"
-                Header="報價價差&#xA;放寬倍數"
-                ReadOnly="True" />
-            <dxg:GridColumn
-                Width="65"
-                FieldName="MHALT_VALID_QNTY_MULTI"
-                Header="報價口數&#xA;縮小倍數"
-                ReadOnly="True" />
 
-            <dxg:GridColumn
-                Width="90"
-                FieldName="MHALT_QUOTE_DURATION_MULTI"
-                Header="報價持續秒數縮小倍數"
-                ReadOnly="True" />
-
-            <dxg:GridColumn
-                Width="60"
-                FieldName="MHALT_USER_ID"
-                Header="異動&#xA;人員"
-                ReadOnly="True">
-                <dxg:GridColumn.EditSettings>
-                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
-                </dxg:GridColumn.EditSettings>
-            </dxg:GridColumn>
             <dxg:GridColumn
                 Width="150"
-                FieldName="MHALT_W_TIME"
+                FieldName="CCM_W_TIME"
                 Header="異動時間">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd HH:mm:ss" />

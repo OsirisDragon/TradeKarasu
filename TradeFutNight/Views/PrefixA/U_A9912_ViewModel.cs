@@ -50,18 +50,15 @@ namespace TradeFutNight.Views.PrefixA
             MainGridData = new ObservableCollection<UIModel_A9912>();
         }
 
-        public void Open()
+        public async void Open()
         {
             MapperInstance = new Mapper(new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<PHALT, UIModel_A9912>().ReverseMap();
             }));
 
-            using (var das = Factory.CreateDalSession())
-            {
-                var dA9912 = new D_A9912<UIModel_A9912>(das);
-                MainGridData = dA9912.ListByDate(StartDate, EndDate, ProdId).ToList();
-            }
+            await Query();
+
             PhaltTypeInfos = DropDownItems.PhaltType();
             PhaltMsgTypeInfos = DropDownItems.PhaltMsgType();
         }

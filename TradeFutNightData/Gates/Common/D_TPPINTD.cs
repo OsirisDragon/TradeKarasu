@@ -18,14 +18,6 @@ namespace TradeFutNightData.Gates.Common
 
     public class D_TPPINTD<T> : ParentGate
     {
-        public IList<TPPINTD> ListAll()
-        {
-            var query = _das.DataConn.GetTable<TPPINTD>()
-                .OrderBy(c => c.TPPINTD_FIRST_KIND_ID).ThenBy(c => c.TPPINTD_FIRST_KIND_ID).ThenBy(c => c.TPPINTD_SECOND_KIND_ID);
-
-            return query.ToList();
-        }
-
         /// <summary>
         /// 抓取單式資料
         /// </summary>

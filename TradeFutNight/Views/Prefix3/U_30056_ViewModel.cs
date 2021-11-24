@@ -25,20 +25,15 @@ namespace TradeFutNight.Views.Prefix3
             MainGridData = new ObservableCollection<UIModel_30056>();
         }
 
-        public void Open()
+        public async void Open()
         {
             MapperInstance = new Mapper(new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<MORD, UIModel_30056>().ReverseMap();
             }));
 
-            MainGridData = new ObservableCollection<UIModel_30056>().ToList().AsTrackable();
+            await Query();
 
-            using (var das = Factory.CreateDalSession())
-            {
-                var dMORD = new D_MORD(das);
-                MainGridData = MapperInstance.Map<IList<UIModel_30056>>(dMORD.ListAll()).AsTrackable();
-            }
             KindIdTypeInfos = DropDownItems.MordKindIdType();
         }
 
