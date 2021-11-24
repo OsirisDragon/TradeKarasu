@@ -67,14 +67,11 @@
             CurrentItem="{Binding Path=CurrentItem, Mode=TwoWay}"
             EnableSmartColumnsGeneration="True"
             ItemsSource="{Binding MainGridData}"
-            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
-            SelectionMode="Row">
+            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
             <dxg:GridControl.View>
                 <dxg:TableView
                     x:Name="gridView"
-                    AllowCellMerge="True"
                     AllowEditing="False"
-                    CellMerge="GridView_CellMerge"
                     IsColumnMenuEnabled="False"
                     ShowGroupPanel="False"
                     ShowTotalSummary="False" />

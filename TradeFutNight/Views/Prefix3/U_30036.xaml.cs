@@ -244,14 +244,5 @@ namespace TradeFutNight.Views.Prefix3
 
             button.IsEnabled = true;
         }
-
-        private void GridView_CellMerge(object sender, DevExpress.Xpf.Grid.CellMergeEventArgs e)
-        {
-            if (e.Column.FieldName == nameof(CCM.CCM_FCM_NO))
-            {
-                e.Merge = true;
-                e.Handled = true;
-            }
-        }
     }
 }
