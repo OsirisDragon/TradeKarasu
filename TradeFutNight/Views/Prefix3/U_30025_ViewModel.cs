@@ -31,20 +31,15 @@ namespace TradeFutNight.Views.Prefix3
             MainGridData = new ObservableCollection<UIModel_30025>();
         }
 
-        public void Open()
+        public async void Open()
         {
             MapperInstance = new Mapper(new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<TPPINTD, UIModel_30025>().ReverseMap();
             }));
 
-            MainGridData = new ObservableCollection<UIModel_30025>().ToList().AsTrackable();
+            await Query("%", "%");
 
-            using (var das = Factory.CreateDalSession())
-            {
-                var dTPPINTD = new D_TPPINTD(das);
-                MainGridData = MapperInstance.Map<IList<UIModel_30025>>(dTPPINTD.ListAll()).AsTrackable();
-            }
             TPPINTDFirstKindId = DropDownItems.TppintdFirstKindId();
             TPPINTDSecondKindId = DropDownItems.TppintdSecondKindId();
         }

@@ -12,7 +12,6 @@
     Margin="1,1,1,1"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontSize="14"
     mc:Ignorable="d">
     <myTypes:UserControlParent.DataContext>
         <myTypesPrefix:U_30026_ViewModel />
@@ -29,46 +28,43 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35" />
+            <RowDefinition Height="auto" MinHeight="35" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="0.2*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
+        <StackPanel
+            Grid.Row="0"
+            Margin="0,5"
+            Orientation="Horizontal">
             <Label
-                Width="95"
-                Margin="10,0,10,0"
+                Margin="10,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center">
                 第一支腳契約：
             </Label>
             <dxe:ComboBoxEdit
                 x:Name="cbFirstKindId"
-                Width="100"
-                Height="30"
+                MinWidth="100"
                 DisplayMember="Text"
                 ItemsSource="{Binding TPPINTDFirstKindId}"
                 Text="全部"
                 ValueMember="Value" />
             <Label
-                Width="95"
-                Margin="10,0,10,0"
+                Margin="10,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center">
                 第二支腳契約：
             </Label>
             <dxe:ComboBoxEdit
                 x:Name="cbSecondKindId"
-                Width="100"
-                Height="30"
+                MinWidth="100"
                 DisplayMember="Text"
                 ItemsSource="{Binding TPPINTDSecondKindId}"
                 Text="全部"
                 ValueMember="Value" />
             <Button
                 x:Name="btnQuery"
-                Width="60"
-                Height="30"
-                Margin="10,0,10,0"
+                Margin="10,0"
                 Click="BtnQuery_Click">
                 查詢
             </Button>
@@ -95,7 +91,7 @@
             </dxg:GridControl.View>
             <dxg:GridColumn
                 Name="rowNumber"
-                Width="40"
+                Width="45"
                 AllowEditing="False"
                 Header="編號">
                 <dxg:GridColumn.CellTemplate>

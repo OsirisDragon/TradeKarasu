@@ -11,7 +11,6 @@
     Margin="1,1,1,1"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontSize="14"
     mc:Ignorable="d">
     <myTypes:UserControlParent.DataContext>
         <myTypesPrefix:U_A9916_ViewModel />
@@ -28,62 +27,61 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35" />
+            <RowDefinition Height="auto" MinHeight="35" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
+        <StackPanel
+            Grid.Row="0"
+            Margin="0,5"
+            Orientation="Horizontal">
             <Label
-                Width="70"
-                Margin="10,6,5,5"
+                Margin="10,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center">
                 交易日期：
             </Label>
-            <dxe:TextEdit
+            <dxe:DateEdit
                 Name="txtStartDate"
-                Width="100"
-                Height="30"
+                MinWidth="100"
                 HorizontalContentAlignment="Center"
+                AllowDefaultButton="False"
                 EditValue="{Binding StartDate}"
                 Mask="yyyy/MM/dd"
                 MaskType="DateTimeAdvancingCaret"
-                MaskUseAsDisplayFormat="True" />
+                MaskUseAsDisplayFormat="True"
+                MinValue="{Binding DefaultMinDateTime}" />
             <Label
-                Width="10"
-                Margin="5,5,5,5"
+                Margin="5,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center">
                 ~
             </Label>
-            <dxe:TextEdit
+            <dxe:DateEdit
                 Name="txtEndDate"
-                Width="100"
-                Height="30"
+                MinWidth="100"
                 HorizontalContentAlignment="Center"
+                AllowDefaultButton="False"
                 EditValue="{Binding EndDate}"
                 Mask="yyyy/MM/dd"
                 MaskType="DateTimeAdvancingCaret"
-                MaskUseAsDisplayFormat="True" />
+                MaskUseAsDisplayFormat="True"
+                MinValue="{Binding DefaultMinDateTime}" />
             <Label
-                Width="70"
-                Margin="40,6,5,5"
+                Margin="40,0,10,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center">
                 商品代號：
             </Label>
             <dxe:TextEdit
                 Name="txtProdId"
-                Width="70"
-                Height="30"
+                MinWidth="70"
                 CharacterCasing="Upper"
-                EditValue="{Binding ProdId}"
                 NullText=""
-                NullValue="" />
+                NullValue=""
+                Text="{Binding ProdId}" />
             <Button
                 x:Name="btnQuery"
-                Width="60"
-                Height="30"
-                Margin="10,0,10,0"
+                Margin="10,0"
                 Click="BtnQuery_Click">
                 查詢
             </Button>
@@ -109,7 +107,7 @@
             </dxg:GridControl.View>
             <dxg:GridColumn
                 Name="rowNumber"
-                Width="40"
+                Width="45"
                 AllowEditing="False"
                 Header="編號">
                 <dxg:GridColumn.CellTemplate>
@@ -127,7 +125,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="90"
+                Width="95"
                 FieldName="TPPHALT_TRADE_DATE"
                 Header="交易日期"
                 ReadOnly="True">
@@ -136,7 +134,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="65"
+                Width="70"
                 FieldName="TPPHALT_TYPE"
                 Header="商品類別"
                 ReadOnly="True">
@@ -163,7 +161,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="95"
+                Width="100"
                 FieldName="TPPHALT_MSG_TYPE"
                 Header="訊息類別"
                 ReadOnly="True">
@@ -199,7 +197,7 @@
                 Header="放寬&#xA;倍數"
                 ReadOnly="True" />
             <dxg:GridColumn
-                Width="65"
+                Width="70"
                 FieldName="TPPHALT_RANGE"
                 Header="放寬縮回&#xA;範圍"
                 ReadOnly="True">
@@ -231,7 +229,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="65"
+                Width="70"
                 FieldName="TPPHALT_FUT_LINK_OPT"
                 Header="期貨連動&#xA;選擇權"
                 ReadOnly="True">
@@ -240,7 +238,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="50"
+                Width="60"
                 FieldName="TPPHALT_USER_ID"
                 Header="異動&#xA;人員"
                 ReadOnly="True">
@@ -249,7 +247,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="150"
+                Width="165"
                 FieldName="TPPHALT_W_TIME"
                 Header="異動時間">
                 <dxg:GridColumn.EditSettings>

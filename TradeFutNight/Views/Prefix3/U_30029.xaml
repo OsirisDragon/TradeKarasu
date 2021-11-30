@@ -12,7 +12,6 @@
     Margin="1,1,1,1"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontSize="14"
     mc:Ignorable="d">
     <myTypes:UserControlParent.DataContext>
         <myTypesPrefix:U_30029_ViewModel />
@@ -53,7 +52,7 @@
             </dxg:GridControl.View>
             <dxg:GridColumn
                 Name="rowNumber"
-                Width="40"
+                Width="45"
                 AllowEditing="False"
                 Header="編號">
                 <dxg:GridColumn.CellTemplate>
@@ -71,7 +70,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="120"
+                Width="100"
                 CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="TPPVOL_INDEX_GRP"
                 Header="指標群組"
@@ -85,7 +84,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="250"
+                Width="240"
                 CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="TPPVOL_TYPE"
                 Header="波動率類別"
@@ -99,7 +98,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="80"
+                Width="85"
                 FieldName="TPPVOL_REMOVE_COUNT"
                 Header="去除極端值&#xA;筆數" />
             <dxg:GridColumn

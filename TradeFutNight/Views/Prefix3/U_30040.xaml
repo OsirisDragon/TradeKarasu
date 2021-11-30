@@ -12,7 +12,6 @@
     Margin="1,1,1,1"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontSize="14"
     mc:Ignorable="d">
     <myTypes:UserControlParent.DataContext>
         <myTypesPrefix:U_30040_ViewModel />
@@ -30,7 +29,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="0.2*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <dxg:GridControl
             x:Name="gridMain"
@@ -54,7 +53,7 @@
             </dxg:GridControl.View>
             <dxg:GridColumn
                 Name="rowNumber"
-                Width="40"
+                Width="45"
                 AllowEditing="False"
                 Header="編號">
                 <dxg:GridColumn.CellTemplate>
@@ -104,7 +103,7 @@
                 FieldName="TPPDK_THERICAL_P_INTERVAL"
                 Header="理論價&#xA;計算秒數" />
             <dxg:GridColumn
-                Width="65"
+                Width="75"
                 CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="TPPDK_USER_ID"
                 Header="員工代碼"
@@ -114,7 +113,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="150"
+                Width="165"
                 CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="TPPDK_W_TIME"
                 Header="寫檔時間"

@@ -12,7 +12,6 @@
     Margin="1,1,1,1"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontSize="14"
     mc:Ignorable="d">
     <myTypes:UserControlParent.DataContext>
         <myTypesPrefix:U_30113_ViewModel />
@@ -29,30 +28,29 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35" />
+            <RowDefinition Height="auto" MinHeight="35" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="0.2*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
+        <StackPanel
+            Grid.Row="0"
+            Margin="0,5"
+            Orientation="Horizontal">
             <Label
-                Width="65"
-                Margin="10,0,10,0"
+                Margin="10,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center">
                 商品種類：
             </Label>
             <dxe:ComboBoxEdit
                 x:Name="cbKindId"
-                Width="100"
-                Height="30"
+                MinWidth="100"
                 DisplayMember="Text"
                 ItemsSource="{Binding PdkParamKeysCanQuote}"
                 ValueMember="Value" />
             <Button
                 x:Name="btnQuery"
-                Width="60"
-                Height="30"
-                Margin="10,0,10,0"
+                Margin="10,0"
                 Click="BtnQuery_Click">
                 查詢
             </Button>
@@ -66,8 +64,7 @@
             CurrentItem="{Binding Path=CurrentItem, Mode=TwoWay}"
             EnableSmartColumnsGeneration="True"
             ItemsSource="{Binding MainGridData}"
-            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
-            SelectionMode="Row">
+            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
             <dxg:GridControl.View>
                 <dxg:TableView
                     x:Name="gridView"
@@ -79,7 +76,7 @@
             </dxg:GridControl.View>
             <dxg:GridColumn
                 Name="rowNumber"
-                Width="40"
+                Width="45"
                 AllowEditing="False"
                 Header="編號">
                 <dxg:GridColumn.CellTemplate>
@@ -99,8 +96,10 @@
             <dxg:GridColumn
                 Width="80"
                 AllowCellMerge="True"
+                CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="SLT_KIND_ID"
-                Header="商品種類">
+                Header="商品種類"
+                ReadOnly="True">
                 <dxg:GridColumn.EditSettings>
                     <dxe:ComboBoxEditSettings
                         HorizontalContentAlignment="Center"

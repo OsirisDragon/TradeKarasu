@@ -80,5 +80,17 @@ namespace TradeFutNightData.Gates.Common
 
             return query.ToList();
         }
+
+        public IList<PDK> ListDistinctKindIdAndSubtypeForPcm()
+        {
+            var query = _das.DataConn.GetTable<PDK>()
+                .Where(c =>
+                        (c.PDK_EXPIRY_TYPE != 'W' && (c.PDK_STATUS_CODE == 'N' || c.PDK_STATUS_CODE == 'P')) ||
+                        c.PDK_EXPIRY_TYPE == 'W'
+                )
+                .Select(c => new PDK() { PDK_SUBTYPE = c.PDK_SUBTYPE, PDK_KIND_ID = c.PDK_KIND_ID }).Distinct();
+
+            return query.ToList();
+        }
     }
 }
