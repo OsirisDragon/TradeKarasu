@@ -149,6 +149,7 @@
                         AllowMove="False"
                         AllowSplitters="False"
                         DestroyOnClosingChildren="False"
+                        FontSize="15"
                         ItemWidth="1.48*"
                         MDIStyle="Tabbed"
                         SelectedItemChanged="DocumentGroupMain_SelectedItemChanged" />

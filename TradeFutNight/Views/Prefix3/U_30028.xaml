@@ -11,7 +11,6 @@
     Margin="1,1,1,1"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontSize="14"
     mc:Ignorable="d">
     <myTypes:UserControlParent.DataContext>
         <myTypesPrefix:U_30028_ViewModel />
@@ -51,7 +50,7 @@
             </dxg:GridControl.View>
             <dxg:GridColumn
                 Name="rowNumber"
-                Width="40"
+                Width="45"
                 AllowEditing="False"
                 Header="編號">
                 <dxg:GridColumn.CellTemplate>
@@ -69,7 +68,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="110"
+                Width="100"
                 FieldName="TPPVOL_INDEX_GRP"
                 Header="指標群組">
                 <dxg:GridColumn.EditSettings>
@@ -81,7 +80,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="230"
+                Width="240"
                 FieldName="TPPVOL_TYPE"
                 Header="波動率類別">
                 <dxg:GridColumn.EditSettings>
@@ -93,7 +92,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="80"
+                Width="85"
                 FieldName="TPPVOL_REMOVE_COUNT"
                 Header="去除極端值&#xA;筆數" />
             <dxg:GridColumn
@@ -117,7 +116,7 @@
                 FieldName="TPPVOL_UP_DOWN_RATE"
                 Header="盤中&#xA;漲跌幅(%)" />
             <dxg:GridColumn
-                Width="65"
+                Width="70"
                 FieldName="TPPVOL_USER_ID"
                 Header="員工代碼">
                 <dxg:GridColumn.EditSettings>
@@ -125,7 +124,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="150"
+                Width="165"
                 FieldName="TPPVOL_W_TIME"
                 Header="寫檔時間">
                 <dxg:GridColumn.EditSettings>
