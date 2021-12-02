@@ -111,8 +111,8 @@ namespace TradeFutNight.Views.PrefixA
                     return false;
                 }
 
-                if (!_vm.IsReadOnlyTPPADJ_M_PRICE_LIMIT && !_vm.IsReadOnlyTPPADJ_M_PRICE_LIMIT_F && !_vm.IsReadOnlyTPPADJ_M_INTERVAL && !_vm.IsReadOnlyTPPADJ_ACCU_QNTY
-                && !_vm.IsReadOnlyTPPADJ_M_PRICE_FILTER && !_vm.IsReadOnlyTPPADJ_BS_PRICE_FILTER && !_vm.IsReadOnlyTPPADJ_THERICAL_P_REF && !_vm.IsReadOnlyTPPADJ_SPREAD)
+                if (_vm.IsReadOnlyTPPADJ_M_PRICE_LIMIT && _vm.IsReadOnlyTPPADJ_M_PRICE_LIMIT_F && _vm.IsReadOnlyTPPADJ_M_INTERVAL && _vm.IsReadOnlyTPPADJ_ACCU_QNTY
+                && _vm.IsReadOnlyTPPADJ_M_PRICE_FILTER && _vm.IsReadOnlyTPPADJ_BS_PRICE_FILTER && _vm.IsReadOnlyTPPADJ_THERICAL_P_REF && _vm.IsReadOnlyTPPADJ_SPREAD)
                 {
                     MessageBoxExService.Instance().Error("請勾選要更改的欄位");
                     return false;
