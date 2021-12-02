@@ -25,7 +25,6 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </myTypes:UserControlParent.Resources>
-
     <Grid HorizontalAlignment="Left">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -36,7 +35,6 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-
         <TextBlock
             Grid.Row="0"
             Grid.Column="0"
@@ -45,7 +43,6 @@
             Foreground="Red">
             請勾選要更改的欄位
         </TextBlock>
-
         <dxg:GridControl
             x:Name="gridMain"
             Grid.Row="1"
@@ -88,6 +85,14 @@
                 FieldName="TPPADJ_M_PRICE_LIMIT"
                 Header="偏離幅度濾&#xA;網(正式)(%)"
                 ReadOnly="{Binding IsReadOnlyTPPADJ_M_PRICE_LIMIT}">
+                <dxg:GridColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <dxe:CheckEdit HorizontalAlignment="Center" IsChecked="{Binding Path='DataContext.IsReadOnlyTPPADJ_M_PRICE_LIMIT', RelativeSource={RelativeSource AncestorType={x:Type myTypes:UserControlParent}}, Converter={dxmvvm:BooleanNegationConverter}}" />
+                            <TextBlock Text="{Binding}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxg:GridColumn.HeaderTemplate>
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.0000" />
                 </dxg:GridColumn.EditSettings>
@@ -98,6 +103,14 @@
                 FieldName="TPPADJ_M_PRICE_LIMIT_F"
                 Header="開盤成交價&#xA;偏離幅度試撮(%)"
                 ReadOnly="{Binding IsReadOnlyTPPADJ_M_PRICE_LIMIT_F}">
+                <dxg:GridColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <dxe:CheckEdit HorizontalAlignment="Center" IsChecked="{Binding Path='DataContext.IsReadOnlyTPPADJ_M_PRICE_LIMIT_F', RelativeSource={RelativeSource AncestorType={x:Type myTypes:UserControlParent}}, Converter={dxmvvm:BooleanNegationConverter}}" />
+                            <TextBlock Text="{Binding}" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxg:GridColumn.HeaderTemplate>
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.0000" />
                 </dxg:GridColumn.EditSettings>
@@ -108,6 +121,14 @@
                 FieldName="TPPADJ_M_INTERVAL"
                 Header="成交間隔&#xA;毫秒"
                 ReadOnly="{Binding IsReadOnlyTPPADJ_M_INTERVAL}">
+                <dxg:GridColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <dxe:CheckEdit HorizontalAlignment="Center" IsChecked="{Binding Path='DataContext.IsReadOnlyTPPADJ_M_INTERVAL', RelativeSource={RelativeSource AncestorType={x:Type myTypes:UserControlParent}}, Converter={dxmvvm:BooleanNegationConverter}}" />
+                            <TextBlock Text="{Binding}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxg:GridColumn.HeaderTemplate>
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
                 </dxg:GridColumn.EditSettings>
@@ -118,6 +139,14 @@
                 FieldName="TPPADJ_ACCU_QNTY"
                 Header="最小累&#xA;計口數"
                 ReadOnly="{Binding IsReadOnlyTPPADJ_ACCU_QNTY}">
+                <dxg:GridColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <dxe:CheckEdit HorizontalAlignment="Center" IsChecked="{Binding Path='DataContext.IsReadOnlyTPPADJ_ACCU_QNTY', RelativeSource={RelativeSource AncestorType={x:Type myTypes:UserControlParent}}, Converter={dxmvvm:BooleanNegationConverter}}" />
+                            <TextBlock Text="{Binding}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxg:GridColumn.HeaderTemplate>
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
                 </dxg:GridColumn.EditSettings>
@@ -128,6 +157,14 @@
                 FieldName="TPPADJ_M_PRICE_FILTER"
                 Header="成交價濾&#xA;網(%)"
                 ReadOnly="{Binding IsReadOnlyTPPADJ_M_PRICE_FILTER}">
+                <dxg:GridColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <dxe:CheckEdit HorizontalAlignment="Center" IsChecked="{Binding Path='DataContext.IsReadOnlyTPPADJ_M_PRICE_FILTER', RelativeSource={RelativeSource AncestorType={x:Type myTypes:UserControlParent}}, Converter={dxmvvm:BooleanNegationConverter}}" />
+                            <TextBlock Text="{Binding}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxg:GridColumn.HeaderTemplate>
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.0000" />
                 </dxg:GridColumn.EditSettings>
@@ -138,6 +175,14 @@
                 FieldName="TPPADJ_BS_PRICE_FILTER"
                 Header="買賣中價&#xA;濾網(%)"
                 ReadOnly="{Binding IsReadOnlyTPPADJ_BS_PRICE_FILTER}">
+                <dxg:GridColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <dxe:CheckEdit HorizontalAlignment="Center" IsChecked="{Binding Path='DataContext.IsReadOnlyTPPADJ_BS_PRICE_FILTER', RelativeSource={RelativeSource AncestorType={x:Type myTypes:UserControlParent}}, Converter={dxmvvm:BooleanNegationConverter}}" />
+                            <TextBlock Text="{Binding}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxg:GridColumn.HeaderTemplate>
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.0000" />
                 </dxg:GridColumn.EditSettings>
@@ -148,6 +193,14 @@
                 FieldName="TPPADJ_THERICAL_P_REF"
                 Header="開盤基準價"
                 ReadOnly="{Binding IsReadOnlyTPPADJ_THERICAL_P_REF}">
+                <dxg:GridColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <dxe:CheckEdit HorizontalAlignment="Center" IsChecked="{Binding Path='DataContext.IsReadOnlyTPPADJ_THERICAL_P_REF', RelativeSource={RelativeSource AncestorType={x:Type myTypes:UserControlParent}}, Converter={dxmvvm:BooleanNegationConverter}}" />
+                            <TextBlock Text="{Binding}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxg:GridColumn.HeaderTemplate>
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.0000" />
                 </dxg:GridColumn.EditSettings>
@@ -158,12 +211,19 @@
                 FieldName="TPPADJ_SPREAD"
                 Header="理論調整項/&#xA;價差"
                 ReadOnly="{Binding IsReadOnlyTPPADJ_SPREAD}">
+                <dxg:GridColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <dxe:CheckEdit HorizontalAlignment="Center" IsChecked="{Binding Path='DataContext.IsReadOnlyTPPADJ_SPREAD', RelativeSource={RelativeSource AncestorType={x:Type myTypes:UserControlParent}}, Converter={dxmvvm:BooleanNegationConverter}}" />
+                            <TextBlock Text="{Binding}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxg:GridColumn.HeaderTemplate>
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.0000" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
         </dxg:GridControl>
-
         <Grid
             Grid.Row="1"
             Grid.Column="1"
@@ -215,7 +275,6 @@
                 不勾
             </Button>
         </Grid>
-
         <TextBlock
             x:Name="txtMemo"
             Grid.Row="2"
