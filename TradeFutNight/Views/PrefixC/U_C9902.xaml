@@ -104,15 +104,15 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
         </dxg:GridControl>
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Label
-                Name="lblFile"
-                Margin="10,0,10,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center">
-                相關交易(50301,50302,50303,52303)，已執行印表功能(儲存資料)者：
-            </Label>
-        </StackPanel>
+        <TextBlock
+            Name="lblFile"
+            Grid.Row="1"
+            Margin="10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            TextWrapping="Wrap">
+            相關交易(50301,50302,50303,52303)，已執行印表功能(儲存資料)者：
+        </TextBlock>
         <dxg:GridControl
             x:Name="gridFile"
             Grid.Row="2"

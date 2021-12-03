@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:myTypes="clr-namespace:TradeFutNight.Views"
     xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.Prefix3"
@@ -30,32 +31,24 @@
             <RowDefinition Height="auto" MinHeight="35" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackPanel
-            Grid.Row="0"
-            Margin="0,5"
-            Orientation="Horizontal">
-            <Label
-                Margin="10,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center">
+        <dxlc:FlowLayoutControl Grid.Row="0" Orientation="Horizontal">
+            <Label HorizontalAlignment="Right" VerticalAlignment="Center">
                 結算會員代號：
             </Label>
 
             <dxe:TextEdit
                 Name="txtCmNo"
                 MinWidth="70"
+                Margin="0,0,10,0"
                 CharacterCasing="Upper"
                 EditValue="{Binding CmNo}"
                 MaxLength="4"
                 NullText=""
                 NullValue="" />
-            <Button
-                x:Name="btnQuery"
-                Margin="10,0"
-                Click="BtnQuery_Click">
+            <Button x:Name="btnQuery" Click="BtnQuery_Click">
                 查詢
             </Button>
-        </StackPanel>
+        </dxlc:FlowLayoutControl>
         <dxg:GridControl
             x:Name="gridMain"
             Grid.Row="1"

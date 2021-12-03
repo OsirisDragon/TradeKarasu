@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:myTypes="clr-namespace:TradeFutNight.Views"
     xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.Prefix3"
@@ -32,29 +33,21 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <StackPanel
-            Grid.Row="0"
-            Margin="0,5"
-            Orientation="Horizontal">
-            <Label
-                Margin="10,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center">
+        <dxlc:FlowLayoutControl Grid.Row="0" Orientation="Horizontal">
+            <Label HorizontalAlignment="Right" VerticalAlignment="Center">
                 商品種類：
             </Label>
             <dxe:ComboBoxEdit
                 x:Name="cbKindId"
                 MinWidth="100"
+                Margin="0,0,10,0"
                 DisplayMember="Text"
                 ItemsSource="{Binding PdkParamKeysCanQuote}"
                 ValueMember="Value" />
-            <Button
-                x:Name="btnQuery"
-                Margin="10,0"
-                Click="BtnQuery_Click">
+            <Button x:Name="btnQuery" Click="BtnQuery_Click">
                 查詢
             </Button>
-        </StackPanel>
+        </dxlc:FlowLayoutControl>
         <dxg:GridControl
             x:Name="gridMain"
             Grid.Row="1"
@@ -191,15 +184,15 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
         </dxg:GridControl>
-        <ScrollViewer Grid.Row="2">
-            <TextBlock
-                x:Name="txtMemo"
-                xml:space="preserve"
-                Foreground="OrangeRed"
-                TextWrapping="Wrap">
+        <TextBlock
+            x:Name="txtMemo"
+            Grid.Row="2"
+            Margin="10,0"
+            xml:space="preserve"
+            Foreground="OrangeRed"
+            TextWrapping="Wrap">
 註1：「價差上限」功能僅適用於ETF與STF，ETF與STF合格價差計算方式為max（價格*到期月份價差限制*0.01,價差上限），本公司交易系統可接受價差為max（價格*到期月份價差限制*0.01,價差上限）*「報價價差放寬倍數」。
 註2：「到期月份價差限制」，除ETF與STF外，合格價差為（最小跳動點*造市報價規定）（例如：造市規定4tick，該商品最小跳動為0.25，到期月份價差限制則要設定為1（4*0.25），本公司交易系統可接受價差為「到期月份價差限制」*「報價價差放寬倍數」。
             </TextBlock>
-        </ScrollViewer>
     </Grid>
 </myTypes:UserControlParent>

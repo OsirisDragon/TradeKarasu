@@ -127,15 +127,14 @@
                 FieldName="TPPINTD_FOREIGN_INTERVAL"
                 Header="國外成交&#xA;間隔毫秒" />
         </dxg:GridControl>
-        <ScrollViewer Grid.Row="2">
-            <TextBlock
-                x:Name="txtMemo"
-                Grid.Row="1"
-                xml:space="preserve"
-                Foreground="OrangeRed"
-                TextWrapping="Wrap">
+        <TextBlock
+            x:Name="txtMemo"
+            Grid.Row="1"
+            Margin="10,0"
+            xml:space="preserve"
+            Foreground="OrangeRed"
+            TextWrapping="Wrap">
 註1:月份序號依到期月份由近至遠排序，例如TXF及MXF為1至5，週契約皆為1。單式單第二支腳契約代號請空白，第二支腳月份序號請填0。複式單第一支腳月份序號請填近月，第二支腳月份序號請填遠月。如該契約不適用開盤成交價偏離幅度請填0。
             </TextBlock>
-        </ScrollViewer>
     </Grid>
 </myTypes:UserControlParent>

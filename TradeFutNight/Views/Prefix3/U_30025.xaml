@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:myTypes="clr-namespace:TradeFutNight.Views"
     xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.Prefix3"
@@ -31,43 +32,34 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <StackPanel
-            Grid.Row="0"
-            Margin="0,5"
-            Orientation="Horizontal">
-            <Label
-                Margin="10,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center">
+
+        <dxlc:FlowLayoutControl Grid.Row="0" Orientation="Horizontal">
+            <Label HorizontalAlignment="Right" VerticalAlignment="Center">
                 第一支腳契約：
             </Label>
             <dxe:ComboBoxEdit
                 x:Name="cbFirstKindId"
                 MinWidth="100"
+                Margin="0,0,10,0"
                 DisplayMember="Text"
                 ItemsSource="{Binding TPPINTDFirstKindId}"
                 Text="全部"
                 ValueMember="Value" />
-            <Label
-                Margin="10,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center">
+            <Label HorizontalAlignment="Right" VerticalAlignment="Center">
                 第二支腳契約：
             </Label>
             <dxe:ComboBoxEdit
                 x:Name="cbSecondKindId"
                 MinWidth="100"
+                Margin="0,0,10,0"
                 DisplayMember="Text"
                 ItemsSource="{Binding TPPINTDSecondKindId}"
                 Text="全部"
                 ValueMember="Value" />
-            <Button
-                x:Name="btnQuery"
-                Margin="10,0"
-                Click="BtnQuery_Click">
+            <Button x:Name="btnQuery" Click="BtnQuery_Click">
                 查詢
             </Button>
-        </StackPanel>
+        </dxlc:FlowLayoutControl>
         <dxg:GridControl
             x:Name="gridMain"
             Grid.Row="1"
@@ -187,14 +179,14 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
         </dxg:GridControl>
-        <ScrollViewer Grid.Row="2">
-            <TextBlock
-                x:Name="txtMemo"
-                xml:space="preserve"
-                Foreground="OrangeRed"
-                TextWrapping="Wrap">
+        <TextBlock
+            x:Name="txtMemo"
+            Grid.Row="2"
+            Margin="10,0"
+            xml:space="preserve"
+            Foreground="OrangeRed"
+            TextWrapping="Wrap">
 註1:月份序號依到期月份由近至遠排序，例如TXF及MXF為1至5，週契約皆為1。單式單第二支腳契約代號請空白，第二支腳月份序號請填0。複式單第一支腳月份序號請填近月，第二支腳月份序號請填遠月。如該契約不適用開盤成交價偏離幅度請填0。
             </TextBlock>
-        </ScrollViewer>
     </Grid>
 </myTypes:UserControlParent>
