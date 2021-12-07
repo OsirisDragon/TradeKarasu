@@ -161,6 +161,7 @@
                         <dxdo:DocumentGroup
                             x:Name="documentGroupMain"
                             dx:ThemeManager.ThemeName="Office2016White"
+                            AllowContextMenu="False"
                             AllowDock="False"
                             AllowDrag="False"
                             AllowDrop="False"
@@ -168,6 +169,7 @@
                             AllowHide="False"
                             AllowMove="False"
                             AllowSplitters="False"
+                            ClosePageButtonShowMode="InActiveTabPageHeader"
                             DestroyOnClosingChildren="False"
                             FontSize="15"
                             ItemHeight="1.51*"
