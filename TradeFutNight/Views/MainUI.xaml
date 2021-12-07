@@ -29,7 +29,7 @@
     <Grid>
         <DockPanel LastChildFill="True">
             <dxr:RibbonControl
-                Height="35"
+                Height="32"
                 DockPanel.Dock="Top"
                 RibbonTitleBarVisibility="Collapsed"
                 ShowApplicationButton="False"
