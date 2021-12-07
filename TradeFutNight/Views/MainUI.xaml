@@ -178,18 +178,24 @@
                 </dxdo:LayoutGroup>
             </dxdo:DockLayoutManager>
         </DockPanel>
-        <dx:WaitIndicator
+        <dx:LoadingDecorator
             dx:ThemeManager.ThemeName="Office2016White"
-            Content="{Binding LoadingText}"
-            DeferedVisibility="{Binding IsLoadingVisible}">
-            <dx:WaitIndicator.ContentTemplate>
+            IsSplashScreenShown="{Binding IsLoadingVisible}"
+            OwnerLock="InputOnly">
+            <dx:LoadingDecorator.SplashScreenTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock FontSize="18" Text="處理中..." />
-                        <TextBlock Text="{Binding}" />
-                    </StackPanel>
+                    <dx:WaitIndicator Content="{Binding DataContext.LoadingText, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" DeferedVisibility="True">
+                        <dx:WaitIndicator.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock FontSize="18" Text="處理中..." />
+                                    <TextBlock Text="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </dx:WaitIndicator.ContentTemplate>
+                    </dx:WaitIndicator>
                 </DataTemplate>
-            </dx:WaitIndicator.ContentTemplate>
-        </dx:WaitIndicator>
+            </dx:LoadingDecorator.SplashScreenTemplate>
+        </dx:LoadingDecorator>
     </Grid>
 </UserControl>
