@@ -12,7 +12,6 @@
     Margin="1,1,1,1"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontSize="14"
     mc:Ignorable="d">
     <myTypes:UserControlParent.DataContext>
         <myTypesPrefix:U_30027_ViewModel />
@@ -54,7 +53,7 @@
             </dxg:GridControl.View>
             <dxg:GridColumn
                 Name="rowNumber"
-                Width="40"
+                Width="45"
                 AllowEditing="False"
                 Header="編號">
                 <dxg:GridColumn.CellTemplate>
@@ -72,7 +71,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="120"
+                Width="100"
                 c:CustomProp.NotNullNotEmpty="True"
                 FieldName="TPPVOL_INDEX_GRP"
                 Header="指標群組">
@@ -98,7 +97,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="80"
+                Width="85"
                 FieldName="TPPVOL_REMOVE_COUNT"
                 Header="去除極端值&#xA;筆數" />
             <dxg:GridColumn

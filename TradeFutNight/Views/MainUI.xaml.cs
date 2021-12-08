@@ -78,6 +78,7 @@ namespace TradeFutNight.Views
                 panel.AllowFloat = false;
                 panel.AllowHide = false;
                 panel.AllowMove = false;
+                panel.AllowContextMenu = false;
 
                 viewInstance = (IViewSword)panel.Control;
                 ((UserControlParent)viewInstance).Init(programID, programName, _vm, this);
@@ -318,7 +319,20 @@ namespace TradeFutNight.Views
                 if (isCanRun)
                 {
                     dockLayoutManagerMain.LayoutController.Activate(e.Item);
+                    var viewInstance = (IViewSword)panel.Control;
+                    viewInstance.ControlSetting();
                 }
+            }
+            else
+            {
+                // 重置所有控制項
+                _vm.IsButtonSaveEnabled = false;
+                _vm.IsButtonInsertEnabled = false;
+                _vm.IsButtonDeleteEnabled = false;
+                _vm.IsButtonExportEnabled = false;
+                _vm.IsButtonPrintEnabled = false;
+                _vm.IsButtonPrintIndexEnabled = false;
+                _vm.IsButtonPrintStockEnabled = false;
             }
         }
 

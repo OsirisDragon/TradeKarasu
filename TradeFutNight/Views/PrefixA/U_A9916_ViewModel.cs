@@ -55,18 +55,15 @@ namespace TradeFutNight.Views.PrefixA
             MainGridData = new ObservableCollection<UIModel_A9916>();
         }
 
-        public void Open()
+        public async void Open()
         {
             MapperInstance = new Mapper(new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<TPPHALT, UIModel_A9916>().ReverseMap();
             }));
 
-            using (var das = Factory.CreateDalSession())
-            {
-                var dA9916 = new D_A9916<UIModel_A9916>(das);
-                MainGridData = dA9916.ListByDate(StartDate, EndDate, ProdId).ToList();
-            }
+            await Query();
+
             TpphaltTypeInfos = DropDownItems.TpphaltType();
             TpphaltMsgTypeInfos = DropDownItems.TpphaltMsgType();
             TpphaltRangeInfos = DropDownItems.TpphaltRange();

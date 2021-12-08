@@ -11,6 +11,8 @@ namespace TradeFutNight.Interfaces
     {
         Task<bool> IsCanRun();
 
+        void ControlSetting();
+
         Task Open();
 
         void Insert();

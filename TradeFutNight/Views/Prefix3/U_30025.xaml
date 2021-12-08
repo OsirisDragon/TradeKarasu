@@ -5,13 +5,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:myTypes="clr-namespace:TradeFutNight.Views"
     xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.Prefix3"
     Margin="1,1,1,1"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontSize="12"
     mc:Ignorable="d">
     <myTypes:UserControlParent.DataContext>
         <myTypesPrefix:U_30025_ViewModel />
@@ -28,50 +28,38 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35" />
+            <RowDefinition Height="auto" MinHeight="35" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="0.2*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Label
-                Width="95"
-                Margin="10,0,10,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center">
+
+        <dxlc:FlowLayoutControl Grid.Row="0" Orientation="Horizontal">
+            <Label HorizontalAlignment="Right" VerticalAlignment="Center">
                 第一支腳契約：
             </Label>
             <dxe:ComboBoxEdit
                 x:Name="cbFirstKindId"
-                Width="100"
-                Height="30"
+                MinWidth="100"
+                Margin="0,0,10,0"
                 DisplayMember="Text"
                 ItemsSource="{Binding TPPINTDFirstKindId}"
                 Text="全部"
                 ValueMember="Value" />
-            <Label
-                Width="95"
-                Margin="10,0,10,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center">
+            <Label HorizontalAlignment="Right" VerticalAlignment="Center">
                 第二支腳契約：
             </Label>
             <dxe:ComboBoxEdit
                 x:Name="cbSecondKindId"
-                Width="100"
-                Height="30"
+                MinWidth="100"
+                Margin="0,0,10,0"
                 DisplayMember="Text"
                 ItemsSource="{Binding TPPINTDSecondKindId}"
                 Text="全部"
                 ValueMember="Value" />
-            <Button
-                x:Name="btnQuery"
-                Width="60"
-                Height="30"
-                Margin="10,0,10,0"
-                Click="BtnQuery_Click">
+            <Button x:Name="btnQuery" Click="BtnQuery_Click">
                 查詢
             </Button>
-        </StackPanel>
+        </dxlc:FlowLayoutControl>
         <dxg:GridControl
             x:Name="gridMain"
             Grid.Row="1"
@@ -93,7 +81,7 @@
             </dxg:GridControl.View>
             <dxg:GridColumn
                 Name="rowNumber"
-                Width="40"
+                Width="45"
                 AllowEditing="False"
                 Header="編號">
                 <dxg:GridColumn.CellTemplate>
@@ -143,11 +131,11 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="90"
+                Width="100"
                 FieldName="TPPINTD_M_PRICE_LIMIT"
                 Header="偏離幅度濾網&#xA;(正式)(%)" />
             <dxg:GridColumn
-                Width="90"
+                Width="100"
                 FieldName="TPPINTD_M_PRICE_LIMIT_F"
                 Header="偏離幅度濾網&#xA;(試撮)(%)" />
             <dxg:GridColumn
@@ -163,19 +151,19 @@
                 FieldName="TPPINTD_M_PRICE_FILTER"
                 Header="成交價&#xA;濾網 (%)" />
             <dxg:GridColumn
-                Width="75"
+                Width="80"
                 FieldName="TPPINTD_BS_PRICE_FILTER"
                 Header="買賣中價&#xA;濾網 (%)" />
             <dxg:GridColumn
-                Width="65"
+                Width="70"
                 FieldName="TPPINTD_UNIT"
                 Header="動態退單&#xA;百分比" />
             <dxg:GridColumn
-                Width="65"
+                Width="70"
                 FieldName="TPPINTD_FOREIGN_INTERVAL"
                 Header="國外成交&#xA;間隔毫秒" />
             <dxg:GridColumn
-                Width="60"
+                Width="70"
                 FieldName="TPPINTD_USER_ID"
                 Header="員工代碼">
                 <dxg:GridColumn.EditSettings>
@@ -183,7 +171,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="150"
+                Width="165"
                 FieldName="TPPINTD_W_TIME"
                 Header="寫檔時間">
                 <dxg:GridColumn.EditSettings>
@@ -191,14 +179,14 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
         </dxg:GridControl>
-        <ScrollViewer Grid.Row="2">
-            <TextBlock
-                x:Name="txtMemo"
-                xml:space="preserve"
-                Foreground="OrangeRed"
-                TextWrapping="Wrap">
+        <TextBlock
+            x:Name="txtMemo"
+            Grid.Row="2"
+            Margin="10,0"
+            xml:space="preserve"
+            Foreground="OrangeRed"
+            TextWrapping="Wrap">
 註1:月份序號依到期月份由近至遠排序，例如TXF及MXF為1至5，週契約皆為1。單式單第二支腳契約代號請空白，第二支腳月份序號請填0。複式單第一支腳月份序號請填近月，第二支腳月份序號請填遠月。如該契約不適用開盤成交價偏離幅度請填0。
             </TextBlock>
-        </ScrollViewer>
     </Grid>
 </myTypes:UserControlParent>

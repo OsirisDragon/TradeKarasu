@@ -182,6 +182,10 @@ namespace TradeFutNight.Views.Prefix3
             string memo = "";
 
             var rptSetting = ReportNormal.CreateSetting(ProgramID, ProgramID + "–" + ProgramName, UserName, memo, Ocf.OCF_DATE, true, false, true);
+            rptSetting.HeaderColumnsFontSize = 10;
+            rptSetting.ContentColumnsFontSize = 10;
+            rptSetting.ContentColumnsWidthScaleFactor = 0.84f;
+            rptSetting.HeaderColumnsWidthScaleFactor = 0.84f;
             var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain.Columns, rptSetting);
 
             return reportCommon;

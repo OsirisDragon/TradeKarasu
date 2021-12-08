@@ -12,7 +12,6 @@
     Margin="1,1,1,1"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontSize="14"
     mc:Ignorable="d">
     <myTypes:UserControlParent.DataContext>
         <myTypesPrefix:U_30040_ViewModel />
@@ -30,7 +29,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="0.2*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <dxg:GridControl
             x:Name="gridMain"
@@ -54,7 +53,7 @@
             </dxg:GridControl.View>
             <dxg:GridColumn
                 Name="rowNumber"
-                Width="40"
+                Width="45"
                 AllowEditing="False"
                 Header="編號">
                 <dxg:GridColumn.CellTemplate>
@@ -104,7 +103,7 @@
                 FieldName="TPPDK_THERICAL_P_INTERVAL"
                 Header="理論價&#xA;計算秒數" />
             <dxg:GridColumn
-                Width="65"
+                Width="75"
                 CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="TPPDK_USER_ID"
                 Header="員工代碼"
@@ -114,7 +113,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="150"
+                Width="165"
                 CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="TPPDK_W_TIME"
                 Header="寫檔時間"
@@ -139,16 +138,15 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
         </dxg:GridControl>
-        <ScrollViewer Grid.Row="2">
-            <TextBlock
-                x:Name="txtMemo"
-                Grid.Row="1"
-                Margin="0,0,0,0"
-                xml:space="preserve"
-                Foreground="OrangeRed"
-                TextWrapping="Wrap">
+
+        <TextBlock
+            x:Name="txtMemo"
+            Grid.Row="1"
+            Margin="10,0"
+            xml:space="preserve"
+            Foreground="OrangeRed"
+            TextWrapping="Wrap">
 註：「理論價計算秒數」代表TX、MTX最近月契約於夜盤時段，各別透過計算N秒鐘成交價之簡單算術平均數，作為TX、MTX最近月契約理論價，參數N為使用者自行設定，參數設定或調整需於前一日完成，次一個交易日才會生效，無法盤中臨時修改
             </TextBlock>
-        </ScrollViewer>
     </Grid>
 </myTypes:UserControlParent>

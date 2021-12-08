@@ -3,7 +3,6 @@ using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,7 +10,6 @@ using System.Windows.Controls;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
-using TradeUtility;
 
 namespace TradeFutNight.Views.PrefixA
 {
@@ -49,14 +47,14 @@ namespace TradeFutNight.Views.PrefixA
             VmMainUi.IsButtonPrintEnabled = true;
             VmMainUi.IsButtonPrintIndexEnabled = true;
             VmMainUi.IsButtonPrintStockEnabled = true;
-
-            _vm.StartDate = _vm.EndDate = Ocf.OCF_DATE;
-            _vm.ProdId = "";
         }
 
         public async Task Open()
         {
             ControlSetting();
+
+            _vm.StartDate = _vm.EndDate = Ocf.OCF_DATE;
+            _vm.ProdId = "";
 
             var task = Task.Run(() =>
             {
@@ -158,9 +156,6 @@ namespace TradeFutNight.Views.PrefixA
         {
             var button = ((Button)sender);
             button.IsEnabled = false;
-
-            DateTime startDate = txtStartDate.EditValue.AsDateTime();
-            DateTime endDate = txtEndDate.EditValue.AsDateTime();
 
             await _vm.Query();
 

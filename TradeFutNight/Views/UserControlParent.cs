@@ -152,6 +152,15 @@ namespace TradeFutNight.Views
 
         public virtual void ControlSetting()
         {
+            // 先重置所有控制項
+            VmMainUi.IsButtonSaveEnabled = false;
+            VmMainUi.IsButtonInsertEnabled = false;
+            VmMainUi.IsButtonDeleteEnabled = false;
+            VmMainUi.IsButtonExportEnabled = false;
+            VmMainUi.IsButtonPrintEnabled = false;
+            VmMainUi.IsButtonPrintIndexEnabled = false;
+            VmMainUi.IsButtonPrintStockEnabled = false;
+
             IEnumerable<JSW> listJSW;
             int countJSW = 0;
 

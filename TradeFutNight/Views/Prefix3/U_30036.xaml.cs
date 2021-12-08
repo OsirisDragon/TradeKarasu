@@ -15,20 +15,21 @@ using TradeFutNight.Reports;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Common;
 using TradeFutNightData.Models.Common;
+using TradeUtility;
 
 namespace TradeFutNight.Views.Prefix3
 {
     /// <summary>
-    /// U_30025.xaml 的互動邏輯
+    /// U_30036.xaml 的互動邏輯
     /// </summary>
-    public partial class U_30025 : UserControlParent, IViewSword
+    public partial class U_30036 : UserControlParent, IViewSword
     {
-        private U_30025_ViewModel _vm;
+        private U_30036_ViewModel _vm;
 
-        public U_30025()
+        public U_30036()
         {
             InitializeComponent();
-            _vm = (U_30025_ViewModel)DataContext;
+            _vm = (U_30036_ViewModel)DataContext;
         }
 
         public async Task<bool> IsCanRun()
@@ -47,6 +48,8 @@ namespace TradeFutNight.Views.Prefix3
         public override void ControlSetting()
         {
             base.ControlSetting();
+            VmMainUi.IsButtonSaveEnabled = false;
+            VmMainUi.IsButtonDeleteEnabled = false;
         }
 
         public async Task Open()
@@ -123,16 +126,32 @@ namespace TradeFutNight.Views.Prefix3
             var task = Task.Run(async () =>
             {
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = _vm.MapperInstance.Map<IList<TPPINTD>>(trackableData.DeletedItems);
-
+                var domainData = _vm.MapperInstance.Map<IList<CCM>>(trackableData.DeletedItems);
                 using (var das = Factory.CreateDalSession())
                 {
                     das.Begin();
 
                     try
                     {
-                        var dTPPINTD = new D_TPPINTD(das);
-                        dTPPINTD.Delete(domainData);
+                        var dCCM = new D_CCM(das);
+                        dCCM.Delete(domainData);
+
+                        var dPCM = new D_PCM(das);
+
+                        var dPDK = new D_PDK(das);
+                        var pdkSubtypeData = dPDK.ListDistinctKindIdAndSubtypeForPcm();
+
+                        foreach (var item in domainData)
+                        {
+                            var subtype = item.CCM_SUBTYPE;
+                            foreach (var p in pdkSubtypeData)
+                            {
+                                if (p.PDK_SUBTYPE == subtype)
+                                {
+                                    dPCM.Delete(item.CCM_FCM_NO, p.PDK_KIND_ID);
+                                }
+                            }
+                        }
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -161,34 +180,20 @@ namespace TradeFutNight.Views.Prefix3
 
         private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
         {
-            string memo = "";
-            Dispatcher.Invoke(() =>
-            {
-                memo = txtMemo.Text;
-            });
-
             string reportTitle = ProgramID + "–" + ProgramName;
 
             switch (operationType)
             {
                 case OperationType.Save:
-                    reportTitle = reportTitle.Replace("查詢、", "");
-                    break;
-
-                case OperationType.Print:
-                    reportTitle = reportTitle.Replace("、刪除", "");
+                    reportTitle = reportTitle.Replace("查詢", "刪除");
                     break;
 
                 default:
                     break;
             }
 
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, memo, Ocf.OCF_DATE, true, false, true);
-            rptSetting.HeaderColumnsFontSize = 10;
-            rptSetting.ContentColumnsFontSize = 10;
-            rptSetting.ContentColumnsWidthScaleFactor = 0.94f;
-            rptSetting.HeaderColumnsWidthScaleFactor = 0.94f;
-            var reportCommon = ReportNormal.CreateCommonLandscape(data, gridMain.Columns, rptSetting);
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, "", Ocf.OCF_DATE, true, false, true);
+            var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain.Columns, rptSetting);
 
             return reportCommon;
         }
@@ -229,18 +234,12 @@ namespace TradeFutNight.Views.Prefix3
             var button = ((Button)sender);
             button.IsEnabled = false;
 
-            if (cbFirstKindId.SelectedItem != null && cbSecondKindId.SelectedItem != null)
+            var cmNo = txtCmNo.EditValue.AsString();
+            var task = Task.Run(async () =>
             {
-                var firstSelectedItem = (ItemInfo)cbFirstKindId.SelectedItem;
-                var secondSelectedItem = (ItemInfo)cbSecondKindId.SelectedItem;
-
-                var task = Task.Run(async () =>
-                {
-                    await _vm.Query(firstSelectedItem.Value.ToString(), secondSelectedItem.Value.ToString());
-                });
-
-                await task;
-            }
+                await _vm.Query();
+            });
+            await task;
 
             button.IsEnabled = true;
         }

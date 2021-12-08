@@ -46,14 +46,13 @@ namespace TradeFutNight.Views.PrefixA
             VmMainUi.IsButtonSaveEnabled = false;
             VmMainUi.IsButtonDeleteEnabled = false;
             VmMainUi.IsButtonPrintEnabled = true;
-
-            _vm.StartDate = _vm.EndDate = Ocf.OCF_DATE;
-            _vm.ProdId = "";
         }
 
         public async Task Open()
         {
             ControlSetting();
+            _vm.StartDate = _vm.EndDate = Ocf.OCF_DATE;
+            _vm.ProdId = "";
 
             var task = Task.Run(() =>
             {
@@ -156,9 +155,6 @@ namespace TradeFutNight.Views.PrefixA
         {
             var button = ((Button)sender);
             button.IsEnabled = false;
-
-            DateTime startDate = txtStartDate.EditValue.AsDateTime();
-            DateTime endDate = txtEndDate.EditValue.AsDateTime();
 
             await _vm.Query();
 

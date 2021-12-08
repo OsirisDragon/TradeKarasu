@@ -12,7 +12,6 @@
     Margin="1,1,1,1"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontSize="14"
     mc:Ignorable="d">
     <myTypes:UserControlParent.DataContext>
         <myTypesPrefix:U_30056_ViewModel />
@@ -53,7 +52,7 @@
             </dxg:GridControl.View>
             <dxg:GridColumn
                 Name="rowNumber"
-                Width="40"
+                Width="45"
                 AllowEditing="False"
                 Header="編號">
                 <dxg:GridColumn.CellTemplate>
@@ -71,7 +70,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="130"
+                Width="135"
                 c:CustomProp.NotNullNotEmpty="True"
                 FieldName="MORD_KIND_ID_TYPE"
                 Header="契約代碼類別">

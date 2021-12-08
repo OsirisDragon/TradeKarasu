@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DevExpress.Xpf.Core;
+using System.Drawing;
 using System.Windows;
+using System.Windows.Media;
+using static DevExpress.Utils.Serializing.PrintingSystemXmlSerializer;
 
 namespace TradeFutNight
 {
@@ -13,5 +11,17 @@ namespace TradeFutNight
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            var custompalette = new ThemePalette("CustomPalette");
+            custompalette.SetColor("Backstage.Window.Background", Colors.DimGray);
+            custompalette.SetColor("Window.Background", Colors.White);
+
+            var palettetheme = Theme.CreateTheme(custompalette, Theme.Office2019Colorful);
+            //var palettetheme = Theme.CreateTheme(custompalette, Theme.Office2019White);
+
+            Theme.RegisterTheme(palettetheme);
+            ApplicationThemeHelper.ApplicationThemeName = palettetheme.Name;
+        }
     }
 }
