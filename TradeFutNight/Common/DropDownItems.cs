@@ -140,8 +140,9 @@ namespace TradeFutNight.Common
             result.Add(new ItemInfo() { Text = "星期四", Value = '4' });
             result.Add(new ItemInfo() { Text = "星期五", Value = '5' });
             result.Add(new ItemInfo() { Text = "星期六", Value = '6' });
+            return result;
         }
-        
+
         public static IList<ItemInfo> SubtypeCode()
         {
             var result = new List<ItemInfo>();
