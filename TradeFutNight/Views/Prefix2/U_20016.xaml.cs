@@ -46,15 +46,17 @@ namespace TradeFutNight.Views.Prefix2
         public override void ControlSetting()
         {
             base.ControlSetting();
-
-            _vm.StartDate = new DateTime(1900, 1, 1);
-            _vm.EndDate = new DateTime(2021, 12, 30);
-            _vm.GenerateYear = Ocf.OCF_DATE.Year + 1;
+            VmMainUi.IsButtonPrintEnabled = true;
         }
 
         public async Task Open()
         {
             ControlSetting();
+
+            _vm.StartDate = _vm.DefaultMinDateTime;
+            _vm.EndDate = _vm.DefaultMinDateTime;
+            _vm.GenerateYear = Ocf.OCF_DATE.Year + 1;
+
             var task = Task.Run(() =>
             {
                 _vm.Open();
@@ -220,7 +222,7 @@ namespace TradeFutNight.Views.Prefix2
                     break;
 
                 case OperationType.Print:
-
+                    reportTitle += "–查詢";
                     break;
 
                 default:
@@ -228,7 +230,9 @@ namespace TradeFutNight.Views.Prefix2
             }
 
             var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, memo, Ocf.OCF_DATE, true, false, true);
-            var reportCommon = ReportNormal.CreateCommonLandscape(data, gridMain.Columns, rptSetting);
+            var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain.Columns, rptSetting);
+
+            //((DevExpress.Xpf.Grid.TableView)gridMain.View).forma
 
             return reportCommon;
         }

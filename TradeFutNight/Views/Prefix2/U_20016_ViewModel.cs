@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ChangeTracking;
 using CrossModel;
+using Shield.File;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

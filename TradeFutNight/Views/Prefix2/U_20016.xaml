@@ -4,15 +4,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:c="clr-namespace:TradeFutNight.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:myTypes="clr-namespace:TradeFutNight.Views"
     xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.Prefix2"
     Margin="1,1,1,1"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontSize="14"
     mc:Ignorable="d">
     <myTypes:UserControlParent.DataContext>
         <myTypesPrefix:U_20016_ViewModel />
@@ -29,55 +31,42 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35" />
+            <RowDefinition Height="auto" MinHeight="35" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="0.2*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <dxe:TextEdit
-                Width="60"
-                Height="30"
-                EditValue="{Binding GenerateYear}" />
+        <dxlc:FlowLayoutControl Grid.Row="0" Orientation="Horizontal">
+            <dxe:TextEdit MinWidth="60" EditValue="{Binding GenerateYear}" />
             <Button
                 x:Name="btnGenerateYear"
-                Height="30"
-                Margin="2,0,10,0"
+                Margin="0,0,90,0"
                 Click="BtnGenerateYear_Click">
                 產生年度交易日
             </Button>
-            <Label
-                Width="35"
-                Margin="70,0,10,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center">
+            <Label HorizontalAlignment="Right" VerticalAlignment="Center">
                 區間：
             </Label>
             <dxe:DateEdit
-                Width="100"
-                Height="30"
+                MinWidth="100"
                 AllowDefaultButton="False"
                 EditValue="{Binding StartDate}"
                 Mask="yyyy/MM/dd"
                 MaskType="DateTimeAdvancingCaret"
                 MaskUseAsDisplayFormat="True"
-                MinValue="1900/01/01" />
+                MinValue="{Binding DefaultMinDateTime}" />
             <Label HorizontalAlignment="Right" VerticalAlignment="Center">~</Label>
-            <dxe:TextEdit
-                Width="100"
-                Height="30"
+            <dxe:DateEdit
+                MinWidth="100"
+                AllowDefaultButton="False"
                 EditValue="{Binding EndDate}"
                 Mask="yyyy/MM/dd"
                 MaskType="DateTimeAdvancingCaret"
-                MaskUseAsDisplayFormat="True" />
-            <Button
-                x:Name="btnQuery"
-                Width="60"
-                Height="30"
-                Margin="10,0,10,0"
-                Click="BtnQuery_Click">
+                MaskUseAsDisplayFormat="True"
+                MinValue="{Binding DefaultMinDateTime}" />
+            <Button x:Name="btnQuery" Click="BtnQuery_Click">
                 查詢
             </Button>
-        </StackPanel>
+        </dxlc:FlowLayoutControl>
         <dxg:GridControl
             x:Name="gridMain"
             Grid.Row="1"
@@ -94,12 +83,20 @@
                     x:Name="gridView"
                     AllowEditing="True"
                     CellValueChanged="view_CellValueChanged"
+                    FadeSelectionOnLostFocus="False"
                     IsColumnMenuEnabled="False"
                     ShowGroupPanel="False"
-                    ShowTotalSummary="False" />
+                    ShowTotalSummary="False">
+                    <dxg:TableView.FormatConditions>
+                        <dxg:FormatCondition Expression="[MOCFEX_CBOE_OPEN_CODE] == 'N'" FieldName="MOCFEX_CBOE_OPEN_CODE">
+                            <dx:Format Foreground="Red" />
+                        </dxg:FormatCondition>
+                    </dxg:TableView.FormatConditions>
+                </dxg:TableView>
             </dxg:GridControl.View>
             <dxg:GridColumn
-                Width="90"
+                Width="95"
+                CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="MOCFEX_DATE"
                 Header="日期"
                 ReadOnly="True">
@@ -109,11 +106,17 @@
             </dxg:GridColumn>
             <dxg:GridColumn
                 Width="90"
+                AllowEditing="False"
+                CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="MOCFEX_DAY_OF_WEEK"
                 Header="星期"
                 ReadOnly="True">
                 <dxg:GridColumn.EditSettings>
-                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                    <dxe:ComboBoxEditSettings
+                        HorizontalContentAlignment="Center"
+                        DisplayMember="Text"
+                        ItemsSource="{Binding DayOfWeek}"
+                        ValueMember="Value" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
@@ -121,11 +124,16 @@
                 FieldName="MOCFEX_CBOE_OPEN_CODE"
                 Header="營業狀態">
                 <dxg:GridColumn.EditSettings>
-                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                    <dxe:ComboBoxEditSettings
+                        HorizontalContentAlignment="Center"
+                        DisplayMember="Text"
+                        ItemsSource="{Binding CboeOpenCode}"
+                        ValueMember="Value" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="90"
+                Width="70"
+                CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="MOCFEX_USER_ID"
                 Header="異動人員"
                 ReadOnly="True">
@@ -134,7 +142,8 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="150"
+                Width="165"
+                CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="MOCFEX_W_TIME"
                 Header="異動時間"
                 ReadOnly="True">
@@ -158,13 +167,13 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
         </dxg:GridControl>
-        <ScrollViewer Grid.Row="2">
-            <TextBlock
-                x:Name="txtMemo"
-                xml:space="preserve"
-                Foreground="OrangeRed"
-                TextWrapping="Wrap">
-            </TextBlock>
-        </ScrollViewer>
+        <TextBlock
+            x:Name="txtMemo"
+            Grid.Row="2"
+            Margin="10,0"
+            xml:space="preserve"
+            Foreground="OrangeRed"
+            TextWrapping="Wrap">
+        </TextBlock>
     </Grid>
 </myTypes:UserControlParent>
