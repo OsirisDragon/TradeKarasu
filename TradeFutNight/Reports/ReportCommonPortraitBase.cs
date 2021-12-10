@@ -88,7 +88,7 @@ namespace TradeFutNight.Reports
     {
         public string DefaultPdfFilePath { get; set; }
 
-        public ReportCommonPortrait(IList<T> exportData, GridColumnCollection columns, ReportSetting rptSetting) : base()
+        public ReportCommonPortrait(IList<T> exportData, GridControl gridControl, ReportSetting rptSetting) : base()
         {
             Parameter paramOcfDate = Parameters["OcfRocDate"];
             paramOcfDate.Visible = false;
@@ -127,11 +127,11 @@ namespace TradeFutNight.Reports
 
             Application.Current.Dispatcher.Invoke(() =>
             {
-                GetGroupHeaderColumns().Controls.Add(ReportNormal.CreateHeaderColumnsTable(rptSetting, columns));
+                GetGroupHeaderColumns().Controls.Add(ReportNormal.CreateHeaderColumnsTable(rptSetting, gridControl));
 
                 // 如果有資料才要產生內容
                 if (exportData.Count > 0)
-                    GetDetailBand().Controls.Add(ReportNormal.CreateContentTable(exportData, rptSetting, columns));
+                    GetDetailBand().Controls.Add(ReportNormal.CreateContentTable(exportData, rptSetting, gridControl));
             });
 
             this.DataSource = exportData;
