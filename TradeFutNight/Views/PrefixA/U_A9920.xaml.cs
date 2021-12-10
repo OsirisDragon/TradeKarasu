@@ -56,13 +56,13 @@ namespace TradeFutNight.Views.PrefixA
 
         public async Task Open()
         {
+            ControlSetting();
             var task = Task.Run(() =>
             {
                 _vm.Open();
                 DbLog(MessageConst.Open);
             });
             await task;
-            ControlSetting();
         }
 
         public void Insert()
