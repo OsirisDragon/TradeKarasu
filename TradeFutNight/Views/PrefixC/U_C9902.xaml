@@ -55,19 +55,12 @@
         <dxg:GridControl
             x:Name="gridMain"
             Grid.Row="0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Stretch"
-            AutoGenerateColumns="None"
-            EnableSmartColumnsGeneration="True"
             ItemsSource="{Binding MainGridData}">
             <dxg:GridControl.View>
                 <dxg:TableView
                     x:Name="gridView"
                     AllowEditing="False"
-                    IsColumnMenuEnabled="False"
-                    NavigationStyle="None"
-                    ShowGroupPanel="False"
-                    ShowTotalSummary="False">
+                    NavigationStyle="None">
                     <dxg:TableView.FormatConditions>
                         <dxg:FormatCondition Expression="[JCF_CONFIRM_CODE] == 'N'" FieldName="JCF_CONFIRM_CODE">
                             <dx:Format Background="Red" />

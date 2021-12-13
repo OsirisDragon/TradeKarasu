@@ -53,7 +53,8 @@
             Grid.Row="1"
             CurrentItem="{Binding Path=CurrentItem, Mode=TwoWay}"
             ItemsSource="{Binding MainGridData}"
-            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
+            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
+            SelectionMode="None">
             <dxg:GridControl.View>
                 <dxg:TableView x:Name="gridView" AllowEditing="False" />
             </dxg:GridControl.View>
