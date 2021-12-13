@@ -130,6 +130,19 @@ namespace TradeFutNight.Common
             return result;
         }
 
+        public static IList<ItemInfo> DayOfWeek()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "星期日", Value = '0' });
+            result.Add(new ItemInfo() { Text = "星期一", Value = '1' });
+            result.Add(new ItemInfo() { Text = "星期二", Value = '2' });
+            result.Add(new ItemInfo() { Text = "星期三", Value = '3' });
+            result.Add(new ItemInfo() { Text = "星期四", Value = '4' });
+            result.Add(new ItemInfo() { Text = "星期五", Value = '5' });
+            result.Add(new ItemInfo() { Text = "星期六", Value = '6' });
+            return result;
+        }
+
         public static IList<ItemInfo> SubtypeCode()
         {
             var result = new List<ItemInfo>();

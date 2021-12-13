@@ -193,7 +193,7 @@ namespace TradeFutNight.Views.Prefix3
             }
 
             var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, "", Ocf.OCF_DATE, true, false, true);
-            var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain.Columns, rptSetting);
+            var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain, rptSetting);
 
             return reportCommon;
         }

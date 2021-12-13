@@ -18,6 +18,8 @@ namespace TradeFutNight
         {
             InitializeComponent();
 
+            this.Dispatcher.UnhandledException += OnDispatcherUnhandledException;
+
             // AseClient add custom charset support
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             Encoding.RegisterProvider(new EncodingProviderForBig5());
@@ -66,6 +68,12 @@ namespace TradeFutNight
         private void ThemedWindow_Closed(object sender, EventArgs e)
         {
             System.Windows.Application.Current.Shutdown();
+        }
+
+        private void OnDispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBoxExService.Instance().Error(e.Exception.Message);
+            e.Handled = true;
         }
     }
 

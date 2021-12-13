@@ -188,7 +188,7 @@ namespace TradeFutNight.Views.Prefix3
             rptSetting.ContentColumnsFontSize = 10;
             rptSetting.ContentColumnsWidthScaleFactor = 0.94f;
             rptSetting.HeaderColumnsWidthScaleFactor = 0.94f;
-            var reportCommon = ReportNormal.CreateCommonLandscape(data, gridMain.Columns, rptSetting);
+            var reportCommon = ReportNormal.CreateCommonLandscape(data, gridMain, rptSetting);
 
             return reportCommon;
         }
