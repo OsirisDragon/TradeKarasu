@@ -81,21 +81,11 @@
         <dxg:GridControl
             x:Name="gridMain"
             Grid.Row="1"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Stretch"
-            AutoGenerateColumns="None"
             CurrentItem="{Binding Path=CurrentItem, Mode=TwoWay}"
-            EnableSmartColumnsGeneration="True"
             ItemsSource="{Binding MainGridData}"
-            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
-            SelectionMode="Row">
+            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
             <dxg:GridControl.View>
-                <dxg:TableView
-                    x:Name="gridView"
-                    AllowEditing="False"
-                    IsColumnMenuEnabled="False"
-                    ShowGroupPanel="False"
-                    ShowTotalSummary="False" />
+                <dxg:TableView x:Name="gridView" AllowEditing="False" />
             </dxg:GridControl.View>
             <dxg:GridColumn
                 Name="rowNumber"

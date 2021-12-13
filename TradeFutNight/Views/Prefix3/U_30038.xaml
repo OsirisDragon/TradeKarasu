@@ -38,11 +38,7 @@
             ItemsSource="{Binding MainGridData}"
             SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
             <dxg:GridControl.View>
-                <dxg:TableView
-                    x:Name="gridView"
-                    ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                    ShowGroupPanel="False"
-                    ShowTotalSummary="False" />
+                <dxg:TableView x:Name="gridView" />
             </dxg:GridControl.View>
             <dxg:GridColumn
                 Name="rowNumber"
