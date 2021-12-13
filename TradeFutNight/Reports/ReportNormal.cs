@@ -1,5 +1,4 @@
 ﻿using CrossModel;
-using CrossModel.Enum;
 using DevExpress.Xpf.Editors.Settings;
 using DevExpress.Xpf.Grid;
 using DevExpress.XtraPrinting;
