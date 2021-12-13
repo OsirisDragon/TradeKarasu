@@ -3,7 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:dxeh="http://schemas.devexpress.com/winfx/2008/xaml/editors/internal"
     xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
-    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid">
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys">
 
     <!--  設定所有的GridControl的共用屬性  -->
     <Style TargetType="{x:Type dxg:GridControl}">
@@ -49,11 +50,18 @@
     </Style>
 
     <!--  設定在GridColumn的CellStyle裡面，當該Column為ReadOnly時，變為灰色  -->
-    <Style x:Key="CellStyleReadOnlyChangeColor" TargetType="dxg:LightweightCellEditor">
+    <Style
+        x:Key="CellStyleReadOnlyChangeColor"
+        BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}"
+        TargetType="dxg:LightweightCellEditor">
         <Style.Triggers>
             <DataTrigger Binding="{Binding Column.ReadOnly}" Value="True">
                 <Setter Property="Background" Value="WhiteSmoke" />
                 <Setter Property="IsEnabled" Value="False" />
+                <Setter Property="Focusable" Value="False" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding RowData.IsSelected}" Value="True">
+                <Setter Property="Background" Value="Transparent" />
             </DataTrigger>
         </Style.Triggers>
     </Style>

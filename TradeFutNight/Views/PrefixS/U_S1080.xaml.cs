@@ -2,6 +2,7 @@
 using CrossModel;
 using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
+using Shield.File;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,20 +11,24 @@ using System.Windows;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
+using TradeFutNightData;
+using TradeFutNightData.Gates.Common;
+using TradeFutNightData.Models.Common;
+using TradeUtility;
 
 namespace TradeFutNight.Views.PrefixS
 {
     /// <summary>
-    /// U_S0090.xaml 的互動邏輯
+    /// U_S1080.xaml 的互動邏輯
     /// </summary>
-    public partial class U_S0090 : UserControlParent, IViewSword
+    public partial class U_S1080 : UserControlParent, IViewSword
     {
-        private U_S0090_ViewModel _vm;
+        private U_S1080_ViewModel _vm;
 
-        public U_S0090()
+        public U_S1080()
         {
             InitializeComponent();
-            _vm = (U_S0090_ViewModel)DataContext;
+            _vm = (U_S1080_ViewModel)DataContext;
         }
 
         public async Task<bool> IsCanRun()
@@ -120,8 +125,8 @@ namespace TradeFutNight.Views.PrefixS
             VmMainUi.LoadingText = MessageConst.LoadingStatusSaving;
 
             var task = Task.Run(() =>
-            {
-            });
+           {
+           });
             await task;
         }
 
@@ -139,8 +144,8 @@ namespace TradeFutNight.Views.PrefixS
                     break;
             }
 
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, txtMemo.Text, Ocf.OCF_DATE, false, false, false);
-            var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain, rptSetting);
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, txtMemo.Text, Ocf.OCF_DATE, true, false, true);
+            var reportCommon = ReportNormal.CreateCommonLandscape(data, gridMain, rptSetting);
 
             return reportCommon;
         }
@@ -174,6 +179,91 @@ namespace TradeFutNight.Views.PrefixS
             gridView.CloseEditor();
             await Task.FromResult<object>(null);
             throw new NotImplementedException();
+        }
+
+        private void GridView_CellValueChanging(object sender, DevExpress.Xpf.Grid.CellValueChangedEventArgs e)
+        {
+            if (e.Column.FieldName == "ZTYPEP_PROD_TYPE")
+            {
+                switch (e.Value)
+                {
+                    case "FUT":
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_PRICE_MODEL", "");
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_VALUATION", "FUT");
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_EXERCISE", "");
+                        break;
+
+                    case "PHY":
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_PRICE_MODEL", "");
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_VALUATION", "EQTY");
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_EXERCISE", "");
+                        break;
+
+                    case "OOF":
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_PRICE_MODEL", "B");
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_VALUATION", "EQTY");
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_EXERCISE", "EURO");
+                        break;
+
+                    case "OOP":
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_PRICE_MODEL", "BS");
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_VALUATION", "EQTY");
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_EXERCISE", "EURO");
+                        break;
+                }
+            }
+        }
+
+        private void BtnCheck_Click(object sender, RoutedEventArgs e)
+        {
+            List<PDK> pdkFut = null;
+            List<PDK> pdkOpt = null;
+
+            //選擇權夜盤
+            using (var das = Factory.CreateDalSession(SettingFile.Database.Options_AH))
+            {
+                pdkOpt = new D_PDK(das).ListKindId().ToList();
+            }
+
+            //期貨夜盤
+            using (var das = Factory.CreateDalSession())
+            {
+                pdkFut = new D_PDK(das).ListKindId().ToList();
+            }
+
+            //合併期貨和選擇權的資料
+            var pdkAll = pdkOpt.Concat(pdkFut);
+            string kindId;
+            List<string> notFoundPdk = new List<string>();
+            if (pdkAll.Count() > 0)
+            {
+                foreach (var item in pdkAll)
+                {
+                    kindId = item.PDK_KIND_ID;
+                    if (kindId.Right(1) == "F" || kindId.Right(1) == "O")
+                    {
+                        var count = _vm.MainGridData.Count(x => x.ZTYPEP_PROD == kindId);
+                        if (count == 0)
+                        {
+                            notFoundPdk.Add(kindId);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBoxExService.Instance().Error("無期貨商品PDK資料");
+                return;
+            }
+
+            if (notFoundPdk.Count > 0)
+            {
+                MessageBoxExService.Instance().Error("以下商品資料未建在ZTYPEP(用PDK檔的資料比對)：" + string.Join(",", notFoundPdk));
+            }
+            else
+            {
+                MessageBoxExService.Instance().Info("檢核完成");
+            }
         }
     }
 }

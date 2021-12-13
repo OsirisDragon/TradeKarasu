@@ -92,5 +92,13 @@ namespace TradeFutNightData.Gates.Common
 
             return query.ToList();
         }
+
+        public IList<PDK> ListKindId()
+        {
+            var query = _das.DataConn.GetTable<PDK>()
+                .Select(c => new PDK() { PDK_KIND_ID = c.PDK_KIND_ID });
+
+            return query.ToList();
+        }
     }
 }

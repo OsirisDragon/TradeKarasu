@@ -154,5 +154,32 @@ namespace TradeFutNight.Common
             result.Add(new ItemInfo() { Text = "滙率", Value = 'E' });
             return result;
         }
+
+        public static IList<ItemInfo> ZtypepProdType()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "FUT期貨", Value = "FUT" });
+            result.Add(new ItemInfo() { Text = "PHY現貨", Value = "PHY" });
+            result.Add(new ItemInfo() { Text = "OOF期權", Value = "OOF" });
+            result.Add(new ItemInfo() { Text = "OOP現權", Value = "OOP" });
+            return result;
+        }
+
+        public static IList<ItemInfo> ZtypepPriceQuote()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "IDX指數", Value = "IDX" });
+            result.Add(new ItemInfo() { Text = "STD非指數", Value = "STD" });
+            result.Add(new ItemInfo() { Text = "INT利率指數", Value = "INT" });
+            return result;
+        }
+
+        public static IList<ItemInfo> ZtypepSettlement()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "CASH現金", Value = "CASH" });
+            result.Add(new ItemInfo() { Text = "DELIV實物", Value = "DELIV" });
+            return result;
+        }
     }
 }

@@ -7,7 +7,7 @@ using TradeFutNightData;
 using TradeFutNightData.Gates.Common;
 using TradeFutNightData.Models.Common;
 
-namespace TradeFutNight.Views.Prefix3
+namespace TradeFutNight.Views.PrefixS
 {
     public class U_S0090_ViewModel : ViewModelParent<UIModel_S0090>
     {
