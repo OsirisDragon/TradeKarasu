@@ -119,7 +119,7 @@ namespace TradeFutNight.Views.Prefix3
         {
             VmMainUi.LoadingText = MessageConst.LoadingStatusSaving;
 
-            var task = Task.Run(async () =>
+            var task = Task.Run(() =>
             {
             });
             await task;
@@ -140,7 +140,7 @@ namespace TradeFutNight.Views.Prefix3
             }
 
             var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, txtMemo.Text, Ocf.OCF_DATE, false, false, false);
-            var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain.Columns, rptSetting);
+            var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain, rptSetting);
 
             return reportCommon;
         }
