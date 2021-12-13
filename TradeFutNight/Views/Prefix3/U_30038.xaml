@@ -34,20 +34,12 @@
         <dxg:GridControl
             x:Name="gridMain"
             Grid.Row="0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Stretch"
-            AutoGenerateColumns="None"
             CurrentItem="{Binding Path=CurrentItem, Mode=TwoWay}"
-            EnableSmartColumnsGeneration="True"
             ItemsSource="{Binding MainGridData}"
-            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
-            SelectionMode="Row">
+            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
             <dxg:GridControl.View>
                 <dxg:TableView
                     x:Name="gridView"
-                    Margin="0,0,0,0"
-                    IsColumnMenuEnabled="False"
-                    PrintAutoWidth="False"
                     ScrollViewer.HorizontalScrollBarVisibility="Visible"
                     ShowGroupPanel="False"
                     ShowTotalSummary="False" />
@@ -111,6 +103,6 @@
             Foreground="OrangeRed"
             TextWrapping="Wrap">
 註：「理論價計算秒數」代表TX、MTX最近月契約於夜盤時段，各別透過計算N秒鐘成交價之簡單算術平均數，作為TX、MTX最近月契約理論價，參數N為使用者自行設定，參數設定或調整需於前一日完成，次一個交易日才會生效，無法盤中臨時修改
-            </TextBlock>
+        </TextBlock>
     </Grid>
 </myTypes:UserControlParent>

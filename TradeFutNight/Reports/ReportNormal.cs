@@ -101,17 +101,12 @@ namespace TradeFutNight.Reports
                     }
                     if (col.EditSettings is ComboBoxEditSettings)
                     {
-                        var expressText = TransformExpress(col, ExpressionType.Text);
+                        var expressText = TransformExpress(col);
                         if (!string.IsNullOrEmpty(expressText))
                             cell.ExpressionBindings.Add(new ExpressionBinding("Text", expressText));
-
-                        //var expressForeColor = TransformExpress(col, ExpressionType.ForeColor);
-                        //if (!string.IsNullOrEmpty(expressForeColor))
-                        //    cell.ExpressionBindings.Add(new ExpressionBinding("ForeColor", expressForeColor));
                     }
                     else if (col.EditSettings != null && !String.IsNullOrEmpty(col.EditSettings.DisplayFormat))
                     {
-                        //string format = "{0:" + col.EditSettings.DisplayFormat + "}";
                         cell.DataBindings.Add("Text", exportData, col.FieldName, col.EditSettings.DisplayFormat);
                     }
                     else
@@ -168,6 +163,34 @@ namespace TradeFutNight.Reports
 
                 #endregion cell color
 
+                #region FormatConditions
+
+                var formatConditions = ((TableView)gridControl.View).FormatConditions;
+
+                if (formatConditions.Count != 0)
+                {
+                    foreach (var condition in formatConditions)
+                    {
+                        if (condition is FormatCondition)
+                        {
+                            FormatCondition fc = (FormatCondition)condition;
+                            if (fc.FieldName == col.FieldName)
+                            {
+                                if (fc.Format.Foreground != null)
+                                {
+                                    cell.ExpressionBindings.Add(new ExpressionBinding("ForeColor", "Iif(" + fc.Expression + ",'" + fc.Format.Foreground.ToString() + "','Black' )"));
+                                }
+                                else if (fc.Format.Background != null)
+                                {
+                                    cell.ExpressionBindings.Add(new ExpressionBinding("BackColor", "Iif(" + fc.Expression + ",'" + fc.Format.Background.ToString() + "','Black' )"));
+                                }
+                            }
+                        }
+                    }
+                }
+
+                #endregion FormatConditions
+
                 row.Cells.Add(cell);
             }
 
@@ -179,7 +202,7 @@ namespace TradeFutNight.Reports
             return table;
         }
 
-        private static string TransformExpress(GridColumn col, ExpressionType expressionType)
+        private static string TransformExpress(GridColumn col)
         {
             // 將下拉選單List物件轉成Iif的報表判斷表達字串
             //範例：Iif([SLT_PRICE_FLUC] = 'P', '百分比', Iif([SLT_PRICE_FLUC] = 'F', '固定點數', ''))
@@ -192,23 +215,7 @@ namespace TradeFutNight.Reports
             for (int i = 0; i < items.Count; i++)
             {
                 string whichValue = "";
-                if (expressionType == ExpressionType.Text)
-                {
-                    whichValue = items[i].Text;
-                }
-                else if (expressionType == ExpressionType.ForeColor)
-                {
-                    // 預設給黑色
-                    //whichValue = "Black";
-                    //if (!string.IsNullOrEmpty(items[i].ForeColor))
-                    //{
-                    //    whichValue = items[i].ForeColor;
-                    //}
-                    //else
-                    //{
-                    //    continue;
-                    //}
-                }
+                whichValue = items[i].Text;
 
                 result += "Iif(" + field + "='" + items[i].Value + "','" + whichValue + "',";
                 numberOfIf++;
