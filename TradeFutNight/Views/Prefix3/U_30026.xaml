@@ -63,22 +63,14 @@
         <dxg:GridControl
             x:Name="gridMain"
             Grid.Row="1"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Stretch"
-            AutoGenerateColumns="None"
             CurrentItem="{Binding Path=CurrentItem, Mode=TwoWay}"
-            EnableSmartColumnsGeneration="True"
             ItemsSource="{Binding MainGridData}"
-            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
-            SelectionMode="Row">
+            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
             <dxg:GridControl.View>
                 <dxg:TableView
                     x:Name="gridView"
                     AllowEditing="True"
-                    CellValueChanged="view_CellValueChanged"
-                    IsColumnMenuEnabled="False"
-                    ShowGroupPanel="False"
-                    ShowTotalSummary="False" />
+                    CellValueChanged="view_CellValueChanged" />
             </dxg:GridControl.View>
             <dxg:GridColumn
                 Name="rowNumber"
@@ -190,6 +182,6 @@
 註1:月份序號依到期月份由近至遠排序，例如TXF及MXF為1至5，週契約皆為1。單式單第二支腳契約代號請空白，第二支腳月份序號請填0。複式單第一支腳月份序號請填近月，第二支腳月份序號請填遠月。如該契約不適用開盤成交價偏離幅度請填0。
 註2:成交價濾網代表「前一筆有效成交價應介於有效委買委賣報價中價加減一定範圍」，其中一定範圍即本功能所設定之參數，例如若參數設為0.4%、有效委買委賣報價中價為10,000點，則前一筆有效成交價應介於9,960點(=10000-10000*0.4%)～10,040點(=10000+10000*0.4%)間，若前一筆成交價為10,010點則符合成交價濾網
 註3:買賣價差濾網代表[(委託量加權平均委賣價格÷委託量加權平均委買價格)-1]需&lt;=一定比例，其中一定比例即本功能所設定之參數，例如若參數設為0.8%、委託量加權平均委賣價為10050點、委託量加權平均委買價為10000點，則[(10050÷10000)-1]=0.5%&lt;0.8%，則符合買賣價差濾網。
-            </TextBlock>
+        </TextBlock>
     </Grid>
 </myTypes:UserControlParent>
