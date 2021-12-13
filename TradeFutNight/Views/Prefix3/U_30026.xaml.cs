@@ -225,7 +225,7 @@ namespace TradeFutNight.Views.Prefix3
             }
 
             var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, memo, Ocf.OCF_DATE, true, false, true);
-            var reportCommon = ReportNormal.CreateCommonLandscape(data, gridMain.Columns, rptSetting);
+            var reportCommon = ReportNormal.CreateCommonLandscape(data, gridMain, rptSetting);
 
             return reportCommon;
         }

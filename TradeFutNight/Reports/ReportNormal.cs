@@ -16,17 +16,17 @@ namespace TradeFutNight.Reports
             return new ReportSetting(programID, reportTitle, userName, memoText, ocfDate, hasHandlePerson, hasConfirmPerson, hasManagerPerson);
         }
 
-        public static ReportCommonLandscape<T> CreateCommonLandscape<T>(IList<T> exportData, GridColumnCollection columns, ReportSetting rptSetting)
+        public static ReportCommonLandscape<T> CreateCommonLandscape<T>(IList<T> exportData, GridControl gridControl, ReportSetting rptSetting)
         {
-            return new ReportCommonLandscape<T>(exportData, columns, rptSetting);
+            return new ReportCommonLandscape<T>(exportData, gridControl, rptSetting);
         }
 
-        public static ReportCommonPortrait<T> CreateCommonPortrait<T>(IList<T> exportData, GridColumnCollection columns, ReportSetting rptSetting)
+        public static ReportCommonPortrait<T> CreateCommonPortrait<T>(IList<T> exportData, GridControl gridControl, ReportSetting rptSetting)
         {
-            return new ReportCommonPortrait<T>(exportData, columns, rptSetting);
+            return new ReportCommonPortrait<T>(exportData, gridControl, rptSetting);
         }
 
-        public static XRTable CreateHeaderColumnsTable(ReportSetting rptSetting, GridColumnCollection columns)
+        public static XRTable CreateHeaderColumnsTable(ReportSetting rptSetting, GridControl gridControl)
         {
             XRTable table = new XRTable();
             table.Borders = DevExpress.XtraPrinting.BorderSide.All;
@@ -35,7 +35,7 @@ namespace TradeFutNight.Reports
             XRTableRow row = new XRTableRow();
             row.HeightF = rptSetting.HeaderColumnsRowHeight;
 
-            foreach (var col in columns)
+            foreach (var col in gridControl.Columns)
             {
                 XRTableCell cell = new XRTableCell();
                 cell.Multiline = true;
@@ -75,7 +75,7 @@ namespace TradeFutNight.Reports
             return table;
         }
 
-        public static XRTable CreateContentTable<T>(IList<T> exportData, ReportSetting rptSetting, GridColumnCollection columns)
+        public static XRTable CreateContentTable<T>(IList<T> exportData, ReportSetting rptSetting, GridControl gridControl)
         {
             XRTable table = new XRTable();
             table.Borders = BorderSide.Left | BorderSide.Right | BorderSide.Bottom;
@@ -84,7 +84,7 @@ namespace TradeFutNight.Reports
             XRTableRow row = new XRTableRow();
             row.HeightF = 15f;
 
-            foreach (var col in columns)
+            foreach (var col in gridControl.Columns)
             {
                 XRTableCell cell = new XRTableCell();
 
@@ -148,7 +148,7 @@ namespace TradeFutNight.Reports
                     cell.ProcessDuplicatesMode = ProcessDuplicatesMode.Merge;
                 }
 
-                #region cell color
+                #region Cell Color
 
                 // 如果該欄位ReadOnly
                 if (col.ReadOnly)
@@ -160,7 +160,7 @@ namespace TradeFutNight.Reports
                     }
                 }
 
-                #endregion cell color
+                #endregion Cell Color
 
                 #region FormatConditions
 

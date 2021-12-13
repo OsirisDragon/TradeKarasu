@@ -107,7 +107,7 @@ namespace TradeFutNight.Views.PrefixA
 
             var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, "", Ocf.OCF_DATE, true, false, true);
             rptSetting.HeaderColumnsFontSize = 10;
-            var reportCommon = ReportNormal.CreateCommonLandscape(data, gridMain.Columns, rptSetting);
+            var reportCommon = ReportNormal.CreateCommonLandscape(data, gridMain, rptSetting);
 
             return reportCommon;
         }
