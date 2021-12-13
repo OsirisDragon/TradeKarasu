@@ -171,22 +171,6 @@ namespace TradeFutNight.Reports
                 {
                     foreach (var condition in formatConditions)
                     {
-                        if (condition.FieldName == col.FieldName)
-                        {
-                        }
-                    }
-                }
-
-                #endregion FormatConditions
-
-                #region FormatConditions
-
-                var formatConditions = ((TableView)gridControl.View).FormatConditions;
-
-                if (formatConditions.Count != 0)
-                {
-                    foreach (var condition in formatConditions)
-                    {
                         if (condition is FormatCondition)
                         {
                             FormatCondition fc = (FormatCondition)condition;
