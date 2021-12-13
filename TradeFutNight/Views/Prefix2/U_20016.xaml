@@ -70,25 +70,17 @@
         <dxg:GridControl
             x:Name="gridMain"
             Grid.Row="1"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Stretch"
-            AutoGenerateColumns="None"
             CurrentItem="{Binding Path=CurrentItem, Mode=TwoWay}"
-            EnableSmartColumnsGeneration="True"
             ItemsSource="{Binding MainGridData}"
-            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
-            SelectionMode="Row">
+            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
             <dxg:GridControl.View>
                 <dxg:TableView
                     x:Name="gridView"
                     AllowEditing="True"
                     CellValueChanged="view_CellValueChanged"
-                    FadeSelectionOnLostFocus="False"
-                    IsColumnMenuEnabled="False"
-                    ShowGroupPanel="False"
-                    ShowTotalSummary="False">
+                    RowStyle="{StaticResource GridControlSpecificStyle}">
                     <dxg:TableView.FormatConditions>
-                        <dxg:FormatCondition Expression="[MOCFEX_CBOE_OPEN_CODE] == 'N'" FieldName="MOCFEX_CBOE_OPEN_CODE">
+                        <dxg:FormatCondition Expression="[MOCFEX_CBOE_OPEN_CODE] = 'N'" FieldName="MOCFEX_CBOE_OPEN_CODE">
                             <dx:Format Foreground="Red" />
                         </dxg:FormatCondition>
                     </dxg:TableView.FormatConditions>
@@ -96,7 +88,6 @@
             </dxg:GridControl.View>
             <dxg:GridColumn
                 Width="95"
-                CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="MOCFEX_DATE"
                 Header="日期"
                 ReadOnly="True">
@@ -107,7 +98,6 @@
             <dxg:GridColumn
                 Width="90"
                 AllowEditing="False"
-                CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="MOCFEX_DAY_OF_WEEK"
                 Header="星期"
                 ReadOnly="True">
@@ -121,6 +111,7 @@
             </dxg:GridColumn>
             <dxg:GridColumn
                 Width="90"
+                CellStyle="{StaticResource CellStyleEditorColor}"
                 FieldName="MOCFEX_CBOE_OPEN_CODE"
                 Header="營業狀態">
                 <dxg:GridColumn.EditSettings>
@@ -133,7 +124,6 @@
             </dxg:GridColumn>
             <dxg:GridColumn
                 Width="70"
-                CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="MOCFEX_USER_ID"
                 Header="異動人員"
                 ReadOnly="True">
@@ -143,7 +133,6 @@
             </dxg:GridColumn>
             <dxg:GridColumn
                 Width="165"
-                CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="MOCFEX_W_TIME"
                 Header="異動時間"
                 ReadOnly="True">

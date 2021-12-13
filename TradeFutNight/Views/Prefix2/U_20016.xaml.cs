@@ -230,9 +230,7 @@ namespace TradeFutNight.Views.Prefix2
             }
 
             var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, memo, Ocf.OCF_DATE, true, false, true);
-            var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain.Columns, rptSetting);
-
-            //((DevExpress.Xpf.Grid.TableView)gridMain.View).forma
+            var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain, rptSetting);
 
             return reportCommon;
         }
