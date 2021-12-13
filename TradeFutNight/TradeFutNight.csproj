@@ -279,6 +279,10 @@
       <DependentUpon>U_C9902.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PrefixC\U_C9902_ViewModel.cs" />
+    <Compile Include="Views\PrefixS\U_S0090.xaml.cs">
+      <DependentUpon>U_S0090.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrefixS\U_S0090_ViewModel.cs" />
     <Compile Include="Views\UserControlParent.cs" />
     <Compile Include="Views\ViewModelParent.cs" />
     <Page Include="Auth\AuthDoubleWithoutCard.xaml">
@@ -390,6 +394,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\PrefixC\U_C9902.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PrefixS\U_S0090.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
