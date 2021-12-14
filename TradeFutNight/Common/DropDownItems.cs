@@ -74,6 +74,17 @@ namespace TradeFutNight.Common
             }
         }
 
+        public static IList<ItemInfo> TppintdFirstKindIdTwoChar()
+        {
+            using (var das = Factory.CreateDalSession())
+            {
+                var dTppintd = new D_TPPINTD(das);
+                var result = dTppintd.ListFirstKindIDTwoChar().Select(
+                    c => new ItemInfo() { Text = c.ToString(), Value = c.ToString() }).ToList();
+                return result;
+            }
+        }
+
         public static IList<ItemInfo> TppintdSecondKindId()
         {
             using (var das = Factory.CreateDalSession())
