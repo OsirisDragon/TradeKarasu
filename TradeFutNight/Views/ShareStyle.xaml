@@ -67,8 +67,20 @@
     </Style>
 
     <!--  設定在GridColumn的CellStyle裡面，當該Column為輸入欄時，變為白色  -->
-    <Style x:Key="CellStyleEditorColor" TargetType="dxg:LightweightCellEditor">
+    <Style
+        x:Key="CellStyleEditorColor"
+        BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}"
+        TargetType="dxg:LightweightCellEditor">
         <Setter Property="Background" Value="White" />
+        <Style.Triggers>
+
+            <DataTrigger Binding="{Binding RowData.IsSelected}" Value="True">
+                <Setter Property="Background" Value="Transparent" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding SelectionState}" Value="Focused">
+                <Setter Property="Background" Value="White" />
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
     <!--  把底色全部一起變，這樣就不用去設定每個欄位，而且這樣的話列印出來的報表底色會是白色的，要設定SelectionMode為Row才有效  -->

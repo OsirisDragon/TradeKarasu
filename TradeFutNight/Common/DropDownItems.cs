@@ -192,5 +192,16 @@ namespace TradeFutNight.Common
             result.Add(new ItemInfo() { Text = "DELIV實物", Value = "DELIV" });
             return result;
         }
+
+        public static IList<ItemInfo> FrpProdId()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "CME小標普500期貨最近月每日結算價", Value = "SPX_S" });
+            result.Add(new ItemInfo() { Text = "CBOE VIX指數收盤價", Value = "VIX" });
+            result.Add(new ItemInfo() { Text = "ICE富時100期貨最近月每日結算價", Value = "FTSE_S" });
+            result.Add(new ItemInfo() { Text = "ICE布蘭特原油期貨最近到期結算價", Value = "BRF_S" });
+            result.Add(new ItemInfo() { Text = "CME黃金期貨最近到期結算價", Value = "GDF_S" });
+            return result;
+        }
     }
 }

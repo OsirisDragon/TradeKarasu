@@ -27,6 +27,8 @@ namespace TradeFutNight.Views
 
         public string UserName { get { return MagicalHats.UserName; } set { } }
 
+        public string Memo { get; set; }
+
         public OCF Ocf
         {
             get
@@ -81,6 +83,12 @@ namespace TradeFutNight.Views
             ProgramName = programName;
             VmMainUi = vmMainUi;
             MainUi = mainUi;
+
+            var memoControl = this.FindName("txtMemo");
+            if (memoControl != null)
+            {
+                Memo = ((TextBlock)memoControl).Text;
+            }
         }
 
         public bool IsCanRunProgram()
