@@ -39,8 +39,10 @@ namespace TradeFutNight.Reports
             {
                 XRTableCell cell = new XRTableCell();
                 cell.Multiline = true;
-                cell.Text = col.Header.ToString().Replace("<br/>", "\n");
                 cell.BackColor = Color.LightCyan;
+
+                if (col.Header != null)
+                    cell.Text = col.Header.ToString().Replace("<br/>", "\n");
 
                 if (col.Width != 0)
                 {
@@ -117,6 +119,14 @@ namespace TradeFutNight.Reports
                     {
                         if (String.IsNullOrEmpty(col.Header.ToString()))
                             cell.Borders = BorderSide.None;
+                    }
+
+                    if (col.UnboundExpression != "")
+                    {
+                        cell.ExpressionBindings.Add(new ExpressionBinding("Text", col.UnboundExpression));
+
+                        if (col.EditSettings != null && !String.IsNullOrEmpty(col.EditSettings.DisplayFormat))
+                            cell.TextFormatString = col.EditSettings.DisplayFormat;
                     }
                 }
                 else
