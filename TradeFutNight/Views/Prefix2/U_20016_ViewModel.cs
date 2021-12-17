@@ -68,9 +68,9 @@ namespace TradeFutNight.Views.Prefix2
             CboeOpenCode = cboeOpenCode;
         }
 
-        public void Insert()
+        public void Add(UIModel_20016 uiModel)
         {
-            MainGridData.Insert(0, new UIModel_20016());
+            MainGridData.Add(uiModel);
         }
 
         public void Delete(object item)

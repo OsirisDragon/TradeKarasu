@@ -18,11 +18,13 @@ using TradeFutNightData.Models.Common;
 namespace TradeFutNight.Views.Prefix2
 {
     /// <summary>
-    /// U_20016.xaml 的互動邏輯
+    ///  U_20016.xaml 的互動邏輯
     /// </summary>
     public partial class U_20016 : UserControlParent, IViewSword
     {
         private U_20016_ViewModel _vm;
+
+        private OperationType _operationType = OperationType.Save;
 
         public U_20016()
         {
@@ -68,7 +70,6 @@ namespace TradeFutNight.Views.Prefix2
         public void Insert()
         {
             gridView.CloseEditor();
-            _vm.Insert();
         }
 
         public void Delete()
@@ -116,21 +117,11 @@ namespace TradeFutNight.Views.Prefix2
 
                 foreach (var item in trackableData.ChangedItems)
                 {
-                    //if (item.TPPINTD_SECOND_MONTH > 0 && string.IsNullOrEmpty(item.TPPINTD_SECOND_KIND_ID))
-                    //{
-                    //    resultItem.AppendErrorMessage($"請輸入第{trackableData.AsEnumerable().IndexOf(item) + 1}筆的第二支腳契約代碼");
-                    //}
-
-                    //if (!string.IsNullOrEmpty(item.TPPINTD_SECOND_KIND_ID) && item.TPPINTD_SECOND_MONTH <= 0)
-                    //{
-                    //    resultItem.AppendErrorMessage($"請輸入第{trackableData.AsEnumerable().IndexOf(item) + 1}筆的第二支腳月份序號");
-                    //}
-
-                    //Dispatcher.Invoke(() =>
-                    //{
-                    //    item.TPPINTD_USER_ID = UserID;
-                    //    item.TPPINTD_W_TIME = DateTime.Now;
-                    //});
+                    Dispatcher.Invoke(() =>
+                    {
+                        item.MOCFEX_USER_ID = UserID;
+                        item.MOCFEX_W_TIME = DateTime.Now;
+                    });
                 }
 
                 if (resultItem.HasError)
@@ -154,7 +145,7 @@ namespace TradeFutNight.Views.Prefix2
             var task = Task.Run(async () =>
             {
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = CustomMapper(trackableData.ChangedItems);
+                var domainData = CustomMapper<MOCFEX>(trackableData);
 
                 using (var das = Factory.CreateDalSession())
                 {
@@ -162,8 +153,8 @@ namespace TradeFutNight.Views.Prefix2
 
                     try
                     {
-                        var dTppintd = new D_TPPINTD(das);
-                        dTppintd.Update(domainData);
+                        var dMocfex = new D_MOCFEX(das);
+                        dMocfex.Save(domainData);
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -178,7 +169,7 @@ namespace TradeFutNight.Views.Prefix2
                     }
                 }
 
-                var report = CreateReport(domainData, OperationType.Save);
+                var report = CreateReport(domainData.ToList());
                 var reportGate = await new ReportGate(report).CreateDocumentAsync();
                 await reportGate.ExportPdf(ExportFilePath);
                 await reportGate.Print();
@@ -190,22 +181,21 @@ namespace TradeFutNight.Views.Prefix2
             await task;
         }
 
-        private IList<TPPINTD> CustomMapper(IEnumerable<UIModel_20016> items)
+        private IList<T> CustomMapper<T>(IEnumerable<UIModel_20016> items) where T : MOCFEX
         {
-            var listResult = new List<TPPINTD>();
-            //foreach (var item in items)
-            //{
-            //    var newItem = _vm.MapperInstance.Map<TPPINTD>(item);
-
-            //    var trackItem = item.CastToIChangeTrackable();
-            //    newItem.OriginalData = trackItem.GetOriginal();
-            //    listResult.Add(newItem);
-            //}
+            var listResult = new List<T>();
+            foreach (var item in items)
+            {
+                var newItem = _vm.MapperInstance.Map<T>(item);
+                var trackItem = item.CastToIChangeTrackable();
+                newItem.OriginalData = trackItem.GetOriginal();
+                listResult.Add(newItem);
+            }
 
             return listResult;
         }
 
-        private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
+        private XtraReport CreateReport<T>(IList<T> data)
         {
             string memo = "";
             Dispatcher.Invoke(() =>
@@ -215,10 +205,14 @@ namespace TradeFutNight.Views.Prefix2
 
             string reportTitle = ProgramID + "–" + ProgramName;
 
-            switch (operationType)
+            switch (_operationType)
             {
-                case OperationType.Save:
+                case OperationType.Insert:
+                    reportTitle += "–新增";
+                    break;
 
+                case OperationType.Save:
+                    reportTitle += "–變更";
                     break;
 
                 case OperationType.Print:
@@ -229,7 +223,7 @@ namespace TradeFutNight.Views.Prefix2
                     break;
             }
 
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, memo, Ocf.OCF_DATE, true, false, true);
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, memo, Ocf.OCF_DATE, false, false, false);
             var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain, rptSetting);
 
             return reportCommon;
@@ -246,7 +240,8 @@ namespace TradeFutNight.Views.Prefix2
         {
             gridView.CloseEditor();
 
-            var report = CreateReport(_vm.MainGridData, OperationType.Print);
+            _operationType = OperationType.Print;
+            var report = CreateReport(_vm.MainGridData);
             var reportGate = await new ReportGate(report).CreateDocumentAsync();
             await reportGate.ExportPdf(ExportFilePath);
             await reportGate.Print();
@@ -279,10 +274,52 @@ namespace TradeFutNight.Views.Prefix2
             await task;
 
             button.IsEnabled = true;
+            _operationType = OperationType.Save;
         }
 
         private void BtnGenerateYear_Click(object sender, RoutedEventArgs e)
         {
+            using (var das = Factory.CreateDalSession())
+            {
+                var dMocfex = new D_MOCFEX(das);
+                var hasYearData = dMocfex.HasYearData(_vm.GenerateYear);
+
+                if (hasYearData)
+                {
+                    MessageBoxExService.Instance().Error("已有" + _vm.GenerateYear + "年度資料，請改用查詢修改");
+                    return;
+                }
+            }
+
+            _vm.MainGridData.Clear();
+
+            DateTime startDate = new DateTime(_vm.GenerateYear, 1, 1);
+            DateTime endDate = new DateTime(_vm.GenerateYear, 12, 31);
+
+            List<DateTime> dateList = new List<DateTime>();
+            while (startDate <= endDate)
+            {
+                var uiModel = new UIModel_20016();
+                uiModel.MOCFEX_DATE = startDate;
+
+                char openCode = 'Y';
+                if (startDate.DayOfWeek == DayOfWeek.Saturday || startDate.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    openCode = 'N';
+                }
+
+                uiModel.MOCFEX_CBOE_OPEN_CODE = openCode;
+                uiModel.MOCFEX_DAY_OF_WEEK = Convert.ToChar(((int)startDate.DayOfWeek).ToString());
+                uiModel.MOCFEX_USER_ID = UserID;
+                uiModel.MOCFEX_W_TIME = DateTime.Now;
+                _vm.Add(uiModel);
+
+                startDate = startDate.AddDays(1);
+            }
+
+            _operationType = OperationType.Insert;
+
+            MessageBoxExService.Instance().Info("新增" + _vm.GenerateYear + "年度完成請進行修改!!");
         }
     }
 }
