@@ -77,8 +77,8 @@
                 <dxg:TableView
                     x:Name="gridView"
                     AllowEditing="True"
-                    CellValueChanged="view_CellValueChanged"
-                    RowStyle="{StaticResource GridControlSpecificStyle}">
+                    CellStyle="{StaticResource GridControlSpecificStyle}"
+                    CellValueChanged="view_CellValueChanged">
                     <dxg:TableView.FormatConditions>
                         <dxg:FormatCondition Expression="[MOCFEX_CBOE_OPEN_CODE] = 'N'" FieldName="MOCFEX_CBOE_OPEN_CODE">
                             <dx:Format Foreground="Red" />

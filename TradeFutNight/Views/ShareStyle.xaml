@@ -84,10 +84,13 @@
     </Style>
 
     <!--  把底色全部一起變，這樣就不用去設定每個欄位，而且這樣的話列印出來的報表底色會是白色的，要設定SelectionMode為Row才有效  -->
-    <Style x:Key="GridControlSpecificStyle" TargetType="dxg:RowControl">
+    <Style x:Key="GridControlSpecificStyle" TargetType="dxg:LightweightCellEditor">
+        <Setter Property="IsEnabled" Value="False" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Background" Value="WhiteSmoke" />
         <Style.Triggers>
-            <DataTrigger Binding="{Binding SelectionState}" Value="None">
-                <Setter Property="Background" Value="WhiteSmoke" />
+            <DataTrigger Binding="{Binding RowData.IsSelected}" Value="True">
+                <Setter Property="Background" Value="Transparent" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
