@@ -145,7 +145,8 @@ namespace TradeFutNight.Views.Prefix2
             var task = Task.Run(async () =>
             {
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = CustomMapper<MOCFEX>(trackableData);
+                var domainDataAdded = CustomMapper<MOCFEX>(trackableData.AddedItems);
+                var domainDataChanged = CustomMapper<MOCFEX>(trackableData.ChangedItems);
 
                 using (var das = Factory.CreateDalSession())
                 {
@@ -154,7 +155,7 @@ namespace TradeFutNight.Views.Prefix2
                     try
                     {
                         var dMocfex = new D_MOCFEX(das);
-                        dMocfex.Save(domainData);
+                        //dMocfex.Save(domainData);
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -169,10 +170,10 @@ namespace TradeFutNight.Views.Prefix2
                     }
                 }
 
-                var report = CreateReport(domainData.ToList());
-                var reportGate = await new ReportGate(report).CreateDocumentAsync();
-                await reportGate.ExportPdf(ExportFilePath);
-                await reportGate.Print();
+                //var report = CreateReport(domainData.ToList());
+                //var reportGate = await new ReportGate(report).CreateDocumentAsync();
+                //await reportGate.ExportPdf(ExportFilePath);
+                //await reportGate.Print();
 
                 VmMainUi.HideLoadingWindow();
                 MessageBoxExService.Instance().Info(MessageConst.ProcessSuccess);
@@ -260,12 +261,7 @@ namespace TradeFutNight.Views.Prefix2
             var button = ((Button)sender);
             button.IsEnabled = false;
 
-            var task = Task.Run(async () =>
-            {
-                await _vm.Query();
-            });
-
-            await task;
+            await _vm.Query();
 
             button.IsEnabled = true;
             _operationType = OperationType.Save;

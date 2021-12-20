@@ -1,9 +1,5 @@
-﻿using ChangeTracking;
-using CrossModel.Enum;
-using Dapper;
-using DataEngine;
+﻿using DataEngine;
 using LinqToDB;
-using LinqToDB.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,23 +39,16 @@ namespace TradeFutNightData.Gates.Common
             return (items.Count() != 0) ? true : false;
         }
 
-        public void Save(IChangeTrackableCollection<MOCFEX> data)
+        public void Update(IList<MOCFEX> data)
         {
-            foreach (IChangeTrackable<MOCFEX> item in data)
+            foreach (var item in data)
             {
-                if (item.ChangeTrackingStatus == ChangeStatus.Added)
-                {
-                    _das.DataConn.Insert(item);
-                }
-                else if (item.ChangeTrackingStatus == ChangeStatus.Changed)
-                {
-                    _das.DataConn.GetTable<MOCFEX>()
-                    .Where(c => c.MOCFEX_DATE == item.GetOriginal().MOCFEX_DATE)
-                    .Set(c => c.MOCFEX_CBOE_OPEN_CODE, item.GetCurrent().MOCFEX_CBOE_OPEN_CODE)
-                    .Set(c => c.MOCFEX_USER_ID, item.GetCurrent().MOCFEX_USER_ID)
-                    .Set(c => c.MOCFEX_W_TIME, item.GetCurrent().MOCFEX_W_TIME)
-                    .Update();
-                }
+                _das.DataConn.GetTable<MOCFEX>()
+                .Where(c => c.MOCFEX_DATE == item.OriginalData.MOCFEX_DATE)
+                .Set(c => c.MOCFEX_CBOE_OPEN_CODE, item.MOCFEX_CBOE_OPEN_CODE)
+                .Set(c => c.MOCFEX_USER_ID, item.MOCFEX_USER_ID)
+                .Set(c => c.MOCFEX_W_TIME, item.MOCFEX_W_TIME)
+                .Update();
             }
         }
     }

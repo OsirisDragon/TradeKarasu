@@ -17,9 +17,5 @@
   <ItemGroup>
     <Folder Include="Models\Specific\PrefixA\" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="ChangeTracking" Version="2.2.17" />
-  </ItemGroup>
 
 </Project>
