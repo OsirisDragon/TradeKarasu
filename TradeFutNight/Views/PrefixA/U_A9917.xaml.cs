@@ -169,8 +169,8 @@ namespace TradeFutNight.Views.PrefixA
         }
 
         /// <summary>
-        ///檢查LOGF裡面的執行狀態
-        ///確認Server端是否處理好上次的mex訊息
+        /// 檢查LOGF裡面的執行狀態
+        /// 確認Server端是否處理好上次的mex訊息
         /// </summary>
         /// <returns></returns>
         private bool CheckCanDoQuery()
@@ -182,19 +182,19 @@ namespace TradeFutNight.Views.PrefixA
                 var dLOGF = new D_LOGF(das);
                 lastUiQuery = dLOGF.GetKeyData(ProgramID, "UI_QUERY%");
 
-                //沒有的話代表第一次上線時什麼都還沒有的狀態
+                // 沒有的話代表第一次上線時什麼都還沒有的狀態
                 if (string.IsNullOrEmpty(lastUiQuery))
                 {
                     return true;
                 }
                 else
                 {
-                    //抓取LOGF裡面的記號，格式為yyyyMMddHHmmss
+                    // 抓取LOGF裡面的記號，格式為yyyyMMddHHmmss
                     string confirmToken = lastUiQuery.Split('@')[1].ToString().Left(14);
 
                     string serverOkKeyData = $"SERVER_OK@{confirmToken}%";
                     string serverFailKeyData = $"SERVER_FAIL@{confirmToken}%";
-                    //找尋SERVER_OK/SERVER_FAIL記號看後端處理好了沒
+                    // 找尋SERVER_OK/SERVER_FAIL記號看後端處理好了沒
                     lastServerQuery = dLOGF.GetKeyData(ProgramID, serverOkKeyData, serverFailKeyData);
 
                     return !string.IsNullOrEmpty(lastServerQuery);

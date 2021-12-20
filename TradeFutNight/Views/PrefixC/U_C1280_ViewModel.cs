@@ -11,7 +11,7 @@ using TradeFutNightData.Models.Tfxm;
 
 namespace TradeFutNight.Views.PrefixC
 {
-    public class U_C1260_ViewModel : ViewModelParent<UIModel_C1260>
+    public class U_C1280_ViewModel : ViewModelParent<UIModel_C1280>
     {
         public IList<ItemInfo> FRPProdId
         {
@@ -19,16 +19,16 @@ namespace TradeFutNight.Views.PrefixC
             set { SetProperty(() => FRPProdId, value); }
         }
 
-        public U_C1260_ViewModel()
+        public U_C1280_ViewModel()
         {
-            MainGridData = new ObservableCollection<UIModel_C1260>();
+            MainGridData = new ObservableCollection<UIModel_C1280>();
         }
 
         public void Open()
         {
             MapperInstance = new Mapper(new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<FRP, UIModel_C1260>().ReverseMap();
+                cfg.CreateMap<FRP, UIModel_C1280>().ReverseMap();
             }));
 
             FRPProdId = DropDownItems.FrpProdId();
@@ -37,28 +37,24 @@ namespace TradeFutNight.Views.PrefixC
             {
                 var dFRP = new D_FRP(das);
                 var list = new ObservableCollection<FRP>();
-                list.Add(dFRP.GetLatestByProdId("SPX_S%"));
-                list.Add(dFRP.GetLatestByProdId("VIX"));
-                list.Add(dFRP.GetLatestByProdId("FTSE_S%"));
-                list.Add(dFRP.GetLatestByProdId("BRF_S%"));
-                list.Add(dFRP.GetLatestByProdId("GDF_S%"));
+                list.Add(dFRP.GetLatestByProdId("STWNam%"));
 
-                MainGridData = MapperInstance.Map<IList<UIModel_C1260>>(list).AsTrackable();
+                MainGridData = MapperInstance.Map<IList<UIModel_C1280>>(list).AsTrackable();
             }
         }
 
         public void Insert()
         {
-            MainGridData.Insert(0, new UIModel_C1260());
+            MainGridData.Insert(0, new UIModel_C1280());
         }
 
         public void Delete(object item)
         {
-            MainGridData.Remove((UIModel_C1260)item);
+            MainGridData.Remove((UIModel_C1280)item);
         }
     }
 
-    public class UIModel_C1260 : FRP
+    public class UIModel_C1280 : FRP
     {
     }
 }

@@ -201,6 +201,15 @@ namespace TradeFutNight.Common
             result.Add(new ItemInfo() { Text = "ICE富時100期貨最近月每日結算價", Value = "FTSE_S" });
             result.Add(new ItemInfo() { Text = "ICE布蘭特原油期貨最近到期結算價", Value = "BRF_S" });
             result.Add(new ItemInfo() { Text = "CME黃金期貨最近到期結算價", Value = "GDF_S" });
+            result.Add(new ItemInfo() { Text = "SGX富臺指數期貨日盤最後一筆成交價", Value = "STWNamc1" });
+            return result;
+        }
+
+        public static IList<ItemInfo> OswGrpAH()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "第一盤", Value = 10 });
+            result.Add(new ItemInfo() { Text = "第二盤", Value = 11 });
             return result;
         }
     }

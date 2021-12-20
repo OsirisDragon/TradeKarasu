@@ -1,5 +1,5 @@
 ﻿<myTypes:UserControlParent
-    x:Class="TradeFutNight.Views.PrefixC.U_C1260"
+    x:Class="TradeFutNight.Views.PrefixC.U_C1280"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:c="clr-namespace:TradeFutNight.Common"
@@ -15,7 +15,7 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <myTypes:UserControlParent.DataContext>
-        <myTypesPrefix:U_C1260_ViewModel />
+        <myTypesPrefix:U_C1280_ViewModel />
     </myTypes:UserControlParent.DataContext>
     <myTypes:UserControlParent.Resources>
         <ResourceDictionary>
@@ -99,7 +99,6 @@
             </dxg:GridColumn>
             <dxg:GridColumn
                 Width="120"
-                CellStyle="{StaticResource CellStyleEditorColor}"
                 FieldName="FRP_PX"
                 Header="價格" />
             <dxg:GridColumn
@@ -125,8 +124,7 @@
             xml:space="preserve"
             Foreground="OrangeRed"
             TextWrapping="Wrap">
-註1：更新時間為本公司透過路孚特抓取外部價格的時點。
-註2：遇國外最後交易日，則為「次近月」價格。
+註：更新時間為本公司透過路孚特抓取外部價格的時點。
         </TextBlock>
     </Grid>
 </myTypes:UserControlParent>
