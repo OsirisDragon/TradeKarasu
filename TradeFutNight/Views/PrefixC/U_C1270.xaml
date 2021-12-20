@@ -1,0 +1,149 @@
+﻿<myTypes:UserControlParent
+    x:Class="TradeFutNight.Views.PrefixC.U_C1270"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:TradeFutNight.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:myTypes="clr-namespace:TradeFutNight.Views"
+    xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.PrefixC"
+    Margin="1,1,1,1"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <myTypes:UserControlParent.DataContext>
+        <myTypesPrefix:U_C1270_ViewModel />
+    </myTypes:UserControlParent.DataContext>
+    <myTypes:UserControlParent.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\ShareStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </myTypes:UserControlParent.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" MinHeight="35" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <dxlc:FlowLayoutControl Grid.Row="0" Orientation="Horizontal">
+            <Label HorizontalAlignment="Right" VerticalAlignment="Center">
+                請選擇盤別：
+            </Label>
+            <dxe:ComboBoxEdit
+                x:Name="cbGrp"
+                MinWidth="100"
+                Margin="0,0,10,0"
+                DisplayMember="Text"
+                IsTextEditable="False"
+                ItemsSource="{Binding OswGrp}"
+                SelectedIndexChanged="CbGrp_SelectedIndexChanged"
+                ValueMember="Value" />
+        </dxlc:FlowLayoutControl>
+        <dxg:GridControl
+            x:Name="gridMain"
+            Grid.Row="1"
+            CurrentItem="{Binding Path=CurrentItem, Mode=TwoWay}"
+            ItemsSource="{Binding MainGridData}"
+            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
+            <dxg:GridControl.View>
+                <dxg:TableView
+                    x:Name="gridView"
+                    CellStyle="{StaticResource GridControlSpecificStyle}"
+                    CellValueChanged="view_CellValueChanged" />
+            </dxg:GridControl.View>
+            <dxg:GridColumn
+                Name="rowNumber"
+                Width="45"
+                AllowEditing="False"
+                Header="編號">
+                <dxg:GridColumn.CellTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{DXBinding 'RowData.RowHandle.Value + 1'}" />
+                        </Grid>
+                    </DataTemplate>
+                </dxg:GridColumn.CellTemplate>
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="80"
+                FieldName="TPPBP_PROD_ID"
+                Header="商品代碼"
+                ReadOnly="True" />
+            <dxg:GridColumn
+                Width="70"
+                FieldName="PROD_SETTLE_DATE"
+                Header="月份"
+                ReadOnly="True">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="95"
+                FieldName="ACTUALS_CLOSE_PRICE_DATE"
+                Header="現貨收盤價&#xA;日期"
+                ReadOnly="True">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="100"
+                FieldName="ACTUALS_CLOSE_PRICE"
+                Header="現貨收盤價"
+                ReadOnly="True" />
+            <dxg:GridColumn
+                Width="130"
+                FieldName="TPPBP_THERICAL_P"
+                Header="本日期貨最後1筆&#xA;基準價"
+                ReadOnly="True" />
+
+            <dxg:GridColumn
+                Width="120"
+                CellStyle="{StaticResource CellStyleEditorColor}"
+                FieldName="TPPBP_THERICAL_P_REF"
+                Header="次日期貨&#xA;開盤基準價" />
+            <dxg:GridColumn
+                Width="125"
+                AllowEditing="False"
+                FieldName="COMPUTE_SUBTRACT"
+                Focusable="False"
+                Header="(現貨收盤價)-&#xA;(次日期貨&#xA;開盤基準價)"
+                ReadOnly="True"
+                UnboundExpression=" Iif([ACTUALS_CLOSE_PRICE] &gt; 0,[ACTUALS_CLOSE_PRICE] - [TPPBP_THERICAL_P_REF], '' )"
+                UnboundType="Decimal">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings DisplayFormat="N4" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="20"
+                c:CustomProp.ModifyMarkStyle="*"
+                AllowEditing="false"
+                FieldName="ModifyMark"
+                Header="">
+                <dxg:GridColumn.HeaderStyle>
+                    <Style TargetType="Control">
+                        <Setter Property="Background" Value="Transparent" />
+                    </Style>
+                </dxg:GridColumn.HeaderStyle>
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+        </dxg:GridControl>
+    </Grid>
+</myTypes:UserControlParent>
