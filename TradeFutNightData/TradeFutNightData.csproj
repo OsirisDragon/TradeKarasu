@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CrossModel\CrossModel.csproj" />
     <ProjectReference Include="..\DataEngine\DataEngine.csproj" />
+    <ProjectReference Include="..\TradeUtility\TradeUtility.csproj" />
   </ItemGroup>
   
   <ItemGroup>

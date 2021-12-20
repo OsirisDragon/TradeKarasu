@@ -1,5 +1,4 @@
-﻿using Dapper;
-using DataEngine;
+﻿using DataEngine;
 using LinqToDB;
 using System;
 using System.Linq;
@@ -43,6 +42,25 @@ namespace TradeFutNightData.Gates.Common
             DateTime dateToday = DateTime.Now.Date;
             int count = _das.DataConn.GetTable<LOGF>().Where(c => c.LOGF_TIME >= dateToday && c.LOGF_TIME < dateToday.AddDays(1) && c.LOGF_ITEM == logfItem && Sql.Like(c.LOGF_KEY_DATA, likeCondition)).Count();
             return (count > 0) ? true : false;
+        }
+
+        public string GetKeyData(string logfItem, string likeCondition)
+        {
+            string keyData = _das.DataConn.GetTable<LOGF>()
+                .Where(c => c.LOGF_ITEM == logfItem && Sql.Like(c.LOGF_KEY_DATA, likeCondition))
+                .OrderByDescending(c => c.LOGF_TIME)
+                .Select(c => c.LOGF_KEY_DATA).FirstOrDefault();
+            return keyData;
+        }
+
+        public string GetKeyData(string logfItem, string likeCondition1, string likeCondition2)
+        {
+            string keyData = _das.DataConn.GetTable<LOGF>()
+                .Where(c => c.LOGF_ITEM == logfItem &&
+                (Sql.Like(c.LOGF_KEY_DATA, likeCondition1) || Sql.Like(c.LOGF_KEY_DATA, likeCondition2)))
+                .OrderByDescending(c => c.LOGF_TIME)
+                .Select(c => c.LOGF_KEY_DATA).FirstOrDefault();
+            return keyData;
         }
     }
 }

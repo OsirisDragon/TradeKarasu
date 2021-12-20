@@ -11,7 +11,7 @@ using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
 
-namespace TradeFutNight.Views.Prefix3
+namespace TradeFutNight.Views.PrefixS
 {
     /// <summary>
     /// U_S0090.xaml 的互動邏輯
@@ -139,7 +139,7 @@ namespace TradeFutNight.Views.Prefix3
                     break;
             }
 
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, txtMemo.Text, Ocf.OCF_DATE, false, false, false);
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, false, false, false);
             var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain, rptSetting);
 
             return reportCommon;

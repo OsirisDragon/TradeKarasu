@@ -255,6 +255,10 @@
     <Compile Include="Views\Prefix3\U_30113_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30112_ViewModel.cs" />
     <Compile Include="Views\MainUI_ViewModel.cs" />
+    <Compile Include="Views\PrefixA\U_A9917.xaml.cs">
+      <DependentUpon>U_A9917.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrefixA\U_A9917_ViewModel.cs" />
     <Compile Include="Views\PrefixA\U_A9921.xaml.cs">
       <DependentUpon>U_A9921.xaml</DependentUpon>
     </Compile>
@@ -275,10 +279,22 @@
       <DependentUpon>U_A9920.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PrefixA\U_A9920_ViewModel.cs" />
+    <Compile Include="Views\PrefixC\U_C1260.xaml.cs">
+      <DependentUpon>U_C1260.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrefixC\U_C1280.xaml.cs">
+      <DependentUpon>U_C1280.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrefixC\U_C1280_ViewModel.cs" />
     <Compile Include="Views\PrefixC\U_C9902.xaml.cs">
       <DependentUpon>U_C9902.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PrefixC\U_C1260_ViewModel.cs" />
     <Compile Include="Views\PrefixC\U_C9902_ViewModel.cs" />
+    <Compile Include="Views\PrefixS\U_S1080.xaml.cs">
+      <DependentUpon>U_S1080.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrefixS\U_S1080_ViewModel.cs" />
     <Compile Include="Views\PrefixS\U_S0090.xaml.cs">
       <DependentUpon>U_S0090.xaml</DependentUpon>
     </Compile>
@@ -373,6 +389,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\PrefixA\U_A9917.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\PrefixA\U_A9921.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -393,7 +413,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\PrefixC\U_C1260.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PrefixC\U_C1280.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\PrefixC\U_C9902.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PrefixS\U_S1080.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

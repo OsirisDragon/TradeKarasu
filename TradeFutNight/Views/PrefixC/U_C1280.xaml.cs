@@ -2,31 +2,31 @@
 using CrossModel;
 using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
+using Shield.File;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
 using TradeFutNightData;
-using TradeFutNightData.Gates.Common;
-using TradeFutNightData.Models.Common;
+using TradeFutNightData.Gates.Tfxm;
+using TradeFutNightData.Models.Tfxm;
 
-namespace TradeFutNight.Views.Prefix3
+namespace TradeFutNight.Views.PrefixC
 {
     /// <summary>
-    /// U_30112.xaml 的互動邏輯
+    /// U_C1280.xaml 的互動邏輯
     /// </summary>
-    public partial class U_30112 : UserControlParent, IViewSword
+    public partial class U_C1280 : UserControlParent, IViewSword
     {
-        private U_30112_ViewModel _vm;
+        private U_C1280_ViewModel _vm;
 
-        public U_30112()
+        public U_C1280()
         {
             InitializeComponent();
-            _vm = (U_30112_ViewModel)DataContext;
+            _vm = (U_C1280_ViewModel)DataContext;
         }
 
         public async Task<bool> IsCanRun()
@@ -99,11 +99,14 @@ namespace TradeFutNight.Views.Prefix3
                 var resultItem = new ResultItem();
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
 
-                if (trackableData.DeletedItems.Count() == 0)
+                foreach (var item in trackableData)
                 {
-                    VmMainUi.HideLoadingWindow();
-                    MessageBoxExService.Instance().Error(MessageConst.NoDeletedData);
-                    return false;
+                    Dispatcher.Invoke(() =>
+                    {
+                        item.FRP_CONFIRM = 'Y';
+                        item.FRP_USER_ID = UserID;
+                        item.FRP_W_TIME = DateTime.Now;
+                    });
                 }
 
                 return true;
@@ -120,26 +123,44 @@ namespace TradeFutNight.Views.Prefix3
             var task = Task.Run(async () =>
             {
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = _vm.MapperInstance.Map<IList<SLT>>(trackableData.DeletedItems);
+                var domainData = CustomMapper(trackableData.ChangedItems);
 
-                using (var das = Factory.CreateDalSession())
+                using (var dasTfxm = Factory.CreateDalSession(SettingFile.Database.Tfxm_AH))
                 {
-                    das.Begin();
+                    dasTfxm.Begin();
 
                     try
                     {
-                        var dSlt = new D_SLT(das);
-                        dSlt.Delete(domainData);
+                        var dFRP = new D_FRP(dasTfxm);
 
-                        UpdateAccessPermission(ProgramID, das);
+                        //更新現貨資料
+                        dFRP.Update(domainData);
 
-                        DbLog(MessageConst.Completed, das);
+                        using (var das = Factory.CreateDalSession())
+                        {
+                            das.Begin();
 
-                        das.Commit();
+                            try
+                            {
+                                //更新交易系統狀態
+                                UpdateAccessPermission(ProgramID, das);
+
+                                DbLog(MessageConst.Completed, das);
+
+                                das.Commit();
+                            }
+                            catch (Exception ex)
+                            {
+                                das.Rollback();
+                                throw ex;
+                            }
+                        }
+
+                        dasTfxm.Commit();
                     }
                     catch (Exception ex)
                     {
-                        das.Rollback();
+                        dasTfxm.Rollback();
                         throw ex;
                     }
                 }
@@ -156,26 +177,27 @@ namespace TradeFutNight.Views.Prefix3
             await task;
         }
 
+        private IList<FRP> CustomMapper(IEnumerable<UIModel_C1280> items)
+        {
+            var listResult = new List<FRP>();
+            foreach (var item in items)
+            {
+                var newItem = _vm.MapperInstance.Map<FRP>(item);
+
+                var trackItem = item.CastToIChangeTrackable();
+                newItem.OriginalData = trackItem.GetOriginal();
+                listResult.Add(newItem);
+            }
+
+            return listResult;
+        }
+
         private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
         {
             string reportTitle = ProgramID + "–" + ProgramName;
 
-            switch (operationType)
-            {
-                case OperationType.Save:
-                    reportTitle = reportTitle.Replace("查詢、", "");
-                    break;
-
-                case OperationType.Print:
-                    reportTitle = reportTitle.Replace("、刪除", "");
-                    break;
-
-                default:
-                    break;
-            }
-
             var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, true, false, true);
-            var reportCommon = ReportNormal.CreateCommonLandscape(data, gridMain, rptSetting);
+            var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain, rptSetting);
 
             return reportCommon;
         }

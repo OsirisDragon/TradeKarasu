@@ -74,6 +74,17 @@ namespace TradeFutNight.Common
             }
         }
 
+        public static IList<ItemInfo> TppintdFirstKindIdTwoChar()
+        {
+            using (var das = Factory.CreateDalSession())
+            {
+                var dTppintd = new D_TPPINTD(das);
+                var result = dTppintd.ListFirstKindIDTwoChar().Select(
+                    c => new ItemInfo() { Text = c.ToString(), Value = c.ToString() }).ToList();
+                return result;
+            }
+        }
+
         public static IList<ItemInfo> TppintdSecondKindId()
         {
             using (var das = Factory.CreateDalSession())
@@ -152,6 +163,53 @@ namespace TradeFutNight.Common
             result.Add(new ItemInfo() { Text = "公債", Value = 'B' });
             result.Add(new ItemInfo() { Text = "利率", Value = 'R' });
             result.Add(new ItemInfo() { Text = "滙率", Value = 'E' });
+            return result;
+        }
+
+        public static IList<ItemInfo> ZtypepProdType()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "FUT期貨", Value = "FUT" });
+            result.Add(new ItemInfo() { Text = "PHY現貨", Value = "PHY" });
+            result.Add(new ItemInfo() { Text = "OOF期權", Value = "OOF" });
+            result.Add(new ItemInfo() { Text = "OOP現權", Value = "OOP" });
+            return result;
+        }
+
+        public static IList<ItemInfo> ZtypepPriceQuote()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "IDX指數", Value = "IDX" });
+            result.Add(new ItemInfo() { Text = "STD非指數", Value = "STD" });
+            result.Add(new ItemInfo() { Text = "INT利率指數", Value = "INT" });
+            return result;
+        }
+
+        public static IList<ItemInfo> ZtypepSettlement()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "CASH現金", Value = "CASH" });
+            result.Add(new ItemInfo() { Text = "DELIV實物", Value = "DELIV" });
+            return result;
+        }
+
+        public static IList<ItemInfo> FrpProdId()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "CME小標普500期貨最近月每日結算價", Value = "SPX_S" });
+            result.Add(new ItemInfo() { Text = "CBOE VIX指數收盤價", Value = "VIX" });
+            result.Add(new ItemInfo() { Text = "ICE富時100期貨最近月每日結算價", Value = "FTSE_S" });
+            result.Add(new ItemInfo() { Text = "ICE布蘭特原油期貨最近到期結算價", Value = "BRF_S" });
+            result.Add(new ItemInfo() { Text = "CME黃金期貨最近到期結算價", Value = "GDF_S" });
+            result.Add(new ItemInfo() { Text = "SGX富臺指數期貨日盤最後一筆成交價", Value = "STWNamc1" });
+            return result;
+        }
+
+        public static IList<ItemInfo> OswGrpAH()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "第一盤", Value = 10 });
+            result.Add(new ItemInfo() { Text = "第二盤", Value = 11 });
             return result;
         }
     }

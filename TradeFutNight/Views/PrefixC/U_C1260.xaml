@@ -1,23 +1,21 @@
 ﻿<myTypes:UserControlParent
-    x:Class="TradeFutNight.Views.Prefix2.U_20016"
+    x:Class="TradeFutNight.Views.PrefixC.U_C1260"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:c="clr-namespace:TradeFutNight.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:myTypes="clr-namespace:TradeFutNight.Views"
-    xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.Prefix2"
+    xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.PrefixC"
     Margin="1,1,1,1"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <myTypes:UserControlParent.DataContext>
-        <myTypesPrefix:U_20016_ViewModel />
+        <myTypesPrefix:U_C1260_ViewModel />
     </myTypes:UserControlParent.DataContext>
     <myTypes:UserControlParent.Resources>
         <ResourceDictionary>
@@ -31,115 +29,79 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" MinHeight="35" />
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <dxlc:FlowLayoutControl Grid.Row="0" Orientation="Horizontal">
-            <dxe:TextEdit MinWidth="60" EditValue="{Binding GenerateYear}" />
-            <Button
-                x:Name="btnGenerateYear"
-                Margin="0,0,90,0"
-                Click="BtnGenerateYear_Click">
-                產生年度交易日
-            </Button>
-            <Label HorizontalAlignment="Right" VerticalAlignment="Center">
-                區間：
-            </Label>
-            <dxe:DateEdit
-                MinWidth="100"
-                AllowDefaultButton="False"
-                EditValue="{Binding StartDate}"
-                Mask="yyyy/MM/dd"
-                MaskType="DateTimeAdvancingCaret"
-                MaskUseAsDisplayFormat="True"
-                MinValue="{Binding DefaultMinDateTime}" />
-            <Label HorizontalAlignment="Right" VerticalAlignment="Center">~</Label>
-            <dxe:DateEdit
-                MinWidth="100"
-                AllowDefaultButton="False"
-                EditValue="{Binding EndDate}"
-                Mask="yyyy/MM/dd"
-                MaskType="DateTimeAdvancingCaret"
-                MaskUseAsDisplayFormat="True"
-                MinValue="{Binding DefaultMinDateTime}" />
-            <Button x:Name="btnQuery" Click="BtnQuery_Click">
-                查詢
-            </Button>
-        </dxlc:FlowLayoutControl>
         <dxg:GridControl
             x:Name="gridMain"
-            Grid.Row="1"
+            Grid.Row="0"
             CurrentItem="{Binding Path=CurrentItem, Mode=TwoWay}"
             ItemsSource="{Binding MainGridData}"
             SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
             <dxg:GridControl.View>
                 <dxg:TableView
                     x:Name="gridView"
-                    AllowEditing="True"
-                    CellStyle="{StaticResource GridControlSpecificStyle}"
-                    CellValueChanged="view_CellValueChanged">
-                    <dxg:TableView.FormatConditions>
-                        <dxg:FormatCondition Expression="[MOCFEX_CBOE_OPEN_CODE] = 'N'" FieldName="MOCFEX_CBOE_OPEN_CODE">
-                            <dx:Format Foreground="Red" />
-                        </dxg:FormatCondition>
-                    </dxg:TableView.FormatConditions>
-                </dxg:TableView>
+                    CellValueChanged="view_CellValueChanged"
+                    CellStyle="{StaticResource GridControlSpecificStyle}" />
             </dxg:GridControl.View>
             <dxg:GridColumn
-                Width="95"
-                FieldName="MOCFEX_DATE"
-                Header="日期"
-                ReadOnly="True">
-                <dxg:GridColumn.EditSettings>
-                    <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd" />
-                </dxg:GridColumn.EditSettings>
-            </dxg:GridColumn>
-            <dxg:GridColumn
-                Width="90"
+                Name="rowNumber"
+                Width="45"
                 AllowEditing="False"
-                FieldName="MOCFEX_DAY_OF_WEEK"
-                Header="星期"
-                ReadOnly="True">
-                <dxg:GridColumn.EditSettings>
-                    <dxe:ComboBoxEditSettings
-                        HorizontalContentAlignment="Center"
-                        DisplayMember="Text"
-                        ItemsSource="{Binding DayOfWeek}"
-                        ValueMember="Value" />
-                </dxg:GridColumn.EditSettings>
-            </dxg:GridColumn>
-            <dxg:GridColumn
-                Width="90"
-                CellStyle="{StaticResource CellStyleEditorColor}"
-                FieldName="MOCFEX_CBOE_OPEN_CODE"
-                Header="營業狀態">
-                <dxg:GridColumn.EditSettings>
-                    <dxe:ComboBoxEditSettings
-                        HorizontalContentAlignment="Center"
-                        DisplayMember="Text"
-                        ItemsSource="{Binding CboeOpenCode}"
-                        ValueMember="Value" />
-                </dxg:GridColumn.EditSettings>
-            </dxg:GridColumn>
-            <dxg:GridColumn
-                Width="70"
-                FieldName="MOCFEX_USER_ID"
-                Header="異動人員"
-                ReadOnly="True">
+                Header="編號">
+                <dxg:GridColumn.CellTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{DXBinding 'RowData.RowHandle.Value + 1'}" />
+                        </Grid>
+                    </DataTemplate>
+                </dxg:GridColumn.CellTemplate>
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Center" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
+                Width="270"
+                AllowEditing="False"
+                FieldName="FRP_PROD_ID"
+                Focusable="False"
+                Header="商品"
+                IsEnabled="False"
+                ReadOnly="True">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:ComboBoxEditSettings
+                        DisplayMember="Text"
+                        IsTextEditable="False"
+                        ItemsSource="{Binding FRPProdId}"
+                        ValueMember="Value" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
                 Width="165"
-                FieldName="MOCFEX_W_TIME"
-                Header="異動時間"
+                FieldName="FRP_DATE"
+                Header="資料日期"
                 ReadOnly="True">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd HH:mm:ss" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="165"
+                FieldName="FRP_UPDATE_TIME"
+                Header="更新時間"
+                ReadOnly="True">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd HH:mm:ss" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="120"
+                CellStyle="{StaticResource CellStyleEditorColor}"
+                FieldName="FRP_PX"
+                Header="價格" />
             <dxg:GridColumn
                 Width="20"
                 c:CustomProp.ModifyMarkStyle="*"
@@ -158,11 +120,13 @@
         </dxg:GridControl>
         <TextBlock
             x:Name="txtMemo"
-            Grid.Row="2"
+            Grid.Row="1"
             Margin="10,0"
             xml:space="preserve"
             Foreground="OrangeRed"
             TextWrapping="Wrap">
+註1：更新時間為本公司透過路孚特抓取外部價格的時點。
+註2：遇國外最後交易日，則為「次近月」價格。
         </TextBlock>
     </Grid>
 </myTypes:UserControlParent>

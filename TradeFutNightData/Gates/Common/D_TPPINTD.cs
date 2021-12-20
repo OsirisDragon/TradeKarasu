@@ -1,5 +1,4 @@
-﻿using Dapper;
-using DataEngine;
+﻿using DataEngine;
 using LinqToDB;
 using System;
 using System.Collections.Generic;
@@ -86,6 +85,15 @@ namespace TradeFutNightData.Gates.Common
                 .OrderBy(c => c.TPPINTD_SECOND_KIND_ID)
                 .Where(c => c.TPPINTD_SECOND_KIND_ID != "")
                 .Select(c => new TPPINTD() { TPPINTD_SECOND_KIND_ID = c.TPPINTD_SECOND_KIND_ID }).Distinct();
+
+            return query.ToList();
+        }
+
+        public IEnumerable<string> ListFirstKindIDTwoChar()
+        {
+            var query = _das.DataConn.GetTable<TPPINTD>()
+                .OrderBy(c => c.TPPINTD_FIRST_KIND_ID)
+                .Select(c => c.TPPINTD_FIRST_KIND_ID.Substring(0, 2)).Distinct();
 
             return query.ToList();
         }

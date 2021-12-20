@@ -1,7 +1,6 @@
 ﻿using ChangeTracking;
 using CrossModel;
 using CrossModel.Enum;
-using DevExpress.XtraPrinting;
 using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
@@ -235,11 +234,7 @@ namespace TradeFutNight.Views.Prefix3
             button.IsEnabled = false;
 
             var cmNo = txtCmNo.EditValue.AsString();
-            var task = Task.Run(async () =>
-            {
-                await _vm.Query();
-            });
-            await task;
+            await _vm.Query();
 
             button.IsEnabled = true;
         }

@@ -1,7 +1,6 @@
 ﻿using ChangeTracking;
 using CrossModel;
 using CrossModel.Enum;
-using DevExpress.XtraPrinting;
 using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
@@ -161,12 +160,6 @@ namespace TradeFutNight.Views.Prefix3
 
         private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
         {
-            string memo = "";
-            Dispatcher.Invoke(() =>
-            {
-                memo = txtMemo.Text;
-            });
-
             string reportTitle = ProgramID + "–" + ProgramName;
 
             switch (operationType)
@@ -183,7 +176,7 @@ namespace TradeFutNight.Views.Prefix3
                     break;
             }
 
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, memo, Ocf.OCF_DATE, true, false, true);
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, true, false, true);
             rptSetting.HeaderColumnsFontSize = 10;
             rptSetting.ContentColumnsFontSize = 10;
             rptSetting.ContentColumnsWidthScaleFactor = 0.94f;
@@ -234,12 +227,7 @@ namespace TradeFutNight.Views.Prefix3
                 var firstSelectedItem = (ItemInfo)cbFirstKindId.SelectedItem;
                 var secondSelectedItem = (ItemInfo)cbSecondKindId.SelectedItem;
 
-                var task = Task.Run(async () =>
-                {
-                    await _vm.Query(firstSelectedItem.Value.ToString(), secondSelectedItem.Value.ToString());
-                });
-
-                await task;
+                await _vm.Query(firstSelectedItem.Value.ToString(), secondSelectedItem.Value.ToString());
             }
 
             button.IsEnabled = true;

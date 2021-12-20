@@ -2,6 +2,7 @@
 using CrossModel;
 using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
+using Shield.File;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,20 +14,21 @@ using TradeFutNight.Reports;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Common;
 using TradeFutNightData.Models.Common;
+using TradeUtility;
 
-namespace TradeFutNight.Views.Prefix3
+namespace TradeFutNight.Views.PrefixS
 {
     /// <summary>
-    /// U_30112.xaml 的互動邏輯
+    /// U_S1080.xaml 的互動邏輯
     /// </summary>
-    public partial class U_30112 : UserControlParent, IViewSword
+    public partial class U_S1080 : UserControlParent, IViewSword
     {
-        private U_30112_ViewModel _vm;
+        private U_S1080_ViewModel _vm;
 
-        public U_30112()
+        public U_S1080()
         {
             InitializeComponent();
-            _vm = (U_30112_ViewModel)DataContext;
+            _vm = (U_S1080_ViewModel)DataContext;
         }
 
         public async Task<bool> IsCanRun()
@@ -45,11 +47,16 @@ namespace TradeFutNight.Views.Prefix3
         public override void ControlSetting()
         {
             base.ControlSetting();
+            VmMainUi.IsButtonSaveEnabled = false;
+            VmMainUi.IsButtonDeleteEnabled = false;
+            VmMainUi.IsButtonInsertEnabled = false;
+            VmMainUi.IsButtonPrintEnabled = true;
         }
 
         public async Task Open()
         {
             ControlSetting();
+
             var task = Task.Run(() =>
             {
                 _vm.Open();
@@ -117,42 +124,9 @@ namespace TradeFutNight.Views.Prefix3
         {
             VmMainUi.LoadingText = MessageConst.LoadingStatusSaving;
 
-            var task = Task.Run(async () =>
-            {
-                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = _vm.MapperInstance.Map<IList<SLT>>(trackableData.DeletedItems);
-
-                using (var das = Factory.CreateDalSession())
-                {
-                    das.Begin();
-
-                    try
-                    {
-                        var dSlt = new D_SLT(das);
-                        dSlt.Delete(domainData);
-
-                        UpdateAccessPermission(ProgramID, das);
-
-                        DbLog(MessageConst.Completed, das);
-
-                        das.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        das.Rollback();
-                        throw ex;
-                    }
-                }
-
-                var report = CreateReport(domainData, OperationType.Save);
-                var reportGate = await new ReportGate(report).CreateDocumentAsync();
-                await reportGate.ExportPdf(ExportFilePath);
-                await reportGate.Print();
-
-                VmMainUi.HideLoadingWindow();
-                MessageBoxExService.Instance().Info(MessageConst.ProcessSuccess);
-                CloseWindow();
-            });
+            var task = Task.Run(() =>
+           {
+           });
             await task;
         }
 
@@ -163,11 +137,7 @@ namespace TradeFutNight.Views.Prefix3
             switch (operationType)
             {
                 case OperationType.Save:
-                    reportTitle = reportTitle.Replace("查詢、", "");
-                    break;
-
-                case OperationType.Print:
-                    reportTitle = reportTitle.Replace("、刪除", "");
+                    reportTitle = reportTitle.Replace("查詢", "刪除");
                     break;
 
                 default:
@@ -209,6 +179,91 @@ namespace TradeFutNight.Views.Prefix3
             gridView.CloseEditor();
             await Task.FromResult<object>(null);
             throw new NotImplementedException();
+        }
+
+        private void GridView_CellValueChanging(object sender, DevExpress.Xpf.Grid.CellValueChangedEventArgs e)
+        {
+            if (e.Column.FieldName == "ZTYPEP_PROD_TYPE")
+            {
+                switch (e.Value)
+                {
+                    case "FUT":
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_PRICE_MODEL", "");
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_VALUATION", "FUT");
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_EXERCISE", "");
+                        break;
+
+                    case "PHY":
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_PRICE_MODEL", "");
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_VALUATION", "EQTY");
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_EXERCISE", "");
+                        break;
+
+                    case "OOF":
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_PRICE_MODEL", "B");
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_VALUATION", "EQTY");
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_EXERCISE", "EURO");
+                        break;
+
+                    case "OOP":
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_PRICE_MODEL", "BS");
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_VALUATION", "EQTY");
+                        gridMain.SetCellValue(e.RowHandle, "ZTYPEP_EXERCISE", "EURO");
+                        break;
+                }
+            }
+        }
+
+        private void BtnCheck_Click(object sender, RoutedEventArgs e)
+        {
+            List<PDK> pdkFut = null;
+            List<PDK> pdkOpt = null;
+
+            //選擇權夜盤
+            using (var das = Factory.CreateDalSession(SettingFile.Database.Options_AH))
+            {
+                pdkOpt = new D_PDK(das).ListKindId().ToList();
+            }
+
+            //期貨夜盤
+            using (var das = Factory.CreateDalSession())
+            {
+                pdkFut = new D_PDK(das).ListKindId().ToList();
+            }
+
+            //合併期貨和選擇權的資料
+            var pdkAll = pdkOpt.Concat(pdkFut);
+            string kindId;
+            List<string> notFoundPdk = new List<string>();
+            if (pdkAll.Count() > 0)
+            {
+                foreach (var item in pdkAll)
+                {
+                    kindId = item.PDK_KIND_ID;
+                    if (kindId.Right(1) == "F" || kindId.Right(1) == "O")
+                    {
+                        var count = _vm.MainGridData.Count(x => x.ZTYPEP_PROD == kindId);
+                        if (count == 0)
+                        {
+                            notFoundPdk.Add(kindId);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBoxExService.Instance().Error("無期貨商品PDK資料");
+                return;
+            }
+
+            if (notFoundPdk.Count > 0)
+            {
+                MessageBoxExService.Instance().Error("以下商品資料未建在ZTYPEP(用PDK檔的資料比對)：" + string.Join(",", notFoundPdk));
+            }
+            else
+            {
+                MessageBoxExService.Instance().Info("檢核完成");
+            }
         }
     }
 }
