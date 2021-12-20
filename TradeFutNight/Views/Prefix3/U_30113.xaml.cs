@@ -264,13 +264,7 @@ namespace TradeFutNight.Views.Prefix3
             if (cbKindId.SelectedItem != null)
             {
                 var selectedItem = (ItemInfo)cbKindId.SelectedItem;
-
-                var task = Task.Run(async () =>
-                {
-                    await _vm.Query(selectedItem.Value.ToString());
-                });
-
-                await task;
+                await _vm.Query(selectedItem.Value.ToString());
             }
 
             button.IsEnabled = true;

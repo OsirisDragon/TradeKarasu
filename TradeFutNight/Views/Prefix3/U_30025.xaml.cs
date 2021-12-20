@@ -227,12 +227,7 @@ namespace TradeFutNight.Views.Prefix3
                 var firstSelectedItem = (ItemInfo)cbFirstKindId.SelectedItem;
                 var secondSelectedItem = (ItemInfo)cbSecondKindId.SelectedItem;
 
-                var task = Task.Run(async () =>
-                {
-                    await _vm.Query(firstSelectedItem.Value.ToString(), secondSelectedItem.Value.ToString());
-                });
-
-                await task;
+                await _vm.Query(firstSelectedItem.Value.ToString(), secondSelectedItem.Value.ToString());
             }
 
             button.IsEnabled = true;
