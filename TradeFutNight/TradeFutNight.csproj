@@ -282,6 +282,10 @@
     <Compile Include="Views\PrefixC\U_C1260.xaml.cs">
       <DependentUpon>U_C1260.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PrefixC\U_C1280.xaml.cs">
+      <DependentUpon>U_C1280.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrefixC\U_C1280_ViewModel.cs" />
     <Compile Include="Views\PrefixC\U_C9902.xaml.cs">
       <DependentUpon>U_C9902.xaml</DependentUpon>
     </Compile>
@@ -410,6 +414,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\PrefixC\U_C1260.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PrefixC\U_C1280.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
