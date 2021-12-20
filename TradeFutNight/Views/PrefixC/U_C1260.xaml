@@ -42,7 +42,7 @@
                 <dxg:TableView
                     x:Name="gridView"
                     CellValueChanged="view_CellValueChanged"
-                    RowStyle="{StaticResource GridControlSpecificStyle}" />
+                    CellStyle="{StaticResource GridControlSpecificStyle}" />
             </dxg:GridControl.View>
             <dxg:GridColumn
                 Name="rowNumber"
