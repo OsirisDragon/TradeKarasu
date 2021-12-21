@@ -123,7 +123,7 @@ namespace TradeFutNight.Views.PrefixC
             var task = Task.Run(async () =>
             {
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = CustomMapper(trackableData.ChangedItems);
+                var domainData = CustomMapper<FRP>(trackableData.ChangedItems);
 
                 using (var dasTfxm = Factory.CreateDalSession(SettingFile.Database.Tfxm_AH))
                 {
@@ -177,17 +177,21 @@ namespace TradeFutNight.Views.PrefixC
             await task;
         }
 
-        private IList<FRP> CustomMapper(IEnumerable<UIModel_C1260> items)
+        private IList<T> CustomMapper<T>(IEnumerable<UIModel_C1260> items) where T : FRP
         {
-            var listResult = new List<FRP>();
-            foreach (var item in items)
-            {
-                var newItem = _vm.MapperInstance.Map<FRP>(item);
+            var listResult = new List<T>();
 
-                var trackItem = item.CastToIChangeTrackable();
-                newItem.OriginalData = trackItem.GetOriginal();
-                listResult.Add(newItem);
-            }
+            Dispatcher.Invoke(() =>
+            {
+                foreach (var item in items)
+                {
+                    var newItem = _vm.MapperInstance.Map<T>(item);
+
+                    var trackItem = item.CastToIChangeTrackable();
+                    newItem.OriginalData = trackItem.GetOriginal();
+                    listResult.Add(newItem);
+                }
+            });
 
             return listResult;
         }

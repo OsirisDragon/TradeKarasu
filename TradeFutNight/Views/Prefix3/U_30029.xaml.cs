@@ -1,14 +1,12 @@
 ﻿using ChangeTracking;
 using CrossModel;
 using CrossModel.Enum;
-using DevExpress.DataProcessing;
 using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
@@ -139,7 +137,7 @@ namespace TradeFutNight.Views.Prefix3
             var task = Task.Run(async () =>
             {
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = CustomMapper(trackableData.ChangedItems);
+                var domainData = CustomMapper<TPPVOL>(trackableData.ChangedItems);
 
                 using (var das = Factory.CreateDalSession())
                 {
@@ -175,17 +173,21 @@ namespace TradeFutNight.Views.Prefix3
             await task;
         }
 
-        private IList<TPPVOL> CustomMapper(IEnumerable<UIModel_30029> items)
+        private IList<T> CustomMapper<T>(IEnumerable<UIModel_30029> items) where T : TPPVOL
         {
-            var listResult = new List<TPPVOL>();
-            foreach (var item in items)
-            {
-                var newItem = _vm.MapperInstance.Map<TPPVOL>(item);
+            var listResult = new List<T>();
 
-                var trackItem = item.CastToIChangeTrackable();
-                newItem.OriginalData = trackItem.GetOriginal();
-                listResult.Add(newItem);
-            }
+            Dispatcher.Invoke(() =>
+            {
+                foreach (var item in items)
+                {
+                    var newItem = _vm.MapperInstance.Map<T>(item);
+
+                    var trackItem = item.CastToIChangeTrackable();
+                    newItem.OriginalData = trackItem.GetOriginal();
+                    listResult.Add(newItem);
+                }
+            });
 
             return listResult;
         }

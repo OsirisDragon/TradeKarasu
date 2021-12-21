@@ -214,13 +214,17 @@ namespace TradeFutNight.Views.PrefixA
         private IList<T> CustomMapper<T>(IEnumerable<UIModel_A9920> items) where T : TPPADJ
         {
             var listResult = new List<T>();
-            foreach (var item in items)
+
+            Dispatcher.Invoke(() =>
             {
-                var newItem = _vm.MapperInstance.Map<T>(item);
-                var trackItem = item.CastToIChangeTrackable();
-                newItem.OriginalData = trackItem.GetOriginal();
-                listResult.Add(newItem);
-            }
+                foreach (var item in items)
+                {
+                    var newItem = _vm.MapperInstance.Map<T>(item);
+                    var trackItem = item.CastToIChangeTrackable();
+                    newItem.OriginalData = trackItem.GetOriginal();
+                    listResult.Add(newItem);
+                }
+            });
 
             return listResult;
         }

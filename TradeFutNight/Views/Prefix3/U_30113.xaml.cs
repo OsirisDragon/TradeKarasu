@@ -150,7 +150,7 @@ namespace TradeFutNight.Views.Prefix3
             var task = Task.Run(async () =>
             {
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = CustomMapper(trackableData.ChangedItems);
+                var domainData = CustomMapper<SLT>(trackableData.ChangedItems);
 
                 using (var das = Factory.CreateDalSession())
                 {
@@ -186,17 +186,21 @@ namespace TradeFutNight.Views.Prefix3
             await task;
         }
 
-        private IList<SLT> CustomMapper(IEnumerable<UIModel_30113> items)
+        private IList<T> CustomMapper<T>(IEnumerable<UIModel_30113> items) where T : SLT
         {
-            var listResult = new List<SLT>();
-            foreach (var item in items)
-            {
-                var newItem = _vm.MapperInstance.Map<SLT>(item);
+            var listResult = new List<T>();
 
-                var trackItem = item.CastToIChangeTrackable();
-                newItem.OriginalData = trackItem.GetOriginal();
-                listResult.Add(newItem);
-            }
+            Dispatcher.Invoke(() =>
+            {
+                foreach (var item in items)
+                {
+                    var newItem = _vm.MapperInstance.Map<T>(item);
+
+                    var trackItem = item.CastToIChangeTrackable();
+                    newItem.OriginalData = trackItem.GetOriginal();
+                    listResult.Add(newItem);
+                }
+            });
 
             return listResult;
         }
