@@ -91,11 +91,11 @@ namespace TradeFutNight.Views.PrefixC
             if (!BaseCheck(new CheckSettings() { IsCheckNotNullNotEmpty = false }, gridMain, _vm))
                 return false;
 
-            //if (!_canSave)
-            //{
-            //    MessageBoxExService.Instance().Error("此盤已開盤無法儲存");
-            //    return false;
-            //}
+            if (!_canSave)
+            {
+                MessageBoxExService.Instance().Error("此盤已開盤無法儲存");
+                return false;
+            }
 
             var task = Task.Run(() =>
             {
@@ -116,11 +116,12 @@ namespace TradeFutNight.Views.PrefixC
         public async Task Save()
         {
             VmMainUi.LoadingText = MessageConst.LoadingStatusSaving;
+            var grpSelectItem = cbGrp.EditValue.AsInt();
 
             var task = Task.Run(async () =>
             {
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = CustomMapper(trackableData.ChangedItems);
+                var domainData = CustomMapper<TPPBP>(trackableData.ChangedItems);
 
                 using (var das = Factory.CreateDalSession())
                 {
@@ -133,8 +134,6 @@ namespace TradeFutNight.Views.PrefixC
 
                         //更新交易系統狀態
                         UpdateAccessPermission(ProgramID, das);
-
-                        var grpSelectItem = cbGrp.EditValue.AsInt();
 
                         var keyData = 0;
 
@@ -172,17 +171,20 @@ namespace TradeFutNight.Views.PrefixC
             await task;
         }
 
-        private IList<TPPBP> CustomMapper(IEnumerable<UIModel_C1270> items)
+        private IList<T> CustomMapper<T>(IEnumerable<UIModel_C1270> items) where T : TPPBP
         {
-            var listResult = new List<TPPBP>();
-            foreach (var item in items)
-            {
-                var newItem = _vm.MapperInstance.Map<TPPBP>(item);
+            var listResult = new List<T>();
 
-                var trackItem = item.CastToIChangeTrackable();
-                newItem.OriginalData = trackItem.GetOriginal();
-                listResult.Add(newItem);
-            }
+            Dispatcher.Invoke(() =>
+            {
+                foreach (var item in items)
+                {
+                    var newItem = _vm.MapperInstance.Map<T>(item);
+                    var trackItem = item.CastToIChangeTrackable();
+                    newItem.OriginalData = trackItem.GetOriginal();
+                    listResult.Add(newItem);
+                }
+            });
 
             return listResult;
         }
@@ -240,13 +242,13 @@ namespace TradeFutNight.Views.PrefixC
             }
 
             // 10是開始收單
-            //_canSave = !(currOpenSw >= 10);
-            //if (currOpenSw >= 10)
-            //{
-            //    MessageBoxExService.Instance().Error("此盤已經開盤，無法再設定");
-            //    VmMainUi.HideLoadingWindow();
-            //    return;
-            //}
+            _canSave = !(currOpenSw >= 10);
+            if (currOpenSw >= 10)
+            {
+                MessageBoxExService.Instance().Error("此盤已經開盤，無法再設定");
+                VmMainUi.HideLoadingWindow();
+                return;
+            }
 
             await _vm.Query(grpSelectItem);
 
