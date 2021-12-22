@@ -2,7 +2,6 @@
 using CrossModel;
 using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
-using Shield.File;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,22 +10,25 @@ using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
 using TradeFutNightData;
-using TradeFutNightData.Gates.Tfxm;
-using TradeFutNightData.Models.Tfxm;
+using TradeFutNightData.Gates.Common;
+using TradeFutNightData.Models.Common;
+using TradeUtility;
 
 namespace TradeFutNight.Views.PrefixC
 {
     /// <summary>
-    /// U_C1260.xaml 的互動邏輯
+    /// U_C1270.xaml 的互動邏輯
     /// </summary>
-    public partial class U_C1260 : UserControlParent, IViewSword
+    public partial class U_C1270 : UserControlParent, IViewSword
     {
-        private U_C1260_ViewModel _vm;
+        private U_C1270_ViewModel _vm;
 
-        public U_C1260()
+        private bool _canSave = false;
+
+        public U_C1270()
         {
             InitializeComponent();
-            _vm = (U_C1260_ViewModel)DataContext;
+            _vm = (U_C1270_ViewModel)DataContext;
         }
 
         public async Task<bool> IsCanRun()
@@ -45,11 +47,13 @@ namespace TradeFutNight.Views.PrefixC
         public override void ControlSetting()
         {
             base.ControlSetting();
+            VmMainUi.IsButtonPrintEnabled = true;
         }
 
         public async Task Open()
         {
             ControlSetting();
+
             var task = Task.Run(() =>
             {
                 _vm.Open();
@@ -87,6 +91,12 @@ namespace TradeFutNight.Views.PrefixC
             if (!BaseCheck(new CheckSettings() { IsCheckNotNullNotEmpty = false }, gridMain, _vm))
                 return false;
 
+            if (!_canSave)
+            {
+                MessageBoxExService.Instance().Error("此盤已開盤無法儲存");
+                return false;
+            }
+
             var task = Task.Run(() =>
             {
                 if (!IsCanRunProgram())
@@ -94,19 +104,6 @@ namespace TradeFutNight.Views.PrefixC
                     VmMainUi.HideLoadingWindow();
                     MessageBoxExService.Instance().Error(MessageConst.NotAllowedExcute);
                     return false;
-                }
-
-                var resultItem = new ResultItem();
-                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-
-                foreach (var item in trackableData)
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        item.FRP_CONFIRM = 'Y';
-                        item.FRP_USER_ID = UserID;
-                        item.FRP_W_TIME = DateTime.Now;
-                    });
                 }
 
                 return true;
@@ -119,48 +116,45 @@ namespace TradeFutNight.Views.PrefixC
         public async Task Save()
         {
             VmMainUi.LoadingText = MessageConst.LoadingStatusSaving;
+            var grpSelectItem = cbGrp.EditValue.AsInt();
 
             var task = Task.Run(async () =>
             {
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = CustomMapper<FRP>(trackableData.ChangedItems);
+                var domainData = CustomMapper<TPPBP>(trackableData.ChangedItems);
 
-                using (var dasTfxm = Factory.CreateDalSession(SettingFile.Database.Tfxm_AH))
+                using (var das = Factory.CreateDalSession())
                 {
-                    dasTfxm.Begin();
+                    das.Begin();
 
                     try
                     {
-                        var dFRP = new D_FRP(dasTfxm);
+                        var dTPPBP = new D_TPPBP(das);
+                        dTPPBP.Update(domainData);
 
-                        //更新現貨資料
-                        dFRP.Update(domainData);
+                        //更新交易系統狀態
+                        UpdateAccessPermission(ProgramID, das);
 
-                        using (var das = Factory.CreateDalSession())
+                        var keyData = 0;
+
+                        switch (grpSelectItem)
                         {
-                            das.Begin();
+                            case 10:
+                                keyData = 1;
+                                break;
 
-                            try
-                            {
-                                //更新交易系統狀態
-                                UpdateAccessPermission(ProgramID, das);
-
-                                DbLog(MessageConst.Completed, das);
-
-                                das.Commit();
-                            }
-                            catch (Exception ex)
-                            {
-                                das.Rollback();
-                                throw ex;
-                            }
+                            case 11:
+                                keyData = 2;
+                                break;
                         }
 
-                        dasTfxm.Commit();
+                        DbLog($"{MessageConst.Completed}_{keyData}", das);
+
+                        das.Commit();
                     }
                     catch (Exception ex)
                     {
-                        dasTfxm.Rollback();
+                        das.Rollback();
                         throw ex;
                     }
                 }
@@ -177,7 +171,7 @@ namespace TradeFutNight.Views.PrefixC
             await task;
         }
 
-        private IList<T> CustomMapper<T>(IEnumerable<UIModel_C1260> items) where T : FRP
+        private IList<T> CustomMapper<T>(IEnumerable<UIModel_C1270> items) where T : TPPBP
         {
             var listResult = new List<T>();
 
@@ -186,7 +180,6 @@ namespace TradeFutNight.Views.PrefixC
                 foreach (var item in items)
                 {
                     var newItem = _vm.MapperInstance.Map<T>(item);
-
                     var trackItem = item.CastToIChangeTrackable();
                     newItem.OriginalData = trackItem.GetOriginal();
                     listResult.Add(newItem);
@@ -235,6 +228,31 @@ namespace TradeFutNight.Views.PrefixC
             gridView.CloseEditor();
             await Task.FromResult<object>(null);
             throw new NotImplementedException();
+        }
+
+        private async void CbGrp_SelectedIndexChanged(object sender, RoutedEventArgs e)
+        {
+            VmMainUi.ShowLoadingWindow();
+
+            var grpSelectItem = cbGrp.EditValue.AsInt();
+            var currOpenSw = 0;
+            using (var das = Factory.CreateDalSession())
+            {
+                currOpenSw = new D_OSWCUR(das).ListCurrOpenSW(grpSelectItem);
+            }
+
+            // 10是開始收單
+            _canSave = !(currOpenSw >= 10);
+            if (currOpenSw >= 10)
+            {
+                MessageBoxExService.Instance().Error("此盤已經開盤，無法再設定");
+                VmMainUi.HideLoadingWindow();
+                return;
+            }
+
+            await _vm.Query(grpSelectItem);
+
+            VmMainUi.HideLoadingWindow();
         }
     }
 }

@@ -94,7 +94,10 @@
                             AllowSizing="False"
                             ItemHeight="auto"
                             ShowCaption="False">
-                            <dxb:MainMenuControl Margin="0,5" AllowCustomizationMenu="False">
+                            <dxb:MainMenuControl
+                                Margin="0,5"
+                                AllowCustomizationMenu="False"
+                                Focusable="False">
 
                                 <dxb:BarButtonItem
                                     x:Name="btnInsert"
