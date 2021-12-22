@@ -298,7 +298,6 @@
     <Compile Include="Views\PrefixC\U_C9902.xaml.cs">
       <DependentUpon>U_C9902.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PrefixC\U_C1260_ViewModel.cs" />
     <Compile Include="Views\PrefixC\U_C9902_ViewModel.cs" />
     <Compile Include="Views\PrefixS\U_S1080.xaml.cs">
       <DependentUpon>U_S1080.xaml</DependentUpon>
