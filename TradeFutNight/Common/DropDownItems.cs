@@ -212,5 +212,12 @@ namespace TradeFutNight.Common
             result.Add(new ItemInfo() { Text = "第二盤", Value = 11 });
             return result;
         }
+
+        public static IList<ItemInfo> MarketClose()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "0_全部時段收盤", Value = 0 });
+            return result;
+        }
     }
 }
