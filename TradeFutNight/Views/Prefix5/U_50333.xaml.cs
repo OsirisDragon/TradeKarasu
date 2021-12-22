@@ -52,6 +52,7 @@ namespace TradeFutNight.Views.Prefix5
         public async Task Open()
         {
             ControlSetting();
+            _vm.MarketClose = DropDownItems.MarketClose();
 
             var task = Task.Run(() =>
             {

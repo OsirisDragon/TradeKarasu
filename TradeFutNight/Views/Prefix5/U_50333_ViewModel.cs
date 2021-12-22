@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using TradeFutNight.Common;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Specific.Prefix5;
 using TradeFutNightData.Models.Common;
@@ -26,7 +25,6 @@ namespace TradeFutNight.Views.Prefix5
 
         public void Open()
         {
-            MarketClose = DropDownItems.MarketClose();
         }
 
         public void Insert()
