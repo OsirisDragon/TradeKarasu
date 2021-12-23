@@ -18,7 +18,10 @@ namespace TradeFutNightData.Gates.Common
         public int ClearSettlePriceByMarketClose(string pdkMarketClose)
         {
             var sql = @"
-                        UPDATE FMIF SET FMIF_SETTLE_PRICE = 0 FROM PDK WHERE substring(FMIF_PROD_ID,1,3) = PDK_KIND_ID AND PDK_MARKET_CLOSE = @PDK_MARKET_CLOSE
+                        UPDATE FMIF SET FMIF_SETTLE_PRICE = 0
+                        FROM PDK
+                        WHERE substring(FMIF_PROD_ID, 1, 3) = PDK_KIND_ID
+                        AND PDK_MARKET_CLOSE = @PDK_MARKET_CLOSE
                         ";
 
             var p = new DynamicParameters();

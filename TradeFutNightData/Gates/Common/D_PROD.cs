@@ -28,9 +28,9 @@ namespace TradeFutNightData.Gates.Common
                         SELECT *
                         FROM PROD A
                         LEFT JOIN PDK B ON SUBSTRING(PROD_ID,1,3) = B.PDK_KIND_ID
-                        WHERE   ( SUBSTRING(PROD_ID,1,3) LIKE @KIND_ID )
-                        AND     ( PROD_SETTLE_DATE LIKE @PROD_SETTLE_DATE )
-                        AND     ( B.PDK_STATUS_CODE <> '0' )
+                        WHERE (SUBSTRING(PROD_ID,1,3) LIKE @KIND_ID)
+                        AND (PROD_SETTLE_DATE LIKE @PROD_SETTLE_DATE)
+                        AND (B.PDK_STATUS_CODE <> '0')
                         ORDER BY PROD_ID_OUT, PROD_SETTLE_DATE
                         ";
 
@@ -48,7 +48,7 @@ namespace TradeFutNightData.Gates.Common
             var sql = @"
                         SELECT DISTINCT PROD_SETTLE_DATE
                         FROM PROD A
-                        LEFT JOIN PDK B ON SUBSTRING(PROD_ID,1,3) = PDK_KIND_ID
+                        LEFT JOIN PDK B ON SUBSTRING(PROD_ID, 1, 3) = PDK_KIND_ID
                         WHERE PDK_STATUS_CODE <> '0'
                         ORDER BY PROD_SETTLE_DATE
                         ";
