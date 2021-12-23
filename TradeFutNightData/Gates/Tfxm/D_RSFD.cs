@@ -18,15 +18,17 @@ namespace TradeFutNightData.Gates.Tfxm
         public RSFD GetLatestByStockId(DateTime ocfDate, string stockId)
         {
             var sql = @"
-                                     SELECT TOP 1 * FROM RSFD
-                                    WHERE RSFD_SID = @stockId
-                                    AND RSFD_DATE > DATEADD(DAY, -30, @ocfDate)
-                                    ORDER BY RSFD_DATE DESC
-                                   ";
+                        --增加日期條件，減少資料搜尋量
+                        SELECT TOP 1 *
+                        FROM RSFD
+                        WHERE RSFD_SID = @STOCK_ID
+                        AND RSFD_DATE > DATEADD(DAY, -30, @OCF_DATE)
+                        ORDER BY RSFD_DATE DESC
+                       ";
 
             var p = new DynamicParameters();
-            p.Add("@stockId", stockId);
-            p.Add("@ocfDate", ocfDate);
+            p.Add("@STOCK_ID", stockId);
+            p.Add("@OCF_DATE", ocfDate);
 
             var result = _das.Conn.QueryFirstOrDefault<RSFD>(BuildCommand<RSFD>(sql, p));
 

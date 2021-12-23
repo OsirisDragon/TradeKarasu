@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using DataEngine;
 using LinqToDB;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TradeFutNightData.Models.Tfxm;
@@ -21,13 +20,14 @@ namespace TradeFutNightData.Gates.Tfxm
         public FRP GetLatestByProdId(string prodId)
         {
             var sql = @"
-                                SELECT TOP 1 * FROM FRP
-                                WHERE FRP_PROD_ID LIKE @prodId
-                                ORDER BY FRP_UPDATE_TIME DESC
+                        SELECT TOP 1 *
+                        FROM FRP
+                        WHERE FRP_PROD_ID LIKE @PROD_ID
+                        ORDER BY FRP_UPDATE_TIME DESC
                         ";
 
             var p = new DynamicParameters();
-            p.Add("@prodId", prodId);
+            p.Add("@PROD_ID", prodId);
 
             var result = _das.Conn.QueryFirstOrDefault<FRP>(BuildCommand<FRP>(sql, p));
 
