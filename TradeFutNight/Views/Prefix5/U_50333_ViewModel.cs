@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using TradeFutNightData;
-using TradeFutNightData.Gates.Specific.Prefix5;
+using TradeFutNightData.Gates.Common;
 using TradeFutNightData.Models.Common;
 
 namespace TradeFutNight.Views.Prefix5
@@ -48,8 +48,8 @@ namespace TradeFutNight.Views.Prefix5
             {
                 using (var das = Factory.CreateDalSession())
                 {
-                    var d50333 = new D_50333<UIModel_50333>(das);
-                    MainGridData = d50333.List().ToList();
+                    var dMTF = new D_MTF<UIModel_50333>(das);
+                    MainGridData = dMTF.ListEveryProdLastRecord().ToList();
                 }
             });
 
