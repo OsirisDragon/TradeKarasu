@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using ChangeTracking;
 using CrossModel;
-using Shield.File;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using TradeFutNight.Common;
 using TradeFutNightData;

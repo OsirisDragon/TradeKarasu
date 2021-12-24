@@ -24,8 +24,6 @@ namespace TradeFutNight.Views.Prefix2
     {
         private U_20016_ViewModel _vm;
 
-        private OperationType _operationType = OperationType.Save;
-
         public U_20016()
         {
             InitializeComponent();
@@ -104,11 +102,11 @@ namespace TradeFutNight.Views.Prefix2
                     return false;
                 }
 
-                var resultItem = new ResultItem();
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
+                var addedItems = trackableData.AddedItems;
                 var checkItems = trackableData.ChangedItems;
 
-                if (checkItems.Count() == 0)
+                if (addedItems.Count() == 0 && checkItems.Count() == 0)
                 {
                     VmMainUi.HideLoadingWindow();
                     MessageBoxExService.Instance().Error(MessageConst.NoChangedData);
@@ -122,13 +120,6 @@ namespace TradeFutNight.Views.Prefix2
                         item.MOCFEX_USER_ID = UserID;
                         item.MOCFEX_W_TIME = DateTime.Now;
                     });
-                }
-
-                if (resultItem.HasError)
-                {
-                    VmMainUi.HideLoadingWindow();
-                    MessageBoxExService.Instance().Error(resultItem.ErrorMessage);
-                    return false;
                 }
 
                 return true;
@@ -147,6 +138,8 @@ namespace TradeFutNight.Views.Prefix2
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
                 var domainDataAdded = CustomMapper<MOCFEX>(trackableData.AddedItems);
                 var domainDataChanged = CustomMapper<MOCFEX>(trackableData.ChangedItems);
+                var operatioinType = OperationType.Save;
+                IList<MOCFEX> domainDataFinal = null;
 
                 using (var das = Factory.CreateDalSession())
                 {
@@ -155,7 +148,18 @@ namespace TradeFutNight.Views.Prefix2
                     try
                     {
                         var dMocfex = new D_MOCFEX(das);
-                        //dMocfex.Save(domainData);
+                        if (domainDataAdded.Count != 0)
+                        {
+                            dMocfex.Insert(domainDataAdded);
+                            domainDataFinal = domainDataAdded;
+                            operatioinType = OperationType.Insert;
+                        }
+                        else if (domainDataChanged.Count != 0)
+                        {
+                            dMocfex.Update(domainDataChanged);
+                            domainDataFinal = domainDataChanged;
+                            operatioinType = OperationType.Save;
+                        }
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -170,10 +174,10 @@ namespace TradeFutNight.Views.Prefix2
                     }
                 }
 
-                //var report = CreateReport(domainData.ToList());
-                //var reportGate = await new ReportGate(report).CreateDocumentAsync();
-                //await reportGate.ExportPdf(ExportFilePath);
-                //await reportGate.Print();
+                var report = CreateReport(domainDataFinal, operatioinType);
+                var reportGate = await new ReportGate(report).CreateDocumentAsync();
+                await reportGate.ExportPdf(ExportFilePath);
+                await reportGate.Print();
 
                 VmMainUi.HideLoadingWindow();
                 MessageBoxExService.Instance().Info(MessageConst.ProcessSuccess);
@@ -196,11 +200,11 @@ namespace TradeFutNight.Views.Prefix2
             return listResult;
         }
 
-        private XtraReport CreateReport<T>(IList<T> data)
+        private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
         {
             string reportTitle = ProgramID + "–" + ProgramName;
 
-            switch (_operationType)
+            switch (operationType)
             {
                 case OperationType.Insert:
                     reportTitle += "–新增";
@@ -218,7 +222,7 @@ namespace TradeFutNight.Views.Prefix2
                     break;
             }
 
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, true, false, true);
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, false, false, false);
             var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain, rptSetting);
 
             return reportCommon;
@@ -235,8 +239,7 @@ namespace TradeFutNight.Views.Prefix2
         {
             gridView.CloseEditor();
 
-            _operationType = OperationType.Print;
-            var report = CreateReport(_vm.MainGridData);
+            var report = CreateReport(_vm.MainGridData, OperationType.Print);
             var reportGate = await new ReportGate(report).CreateDocumentAsync();
             await reportGate.ExportPdf(ExportFilePath);
             await reportGate.Print();
@@ -264,7 +267,8 @@ namespace TradeFutNight.Views.Prefix2
             await _vm.Query();
 
             button.IsEnabled = true;
-            _operationType = OperationType.Save;
+
+            VmMainUi.IsButtonPrintEnabled = true;
         }
 
         private void BtnGenerateYear_Click(object sender, RoutedEventArgs e)
@@ -307,7 +311,7 @@ namespace TradeFutNight.Views.Prefix2
                 startDate = startDate.AddDays(1);
             }
 
-            _operationType = OperationType.Insert;
+            VmMainUi.IsButtonPrintEnabled = false;
 
             MessageBoxExService.Instance().Info("新增" + _vm.GenerateYear + "年度完成請進行修改!!");
         }
