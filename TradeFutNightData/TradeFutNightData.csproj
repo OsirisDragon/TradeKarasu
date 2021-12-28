@@ -15,7 +15,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="Gates\Specific\Prefix5\" />
     <Folder Include="Models\Specific\PrefixA\" />
   </ItemGroup>
 
