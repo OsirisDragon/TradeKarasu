@@ -51,28 +51,6 @@ namespace TradeFutNight.Views
             set { }
         }
 
-        public string ExportFilePath
-        {
-            get
-            {
-                bool isInDesignMode = false;
-
-                Dispatcher.Invoke(() =>
-                {
-                    isInDesignMode = DesignerProperties.GetIsInDesignMode(this);
-                });
-
-                // Designer設計介面的時候不要取值，因為會出現xaml設計畫面上的顯示錯誤
-                if (isInDesignMode)
-                {
-                    return null;
-                }
-
-                return Path.Combine(AppSettings.LocalReportDirectory, MagicalHats.UniformFileName(AppSettings.SystemType, ProgramID, "", FileType.Pdf));
-            }
-            set { }
-        }
-
         public UserControlParent()
         {
         }
@@ -271,6 +249,21 @@ namespace TradeFutNight.Views
         {
             var dJSW = new D_JSW(das);
             dJSW.UpdateJswByJrf(programID);
+        }
+
+        public string GetExportFilePath(string fileDescription = "")
+        {
+            return Path.Combine(AppSettings.LocalReportDirectory, MagicalHats.UniformFileName(AppSettings.SystemType, ProgramID, fileDescription, FileType.Pdf));
+        }
+
+        public string GetExportFilePath(FileType fileType, string fileDescription = "")
+        {
+            return Path.Combine(AppSettings.LocalReportDirectory, MagicalHats.UniformFileName(AppSettings.SystemType, ProgramID, fileDescription, fileType));
+        }
+
+        public string GetExportFilePath(string fileName, FileType fileType)
+        {
+            return Path.Combine(AppSettings.LocalReportDirectory, fileName + "." + fileType.ToString());
         }
 
         public void DbLog(string messageContent, DalSession das)

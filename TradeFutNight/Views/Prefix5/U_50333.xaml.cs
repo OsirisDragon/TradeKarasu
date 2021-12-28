@@ -160,7 +160,7 @@ namespace TradeFutNight.Views.Prefix5
 
             var report = CreateReport(_vm.MainGridData, OperationType.Print);
             var reportGate = await new ReportGate(report).CreateDocumentAsync();
-            await reportGate.ExportPdf(ExportFilePath);
+            await reportGate.ExportPdf(GetExportFilePath());
             MessageBoxExService.Instance().Info(MessageConst.PrintSuccess);
         }
 
@@ -171,7 +171,7 @@ namespace TradeFutNight.Views.Prefix5
             XtraReport report = CreateReport(printData, OperationType.PrintIndex);
 
             var reportGate = await new ReportGate(report).CreateDocumentAsync();
-            await reportGate.ExportPdf(ExportFilePath);
+            await reportGate.ExportPdf(GetExportFilePath());
             MessageBoxExService.Instance().Info(MessageConst.PrintSuccess);
         }
 
@@ -182,7 +182,7 @@ namespace TradeFutNight.Views.Prefix5
             XtraReport report = CreateReport(printData, OperationType.PrintIndex);
 
             var reportGate = await new ReportGate(report).CreateDocumentAsync();
-            await reportGate.ExportPdf(ExportFilePath);
+            await reportGate.ExportPdf(GetExportFilePath());
             MessageBoxExService.Instance().Info(MessageConst.PrintSuccess);
         }
 

@@ -135,7 +135,7 @@ namespace TradeFutNight.Views.PrefixC
             compositeLink.DocumentName = ProgramID + "–" + ProgramName;
 
             var reportGate = new ReportGate(compositeLink);
-            await reportGate.ExportPdf(ExportFilePath);
+            await reportGate.ExportPdf(GetExportFilePath());
             await reportGate.Print();
 
             MessageBoxExService.Instance().Info(MessageConst.PrintSuccess);

@@ -192,7 +192,7 @@ namespace TradeFutNight.Views.Prefix3
 
                 var report = CreateReport(domainData);
                 var reportGate = await new ReportGate(report).CreateDocumentAsync();
-                await reportGate.ExportPdf(ExportFilePath);
+                await reportGate.ExportPdf(GetExportFilePath());
                 await reportGate.Print();
 
                 VmMainUi.HideLoadingWindow();

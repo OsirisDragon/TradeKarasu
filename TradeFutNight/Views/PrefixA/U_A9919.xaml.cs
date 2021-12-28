@@ -124,7 +124,7 @@ namespace TradeFutNight.Views.PrefixA
 
             var report = CreateReport(_vm.MainGridData, OperationType.Print);
             var reportGate = await new ReportGate(report).CreateDocumentAsync();
-            await reportGate.ExportPdf(ExportFilePath);
+            await reportGate.ExportPdf(GetExportFilePath());
             await reportGate.Print();
         }
 
@@ -136,7 +136,7 @@ namespace TradeFutNight.Views.PrefixA
             XtraReport report = CreateReport(printData, OperationType.PrintIndex);
 
             var reportGate = await new ReportGate(report).CreateDocumentAsync();
-            await reportGate.ExportPdf(ExportFilePath);
+            await reportGate.ExportPdf(GetExportFilePath());
             await reportGate.Print();
         }
 
@@ -147,7 +147,7 @@ namespace TradeFutNight.Views.PrefixA
             var printData = _vm.MainGridData.Where(x => x.PDK_SUBTYPE == "S").ToList();
             var report = CreateReport(printData, OperationType.PrintStock);
             var reportGate = await new ReportGate(report).CreateDocumentAsync();
-            await reportGate.ExportPdf(ExportFilePath);
+            await reportGate.ExportPdf(GetExportFilePath());
             await reportGate.Print();
         }
 

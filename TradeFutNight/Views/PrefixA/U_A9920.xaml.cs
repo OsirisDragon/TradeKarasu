@@ -145,7 +145,7 @@ namespace TradeFutNight.Views.PrefixA
                 // 先列印確認表
                 var report = CreateReport(mainData, OperationType.Confirm);
                 var reportGate = await new ReportGate(report).CreateDocumentAsync();
-                await reportGate.ExportPdf(ExportFilePath);
+                await reportGate.ExportPdf(GetExportFilePath());
                 await reportGate.Print();
 
                 VmMainUi.HideLoadingWindow();
@@ -201,7 +201,7 @@ namespace TradeFutNight.Views.PrefixA
 
                 report = CreateReport(mainData, OperationType.Save);
                 reportGate = await new ReportGate(report).CreateDocumentAsync();
-                await reportGate.ExportPdf(ExportFilePath);
+                await reportGate.ExportPdf(GetExportFilePath());
                 await reportGate.Print();
 
                 VmMainUi.HideLoadingWindow();
@@ -330,7 +330,7 @@ namespace TradeFutNight.Views.PrefixA
 
             var report = CreateReport(_vm.MainGridData, OperationType.Print);
             var reportGate = await new ReportGate(report).CreateDocumentAsync();
-            await reportGate.ExportPdf(ExportFilePath);
+            await reportGate.ExportPdf(GetExportFilePath());
             await reportGate.Print();
         }
 
