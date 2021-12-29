@@ -74,7 +74,7 @@ namespace TradeFutNight.Views.PrefixC
                         }
                     }
                 }
-                MainGridData = MapperInstance.Map<IList<UIModel_C1270>>(list).AsTrackable();
+                MainGridData = list.AsTrackable();
             });
 
             await task;
