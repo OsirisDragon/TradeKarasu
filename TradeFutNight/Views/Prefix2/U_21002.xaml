@@ -1,0 +1,218 @@
+﻿<myTypes:UserControlParent
+    x:Class="TradeFutNight.Views.Prefix2.U_21002"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:myTypes="clr-namespace:TradeFutNight.Views"
+    xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.Prefix2"
+    Margin="1,1,1,1"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <myTypes:UserControlParent.DataContext>
+        <myTypesPrefix:U_21002_ViewModel />
+    </myTypes:UserControlParent.DataContext>
+    <myTypes:UserControlParent.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\ShareStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </myTypes:UserControlParent.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" MinHeight="35" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <dxlc:FlowLayoutControl Grid.Row="0" Orientation="Horizontal">
+            <Label HorizontalAlignment="Right" VerticalAlignment="Center">
+                商品：
+            </Label>
+            <dxe:ComboBoxEdit
+                x:Name="cbKindId"
+                MinWidth="100"
+                Margin="0,0,10,0"
+                DisplayMember="Text"
+                ItemsSource="{Binding Pdks}"
+                Text="全部"
+                ValueMember="Value" />
+            <Label HorizontalAlignment="Right" VerticalAlignment="Center">
+                月份：
+            </Label>
+            <dxe:ComboBoxEdit
+                x:Name="cbMonth"
+                MinWidth="100"
+                Margin="0,0,10,0"
+                DisplayMember="Text"
+                ItemsSource="{Binding ProdSettleDates}"
+                Text="全部"
+                ValueMember="Value" />
+            <Button x:Name="btnQuery" Click="BtnQuery_Click">
+                查詢
+            </Button>
+        </dxlc:FlowLayoutControl>
+        <dxg:GridControl
+            x:Name="gridMain"
+            Grid.Row="1"
+            CurrentItem="{Binding Path=CurrentItem, Mode=TwoWay}"
+            ItemsSource="{Binding MainGridData}"
+            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
+            SelectionMode="None">
+            <dxg:GridControl.View>
+                <dxg:TableView x:Name="gridView" AllowEditing="False" />
+            </dxg:GridControl.View>
+            <dxg:GridColumn
+                Name="rowNumber"
+                Width="45"
+                AllowEditing="False"
+                Header="編號">
+                <dxg:GridColumn.CellTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{DXBinding 'RowData.RowHandle.Value + 1'}" />
+                        </Grid>
+                    </DataTemplate>
+                </dxg:GridColumn.CellTemplate>
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="70"
+                AllowCellMerge="True"
+                FieldName="PROD_ID_OUT"
+                Header="商品代號">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="70"
+                FieldName="PROD_NAME"
+                Header="商品名稱" />
+            <dxg:GridColumn
+                Width="70"
+                FieldName="PROD_SETTLE_DATE"
+                Header="到期月份" />
+            <dxg:GridColumn
+                Width="95"
+                FieldName="PROD_DELIVERY_DATE"
+                Header="交割日期">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="70"
+                FieldName="PROD_PREMIUM"
+                Header="權利金">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="70"
+                FieldName="PROD_SETTLE_PRICE"
+                Header="當日&#xA;結算價">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="65"
+                FieldName="PROD_EXPIRE_CODE"
+                Header="到期碼">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:ComboBoxEditSettings
+                        DisplayMember="Text"
+                        ItemsSource="{Binding ProdExpireCode}"
+                        ValueMember="Value" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="95"
+                FieldName="PROD_BEGIN_DATE"
+                Header="上市日">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="95"
+                FieldName="PROD_END_DATE"
+                Header="下市日">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="75"
+                FieldName="PROD_TERM_HIGH_PRICE"
+                Header="歷史&#xA;最高價">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="75"
+                FieldName="PROD_TERM_LOW_PRICE"
+                Header="歷史&#xA;最低價">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="70"
+                FieldName="PROD_RAISE_LIMIT"
+                Header="漲幅&#xA;限制%">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="70"
+                FieldName="PROD_FALL_LIMIT"
+                Header="跌幅&#xA;限制%">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="70"
+                FieldName="PROD_RAISE_PRICE"
+                Header="當日&#xA;漲停價">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="70"
+                FieldName="PROD_FALL_PRICE"
+                Header="當日&#xA;跌停價">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+        </dxg:GridControl>
+        <TextBlock
+            x:Name="txtMemo"
+            Grid.Row="2"
+            Margin="10,0"
+            xml:space="preserve"
+            Foreground="OrangeRed"
+            TextWrapping="Wrap">
+        </TextBlock>
+    </Grid>
+</myTypes:UserControlParent>

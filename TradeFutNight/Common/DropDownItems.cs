@@ -8,6 +8,14 @@ namespace TradeFutNight.Common
 {
     public class DropDownItems
     {
+        public static IList<ItemInfo> ProdExpireCode()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "到期", Value = 'Y' });
+            result.Add(new ItemInfo() { Text = "未到期", Value = 'N' });
+            return result;
+        }
+
         public static IList<ItemInfo> TppIndexGrp()
         {
             var result = new List<ItemInfo>();
