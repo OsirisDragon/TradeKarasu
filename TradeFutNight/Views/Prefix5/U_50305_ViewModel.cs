@@ -10,6 +10,7 @@ using TradeFutNightData;
 using TradeFutNightData.Gates.Common;
 using TradeFutNightData.Gates.Specific.Prefix5;
 using TradeFutNightData.Models.Common;
+using TradeUtility;
 
 namespace TradeFutNight.Views.Prefix5
 {
@@ -68,17 +69,17 @@ namespace TradeFutNight.Views.Prefix5
                 // 股票：SFD_OPEN_REF
                 foreach (var item in list)
                 {
-                    decimal price = 0;
+                    decimal? price = 0;
                     if (item.PDK_SUBTYPE != "S")
                     {
                         price = listSCP.Where(x => x.SCP_KIND_ID == item.MWPLMT_KIND_ID || x.SCP_STOCK_ID == item.PDK_STOCK_ID)
-                               .OrderByDescending(x => x.SCP_CLOSE_PRICE).FirstOrDefault().SCP_CLOSE_PRICE;
+                               .OrderByDescending(x => x.SCP_CLOSE_PRICE).FirstOrDefault()?.SCP_CLOSE_PRICE;
                     }
                     else if (item.PDK_SUBTYPE == "S")
                     {
-                        price = (decimal)listSFD.Where(x => x.SFD_STOCK_ID == item.PDK_STOCK_ID).FirstOrDefault().SFD_OPEN_REF;
+                        price = (decimal)listSFD.Where(x => x.SFD_STOCK_ID == item.PDK_STOCK_ID).FirstOrDefault()?.SFD_OPEN_REF;
                     }
-                    item.ACTUALS_PRICE = price;
+                    item.ACTUALS_PRICE = price.AsDecimal();
                 }
 
                 MainGridData = list.AsTrackable();
