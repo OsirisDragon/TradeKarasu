@@ -37,16 +37,16 @@ namespace TradeFutNight.Views.PrefixC
             return task.Result;
         }
 
-        public override void ControlSetting()
+        public override void ToolButtonSetting()
         {
-            base.ControlSetting();
+            base.ToolButtonSetting();
             VmMainUi.IsButtonDeleteEnabled = false;
             VmMainUi.IsButtonSaveEnabled = false;
         }
 
         public async Task Open()
         {
-            ControlSetting();
+            ToolButtonSetting();
             var task = Task.Run(() =>
             {
                 _vm.Open();

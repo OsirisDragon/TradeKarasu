@@ -43,15 +43,15 @@ namespace TradeFutNight.Views.Prefix2
             return task.Result;
         }
 
-        public override void ControlSetting()
+        public override void ToolButtonSetting()
         {
-            base.ControlSetting();
+            base.ToolButtonSetting();
             VmMainUi.IsButtonPrintEnabled = true;
         }
 
         public async Task Open()
         {
-            ControlSetting();
+            ToolButtonSetting();
 
             _vm.StartDate = _vm.DefaultMinDateTime;
             _vm.EndDate = _vm.DefaultMinDateTime;

@@ -44,14 +44,14 @@ namespace TradeFutNight.Views.Prefix3
             return task.Result;
         }
 
-        public override void ControlSetting()
+        public override void ToolButtonSetting()
         {
-            base.ControlSetting();
+            base.ToolButtonSetting();
         }
 
         public async Task Open()
         {
-            ControlSetting();
+            ToolButtonSetting();
             var task = Task.Run(() =>
             {
                 _vm.Open();

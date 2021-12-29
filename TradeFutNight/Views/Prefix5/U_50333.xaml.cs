@@ -43,15 +43,15 @@ namespace TradeFutNight.Views.Prefix5
             return task.Result;
         }
 
-        public override void ControlSetting()
+        public override void ToolButtonSetting()
         {
-            base.ControlSetting();
+            base.ToolButtonSetting();
             VmMainUi.IsButtonPrintIndexEnabled = true;
         }
 
         public async Task Open()
         {
-            ControlSetting();
+            ToolButtonSetting();
             _vm.MarketClose = DropDownItems.MarketClose();
 
             var task = Task.Run(() =>

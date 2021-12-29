@@ -320,7 +320,7 @@ namespace TradeFutNight.Views
                 {
                     dockLayoutManagerMain.LayoutController.Activate(e.Item);
                     var viewInstance = (IViewSword)panel.Control;
-                    viewInstance.ControlSetting();
+                    viewInstance.ToolButtonSetting();
                 }
             }
             else

@@ -41,14 +41,14 @@ namespace TradeFutNight.Views.PrefixA
             return task.Result;
         }
 
-        public override void ControlSetting()
+        public override void ToolButtonSetting()
         {
-            base.ControlSetting();
+            base.ToolButtonSetting();
         }
 
         public async Task Open()
         {
-            ControlSetting();
+            ToolButtonSetting();
             DateTime now = DateTime.Now;
 
             //起始日期時間(當日14:50:00)

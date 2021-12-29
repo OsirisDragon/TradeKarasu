@@ -136,7 +136,7 @@ namespace TradeFutNight.Views
             }
         }
 
-        public virtual void ControlSetting()
+        public virtual void ToolButtonSetting()
         {
             // 先重置所有控制項
             VmMainUi.IsButtonSaveEnabled = false;
