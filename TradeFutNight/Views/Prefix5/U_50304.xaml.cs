@@ -152,9 +152,9 @@ namespace TradeFutNight.Views.Prefix5
             gridView.CloseEditor();
 
             var report = CreateReport(_vm.MainGridData, OperationType.Print);
+
             var reportGate = await new ReportGate(report).CreateDocumentAsync();
             await reportGate.ExportPdf(GetExportFilePath());
-            await reportGate.Print();
 
             MessageBoxExService.Instance().Info(MessageConst.PrintSuccess);
         }
