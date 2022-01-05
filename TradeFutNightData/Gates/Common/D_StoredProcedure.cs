@@ -50,7 +50,7 @@ namespace TradeFutNightData.Gates.Common
             }
             catch (Exception ex)
             {
-                throw new Exception("SP錯誤(" + spName + ")，" + ex.Message);
+                throw GetCustomException(ex);
             }
         }
     }

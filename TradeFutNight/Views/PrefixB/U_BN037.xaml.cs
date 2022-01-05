@@ -41,6 +41,9 @@ namespace TradeFutNight.Views.PrefixB
         public override void ToolButtonSetting()
         {
             base.ToolButtonSetting();
+            VmMainUi.IsButtonInsertEnabled = false;
+            VmMainUi.IsButtonSaveEnabled = false;
+            VmMainUi.IsButtonDeleteEnabled = false;
         }
 
         public async Task Open()
@@ -53,31 +56,17 @@ namespace TradeFutNight.Views.PrefixB
 
                 using (var das = Factory.CreateDalSession())
                 {
-                    //das.Begin();
-
-                    try
-                    {
-                        var dSp = new D_StoredProcedure<DEFAULT>(das);
-                        DbLog("中文", das);
-                        DbLog("開始執行" + nameof(dSp.proc_AH_settle_price), das);
-                        dSp.proc_AH_settle_price("U", 10, 0);
-                        DbLog("結束執行" + nameof(dSp.proc_AH_settle_price), das);
-
-                        UpdateAccessPermission(ProgramID, das);
-                        DbLog(MessageConst.Completed, das);
-
-                        //das.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        //das.Rollback();
-                        throw ex;
-                    }
+                    var dSp = new D_StoredProcedure<DEFAULT>(das);
+                    DbLog("開始執行" + nameof(dSp.proc_AH_settle_price), das);
+                    dSp.proc_AH_settle_price("U", 10, 0);
+                    DbLog("結束執行" + nameof(dSp.proc_AH_settle_price), das);
+                    UpdateAccessPermission(ProgramID, das);
+                    DbLog(MessageConst.Completed, das);
                 }
             });
             await task;
 
-            MessageBoxExService.Instance().Error(MessageConst.ExecuteSuccess);
+            MessageBoxExService.Instance().Info(MessageConst.ExecuteSuccess);
 
             CloseWindow();
         }

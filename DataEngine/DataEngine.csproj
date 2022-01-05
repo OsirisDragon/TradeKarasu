@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CrossModel\CrossModel.csproj" />
     <ProjectReference Include="..\ShieldCore\ShieldCore.csproj" />
   </ItemGroup>
 

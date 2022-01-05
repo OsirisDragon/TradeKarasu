@@ -32,6 +32,7 @@ namespace TradeFutNightData.Gates.Common
                 LOGF_FILLER = LOGF_FILLER
             };
 
+            _das.DataConn.InlineParameters = true;
             affectedRows = _das.DataConn.Insert(logf);
 
             return affectedRows;

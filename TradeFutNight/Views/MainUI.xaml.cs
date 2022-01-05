@@ -91,9 +91,9 @@ namespace TradeFutNight.Views
                 return;
             }
 
-            await viewInstance.Open();
-
             dockLayoutManagerMain.LayoutController.Activate(panel);
+
+            await viewInstance.Open();
 
             _vm.IsLoadingVisible = false;
         }
