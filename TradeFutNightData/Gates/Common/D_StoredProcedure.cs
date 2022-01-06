@@ -3,13 +3,15 @@ using DataEngine;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using TradeFutNightData.Models.Specific;
 
 namespace TradeFutNightData.Gates.Common
 {
     public class D_StoredProcedure<T> : ParentGate
     {
-        public D_StoredProcedure(DalSession das) { this._das = das; }
+        public D_StoredProcedure(DalSession das)
+        {
+            this._das = das;
+        }
 
         private void AddReturnParameter(DynamicParameters p)
         {
@@ -48,7 +50,7 @@ namespace TradeFutNightData.Gates.Common
             }
             catch (Exception ex)
             {
-                throw new Exception("SP錯誤("+ spName +")，" + ex.Message);
+                throw GetCustomException(ex);
             }
         }
     }

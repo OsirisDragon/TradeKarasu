@@ -1,5 +1,8 @@
-﻿using Dapper;
+﻿using AdoNetCore.AseClient;
+using CrossModel;
+using Dapper;
 using LinqToDB;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -98,6 +101,40 @@ namespace DataEngine
             {
                 _das.DataConn.Delete(item);
             }
+        }
+
+        public ExceptionCustom GetCustomException(Exception ex)
+        {
+            var customeExceptioin = new ExceptionCustom(GetSpErrorMessage(ex));
+
+            if (ex is AseException)
+            {
+                foreach (AseError err in (ex as AseException).Errors)
+                {
+                    customeExceptioin.ErrorNumber = err.MessageNumber;
+                    customeExceptioin.ErrorMessage = err.Message;
+                }
+            }
+
+            return customeExceptioin;
+        }
+
+        public string GetSpErrorMessage(Exception ex)
+        {
+            string result = "哇!!執行StoredProcedure發生錯誤了唷!" + Environment.NewLine;
+
+            if (ex is AseException)
+            {
+                foreach (AseError err in (ex as AseException).Errors)
+                {
+                    result += Environment.NewLine;
+                    result += "SpName：" + err.ProcName + Environment.NewLine;
+                    result += "MessageNumber：" + err.MessageNumber + Environment.NewLine;
+                    result += "Message：" + err.Message;
+                }
+            }
+
+            return result;
         }
     }
 }

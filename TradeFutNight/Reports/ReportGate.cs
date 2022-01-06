@@ -58,7 +58,7 @@ namespace TradeFutNight.Reports
             switch (_printType)
             {
                 case PrintType.XtraReport:
-                    new PdfStreamingExporter(_report, true).Export(filePath);
+                    _cachedReportSource.PrintingSystem.ExportToPdf(filePath);
                     break;
 
                 case PrintType.CompositeLink:
