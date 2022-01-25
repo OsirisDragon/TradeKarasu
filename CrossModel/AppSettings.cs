@@ -13,6 +13,9 @@ namespace CrossModel
         public static string SysDayOrNightText { get; set; }
 
         public static string LocalReportDirectoryWithoutDate { get; set; }
+
         public static string LocalReportDirectory { get; set; }
+
+        public static string DashForTitle { get; set; }
     }
 }

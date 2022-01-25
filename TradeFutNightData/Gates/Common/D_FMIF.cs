@@ -1,20 +1,21 @@
 ﻿using Dapper;
 using DataEngine;
 using LinqToDB;
-using System.Collections.Generic;
 using System.Linq;
 using TradeFutNightData.Models.Common;
-using TradeFutNightData.Models.Specific.PrefixB;
 
 namespace TradeFutNightData.Gates.Common
 {
-    public class D_FMIF<T> : ParentGate
+    public class D_FMIF : D_FMIF<FMIF>
     {
         public D_FMIF(DalSession das)
         {
             this._das = das;
         }
+    }
 
+    public class D_FMIF<T> : ParentGate
+    {
         public int ClearSettlePriceByMarketClose(string pdkMarketClose)
         {
             var sql = @"
@@ -32,15 +33,16 @@ namespace TradeFutNightData.Gates.Common
             return result;
         }
 
-        public void UpdateSettlePrice(IEnumerable<DTO_BN001> data)
+        public int UpdateSettlePrice(string fmifProdId, decimal? fmifSettlePrice)
         {
-            foreach (var item in data)
-            {
-                _das.DataConn.GetTable<FMIF>()
-                    .Where(c => c.FMIF_PROD_ID == item.FMIF_PROD_ID)
-                    .Set(c => c.FMIF_SETTLE_PRICE, item.FMIF_SETTLE_PRICE)
-                    .Update();
-            }
+            int affectedRows = -1;
+
+            affectedRows = _das.DataConn.GetTable<FMIF>()
+                .Where(c => c.FMIF_PROD_ID == fmifProdId)
+                .Set(c => c.FMIF_SETTLE_PRICE, fmifSettlePrice)
+                .Update();
+
+            return affectedRows;
         }
     }
 }

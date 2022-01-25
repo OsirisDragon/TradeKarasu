@@ -1,6 +1,8 @@
 ﻿using CrossModel;
 using CrossModel.Enum;
+using LinqToDB.Data;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using TradeFutNight.Common;
@@ -26,6 +28,10 @@ namespace TradeFutNight
 
             DataBaseEngine.Initial();
 
+            // 打開linq2db的偵錯用顯示轉換的SQL的功能
+            DataConnection.TurnTraceSwitchOn();
+            DataConnection.WriteTraceLine = (o, c, t) => Debug.WriteLine(o, c);
+
             // 暫時設定在這邊
             MagicalHats.UserID = "Q0001";
             MagicalHats.UserAD = "helloWorld";
@@ -36,6 +42,7 @@ namespace TradeFutNight
             AppSettings.SystemType = SystemType.FutNight;
             AppSettings.LocalReportDirectoryWithoutDate = "C:\\future_night";
             AppSettings.LocalReportDirectory = Path.Combine(AppSettings.LocalReportDirectoryWithoutDate, MagicalHats.Ocf.OCF_DATE.ToString("yyyyMMdd"));
+            AppSettings.DashForTitle = "–";
 
             if (!Directory.Exists(AppSettings.LocalReportDirectory))
             {

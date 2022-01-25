@@ -21,6 +21,7 @@
         <Setter Property="ShowGroupPanel" Value="False" />
         <Setter Property="ShowTotalSummary" Value="False" />
         <Setter Property="ShowSearchPanelMode" Value="Never" />
+        <Setter Property="AllowScrollToFocusedRow" Value="True" />
         <!--  讓Grid的Header的Column在字太多的時候，能夠自動換行和增加高度和置中，和一些基本設定  -->
         <Setter Property="ColumnHeaderTemplate">
             <Setter.Value>
@@ -73,7 +74,6 @@
         TargetType="dxg:LightweightCellEditor">
         <Setter Property="Background" Value="White" />
         <Style.Triggers>
-
             <DataTrigger Binding="{Binding RowData.IsSelected}" Value="True">
                 <Setter Property="Background" Value="Transparent" />
             </DataTrigger>
@@ -93,5 +93,13 @@
                 <Setter Property="Background" Value="Transparent" />
             </DataTrigger>
         </Style.Triggers>
+    </Style>
+
+    <!--  把底色全部一起變，這樣就不用去設定每個欄位，而且這樣的話列印出來的報表底色會是白色的，要設定SelectionMode為Row才有效  -->
+    <!--  此為關掉TableView的EnableSelectedRowAppearance版本  -->
+    <Style x:Key="GridControlSpecificStyleWithoutSelectedRowAppearance" TargetType="dxg:LightweightCellEditor">
+        <Setter Property="IsEnabled" Value="False" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Background" Value="WhiteSmoke" />
     </Style>
 </ResourceDictionary>

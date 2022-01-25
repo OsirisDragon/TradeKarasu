@@ -300,7 +300,7 @@ namespace TradeFutNight.Views
                         {
                             if (prop.GetValue(item) == null || prop.GetValue(item).ToString().Trim() == "" || prop.GetValue(item).ToString().Trim() == "\0")
                             {
-                                vm.SetCurrentAndSelectedItem(item);
+                                vm.FocusRow(item);
                                 MessageBoxExService.Instance().Error($"{col.Header}不允許空值");
                                 return false;
                             }
@@ -344,7 +344,7 @@ namespace TradeFutNight.Views
         /// <summary>
         /// DevExpress的GridView用的改變格子資料後的觸發事件
         /// </summary>
-        protected void view_CellValueChanged(object sender, CellValueChangedEventArgs e)
+        protected virtual void view_CellValueChanged(object sender, CellValueChangedEventArgs e)
         {
             var view = ((GridViewBase)sender);
             view.CommitEditing();

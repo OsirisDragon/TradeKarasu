@@ -11,6 +11,7 @@ namespace TradeFutNightData.Gates.Common
         public D_LOGF(DalSession das)
         {
             this._das = das;
+            _das.DataConn.InlineParameters = true;
         }
     }
 
@@ -32,7 +33,6 @@ namespace TradeFutNightData.Gates.Common
                 LOGF_FILLER = LOGF_FILLER
             };
 
-            _das.DataConn.InlineParameters = true;
             affectedRows = _das.DataConn.Insert(logf);
 
             return affectedRows;

@@ -1,13 +1,17 @@
 ﻿using CrossModel;
 using DevExpress.Xpf.Core;
+using System.Threading;
 using System.Windows;
 using TradeFutNight.Interfaces;
+using TradeFutNight.Views;
 
 namespace TradeFutNight.Common
 {
     public class MessageBoxExService : IMessageBoxExService
     {
         private static MessageBoxExService instance;
+
+        public MainUI_ViewModel VmMainUi { get; set; }
 
         // Constructor is 'protected'
         protected MessageBoxExService()
@@ -34,6 +38,11 @@ namespace TradeFutNight.Common
 
         public MessageBoxResult Confirm(string content)
         {
+            // 等待一些時間，讓前面的UI有些動作可以先執行，不然前面的某些UI動作像是Focus到Grid之類的還沒作完，會被後面的跳視窗的程式蓋掉
+            Thread.Sleep(300);
+
+            HideLoadingWindow();
+
             MessageBoxResult result = MessageBoxResult.None;
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -45,6 +54,11 @@ namespace TradeFutNight.Common
 
         public MessageBoxResult Error(string content)
         {
+            // 等待一些時間，讓前面的UI有些動作可以先執行，不然前面的某些UI動作像是Focus到Grid之類的還沒作完，會被後面的跳視窗的程式蓋掉
+            Thread.Sleep(300);
+
+            HideLoadingWindow();
+
             MessageBoxResult result = MessageBoxResult.None;
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -56,12 +70,23 @@ namespace TradeFutNight.Common
 
         public MessageBoxResult Info(string content)
         {
+            // 等待一些時間，讓前面的UI有些動作可以先執行，不然前面的某些UI動作像是Focus到Grid之類的還沒作完，會被後面的跳視窗的程式蓋掉
+            Thread.Sleep(300);
+
+            HideLoadingWindow();
+
             MessageBoxResult result = MessageBoxResult.None;
             Application.Current.Dispatcher.Invoke(() =>
             {
                 result = ThemedMessageBox.Show(title: MessageConst.ProcessResult, text: content, messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Information, owner: Application.Current.MainWindow);
             });
             return result;
+        }
+
+        private void HideLoadingWindow()
+        {
+            if (VmMainUi != null)
+                VmMainUi.HideLoadingWindow();
         }
     }
 

@@ -22,6 +22,8 @@ namespace TradeFutNight.Views
     {
         private MainUI_ViewModel _vm;
 
+        private bool _isNewOpenProgram = false;
+
         private bool _isExeCallMode = false;
 
         public bool IsExeCallMode
@@ -35,6 +37,7 @@ namespace TradeFutNight.Views
             InitializeComponent();
             _vm = new MainUI_ViewModel();
             DataContext = _vm;
+            MessageBoxExService.Instance().VmMainUi = _vm;
 
             txtTxnId.Focus();
 
@@ -43,59 +46,6 @@ namespace TradeFutNight.Views
             barBottomDate.Content = "日期：" + MagicalHats.Ocf.OCF_DATE.ToDateStr();
 
             MagicalHats.CheckMsgServerConnection();
-        }
-
-        public async Task OpenProgram(string programID, string programName)
-        {
-            var panelName = "U_" + programID;
-
-            _vm.LoadingText = "Loading";
-            _vm.IsLoadingVisible = true;
-
-            await Task.Delay(500);
-
-            IViewSword viewInstance = null;
-
-            // 看panel有沒有存在已經開啟的視窗裡面
-            var panel = (DocumentPanel)dockLayoutManagerMain.GetItem(panelName);
-
-            if (panel != null)
-            {
-                viewInstance = (IViewSword)panel.Control;
-            }
-            else
-            {
-                // 加入DocumentPanel
-                // 這會觸發DocumentGroupMain_SelectedItemChanged事件
-                panel = dockLayoutManagerMain.DockController.AddDocumentPanel(documentGroupMain,
-                new Uri(@"Views\Prefix" + programID[0] + @"\U_" + programID + ".xaml", UriKind.Relative));
-
-                panel.Name = panelName;
-                panel.Caption = programID + "-" + programName;
-                panel.AllowDock = false;
-                panel.AllowDrag = false;
-                panel.AllowDrop = false;
-                panel.AllowFloat = false;
-                panel.AllowHide = false;
-                panel.AllowMove = false;
-                panel.AllowContextMenu = false;
-
-                viewInstance = (IViewSword)panel.Control;
-                ((UserControlParent)viewInstance).Init(programID, programName, _vm, this);
-            }
-
-            bool isCanRun = await IsCanRun(panel);
-            if (!isCanRun)
-            {
-                CloseWindow();
-                return;
-            }
-
-            dockLayoutManagerMain.LayoutController.Activate(panel);
-
-            await viewInstance.Open();
-
-            _vm.IsLoadingVisible = false;
         }
 
         public void CloseWindow()
@@ -304,6 +254,59 @@ namespace TradeFutNight.Views
             return true;
         }
 
+        public async Task OpenProgram(string programID, string programName)
+        {
+            var panelName = "U_" + programID;
+
+            _vm.LoadingText = "Loading";
+            _vm.IsLoadingVisible = true;
+
+            await Task.Delay(500);
+
+            IViewSword viewInstance = null;
+
+            // 看panel有沒有存在已經開啟的視窗裡面
+            var panel = (DocumentPanel)dockLayoutManagerMain.GetItem(panelName);
+
+            if (panel != null)
+            {
+                dockLayoutManagerMain.DockController.RemovePanel(panel);
+            }
+
+            // 加入DocumentPanel
+            // 這會觸發DocumentGroupMain_SelectedItemChanged事件(如果是新增第一個DocumentPanel才會觸發)
+            panel = dockLayoutManagerMain.DockController.AddDocumentPanel(documentGroupMain,
+            new Uri(@"Views\Prefix" + programID[0] + @"\U_" + programID + ".xaml", UriKind.Relative));
+
+            panel.Name = panelName;
+            panel.Caption = programID + "-" + programName;
+            panel.AllowDock = false;
+            panel.AllowDrag = false;
+            panel.AllowDrop = false;
+            panel.AllowFloat = false;
+            panel.AllowHide = false;
+            panel.AllowMove = false;
+            panel.AllowContextMenu = false;
+
+            viewInstance = (IViewSword)panel.Control;
+            ((UserControlParent)viewInstance).Init(programID, programName, _vm, this);
+
+            _isNewOpenProgram = true;
+            // 這會觸發DocumentGroupMain_SelectedItemChanged事件
+            dockLayoutManagerMain.LayoutController.Activate(panel);
+
+            bool isCanRun = await IsCanRun(panel);
+            if (!isCanRun)
+            {
+                documentGroupMain.Remove(panel);
+                return;
+            }
+
+            await viewInstance.Open();
+
+            _vm.IsLoadingVisible = false;
+        }
+
         /// <summary>
         /// DocumentGroup如果其內的物件變動就會觸發
         /// </summary>
@@ -314,13 +317,17 @@ namespace TradeFutNight.Views
             // 如果是AddDocumentPanel也會觸發這個事件，但Name會是空白的，所以排除
             if (e.Item != null && e.Item.Name != "")
             {
-                var panel = (DocumentPanel)e.Item;
-                bool isCanRun = await IsCanRun(panel);
-                if (isCanRun)
+                // 如果是新開的視窗，也就是Activate觸發的事件，不要再執行相關的檢查
+                if (!_isNewOpenProgram)
                 {
-                    dockLayoutManagerMain.LayoutController.Activate(e.Item);
-                    var viewInstance = (IViewSword)panel.Control;
-                    viewInstance.ToolButtonSetting();
+                    var panel = (DocumentPanel)e.Item;
+                    bool isCanRun = await IsCanRun(panel);
+                    if (isCanRun)
+                    {
+                        dockLayoutManagerMain.LayoutController.Activate(e.Item);
+                        var viewInstance = (IViewSword)panel.Control;
+                        viewInstance.ToolButtonSetting();
+                    }
                 }
             }
             else
@@ -334,6 +341,9 @@ namespace TradeFutNight.Views
                 _vm.IsButtonPrintIndexEnabled = false;
                 _vm.IsButtonPrintStockEnabled = false;
             }
+
+            // 不管是新增的視窗或是切換Tab頁籤進來的視窗，都會執行這段
+            _isNewOpenProgram = false;
         }
 
         private async void TxtTxnId_KeyDown(object sender, KeyEventArgs e)
