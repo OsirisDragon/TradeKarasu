@@ -227,5 +227,26 @@ namespace TradeFutNight.Common
             result.Add(new ItemInfo() { Text = "0_全部時段收盤", Value = 0 });
             return result;
         }
+
+        public static IList<ItemInfo> TxnType()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "新增", Value = "I" });
+            result.Add(new ItemInfo() { Text = "查詢,刪除", Value = "D" });
+            result.Add(new ItemInfo() { Text = "變更", Value = "U" });
+            result.Add(new ItemInfo() { Text = "維護", Value = "A" });
+            result.Add(new ItemInfo() { Text = "其他", Value = "O" });
+            result.Add(new ItemInfo() { Text = "PROC", Value = "S" });
+            result.Add(new ItemInfo() { Text = "報表", Value = "R" });
+            return result;
+        }
+
+        public static IList<ItemInfo> TxnDefault()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "Y:預設", Value = "Y" });
+            result.Add(new ItemInfo() { Text = "", Value = " " });
+            return result;
+        }
     }
 }

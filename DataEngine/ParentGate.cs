@@ -89,6 +89,7 @@ namespace DataEngine
 
         public virtual void Insert<T>(IEnumerable<T> data)
         {
+            _das.DataConn.InlineParameters = true;
             foreach (var item in data)
             {
                 _das.DataConn.Insert(item);

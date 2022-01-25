@@ -1,5 +1,7 @@
 ﻿using Dapper;
 using DataEngine;
+using LinqToDB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TradeFutNightData.Models.Common;
@@ -57,6 +59,24 @@ namespace TradeFutNightData.Gates.Common
         {
             var query = _das.DataConn.GetTable<TXN>().Where(c => c.TXN_ID == txnID);
             return query.SingleOrDefault();
+        }
+
+        public void Update(IEnumerable<TXN> data)
+        {
+            foreach (var item in data)
+            {
+                _das.DataConn.GetTable<TXN>()
+                    .Where(c => c.TXN_ID == item.OriginalData.TXN_ID)
+                    .Set(c => c.TXN_ID, item.TXN_ID)
+                    .Set(c => c.TXN_NAME, item.TXN_NAME)
+                    .Set(c => c.TXN_REMARK, item.TXN_REMARK)
+                    .Set(c => c.TXN_TYPE, item.TXN_TYPE)
+                    .Set(c => c.TXN_DEFAULT, item.TXN_DEFAULT)
+                    .Set(c => c.TXN_OSW_GRP, item.TXN_OSW_GRP)
+                    .Set(c => c.TXN_W_USER_ID, item.TXN_W_USER_ID)
+                    .Set(c => c.TXN_W_TIME, DateTime.Now)
+                    .Update();
+            }
         }
     }
 }
