@@ -189,9 +189,16 @@ namespace TradeFutNight.Reports
                                 {
                                     cell.ExpressionBindings.Add(new ExpressionBinding("ForeColor", "Iif(" + fc.Expression + ",'" + fc.Format.Foreground.ToString() + "','Black' )"));
                                 }
-                                else if (fc.Format.Background != null)
+
+                                if (fc.Format.Background != null)
                                 {
                                     cell.ExpressionBindings.Add(new ExpressionBinding("BackColor", "Iif(" + fc.Expression + ",'" + fc.Format.Background.ToString() + "','Black' )"));
+                                }
+
+                                if (fc.Format.FontWeight != null)
+                                {
+                                    if (fc.Format.FontWeight == System.Windows.FontWeights.Bold)
+                                        cell.ExpressionBindings.Add(new ExpressionBinding("Font.Bold", "Iif(" + fc.Expression + ",true, false )"));
                                 }
                             }
                         }

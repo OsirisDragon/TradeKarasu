@@ -2,20 +2,16 @@
 using DataEngine;
 using System;
 using System.Collections.Generic;
-using TradeFutNightData.Models.Specific.PrefixB;
 
 namespace TradeFutNightData.Gates.Specific.PrefixB
 {
-    public class D_BN001 : D_BN001<DTO_BN001>
+    public class D_BN001<T> : ParentGate
     {
         public D_BN001(DalSession das)
         {
             this._das = das;
         }
-    }
 
-    public class D_BN001<T> : ParentGate
-    {
         public IEnumerable<T> ListByPgrpDspGrp(int pgrpDspGrp, DateTime specificDate, DateTime? ocfPrevDate, int applySecret)
         {
             var sql = @"
@@ -70,12 +66,12 @@ namespace TradeFutNightData.Gates.Specific.PrefixB
                             AND PROD_END_DATE < @SPECIFIC_DATE
 
                             --如果使用密技是1的話，就會走這個條件，因為1 = 0是false
-                            AND( @APPLY_SECRET = 0 OR(PROD_DELIVERY_DATE >= @SPECIFIC_DATE) )
+                            AND ( @APPLY_SECRET = 0 OR(PROD_DELIVERY_DATE >= @SPECIFIC_DATE) )
                             --如果沒使用密技是0的話，就會走這個條件，因為0 = 1是false
-                            AND( @APPLY_SECRET = 1 OR(PROD_DELIVERY_DATE > @SPECIFIC_DATE) )
+                            AND ( @APPLY_SECRET = 1 OR(PROD_DELIVERY_DATE > @SPECIFIC_DATE) )
                             --如果使用密技是1的話，忽略下面兩個條件
-                            AND( @APPLY_SECRET = 1 OR(@OCF_PREV_DATE <= PROD_END_DATE) )
-	                        AND( @APPLY_SECRET = 1 OR(PMFCME_END_DATE < @SPECIFIC_DATE) )
+                            AND ( @APPLY_SECRET = 1 OR(@OCF_PREV_DATE <= PROD_END_DATE) )
+	                        AND ( @APPLY_SECRET = 1 OR(PMFCME_END_DATE < @SPECIFIC_DATE) )
                             ORDER BY PDK_KIND_ID, PROD_SETTLE_DATE
                         ";
 

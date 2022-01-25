@@ -4,20 +4,7 @@ namespace CrossModel
 {
     public class ResultItem
     {
-        private string _errorMessage = null;
-
-        public string ErrorMessage
-        {
-            get
-            {
-                if (_errorMessage != null)
-                {
-                    return _errorMessage.TrimEnd('\r', '\n');
-                }
-                return _errorMessage;
-            }
-            set { _errorMessage = value; }
-        }
+        public string ErrorMessage { get; set; }
 
         public ResultItem()
         {

@@ -4,24 +4,19 @@ using LinqToDB;
 using System.Collections.Generic;
 using System.Linq;
 using TradeFutNightData.Models.Common;
-using TradeFutNightData.Models.Specific.PrefixB;
 
 namespace TradeFutNightData.Gates.Common
 {
     public class D_PROD : D_PROD<PROD>
     {
-        public D_PROD(DalSession das) : base(das)
+        public D_PROD(DalSession das)
         {
+            this._das = das;
         }
     }
 
     public class D_PROD<T> : ParentGate
     {
-        public D_PROD(DalSession das)
-        {
-            this._das = das;
-        }
-
         public IEnumerable<T> ListByKindIDAndMonth(string kindID, string month)
         {
             var sql = @"
@@ -58,7 +53,7 @@ namespace TradeFutNightData.Gates.Common
             return result;
         }
 
-        public int UpdateSettlePrice(string prodId, decimal prodSettlePrice)
+        public int UpdateSettlePrice(string prodId, decimal? prodSettlePrice)
         {
             int affectedRows = -1;
 
@@ -68,17 +63,6 @@ namespace TradeFutNightData.Gates.Common
                     .Update();
 
             return affectedRows;
-        }
-
-        public void UpdateSettlePrice(IEnumerable<DTO_BN001> data)
-        {
-            foreach (var item in data)
-            {
-                _das.DataConn.GetTable<PROD>()
-                    .Where(c => c.PROD_ID == item.FMIF_PROD_ID)
-                    .Set(c => c.PROD_SETTLE_PRICE, item.FMIF_SETTLE_PRICE)
-                    .Update();
-            }
         }
     }
 }

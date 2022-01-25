@@ -438,7 +438,7 @@ namespace TradeFutNight.Views.PrefixA
                     // 把卷軸捲到那筆去，如果有多筆只要捲到第一筆就好，不然每一筆都捲速度太慢
                     if (!hasAlreadyScroll)
                     {
-                        _vm.SetCurrentAndSelectedItem(item);
+                        _vm.FocusRow(item);
                         hasAlreadyScroll = true;
                     }
                 }
