@@ -440,7 +440,7 @@ namespace TradeFutNight.Views.PrefixB
 
         private void BtnSpecial_Click(object sender, RoutedEventArgs e)
         {
-            if (new AuthGate().ShowAuthDouble())
+            if (new AuthGate().ShowAuthDouble(ProgramID))
             {
                 if (_vm.PgrpDspGrp != null)
                 {

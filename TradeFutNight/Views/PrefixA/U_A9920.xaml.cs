@@ -123,7 +123,7 @@ namespace TradeFutNight.Views.PrefixA
                 // 如果不是這段時間，就要雙重驗證
                 if (!(DateTime.Now.TimeOfDay >= new TimeSpan(7, 30, 0) && DateTime.Now.TimeOfDay <= new TimeSpan(8, 30, 0)))
                 {
-                    if (!new AuthGate().ShowAuthDouble())
+                    if (!new AuthGate().ShowAuthDouble(ProgramID))
                         return false;
                 }
 

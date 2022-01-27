@@ -1,5 +1,5 @@
-﻿using Dapper;
-using DataEngine;
+﻿using DataEngine;
+using System.Collections.Generic;
 using System.Linq;
 using TradeFutNightData.Models.Common;
 
@@ -9,33 +9,28 @@ namespace TradeFutNightData.Gates.Common
     {
         public D_UPF(DalSession das)
         {
-            this._das = das;
+            _das = das;
         }
     }
 
     public class D_UPF<T> : ParentGate
     {
+        public IEnumerable<UPF> ListAll()
+        {
+            var query = _das.DataConn.GetTable<UPF>();
+            return query.ToList();
+        }
+
         public UPF Get(string userID)
         {
             var query = _das.DataConn.GetTable<UPF>().Where(c => c.UPF_USER_ID == userID);
             return query.SingleOrDefault();
         }
 
-        public bool AuthenticateUser(string userID, string password)
+        public UPF GetByUserAdAccount(string adAccount)
         {
-            bool result = false;
-
-            var upf = Get(userID);
-
-            if (upf != null)
-            {
-                if (upf.UPF_PASSWORD == password)
-                {
-                    result = true;
-                }
-            }
-
-            return result;
+            var query = _das.DataConn.GetTable<UPF>().Where(c => c.UPF_USER_AD == adAccount);
+            return query.SingleOrDefault();
         }
     }
 }
