@@ -20,7 +20,7 @@ namespace TradeFutNightData.Gates.Common
     {
         public IEnumerable<TXN> ListAll()
         {
-            var query = _das.DataConn.GetTable<TXN>();
+            var query = _das.DataConn.GetTable<TXN>().OrderBy(c => c.TXN_ID);
             return query.ToList();
         }
 

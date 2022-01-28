@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using DataEngine;
+using LinqToDB;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -21,6 +22,13 @@ namespace TradeFutNightData.Gates.Common
         {
             var query = _das.DataConn.GetTable<JSW>().Where(c => c.JSW_ID == JSW_ID);
             return query.ToList();
+        }
+
+        public void Delete(string TXN_ID)
+        {
+            _das.DataConn.GetTable<JSW>()
+                .Where(c => c.JSW_ID == TXN_ID)
+            .Delete();
         }
 
         /// <summary>
