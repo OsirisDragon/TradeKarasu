@@ -1,4 +1,6 @@
 ﻿using DataEngine;
+using LinqToDB;
+using System.Linq;
 using TradeFutNightData.Models.Common;
 
 namespace TradeFutNightData.Gates.Common
@@ -13,5 +15,11 @@ namespace TradeFutNightData.Gates.Common
 
     public class D_UTP<T> : ParentGate
     {
+        public void Delete(string TXN_ID)
+        {
+            _das.DataConn.GetTable<UTP>()
+                .Where(c => c.UTP_TXN_ID == TXN_ID)
+            .Delete();
+        }
     }
 }

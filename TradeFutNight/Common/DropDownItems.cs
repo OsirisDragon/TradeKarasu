@@ -236,7 +236,6 @@ namespace TradeFutNight.Common
             result.Add(new ItemInfo() { Text = "變更", Value = "U" });
             result.Add(new ItemInfo() { Text = "維護", Value = "A" });
             result.Add(new ItemInfo() { Text = "其他", Value = "O" });
-            result.Add(new ItemInfo() { Text = "PROC", Value = "S" });
             result.Add(new ItemInfo() { Text = "報表", Value = "R" });
             return result;
         }

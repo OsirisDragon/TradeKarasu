@@ -15,6 +15,6 @@ namespace TradeFutNightData.Models.Common
         public virtual string TXN_W_USER_ID { get; set; }
         public virtual string TXN_TYPE { get; set; }
         public virtual string TXN_DEFAULT { get; set; }
-        public virtual int TXN_OSW_GRP { get; set; }
+        public virtual int? TXN_OSW_GRP { get; set; }
     }
 }
