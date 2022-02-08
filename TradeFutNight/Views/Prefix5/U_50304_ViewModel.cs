@@ -34,7 +34,7 @@ namespace TradeFutNight.Views.Prefix5
         {
             MapperInstance = new Mapper(new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<MWPLMT, UIModel_50304>().ReverseMap();
+                cfg.CreateMap<MPR, UIModel_50304>().ReverseMap();
             }));
 
             var task = Task.Run(() =>
