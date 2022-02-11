@@ -179,9 +179,8 @@ namespace TradeFutNight.Views.Prefix3
 
         private XtraReport CreateReport<T>(IList<T> data)
         {
-            string memo = "";
-
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, ProgramID + "–" + ProgramName, UserName, memo, Ocf.OCF_DATE, true, false, true);
+            string reportTitle = ProgramID + "–" + ProgramName;
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, true, false, true);
             rptSetting.HeaderColumnsFontSize = 10;
             rptSetting.ContentColumnsFontSize = 10;
             rptSetting.ContentColumnsWidthScaleFactor = 0.84f;

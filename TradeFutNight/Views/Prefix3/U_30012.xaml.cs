@@ -1,31 +1,27 @@
-﻿using ChangeTracking;
-using CrossModel;
+﻿using CrossModel;
+using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
-using TradeFutNightData;
-using TradeFutNightData.Gates.Common;
-using TradeFutNightData.Models.Common;
 
 namespace TradeFutNight.Views.Prefix3
 {
     /// <summary>
-    /// U_30038.xaml 的互動邏輯
+    /// U_30012.xaml 的互動邏輯
     /// </summary>
-    public partial class U_30038 : UserControlParent, IViewSword
+    public partial class U_30012 : UserControlParent, IViewSword
     {
-        private U_30038_ViewModel _vm;
+        private U_30012_ViewModel _vm;
 
-        public U_30038()
+        public U_30012()
         {
             InitializeComponent();
-            _vm = (U_30038_ViewModel)DataContext;
+            _vm = (U_30012_ViewModel)DataContext;
         }
 
         public async Task<bool> IsCanRun()
@@ -44,19 +40,18 @@ namespace TradeFutNight.Views.Prefix3
         public override void ToolButtonSetting()
         {
             base.ToolButtonSetting();
+            VmMainUi.IsButtonSaveEnabled = false;
+            VmMainUi.IsButtonDeleteEnabled = false;
         }
 
         public async Task Open()
         {
             ToolButtonSetting();
+
             var task = Task.Run(() =>
             {
                 _vm.Open();
                 DbLog(MessageConst.Open);
-                Dispatcher.Invoke(() =>
-                {
-                    Insert();
-                });
             });
             await task;
         }
@@ -69,7 +64,7 @@ namespace TradeFutNight.Views.Prefix3
 
         public void Delete()
         {
-            bool isNeedConfirm = false;
+            bool isNeedConfirm = true;
             var selectedItem = gridMain.SelectedItem;
             if (selectedItem != null)
             {
@@ -87,7 +82,7 @@ namespace TradeFutNight.Views.Prefix3
 
         public async Task<bool> CheckField()
         {
-            if (!BaseCheck(new CheckSettings() { IsCheckNotNullNotEmpty = true }, gridMain, _vm))
+            if (!BaseCheck(new CheckSettings() { IsCheckNotNullNotEmpty = false }, gridMain, _vm))
                 return false;
 
             var task = Task.Run(() =>
@@ -96,32 +91,6 @@ namespace TradeFutNight.Views.Prefix3
                 {
                     VmMainUi.HideLoadingWindow();
                     MessageBoxExService.Instance().Error(MessageConst.NotAllowedExcute);
-                    return false;
-                }
-
-                var resultItem = new ResultItem();
-                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-
-                if (trackableData.AddedItems.Count() == 0)
-                {
-                    VmMainUi.HideLoadingWindow();
-                    MessageBoxExService.Instance().Error(MessageConst.NoAddedData);
-                    return false;
-                }
-
-                foreach (var item in trackableData.AddedItems)
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        item.TPPDK_USER_ID = UserID;
-                        item.TPPDK_W_TIME = DateTime.Now;
-                    });
-                }
-
-                if (resultItem.HasError)
-                {
-                    VmMainUi.HideLoadingWindow();
-                    MessageBoxExService.Instance().Error(resultItem.ErrorMessage);
                     return false;
                 }
 
@@ -134,50 +103,13 @@ namespace TradeFutNight.Views.Prefix3
 
         public async Task Save()
         {
-            VmMainUi.LoadingText = MessageConst.LoadingStatusSaving;
-
-            var task = Task.Run(async () =>
+            var task = Task.Run(() =>
             {
-                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = _vm.MapperInstance.Map<IList<TPPDK>>(trackableData.AddedItems);
-
-                using (var das = Factory.CreateDalSession())
-                {
-                    das.Begin();
-
-                    try
-                    {
-                        var dTppdk = new D_TPPDK(das);
-                        dTppdk.Insert(domainData);
-
-                        UpdateAccessPermission(ProgramID, das);
-
-                        DbLog(MessageConst.Completed, das);
-
-                        das.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        das.Rollback();
-                        throw ex;
-                    }
-                }
-
-                var report = CreateReport(domainData);
-                var reportGate = await new ReportGate(report).CreateDocumentAsync();
-                await reportGate.ExportPdf(GetExportFilePath());
-                await reportGate.Print();
-
-                VmMainUi.HideLoadingWindow();
-
-                MessageBoxExService.Instance().Info(MessageConst.ProcessSuccess);
-                CloseWindow();
             });
-
             await task;
         }
 
-        private XtraReport CreateReport<T>(IList<T> data)
+        private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
         {
             string reportTitle = ProgramID + "–" + ProgramName;
 
@@ -197,8 +129,11 @@ namespace TradeFutNight.Views.Prefix3
         public async Task Print()
         {
             gridView.CloseEditor();
-            await Task.FromResult<object>(null);
-            throw new NotImplementedException();
+
+            var report = CreateReport(_vm.MainGridData, OperationType.Print);
+            var reportGate = await new ReportGate(report).CreateDocumentAsync();
+            await reportGate.ExportPdf(GetExportFilePath());
+            await reportGate.Print();
         }
 
         public async Task PrintIndex()
