@@ -1,4 +1,5 @@
-﻿using CrossModel;
+﻿using ChangeTracking;
+using CrossModel;
 using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
 using System;
@@ -8,6 +9,9 @@ using System.Windows;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
+using TradeFutNightData;
+using TradeFutNightData.Gates.Common;
+using TradeFutNightData.Models.Common;
 
 namespace TradeFutNight.Views.Prefix3
 {
@@ -40,8 +44,6 @@ namespace TradeFutNight.Views.Prefix3
         public override void ToolButtonSetting()
         {
             base.ToolButtonSetting();
-            VmMainUi.IsButtonSaveEnabled = false;
-            VmMainUi.IsButtonDeleteEnabled = false;
         }
 
         public async Task Open()
@@ -103,8 +105,43 @@ namespace TradeFutNight.Views.Prefix3
 
         public async Task Save()
         {
-            var task = Task.Run(() =>
+            VmMainUi.LoadingText = MessageConst.LoadingStatusSaving;
+
+            var task = Task.Run(async () =>
             {
+                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
+                var domainData = _vm.MapperInstance.Map<IList<PUT>>(trackableData.DeletedItems);
+
+                using (var das = Factory.CreateDalSession())
+                {
+                    das.Begin();
+
+                    try
+                    {
+                        var dPUT = new D_PUT(das);
+                        dPUT.Delete(domainData);
+
+                        UpdateAccessPermission(ProgramID, das);
+
+                        DbLog(MessageConst.Completed, das);
+
+                        das.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        das.Rollback();
+                        throw ex;
+                    }
+                }
+
+                var report = CreateReport(domainData, OperationType.Save);
+                var reportGate = await new ReportGate(report).CreateDocumentAsync();
+                await reportGate.ExportPdf(GetExportFilePath());
+                await reportGate.Print();
+
+                VmMainUi.HideLoadingWindow();
+                MessageBoxExService.Instance().Info(MessageConst.ProcessSuccess);
+                CloseWindow();
             });
             await task;
         }
@@ -112,6 +149,20 @@ namespace TradeFutNight.Views.Prefix3
         private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
         {
             string reportTitle = ProgramID + "–" + ProgramName;
+
+            switch (operationType)
+            {
+                case OperationType.Save:
+                    reportTitle = reportTitle.Replace("查詢、", "");
+                    break;
+
+                case OperationType.Print:
+                    reportTitle = reportTitle.Replace("、刪除", "");
+                    break;
+
+                default:
+                    break;
+            }
 
             var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, true, false, true);
             var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain, rptSetting);
