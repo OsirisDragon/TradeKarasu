@@ -25,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -211,9 +212,13 @@
       <DependentUpon>U_21002.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Prefix2\U_21002_ViewModel.cs" />
+    <Compile Include="Views\Prefix3\U_30015.xaml.cs">
+      <DependentUpon>U_30015.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Prefix3\U_30012.xaml.cs">
       <DependentUpon>U_30012.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Prefix3\U_30015_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30012_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30036_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30036.xaml.cs">
@@ -395,6 +400,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Prefix2\U_21002.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix3\U_30015.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
