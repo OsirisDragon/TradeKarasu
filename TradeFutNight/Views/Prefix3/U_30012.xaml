@@ -25,6 +25,7 @@
     </myTypes:UserControlParent.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -104,5 +105,67 @@
             TextWrapping="Wrap">
 註:第3碼'K'者，為現貨市場證券價格跳動Tick(需要時，供程式計算下營業日漲跌價格用)
         </TextBlock>
+        <TextBlock
+            Grid.Column="1"
+            Margin="10,5,0,0"
+            TextWrapping="Wrap">
+            --掌靜脈認證--
+        </TextBlock>
+
+        <TextBox
+            x:Name="txtId"
+            Grid.Column="1"
+            Width="100"
+            Height="23"
+            Margin="10,33,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Text=""
+            TextWrapping="Wrap" />
+        <Button
+            x:Name="btnEnroll"
+            Grid.Column="1"
+            Width="100"
+            Margin="10,63,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="BtnEnroll_Click"
+            Content="註冊" />
+        <Button
+            x:Name="btnCheck"
+            Grid.Column="1"
+            Width="100"
+            Margin="10,93,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="BtnCheck_Click"
+            Content="驗證" />
+        <Button
+            x:Name="btnCheckN"
+            Grid.Column="1"
+            Width="100"
+            Margin="10,123,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="BtnCheckN_Click"
+            Content="驗證(1:N)" />
+        <Button
+            x:Name="btnConvertByte"
+            Grid.Column="1"
+            Width="100"
+            Margin="10,153,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="BtnConvertByte_Click"
+            Content="轉byte" />
+        <Button
+            x:Name="btnCapture"
+            Grid.Column="1"
+            Width="100"
+            Margin="10,183,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="BtnCapture_Click"
+            Content="抓取" />
     </Grid>
 </myTypes:UserControlParent>
