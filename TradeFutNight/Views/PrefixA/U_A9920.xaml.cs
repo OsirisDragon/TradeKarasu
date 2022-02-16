@@ -73,20 +73,7 @@ namespace TradeFutNight.Views.PrefixA
 
         public void Delete()
         {
-            bool isNeedConfirm = true;
-            var selectedItem = gridMain.SelectedItem;
-            if (selectedItem != null)
-            {
-                if (isNeedConfirm)
-                {
-                    if (MessageBoxExService.Instance().Confirm(MessageConst.ConfirmDelete) == MessageBoxResult.Yes)
-                        _vm.Delete(selectedItem);
-                }
-                else
-                {
-                    _vm.Delete(selectedItem);
-                }
-            }
+            base.Delete(gridMain, _vm);
         }
 
         public async Task<bool> CheckField()
@@ -123,7 +110,7 @@ namespace TradeFutNight.Views.PrefixA
                 // 如果不是這段時間，就要雙重驗證
                 if (!(DateTime.Now.TimeOfDay >= new TimeSpan(7, 30, 0) && DateTime.Now.TimeOfDay <= new TimeSpan(8, 30, 0)))
                 {
-                    if (!new AuthGate().ShowAuthDouble())
+                    if (!new AuthGate().ShowAuthDouble(ProgramID))
                         return false;
                 }
 

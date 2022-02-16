@@ -89,20 +89,7 @@ namespace TradeFutNight.Views.PrefixB
 
         public void Delete()
         {
-            bool isNeedConfirm = true;
-            var selectedItem = gridMain.SelectedItem;
-            if (selectedItem != null)
-            {
-                if (isNeedConfirm)
-                {
-                    if (MessageBoxExService.Instance().Confirm(MessageConst.ConfirmDelete) == MessageBoxResult.Yes)
-                        _vm.Delete(selectedItem);
-                }
-                else
-                {
-                    _vm.Delete(selectedItem);
-                }
-            }
+            base.Delete(gridMain, _vm);
         }
 
         public async Task<bool> CheckField()
@@ -440,7 +427,7 @@ namespace TradeFutNight.Views.PrefixB
 
         private void BtnSpecial_Click(object sender, RoutedEventArgs e)
         {
-            if (new AuthGate().ShowAuthDouble())
+            if (new AuthGate().ShowAuthDouble(ProgramID))
             {
                 if (_vm.PgrpDspGrp != null)
                 {

@@ -4,13 +4,13 @@ namespace TradeFutNight.Auth
 {
     public class AuthGate
     {
-        public bool ShowAuthDouble()
+        public bool ShowAuthDouble(string programID)
         {
             bool? returnValue = false;
 
             Application.Current.Dispatcher.Invoke(() =>
             {
-                returnValue = new AuthDoubleWithoutCard().ShowDialog();
+                returnValue = new AuthDoubleWithoutCard(programID).ShowDialog();
             });
 
             if (returnValue.HasValue)

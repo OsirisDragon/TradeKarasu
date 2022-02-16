@@ -1,4 +1,5 @@
 ﻿using CrossModel.Enum;
+using DataEngine;
 using Shield.File;
 using System;
 using System.Windows;
@@ -14,26 +15,15 @@ namespace TradeFutNight.Auth
     /// </summary>
     public partial class AuthDoubleWithoutCard : Window
     {
-        public AuthDoubleWithoutCard()
+        private string _programID;
+
+        public AuthDoubleWithoutCard(string programID)
         {
             InitializeComponent();
             this.Owner = Application.Current.MainWindow;
             this.ShowInTaskbar = false;
             this.txtAdAccount.Focus();
-        }
-
-        public bool ShowAuth()
-        {
-            bool? returnValue = false;
-
-            returnValue = new AuthDoubleWithoutCard().ShowDialog();
-
-            if (returnValue.HasValue)
-            {
-                return returnValue.Value;
-            }
-
-            return false;
+            this._programID = programID;
         }
 
         private void BtnConfirm_Click(object sender, RoutedEventArgs e)
@@ -90,6 +80,16 @@ namespace TradeFutNight.Auth
                 }
 
                 #endregion AD認證
+            }
+
+            // 紀錄LOG
+            using (var das = new DalSession())
+            {
+                var dUpf = new D_UPF(das);
+                var upf = dUpf.GetByUserAdAccount(adAccount);
+
+                var dLogf = new D_LOGF(das);
+                dLogf.Insert(upf.UPF_USER_ID, _programID, "雙重覆核成功");
             }
 
             DialogResult = true;

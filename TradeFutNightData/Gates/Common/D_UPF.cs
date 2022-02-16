@@ -9,7 +9,7 @@ namespace TradeFutNightData.Gates.Common
     {
         public D_UPF(DalSession das)
         {
-            this._das = das;
+            _das = das;
         }
     }
 
@@ -27,21 +27,10 @@ namespace TradeFutNightData.Gates.Common
             return query.SingleOrDefault();
         }
 
-        public bool AuthenticateUser(string userID, string password)
+        public UPF GetByUserAdAccount(string adAccount)
         {
-            bool result = false;
-
-            var upf = Get(userID);
-
-            if (upf != null)
-            {
-                if (upf.UPF_PASSWORD == password)
-                {
-                    result = true;
-                }
-            }
-
-            return result;
+            var query = _das.DataConn.GetTable<UPF>().Where(c => c.UPF_USER_AD == adAccount);
+            return query.SingleOrDefault();
         }
     }
 }

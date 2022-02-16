@@ -10,18 +10,18 @@ using TradeFutNightData.Models.Common;
 
 namespace TradeFutNight.Views.Prefix3
 {
-    public class U_30015_ViewModel : ViewModelParent<UIModel_30015>
+    public class U_30022_ViewModel : ViewModelParent<UIModel_30022>
     {
-        public U_30015_ViewModel()
+        public U_30022_ViewModel()
         {
-            MainGridData = new ObservableCollection<UIModel_30015>();
+            MainGridData = new ObservableCollection<UIModel_30022>();
         }
 
         public async void Open()
         {
             MapperInstance = new Mapper(new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<BLOT, UIModel_30015>().ReverseMap();
+                cfg.CreateMap<PMF, UIModel_30022>().ReverseMap();
             }));
 
             await Query();
@@ -29,24 +29,24 @@ namespace TradeFutNight.Views.Prefix3
 
         public void Insert()
         {
-            MainGridData.Insert(0, new UIModel_30015());
+            MainGridData.Insert(0, new UIModel_30022());
         }
 
         public void Delete(object item)
         {
-            MainGridData.Remove((UIModel_30015)item);
+            MainGridData.Remove((UIModel_30022)item);
         }
 
         public async Task Query()
         {
             var task = Task.Run(() =>
             {
-                IList<UIModel_30015> list = null;
+                IList<UIModel_30022> list = null;
 
                 using (var das = Factory.CreateDalSession())
                 {
-                    var d30015 = new D_30015<UIModel_30015>(das);
-                    list = d30015.List().ToList();
+                    var d30022 = new D_30022<UIModel_30022>(das);
+                    list = d30022.List().ToList();
                 }
 
                 MainGridData = list.AsTrackable();
@@ -56,7 +56,7 @@ namespace TradeFutNight.Views.Prefix3
         }
     }
 
-    public class UIModel_30015 : BLOT
+    public class UIModel_30022 : PMF
     {
     }
 }

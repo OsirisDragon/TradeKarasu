@@ -75,5 +75,10 @@ namespace TradeFutNight.Views
                 }
             });
         }
+
+        public virtual void Delete(T item)
+        {
+            MainGridData.Remove(item);
+        }
     }
 }
