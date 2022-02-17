@@ -8,11 +8,11 @@ using TradeFutNightData.Models.Common;
 
 namespace TradeFutNight.Views.Prefix5
 {
-    public class U_50304_ViewModel : ViewModelParent<UIModel_50304>
+    public class U_50301_ViewModel : ViewModelParent<UIModel_50301>
     {
-        public U_50304_ViewModel()
+        public U_50301_ViewModel()
         {
-            MainGridData = new ObservableCollection<UIModel_50304>();
+            MainGridData = new ObservableCollection<UIModel_50301>();
         }
 
         public async void Open()
@@ -22,27 +22,27 @@ namespace TradeFutNight.Views.Prefix5
 
         public void Insert()
         {
-            MainGridData.Insert(0, new UIModel_50304());
+            MainGridData.Insert(0, new UIModel_50301());
         }
 
         public void Delete(object item)
         {
-            MainGridData.Remove((UIModel_50304)item);
+            MainGridData.Remove((UIModel_50301)item);
         }
 
         public async Task Query()
         {
             MapperInstance = new Mapper(new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<MPR, UIModel_50304>().ReverseMap();
+                cfg.CreateMap<FMIF, UIModel_50301>().ReverseMap();
             }));
 
             var task = Task.Run(() =>
             {
                 using (var das = Factory.CreateDalSession())
                 {
-                    var d50304 = new D_50304<UIModel_50304>(das);
-                    MainGridData = d50304.List().ToList();
+                    var d50301 = new D_50301<UIModel_50301>(das);
+                    MainGridData = d50301.List().ToList();
                 }
             });
 
@@ -50,9 +50,13 @@ namespace TradeFutNight.Views.Prefix5
         }
     }
 
-    public class UIModel_50304 : MPR
+    public class UIModel_50301 : FMIF
     {
-        public virtual string PROD_ID_OUT { get; set; }
+        public virtual decimal CLSPRC_SETTLE_PRICE { get; set; }
         public virtual string PROD_SETTLE_DATE { get; set; }
+        public virtual string PROD_PC_CODE { get; set; }
+        public virtual decimal PROD_STRIKE_PRICE { get; set; }
+        public virtual string PROD_ID_OUT { get; set; }
+        public virtual decimal BMIF_M_QNTY_TAL { get; set; }
     }
 }

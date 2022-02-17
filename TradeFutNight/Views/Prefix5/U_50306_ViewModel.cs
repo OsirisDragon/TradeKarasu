@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ChangeTracking;
-using CrossModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -14,52 +13,44 @@ using TradeUtility;
 
 namespace TradeFutNight.Views.Prefix5
 {
-    public class U_50305_ViewModel : ViewModelParent<UIModel_50305>
+    public class U_50306_ViewModel : ViewModelParent<UIModel_50306>
     {
-        public IList<ItemInfo> PriceFlucItemInfos
+        public U_50306_ViewModel()
         {
-            get { return GetProperty(() => PriceFlucItemInfos); }
-            set { SetProperty(() => PriceFlucItemInfos, value); }
-        }
-
-        public U_50305_ViewModel()
-        {
-            MainGridData = new ObservableCollection<UIModel_50305>();
+            MainGridData = new ObservableCollection<UIModel_50306>();
         }
 
         public async void Open()
         {
             await Query();
-
-            PriceFlucItemInfos = DropDownItems.PriceFlucItem();
         }
 
         public void Insert()
         {
-            MainGridData.Insert(0, new UIModel_50305());
+            MainGridData.Insert(0, new UIModel_50306());
         }
 
         public void Delete(object item)
         {
-            MainGridData.Remove((UIModel_50305)item);
+            MainGridData.Remove((UIModel_50306)item);
         }
 
         public async Task Query()
         {
             MapperInstance = new Mapper(new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<MWPLMT, UIModel_50305>().ReverseMap();
+                cfg.CreateMap<TPPLMT, UIModel_50306>().ReverseMap();
             }));
 
             var task = Task.Run(() =>
             {
-                IList<UIModel_50305> list = null;
+                IList<UIModel_50306> list = null;
                 IList<SCP> listSCP = null;
                 IList<SFD> listSFD = null;
                 using (var das = Factory.CreateDalSession())
                 {
-                    var d50305 = new D_50305<UIModel_50305>(das);
-                    list = d50305.List().ToList();
+                    var d50306 = new D_50306<UIModel_50306>(das);
+                    list = d50306.List().ToList();
                     listSCP = new D_SCP(das).ListAll();
                     listSFD = new D_SFD(das).ListByDate(MagicalHats.Ocf.OCF_DATE);
                 }
@@ -72,14 +63,14 @@ namespace TradeFutNight.Views.Prefix5
                     decimal? price = 0;
                     if (item.PDK_SUBTYPE != "S")
                     {
-                        price = listSCP.Where(x => x.SCP_KIND_ID == item.MWPLMT_KIND_ID || x.SCP_STOCK_ID == item.PDK_STOCK_ID)
+                        price = listSCP.Where(x => x.SCP_KIND_ID == item.PDK_KIND_ID || x.SCP_STOCK_ID == item.PDK_STOCK_ID)
                                .OrderByDescending(x => x.SCP_CLOSE_PRICE).FirstOrDefault()?.SCP_CLOSE_PRICE;
                     }
                     else if (item.PDK_SUBTYPE == "S")
                     {
-                        price = listSFD.Where(x => x.SFD_STOCK_ID == item.PDK_STOCK_ID).FirstOrDefault()?.SFD_OPEN_REF;
+                        price = (decimal)listSFD.Where(x => x.SFD_STOCK_ID == item.PDK_STOCK_ID).FirstOrDefault()?.SFD_OPEN_REF;
                     }
-                    item.ACTUALS_PRICE = price.AsDecimal();
+                    item.TARGET_PRICE = price.AsDecimal();
                 }
 
                 MainGridData = list.AsTrackable();
@@ -89,13 +80,22 @@ namespace TradeFutNight.Views.Prefix5
         }
     }
 
-    public class UIModel_50305 : MWPLMT
+    public class UIModel_50306
     {
+        public virtual string TPPLMT_PROD_ID { get; set; } // char(20)
+
+        public virtual string TPPLMT_FIRST_PROD { get; set; } // char(10)
         public virtual string PDK_SUBTYPE { get; set; }
-        public virtual char PDK2ND_PRICE_FLUC { get; set; }
-        public virtual decimal PDK2ND_UNIT { get; set; }
-        public virtual decimal PDK2ND_UNIT_SPREAD { get; set; }
-        public virtual decimal ACTUALS_PRICE { get; set; }
+
+        public virtual string PDK_KIND_ID { get; set; }
+        public virtual string PROD_SETTLE_DATE { get; set; }
+        public virtual string PROD_SETTLE_DATE_SECOND { get; set; }
         public virtual string PDK_STOCK_ID { get; set; }
+
+        public virtual decimal TARGET_PRICE { get; set; }
+
+        public virtual decimal TPPINTD_UNIT { get; set; }
+
+        public virtual decimal TPPLMT_LIMIT { get; set; } // decimal(11, 7)
     }
 }
