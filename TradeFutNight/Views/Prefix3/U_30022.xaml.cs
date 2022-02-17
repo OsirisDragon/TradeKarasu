@@ -4,30 +4,27 @@ using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
 using TradeFutNightData;
-using TradeFutNightData.Gates.Common;
 using TradeFutNightData.Gates.Specific.Prefix3;
 using TradeFutNightData.Models.Common;
 
 namespace TradeFutNight.Views.Prefix3
 {
     /// <summary>
-    /// U_30015.xaml 的互動邏輯
+    /// U_30022.xaml 的互動邏輯
     /// </summary>
-    public partial class U_30015 : UserControlParent, IViewSword
+    public partial class U_30022 : UserControlParent, IViewSword
     {
-        private U_30015_ViewModel _vm;
+        private U_30022_ViewModel _vm;
 
-        public U_30015()
+        public U_30022()
         {
             InitializeComponent();
-            _vm = (U_30015_ViewModel)DataContext;
+            _vm = (U_30022_ViewModel)DataContext;
         }
 
         public async Task<bool> IsCanRun()
@@ -85,41 +82,6 @@ namespace TradeFutNight.Views.Prefix3
                     return false;
                 }
 
-                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var deleteDistinctData = _vm.MapperInstance.Map<IList<BLOT>>(trackableData.DeletedItems).Select(x => x.BLOT_KIND_ID).Distinct();
-
-                int count = 0;
-
-                using (var das = Factory.CreateDalSession())
-                {
-                    das.Begin();
-
-                    try
-                    {
-                        D_PDK dPDK = new D_PDK(das);
-                        foreach (var item in deleteDistinctData)
-                        {
-                            count = trackableData.UnchangedItems.Where(x => x.BLOT_KIND_ID == item).Count();
-                            if (count == 0)
-                            {
-                                count = dPDK.ListByParamKeyAndBtrdCode(item).Count();
-                                if (count > 0)
-                                {
-                                    if (MessageBoxExService.Instance().Confirm("商品開放鉅額交易確定是否全部刪除!") == MessageBoxResult.No)
-                                    {
-                                        return false;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        das.Rollback();
-                        throw ex;
-                    }
-                }
-
                 return true;
             });
             await task;
@@ -134,7 +96,7 @@ namespace TradeFutNight.Views.Prefix3
             var task = Task.Run(async () =>
             {
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = _vm.MapperInstance.Map<IList<BLOT>>(trackableData.DeletedItems);
+                var domainData = _vm.MapperInstance.Map<IList<PMF>>(trackableData.DeletedItems);
 
                 using (var das = Factory.CreateDalSession())
                 {
@@ -142,8 +104,8 @@ namespace TradeFutNight.Views.Prefix3
 
                     try
                     {
-                        var d30015 = new D_30015<UIModel_30015>(das);
-                        d30015.Delete(domainData);
+                        var d30022 = new D_30022<UIModel_30022>(das);
+                        d30022.Delete(domainData);
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -188,8 +150,12 @@ namespace TradeFutNight.Views.Prefix3
                     break;
             }
 
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, false, false, false);
-            var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain, rptSetting);
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, true, false, true);
+            rptSetting.HeaderColumnsFontSize = 9;
+            rptSetting.ContentColumnsFontSize = 9;
+            rptSetting.ContentColumnsWidthScaleFactor = 0.93f;
+            rptSetting.HeaderColumnsWidthScaleFactor = 0.93f;
+            var reportCommon = ReportNormal.CreateCommonLandscape(data, gridMain, rptSetting);
 
             return reportCommon;
         }
