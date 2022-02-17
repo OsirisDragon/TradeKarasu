@@ -255,7 +255,8 @@ namespace TradeFutNight.Views.Prefix9
 
         private XtraReport CreateReport<T>(IList<T> data)
         {
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, ProgramID + "–" + ProgramName, UserName, Memo, Ocf.OCF_DATE, true, false, true);
+            string reportTitle = ProgramID + "–" + ProgramName;
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, true, false, true);
             var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain, rptSetting);
 
             return reportCommon;
