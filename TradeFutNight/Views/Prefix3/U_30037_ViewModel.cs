@@ -30,7 +30,7 @@ namespace TradeFutNight.Views.Prefix3
             MainGridData = new ObservableCollection<UIModel_30037>();
         }
 
-        public async void Open()
+        public void Open()
         {
             MapperInstance = new Mapper(new MapperConfiguration(cfg =>
             {
