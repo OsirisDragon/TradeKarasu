@@ -1,5 +1,4 @@
-﻿using Dapper;
-using DataEngine;
+﻿using DataEngine;
 using System.Collections.Generic;
 using System.Linq;
 using TradeFutNightData.Models.Common;
@@ -22,6 +21,14 @@ namespace TradeFutNightData.Gates.Common
                 .Where(c => c.PDK_PARAM_KEY == paramKey);
 
             return query.SingleOrDefault();
+        }
+
+        public IEnumerable<PDK> ListByParamKeyAndBtrdCode(string paramKey)
+        {
+            var query = _das.DataConn.GetTable<PDK>()
+                .Where(c => c.PDK_PARAM_KEY == paramKey && c.PDK_BTRD_CODE == 'Y');
+
+            return query.ToList();
         }
 
         public IEnumerable<PDK> ListAll()
