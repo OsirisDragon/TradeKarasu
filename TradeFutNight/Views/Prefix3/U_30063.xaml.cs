@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
@@ -17,23 +18,23 @@ using TradeFutNightData.Models.Common;
 namespace TradeFutNight.Views.Prefix3
 {
     /// <summary>
-    /// U_30028.xaml 的互動邏輯
+    /// U_30063.xaml 的互動邏輯
     /// </summary>
-    public partial class U_30028 : UserControlParent, IViewSword
+    public partial class U_30063 : UserControlParent, IViewSword
     {
-        private U_30028_ViewModel _vm;
+        private U_30063_ViewModel _vm;
 
-        public U_30028()
+        public U_30063()
         {
             InitializeComponent();
-            _vm = (U_30028_ViewModel)DataContext;
+            _vm = (U_30063_ViewModel)DataContext;
         }
 
         public async Task<bool> IsCanRun()
         {
             var task = Task.Run(() =>
             {
-                var isCanRun = IsCanRunProgram();
+                var isCanRun = true;
                 DbLog(MessageConst.IsCanRun + ":" + isCanRun.ToString().ToUpper());
                 return isCanRun;
             });
@@ -45,6 +46,10 @@ namespace TradeFutNight.Views.Prefix3
         public override void ToolButtonSetting()
         {
             base.ToolButtonSetting();
+            VmMainUi.IsButtonInsertEnabled = false;
+            VmMainUi.IsButtonSaveEnabled = false;
+            VmMainUi.IsButtonDeleteEnabled = false;
+            VmMainUi.IsButtonPrintEnabled = true;
         }
 
         public async Task Open()
@@ -84,7 +89,7 @@ namespace TradeFutNight.Views.Prefix3
 
         public async Task<bool> CheckField()
         {
-            if (!BaseCheck(new CheckSettings() { IsCheckNotNullNotEmpty = false }, gridMain, _vm))
+            if (!BaseCheck(new CheckSettings() { IsCheckNotNullNotEmpty = true }, gridMain, _vm))
                 return false;
 
             var task = Task.Run(() =>
@@ -98,11 +103,38 @@ namespace TradeFutNight.Views.Prefix3
 
                 var resultItem = new ResultItem();
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
+                var checkItems = trackableData.ChangedItems;
 
-                if (trackableData.DeletedItems.Count() == 0)
+                if (checkItems.Count() == 0)
                 {
                     VmMainUi.HideLoadingWindow();
-                    MessageBoxExService.Instance().Error(MessageConst.NoDeletedData);
+                    MessageBoxExService.Instance().Error(MessageConst.NoChangedData);
+                    return false;
+                }
+
+                foreach (var item in trackableData.ChangedItems)
+                {
+                    //if (item.TPPINTD_SECOND_MONTH > 0 && string.IsNullOrEmpty(item.TPPINTD_SECOND_KIND_ID))
+                    //{
+                    //    resultItem.AppendErrorMessage($"請輸入第{trackableData.AsEnumerable().IndexOf(item) + 1}筆的第二支腳契約代碼");
+                    //}
+
+                    //if (!string.IsNullOrEmpty(item.TPPINTD_SECOND_KIND_ID) && item.TPPINTD_SECOND_MONTH <= 0)
+                    //{
+                    //    resultItem.AppendErrorMessage($"請輸入第{trackableData.AsEnumerable().IndexOf(item) + 1}筆的第二支腳月份序號");
+                    //}
+
+                    //Dispatcher.Invoke(() =>
+                    //{
+                    //    item.TPPINTD_USER_ID = UserID;
+                    //    item.TPPINTD_W_TIME = DateTime.Now;
+                    //});
+                }
+
+                if (resultItem.HasError)
+                {
+                    VmMainUi.HideLoadingWindow();
+                    MessageBoxExService.Instance().Error(resultItem.ErrorMessage);
                     return false;
                 }
 
@@ -120,7 +152,7 @@ namespace TradeFutNight.Views.Prefix3
             var task = Task.Run(async () =>
             {
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = _vm.MapperInstance.Map<IList<TPPVOL>>(trackableData.DeletedItems);
+                var domainData = CustomMapper<TPPINTD>(trackableData.ChangedItems);
 
                 using (var das = Factory.CreateDalSession())
                 {
@@ -128,8 +160,8 @@ namespace TradeFutNight.Views.Prefix3
 
                     try
                     {
-                        var dTPPVOL = new D_TPPVOL(das);
-                        dTPPVOL.Delete(domainData);
+                        var dTppintd = new D_TPPINTD(das);
+                        dTppintd.Update(domainData);
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -156,6 +188,25 @@ namespace TradeFutNight.Views.Prefix3
             await task;
         }
 
+        private IList<T> CustomMapper<T>(IEnumerable<UIModel_30063> items) where T : TPPINTD
+        {
+            var listResult = new List<T>();
+
+            Dispatcher.Invoke(() =>
+            {
+                foreach (var item in items)
+                {
+                    var newItem = _vm.MapperInstance.Map<T>(item);
+
+                    var trackItem = item.CastToIChangeTrackable();
+                    //newItem.OriginalData = trackItem.GetOriginal();
+                    listResult.Add(newItem);
+                }
+            });
+
+            return listResult;
+        }
+
         private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
         {
             string reportTitle = ProgramID + "–" + ProgramName;
@@ -163,22 +214,18 @@ namespace TradeFutNight.Views.Prefix3
             switch (operationType)
             {
                 case OperationType.Save:
-                    reportTitle = reportTitle.Replace("查詢、", "");
+
                     break;
 
                 case OperationType.Print:
-                    reportTitle = reportTitle.Replace("、刪除", "");
+
                     break;
 
                 default:
                     break;
             }
 
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, "", Ocf.OCF_DATE, true, false, true);
-            rptSetting.HeaderColumnsFontSize = 10;
-            rptSetting.ContentColumnsFontSize = 10;
-            rptSetting.ContentColumnsWidthScaleFactor = 0.95f;
-            rptSetting.HeaderColumnsWidthScaleFactor = 0.95f;
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, true, false, true);
             var reportCommon = ReportNormal.CreateCommonLandscape(data, gridMain, rptSetting);
 
             return reportCommon;
@@ -213,6 +260,14 @@ namespace TradeFutNight.Views.Prefix3
             gridView.CloseEditor();
             await Task.FromResult<object>(null);
             throw new NotImplementedException();
+        }
+
+        private void BtnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            var button = ((Button)sender);
+            button.IsEnabled = false;
+
+            button.IsEnabled = true;
         }
     }
 }

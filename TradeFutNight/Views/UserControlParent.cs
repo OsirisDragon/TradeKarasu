@@ -286,6 +286,7 @@ namespace TradeFutNight.Views
             {
                 int rowHandle = grid.GetRowHandleByVisibleIndex(i);
                 int listIndex = grid.GetListIndexByRowHandle(rowHandle);
+
                 var item = vm.MainGridData[listIndex];
 
                 foreach (PropertyInfo prop in item.GetType().GetProperties())
@@ -301,6 +302,7 @@ namespace TradeFutNight.Views
                             if (prop.GetValue(item) == null || prop.GetValue(item).ToString().Trim() == "" || prop.GetValue(item).ToString().Trim() == "\0")
                             {
                                 vm.FocusRow(item);
+
                                 MessageBoxExService.Instance().Error($"{col.Header}不允許空值");
                                 return false;
                             }
