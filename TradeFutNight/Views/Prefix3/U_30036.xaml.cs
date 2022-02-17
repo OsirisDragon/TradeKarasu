@@ -47,8 +47,6 @@ namespace TradeFutNight.Views.Prefix3
         public override void ToolButtonSetting()
         {
             base.ToolButtonSetting();
-            VmMainUi.IsButtonSaveEnabled = false;
-            VmMainUi.IsButtonDeleteEnabled = false;
         }
 
         public async Task Open()

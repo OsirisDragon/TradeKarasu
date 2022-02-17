@@ -4,7 +4,10 @@ using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
@@ -15,16 +18,16 @@ using TradeFutNightData.Models.Common;
 namespace TradeFutNight.Views.Prefix3
 {
     /// <summary>
-    /// U_30012.xaml 的互動邏輯
+    /// U_30037.xaml 的互動邏輯
     /// </summary>
-    public partial class U_30012 : UserControlParent, IViewSword
+    public partial class U_30037 : UserControlParent, IViewSword
     {
-        private U_30012_ViewModel _vm;
+        private U_30037_ViewModel _vm;
 
-        public U_30012()
+        public U_30037()
         {
             InitializeComponent();
-            _vm = (U_30012_ViewModel)DataContext;
+            _vm = (U_30037_ViewModel)DataContext;
         }
 
         public async Task<bool> IsCanRun()
@@ -55,6 +58,7 @@ namespace TradeFutNight.Views.Prefix3
                 DbLog(MessageConst.Open);
             });
             await task;
+            await _vm.Query();
         }
 
         public void Insert()
@@ -82,6 +86,16 @@ namespace TradeFutNight.Views.Prefix3
                     return false;
                 }
 
+                var resultItem = new ResultItem();
+                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
+
+                if (trackableData.DeletedItems.Count() == 0)
+                {
+                    VmMainUi.HideLoadingWindow();
+                    MessageBoxExService.Instance().Error(MessageConst.NoDeletedData);
+                    return false;
+                }
+
                 return true;
             });
             await task;
@@ -96,16 +110,15 @@ namespace TradeFutNight.Views.Prefix3
             var task = Task.Run(async () =>
             {
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = _vm.MapperInstance.Map<IList<PUT>>(trackableData.DeletedItems);
-
+                var domainData = _vm.MapperInstance.Map<IList<PCM>>(trackableData.DeletedItems);
                 using (var das = Factory.CreateDalSession())
                 {
                     das.Begin();
 
                     try
                     {
-                        var dPUT = new D_PUT(das);
-                        dPUT.Delete(domainData);
+                        var dPCM = new D_PCM(das);
+                        dPCM.Delete(domainData);
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -139,18 +152,14 @@ namespace TradeFutNight.Views.Prefix3
             switch (operationType)
             {
                 case OperationType.Save:
-                    reportTitle = reportTitle.Replace("查詢、", "");
-                    break;
-
-                case OperationType.Print:
-                    reportTitle = reportTitle.Replace("、刪除", "");
+                    reportTitle = reportTitle.Replace("查詢", "刪除");
                     break;
 
                 default:
                     break;
             }
 
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, true, false, true);
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, "", Ocf.OCF_DATE, true, false, true);
             var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain, rptSetting);
 
             return reportCommon;
@@ -185,6 +194,19 @@ namespace TradeFutNight.Views.Prefix3
             gridView.CloseEditor();
             await Task.FromResult<object>(null);
             throw new NotImplementedException();
+        }
+
+        private async void BtnQuery_Click(object sender, RoutedEventArgs e)
+        {
+            VmMainUi.ShowLoadingWindow();
+
+            var button = ((Button)sender);
+            button.IsEnabled = false;
+
+            await _vm.Query();
+
+            button.IsEnabled = true;
+            VmMainUi.HideLoadingWindow();
         }
     }
 }
