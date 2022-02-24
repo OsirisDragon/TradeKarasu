@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CrossModel.Enum
+﻿namespace CrossModel.Enum
 {
     public enum FileType
     {
         Pdf,
         Zip,
         Txt,
-        Csv
+        Csv,
+        Xlsx,
+        Xls
     }
 }
