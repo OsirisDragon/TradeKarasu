@@ -1,7 +1,10 @@
-﻿using CsvHelper;
+﻿using CrossModel.Enum;
+using CsvHelper;
 using CsvHelper.Configuration;
+using DevExpress.Spreadsheet;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -21,6 +24,43 @@ namespace TradeUtility
                 {
                     csv.WriteRecords(items);
                 }
+            }
+        }
+
+        public static void ToExcel(this DataTable dt, string filePath, FileType fileType, bool hasHeader)
+        {
+            try
+            {
+                Workbook wb = new Workbook();
+                wb.Options.Export.Csv.WritePreamble = true;//預設的Csv輸出中文會是亂碼
+                wb.Worksheets[0].Import(dt, hasHeader, 0, 0);//從title以下開始輸出
+                DocumentFormat format;
+                switch (fileType)
+                {
+                    case FileType.Txt:
+                        format = DocumentFormat.Text;
+                        break;
+
+                    case FileType.Xlsx:
+                        format = DocumentFormat.Xlsx;
+                        break;
+
+                    case FileType.Xls:
+                        format = DocumentFormat.Xls;
+                        break;
+
+                    default:
+                    case FileType.Csv:
+                        format = DocumentFormat.Csv;
+                        break;
+                }
+
+                wb.SaveDocument(filePath, format);
+            }
+            catch (Exception ex)
+            {
+                File.Delete(filePath);
+                throw ex;
             }
         }
 
