@@ -255,5 +255,33 @@ namespace TradeFutNight.Common
             result.Add(new ItemInfo() { Text = "停單", Value = 'S' });
             return result;
         }
+
+        public static IList<ItemInfo> BrkType()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "經紀", Value = '1' });
+            result.Add(new ItemInfo() { Text = "自營", Value = '2' });
+            result.Add(new ItemInfo() { Text = "兼營期貨", Value = '3' });
+            result.Add(new ItemInfo() { Text = "兼營股價期", Value = '4' });
+            return result;
+        }
+
+        public static IList<ItemInfo> OpenCode()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "連線測試", Value = 'T' });
+            result.Add(new ItemInfo() { Text = "開業、復業", Value = 'Y' });
+            result.Add(new ItemInfo() { Text = "停業", Value = 'N' });
+            result.Add(new ItemInfo() { Text = "註銷", Value = 'D' });
+            return result;
+        }
+
+        public static IList<ItemInfo> BrkOthOpenCode()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "可營業", Value = 'Y' });
+            result.Add(new ItemInfo() { Text = "不可營業", Value = 'N' });
+            return result;
+        }
     }
 }

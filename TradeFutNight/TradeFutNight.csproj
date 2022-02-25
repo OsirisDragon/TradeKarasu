@@ -212,6 +212,10 @@
       <DependentUpon>U_21002.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Prefix2\U_21002_ViewModel.cs" />
+    <Compile Include="Views\Prefix2\U_21032.xaml.cs">
+      <DependentUpon>U_21032.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix2\U_21032_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30022.xaml.cs">
       <DependentUpon>U_30022.xaml</DependentUpon>
     </Compile>
@@ -412,6 +416,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Prefix2\U_21002.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix2\U_21032.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

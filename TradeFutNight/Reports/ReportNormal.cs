@@ -192,7 +192,7 @@ namespace TradeFutNight.Reports
 
                                 if (fc.Format.Background != null)
                                 {
-                                    cell.ExpressionBindings.Add(new ExpressionBinding("BackColor", "Iif(" + fc.Expression + ",'" + fc.Format.Background.ToString() + "','Black' )"));
+                                    cell.ExpressionBindings.Add(new ExpressionBinding("BackColor", "Iif(" + fc.Expression + ",'" + fc.Format.Background.ToString() + "','White' )"));
                                 }
 
                                 if (fc.Format.FontWeight != null)
