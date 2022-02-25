@@ -172,20 +172,28 @@ namespace TradeFutNight.Views.Prefix2
             try
             {
                 VmMainUi.ShowLoadingWindow();
-
                 button.IsEnabled = false;
 
                 var result = _vm.Query();
-                string routinePath = Path.Combine(AppSettings.LocalRoutineDataDirectory, "21032.csv");
-                result.ToCsv(routinePath, true);
+                if (result.Count() > 0)
+                {
+                    string routinePath = Path.Combine(AppSettings.LocalRoutineDataDirectory, "21032.csv");
+                    result.ToCsv(routinePath, true);
+
+                    MessageBoxExService.Instance().Info($"存於{routinePath}");
+                }
+                else
+                {
+                    MessageBoxExService.Instance().Info($"無資料!");
+                }
 
                 button.IsEnabled = true;
                 VmMainUi.HideLoadingWindow();
-                MessageBoxExService.Instance().Info($"存於{routinePath}");
             }
             catch (Exception ex)
             {
                 button.IsEnabled = true;
+                VmMainUi.HideLoadingWindow();
                 throw ex;
             }
         }

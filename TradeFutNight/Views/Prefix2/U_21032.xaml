@@ -73,7 +73,8 @@
             <dxg:GridColumn
                 Name="rowNumber"
                 Width="60"
-                AllowEditing="False" AllowPrinting="False"
+                AllowEditing="False"
+                Fixed="Left"
                 Header="編號">
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
@@ -92,6 +93,7 @@
             <dxg:GridColumn
                 Width="90"
                 FieldName="BRK_NO"
+                Fixed="Left"
                 Header="期貨商代號">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Center" />
@@ -100,10 +102,10 @@
             <dxg:GridColumn
                 Width="180"
                 FieldName="BRK_NAME"
+                Fixed="Left"
                 Header="期貨商名稱" />
             <dxg:GridColumn
                 Width="70"
-                AllowPrinting="False"
                 FieldName="BRK_TYPE"
                 Header="期貨商&#xA;種類">
                 <dxg:GridColumn.EditSettings>
@@ -117,7 +119,6 @@
             </dxg:GridColumn>
             <dxg:GridColumn
                 Width="90"
-                AllowPrinting="False"
                 FieldName="BRK_TEL"
                 Header="連絡電話">
                 <dxg:GridColumn.EditSettings>
@@ -127,17 +128,14 @@
 
             <dxg:GridColumn
                 Width="100"
-                AllowPrinting="False"
                 FieldName="BRK_ABBR_NAME"
                 Header="期貨商簡稱" />
             <dxg:GridColumn
                 Width="200"
-                AllowPrinting="False"
                 FieldName="BRK_ADDR"
                 Header="住址" />
             <dxg:GridColumn
                 Width="85"
-                AllowPrinting="False"
                 FieldName="BRK_OPEN_CODE"
                 Header="營業&#xA;狀態碼">
                 <dxg:GridColumn.EditSettings>
@@ -150,7 +148,6 @@
             </dxg:GridColumn>
             <dxg:GridColumn
                 Width="95"
-                AllowPrinting="False"
                 FieldName="BRK_CLOSE_DATE"
                 Header="營業結束日">
                 <dxg:GridColumn.EditSettings>
@@ -220,7 +217,6 @@
 
             <dxg:GridColumn
                 Width="75"
-                AllowPrinting="False"
                 FieldName="BRK_MOD_DATETIME"
                 Header="異動日期&#xA;時間">
                 <dxg:GridColumn.EditSettings>
@@ -230,7 +226,6 @@
 
             <dxg:GridColumn
                 Width="75"
-                AllowPrinting="False"
                 FieldName="BRK_LAST_USER"
                 Header="最後異動&#xA;人員代碼">
                 <dxg:GridColumn.EditSettings>
