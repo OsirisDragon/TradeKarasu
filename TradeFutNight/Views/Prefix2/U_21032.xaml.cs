@@ -12,7 +12,7 @@ using System.Windows.Controls;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
-using TradeUtility;
+using TradeUtility.File;
 
 namespace TradeFutNight.Views.Prefix2
 {
@@ -178,8 +178,7 @@ namespace TradeFutNight.Views.Prefix2
                 if (result.Count() > 0)
                 {
                     string routinePath = Path.Combine(AppSettings.LocalRoutineDataDirectory, "21032.csv");
-                    result.ToCsv(routinePath, true);
-
+                    ExportElf.ToCsv(result, routinePath, true);
                     MessageBoxExService.Instance().Info($"存於{routinePath}");
                 }
                 else

@@ -22,6 +22,7 @@ using TradeFutNightData.Gates.Specific.PrefixB;
 using TradeFutNightData.Gates.Tfxm;
 using TradeFutNightData.Models.Sp;
 using TradeUtility;
+using TradeUtility.File;
 
 namespace TradeFutNight.Views.PrefixB
 {
@@ -412,7 +413,7 @@ namespace TradeFutNight.Views.PrefixB
 
                     // 如果畫面上有資料的話，將畫面上的原始資料存成TXT檔案
                     if (items.Count() != 0)
-                        _vm.MainGridData.ToCsv(GetExportFilePath(FileType.Csv, "index_original"), true);
+                        ExportElf.ToCsv(_vm.MainGridData, GetExportFilePath(FileType.Csv, "index_original"), true);
 
                     if (resultItem.HasError)
                     {

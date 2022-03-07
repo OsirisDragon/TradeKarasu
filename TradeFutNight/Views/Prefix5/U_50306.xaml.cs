@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
-using TradeUtility;
+using TradeUtility.File;
 
 namespace TradeFutNight.Views.Prefix5
 {
@@ -134,7 +134,7 @@ namespace TradeFutNight.Views.Prefix5
             await reportGate.ExportPdf(GetExportFilePath());
             await reportGate.Print();
 
-            _vm.MainGridData.ToCsv(GetExportFilePath(FileType.Csv), true);
+            ExportElf.ToCsv(_vm.MainGridData, GetExportFilePath(FileType.Csv), true);
 
             MessageBoxExService.Instance().Info(MessageConst.PrintSuccess);
         }

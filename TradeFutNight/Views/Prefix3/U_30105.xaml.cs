@@ -13,6 +13,7 @@ using TradeFutNight.Reports;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Specific.Prefix3;
 using TradeUtility;
+using TradeUtility.File;
 
 namespace TradeFutNight.Views.Prefix3
 {
@@ -152,7 +153,8 @@ namespace TradeFutNight.Views.Prefix3
                         //產生檔案
                         string saveFilePath = GetExportFilePath(FileType.Xlsx);
                         string routinePath = Path.Combine(AppSettings.LocalRoutineDataDirectory, "FUT_30105.xls");
-                        dt.ToExcel(saveFilePath, FileType.Xlsx, true);
+
+                        ExportElf.ToXlsx(dt, saveFilePath, true);
                         File.Copy(saveFilePath, routinePath, true);
                         MessageBoxExService.Instance().Info($"{routinePath}和\n{saveFilePath} 下載完成!");
                     }

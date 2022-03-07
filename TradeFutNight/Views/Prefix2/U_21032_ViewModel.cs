@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ChangeTracking;
 using CrossModel;
-using LinqToDB.Mapping;
+using CrossModel.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -86,25 +86,25 @@ namespace TradeFutNight.Views.Prefix2
 
     public class ExportModel_21032
     {
-        [Column("期貨商代號")]
+        [ColumnSetting("期貨商代號")]
         public virtual string BRK_NO { get; set; }
 
-        [Column("期貨商名稱")]
+        [ColumnSetting("期貨商名稱")]
         public virtual string BRK_NAME { get; set; }
 
-        [Column("期貨商種類")]
+        [ColumnSetting("期貨商種類")]
         public virtual string BRK_TYPE { get; set; }
 
-        [Column("期貨")]
+        [ColumnSetting("期貨")]
         public virtual string BRK_OPEN_CODE_F { get; set; }
 
-        [Column("選擇權")]
+        [ColumnSetting("選擇權")]
         public virtual string BRK_OPEN_CODE_O { get; set; }
 
-        [Column("利率")]
+        [ColumnSetting("利率")]
         public virtual string BRK_OPEN_CODE_3 { get; set; }
 
-        [Column("建檔日期")]
+        [ColumnSetting("建檔日期")]
         public virtual DateTime BRK_CRE_DATE { get; set; }
     }
 }
