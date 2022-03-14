@@ -103,7 +103,7 @@ namespace TradeUtility.File
                 }
             }
 
-            for (int i = startRow; i < items.Count(); i++)
+            for (int i = 0; i < items.Count(); i++)
             {
                 var item = items.ElementAtOrDefault(i);
 
@@ -137,7 +137,7 @@ namespace TradeUtility.File
                         var objectData = prop.GetValue(item, null);
                         var cellValue = CellValue.FromObject(objectData, new CustomExcelCellConverter());
 
-                        var cell = worksheet.Columns[colIndex][i];
+                        var cell = worksheet.Columns[colIndex][startRow + i];
 
                         if (cellValue.Type == CellValueType.DateTime)
                         {
