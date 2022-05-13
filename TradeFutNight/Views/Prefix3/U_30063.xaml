@@ -54,31 +54,31 @@
                     CellValueChanged="view_CellValueChanged" />
             </dxg:GridControl.View>
             <dxg:GridColumn
-                Width="70"
+                Width="85"
                 FieldName="EXRT_CURRENCY_TYPE"
                 Header="換匯前幣別">
                 <dxg:GridColumn.EditSettings>
                     <dxe:ComboBoxEditSettings
                         DisplayMember="Text"
                         IsTextEditable="False"
-                        ItemsSource="{Binding TypeInfos}"
+                        ItemsSource="{Binding ExrtCurrencyType}"
                         ValueMember="Value" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="70"
+                Width="85"
                 FieldName="EXRT_COUNT_CURRENCY"
                 Header="換匯後幣別">
                 <dxg:GridColumn.EditSettings>
                     <dxe:ComboBoxEditSettings
                         DisplayMember="Text"
                         IsTextEditable="False"
-                        ItemsSource="{Binding TypeInfos}"
+                        ItemsSource="{Binding ExrtCurrencyType}"
                         ValueMember="Value" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="70"
+                Width="85"
                 FieldName="EX_OK"
                 Header="市場成交價">
                 <dxg:GridColumn.EditSettings>
@@ -86,7 +86,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="70"
+                Width="85"
                 FieldName="EX_BID"
                 Header="市場買價">
                 <dxg:GridColumn.EditSettings>
@@ -94,7 +94,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="100"
+                Width="85"
                 FieldName="EX_ASK"
                 Header="市場賣價">
                 <dxg:GridColumn.EditSettings>
@@ -118,7 +118,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="70"
+                Width="85"
                 FieldName="EXRT_EXCHANGE_RATE"
                 Header="本公司匯率">
                 <dxg:GridColumn.EditSettings>

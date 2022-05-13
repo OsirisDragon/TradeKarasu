@@ -18,12 +18,6 @@ namespace TradeFutNight.Views.Prefix3
             set { SetProperty(() => ExrtCurrencyType, value); }
         }
 
-        public IList<ItemInfo> ExrtCountCurrency
-        {
-            get { return GetProperty(() => ExrtCountCurrency); }
-            set { SetProperty(() => ExrtCountCurrency, value); }
-        }
-
         public U_30063_ViewModel()
         {
             MainGridData = new ObservableCollection<UIModel_30063>();
@@ -39,16 +33,18 @@ namespace TradeFutNight.Views.Prefix3
             await Query();
 
             var result = new List<ItemInfo>();
-            result.Add(new ItemInfo() { Text = "星期日", Value = '0' });
-            result.Add(new ItemInfo() { Text = "星期一", Value = '1' });
-            result.Add(new ItemInfo() { Text = "星期二", Value = '2' });
-            result.Add(new ItemInfo() { Text = "星期三", Value = '3' });
-            result.Add(new ItemInfo() { Text = "星期四", Value = '4' });
-            result.Add(new ItemInfo() { Text = "星期五", Value = '5' });
-            result.Add(new ItemInfo() { Text = "星期六", Value = '6' });
+            result.Add(new ItemInfo() { Text = "臺幣", Value = '1' });
+            result.Add(new ItemInfo() { Text = "美元", Value = '2' });
+            result.Add(new ItemInfo() { Text = "歐元", Value = '3' });
+            result.Add(new ItemInfo() { Text = "日幣", Value = '4' });
+            result.Add(new ItemInfo() { Text = "英鎊", Value = '5' });
+            result.Add(new ItemInfo() { Text = "澳幣", Value = '6' });
+            result.Add(new ItemInfo() { Text = "港幣", Value = '7' });
+            result.Add(new ItemInfo() { Text = "人民幣", Value = '8' });
+            result.Add(new ItemInfo() { Text = "南非幣", Value = 'A' });
+            result.Add(new ItemInfo() { Text = "紐幣", Value = 'G' });
 
             ExrtCurrencyType = result;
-            //TPPINTDSecondKindId = DropDownItems.TppintdSecondKindId();
         }
 
         public void Insert()
@@ -78,5 +74,10 @@ namespace TradeFutNight.Views.Prefix3
 
     public class UIModel_30063 : EXRT
     {
+        public virtual decimal EX_OK { get; set; }
+        public virtual decimal EX_BID { get; set; }
+        public virtual decimal EX_ASK { get; set; }
+        public virtual string EX_TIME { get; set; }
+        public virtual decimal EX_MID { get; set; }
     }
 }
