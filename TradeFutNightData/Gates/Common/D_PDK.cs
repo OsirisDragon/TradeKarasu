@@ -1,5 +1,4 @@
-﻿using Dapper;
-using DataEngine;
+﻿using DataEngine;
 using System.Collections.Generic;
 using System.Linq;
 using TradeFutNightData.Models.Common;
@@ -22,6 +21,14 @@ namespace TradeFutNightData.Gates.Common
                 .Where(c => c.PDK_PARAM_KEY == paramKey);
 
             return query.SingleOrDefault();
+        }
+
+        public IEnumerable<PDK> ListByParamKeyAndBtrdCode(string paramKey)
+        {
+            var query = _das.DataConn.GetTable<PDK>()
+                .Where(c => c.PDK_PARAM_KEY == paramKey && c.PDK_BTRD_CODE == 'Y');
+
+            return query.ToList();
         }
 
         public IEnumerable<PDK> ListAll()
@@ -72,7 +79,16 @@ namespace TradeFutNightData.Gates.Common
             return query.ToList();
         }
 
-        public IList<PDK> ListDistinctKindIdNotStock()
+        public IList<PDK> ListKindIdStock()
+        {
+            var query = _das.DataConn.GetTable<PDK>()
+                .Where(c => c.PDK_SUBTYPE == 'S')
+                .Select(c => new PDK() { PDK_KIND_ID = c.PDK_KIND_ID }).Distinct();
+
+            return query.ToList();
+        }
+
+        public IList<PDK> ListKindIdNotStock()
         {
             var query = _das.DataConn.GetTable<PDK>()
                 .Where(c => c.PDK_SUBTYPE != 'S')

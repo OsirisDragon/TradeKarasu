@@ -28,18 +28,24 @@ namespace TradeFutNight.Reports
 
         public static XRTable CreateHeaderColumnsTable(ReportSetting rptSetting, GridControl gridControl)
         {
-            XRTable table = new XRTable();
-            table.Borders = DevExpress.XtraPrinting.BorderSide.All;
+            var table = new XRTable
+            {
+                Borders = DevExpress.XtraPrinting.BorderSide.All
+            };
             table.BeginInit();
 
-            XRTableRow row = new XRTableRow();
-            row.HeightF = rptSetting.HeaderColumnsRowHeight;
+            var row = new XRTableRow
+            {
+                HeightF = rptSetting.HeaderColumnsRowHeight
+            };
 
             foreach (var col in gridControl.Columns)
             {
-                XRTableCell cell = new XRTableCell();
-                cell.Multiline = true;
-                cell.BackColor = Color.LightCyan;
+                var cell = new XRTableCell
+                {
+                    Multiline = true,
+                    BackColor = Color.LightCyan
+                };
 
                 if (col.Header != null)
                     cell.Text = col.Header.ToString().Replace("<br/>", "\n");
@@ -79,12 +85,16 @@ namespace TradeFutNight.Reports
 
         public static XRTable CreateContentTable<T>(IList<T> exportData, ReportSetting rptSetting, GridControl gridControl)
         {
-            XRTable table = new XRTable();
-            table.Borders = BorderSide.Left | BorderSide.Right | BorderSide.Bottom;
+            var table = new XRTable
+            {
+                Borders = BorderSide.Left | BorderSide.Right | BorderSide.Bottom
+            };
             table.BeginInit();
 
-            XRTableRow row = new XRTableRow();
-            row.HeightF = 15f;
+            var row = new XRTableRow
+            {
+                HeightF = 15f
+            };
 
             foreach (var col in gridControl.Columns)
             {
@@ -147,9 +157,11 @@ namespace TradeFutNight.Reports
 
                 cell.Font = new Font(rptSetting.ContentColumnsFontName, rptSetting.ContentColumnsFontSize);
 
-                PaddingInfo paddingInfo = new PaddingInfo();
-                paddingInfo.Left = 1;
-                paddingInfo.Right = 1;
+                var paddingInfo = new PaddingInfo
+                {
+                    Left = 1,
+                    Right = 1
+                };
 
                 cell.Padding = paddingInfo;
 
@@ -180,9 +192,8 @@ namespace TradeFutNight.Reports
                 {
                     foreach (var condition in formatConditions)
                     {
-                        if (condition is FormatCondition)
+                        if (condition is FormatCondition fc)
                         {
-                            FormatCondition fc = (FormatCondition)condition;
                             if (fc.FieldName == col.FieldName)
                             {
                                 if (fc.Format.Foreground != null)
@@ -192,7 +203,7 @@ namespace TradeFutNight.Reports
 
                                 if (fc.Format.Background != null)
                                 {
-                                    cell.ExpressionBindings.Add(new ExpressionBinding("BackColor", "Iif(" + fc.Expression + ",'" + fc.Format.Background.ToString() + "','Black' )"));
+                                    cell.ExpressionBindings.Add(new ExpressionBinding("BackColor", "Iif(" + fc.Expression + ",'" + fc.Format.Background.ToString() + "','White' )"));
                                 }
 
                                 if (fc.Format.FontWeight != null)
@@ -216,6 +227,25 @@ namespace TradeFutNight.Reports
             table.EndInit();
 
             return table;
+        }
+
+        public static void SetReportHeaderParameters(XtraReport report, ReportSetting rptSetting)
+        {
+            var paramOcfDate = report.Parameters["OcfRocDate"];
+            paramOcfDate.Visible = false;
+            paramOcfDate.Value = "中華民國 " + (rptSetting.OcfDate.Year - 1911) + " 年 " + rptSetting.OcfDate.ToString("MM 月 dd 日 ");
+
+            var paramReportID = report.Parameters["ReportID"];
+            paramReportID.Visible = false;
+            paramReportID.Value = rptSetting.SysShortAliasID + rptSetting.ReportID;
+
+            var paramReportTitle = report.Parameters["ReportTitle"];
+            paramReportTitle.Visible = false;
+            paramReportTitle.Value = rptSetting.ReportTitle + rptSetting.SysDayOrNightText;
+
+            var paramUserName = report.Parameters["UserName"];
+            paramUserName.Visible = false;
+            paramUserName.Value = rptSetting.UserName;
         }
 
         private static string TransformExpress(GridColumn col)

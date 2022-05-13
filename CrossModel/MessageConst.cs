@@ -11,7 +11,7 @@
         public static string ProcessSuccess = "處理完成，請保留單據以備查核";
         public static string PrintSuccess = "印表完成";
         public static string ExecuteSuccess = "執行完成";
-        public static string ConfirmDelete = "確認是否要刪除此筆資料?";
+        public static string ConfirmDelete = "確認是否要刪除?";
         public static string NotAllowedExcute = "時點不允許執行此交易";
         public static string NoAddedData = "沒有需要新增的資料";
         public static string NoChangedData = "沒有需要異動的資料";

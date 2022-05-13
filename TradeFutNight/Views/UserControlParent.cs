@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Windows;
 using System.Windows.Controls;
 using TradeFutNight.Common;
 using TradeFutNightData.Gates.Common;
@@ -332,6 +333,52 @@ namespace TradeFutNight.Views
             }
 
             return true;
+        }
+
+        public void Delete<T>(GridControl gridControl, ViewModelParent<T> vm, bool isNeedConfirm = true)
+        {
+            var selectedItem = (T)gridControl.SelectedItem;
+            vm.FocusRow(selectedItem);
+            int row = gridControl.View.FocusedRowHandle + 1;
+            if (selectedItem != null)
+            {
+                if (isNeedConfirm)
+                {
+                    if (MessageBoxExService.Instance().Confirm($"[第{row}筆] {MessageConst.ConfirmDelete}") == MessageBoxResult.Yes)
+                        vm.Delete(selectedItem);
+                }
+                else
+                {
+                    vm.Delete(selectedItem);
+                }
+                vm.SelectedItem = vm.CurrentItem;
+            }
+        }
+
+        /// <summary>
+        /// 抓出非股票類的PDK資料
+        /// </summary>
+        public IList<PDK> ListKindIdNotStock()
+        {
+            using (var das = new DalSession())
+            {
+                var dPdk = new D_PDK(das);
+                var listKindIdNotStock = dPdk.ListKindIdNotStock();
+                return listKindIdNotStock;
+            }
+        }
+
+        /// <summary>
+        /// 抓出股票類的PDK資料
+        /// </summary>
+        public IList<PDK> ListKindIdStock()
+        {
+            using (var das = new DalSession())
+            {
+                var dPdk = new D_PDK(das);
+                var listKindIdStock = dPdk.ListKindIdStock();
+                return listKindIdStock;
+            }
         }
 
         public void CloseWindow()

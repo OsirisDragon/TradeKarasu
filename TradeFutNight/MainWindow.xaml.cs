@@ -41,6 +41,7 @@ namespace TradeFutNight
             AppSettings.SysDayOrNightText = "(夜盤)";
             AppSettings.SystemType = SystemType.FutNight;
             AppSettings.LocalReportDirectoryWithoutDate = "C:\\future_night";
+            AppSettings.LocalRoutineDataDirectory = "C:\\RoutineData";
             AppSettings.LocalReportDirectory = Path.Combine(AppSettings.LocalReportDirectoryWithoutDate, MagicalHats.Ocf.OCF_DATE.ToString("yyyyMMdd"));
             AppSettings.DashForTitle = "–";
 

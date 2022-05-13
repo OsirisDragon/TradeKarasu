@@ -77,7 +77,7 @@ namespace TradeFutNight.Views.Prefix5
                     }
                     else if (item.PDK_SUBTYPE == "S")
                     {
-                        price = (decimal)listSFD.Where(x => x.SFD_STOCK_ID == item.PDK_STOCK_ID).FirstOrDefault()?.SFD_OPEN_REF;
+                        price = listSFD.Where(x => x.SFD_STOCK_ID == item.PDK_STOCK_ID).FirstOrDefault()?.SFD_OPEN_REF;
                     }
                     item.ACTUALS_PRICE = price.AsDecimal();
                 }

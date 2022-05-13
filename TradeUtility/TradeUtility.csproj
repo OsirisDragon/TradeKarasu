@@ -15,4 +15,16 @@
     <ProjectReference Include="..\CrossModel\CrossModel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="DevExpress.Docs.v19.2">
+      <HintPath>C:\Program Files (x86)\DevExpress 19.2\Components\Bin\Framework\DevExpress.Docs.v19.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Office.v19.2.Core">
+      <HintPath>C:\Program Files (x86)\DevExpress 19.2\Components\Bin\Framework\DevExpress.Office.v19.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Spreadsheet.v19.2.Core">
+      <HintPath>C:\Program Files (x86)\DevExpress 19.2\Components\Bin\Framework\DevExpress.Spreadsheet.v19.2.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

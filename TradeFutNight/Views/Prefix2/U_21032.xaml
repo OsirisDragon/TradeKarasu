@@ -1,0 +1,237 @@
+﻿<myTypes:UserControlParent
+    x:Class="TradeFutNight.Views.Prefix2.U_21032"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:myTypes="clr-namespace:TradeFutNight.Views"
+    xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.Prefix2"
+    Margin="1,1,1,1"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <myTypes:UserControlParent.DataContext>
+        <myTypesPrefix:U_21032_ViewModel />
+    </myTypes:UserControlParent.DataContext>
+    <myTypes:UserControlParent.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\ShareStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </myTypes:UserControlParent.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" MinHeight="35" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <dxlc:FlowLayoutControl Grid.Row="0" Orientation="Horizontal">
+            <Label HorizontalAlignment="Right" VerticalAlignment="Center">
+                期貨商前4碼代號：
+            </Label>
+            <dxe:TextEdit
+                Name="txtBrkNo"
+                MinWidth="70"
+                Margin="0,0,10,0"
+                CharacterCasing="Upper"
+                EditValue="{Binding BrkNo}"
+                MaxLength="4"
+                NullText=""
+                NullValue="" />
+            <Button x:Name="btnDownload" Click="BtnDownload_Click">
+                下載
+            </Button>
+        </dxlc:FlowLayoutControl>
+        <dxg:GridControl
+            x:Name="gridMain"
+            Grid.Row="1"
+            CurrentItem="{Binding Path=CurrentItem, Mode=TwoWay}"
+            ItemsSource="{Binding MainGridData}"
+            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
+            SelectionMode="Row">
+            <dxg:GridControl.View>
+                <dxg:TableView x:Name="gridView" AllowEditing="False">
+                    <dxg:TableView.FormatConditions>
+                        <dxg:FormatCondition Expression="[BRK_OPEN_CODE_F] != 'Y'" FieldName="BRK_OPEN_CODE_F">
+                            <dxg:Format Background="Red" />
+                        </dxg:FormatCondition>
+                        <dxg:FormatCondition Expression="[BRK_OPEN_CODE_O] != 'Y'" FieldName="BRK_OPEN_CODE_O">
+                            <dxg:Format Background="Red" />
+                        </dxg:FormatCondition>
+                        <dxg:FormatCondition Expression="[BRK_OPEN_CODE_3] != 'Y'" FieldName="BRK_OPEN_CODE_3">
+                            <dxg:Format Background="Red" />
+                        </dxg:FormatCondition>
+                    </dxg:TableView.FormatConditions>
+                </dxg:TableView>
+            </dxg:GridControl.View>
+            <dxg:GridColumn
+                Name="rowNumber"
+                Width="60"
+                AllowEditing="False"
+                Fixed="Left"
+                Header="編號">
+                <dxg:GridColumn.CellTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{DXBinding 'RowData.RowHandle.Value + 1'}" />
+                        </Grid>
+                    </DataTemplate>
+                </dxg:GridColumn.CellTemplate>
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="90"
+                FieldName="BRK_NO"
+                Fixed="Left"
+                Header="期貨商代號">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="180"
+                FieldName="BRK_NAME"
+                Fixed="Left"
+                Header="期貨商名稱" />
+            <dxg:GridColumn
+                Width="70"
+                FieldName="BRK_TYPE"
+                Header="期貨商&#xA;種類">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:ComboBoxEditSettings
+                        HorizontalContentAlignment="Center"
+                        DisplayMember="Text"
+                        IsTextEditable="False"
+                        ItemsSource="{Binding BrkType}"
+                        ValueMember="Value" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="90"
+                FieldName="BRK_TEL"
+                Header="連絡電話">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+
+            <dxg:GridColumn
+                Width="100"
+                FieldName="BRK_ABBR_NAME"
+                Header="期貨商簡稱" />
+            <dxg:GridColumn
+                Width="200"
+                FieldName="BRK_ADDR"
+                Header="住址" />
+            <dxg:GridColumn
+                Width="85"
+                FieldName="BRK_OPEN_CODE"
+                Header="營業&#xA;狀態碼">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:ComboBoxEditSettings
+                        DisplayMember="Text"
+                        IsTextEditable="False"
+                        ItemsSource="{Binding BrkOpenCode}"
+                        ValueMember="Value" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="95"
+                FieldName="BRK_CLOSE_DATE"
+                Header="營業結束日">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="80"
+                FieldName="BRK_OPEN_CODE_F"
+                Header="期貨">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:ComboBoxEditSettings
+                        HorizontalContentAlignment="Center"
+                        DisplayMember="Text"
+                        IsTextEditable="False"
+                        ItemsSource="{Binding BrkOthOpenCode}"
+                        ValueMember="Value" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="80"
+                FieldName="BRK_OPEN_CODE_O"
+                Header="選擇權">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:ComboBoxEditSettings
+                        HorizontalContentAlignment="Center"
+                        DisplayMember="Text"
+                        IsTextEditable="False"
+                        ItemsSource="{Binding BrkOthOpenCode}"
+                        ValueMember="Value" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="80"
+                FieldName="BRK_OPEN_CODE_3"
+                Header="利率">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:ComboBoxEditSettings
+                        HorizontalContentAlignment="Center"
+                        DisplayMember="Text"
+                        IsTextEditable="False"
+                        ItemsSource="{Binding BrkOthOpenCode}"
+                        ValueMember="Value" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="95"
+                FieldName="BRK_CRE_DATE"
+                Header="建檔日期">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <!--<dxg:GridColumn
+                Width="70"
+                FieldName="PCM_CONSTRICT"
+                Header="限/停單">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:ComboBoxEditSettings
+                        HorizontalContentAlignment="Center"
+                        DisplayMember="Text"
+                        IsTextEditable="False"
+                        ItemsSource="{Binding PcmConstrictType}"
+                        ValueMember="Value" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>-->
+
+            <dxg:GridColumn
+                Width="75"
+                FieldName="BRK_MOD_DATETIME"
+                Header="異動日期&#xA;時間">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="HH:mm:ss" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+
+            <dxg:GridColumn
+                Width="75"
+                FieldName="BRK_LAST_USER"
+                Header="最後異動&#xA;人員代碼">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd HH:mm:ss" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+        </dxg:GridControl>
+    </Grid>
+</myTypes:UserControlParent>

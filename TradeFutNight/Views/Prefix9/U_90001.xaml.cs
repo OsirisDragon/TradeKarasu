@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
@@ -71,20 +70,7 @@ namespace TradeFutNight.Views.Prefix9
 
         public void Delete()
         {
-            bool isNeedConfirm = false;
-            var selectedItem = gridMain.SelectedItem;
-            if (selectedItem != null)
-            {
-                if (isNeedConfirm)
-                {
-                    if (MessageBoxExService.Instance().Confirm(MessageConst.ConfirmDelete) == MessageBoxResult.Yes)
-                        _vm.Delete(selectedItem);
-                }
-                else
-                {
-                    _vm.Delete(selectedItem);
-                }
-            }
+            base.Delete(gridMain, _vm, false);
         }
 
         public async Task<bool> CheckField()
@@ -255,7 +241,8 @@ namespace TradeFutNight.Views.Prefix9
 
         private XtraReport CreateReport<T>(IList<T> data)
         {
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, ProgramID + "–" + ProgramName, UserName, Memo, Ocf.OCF_DATE, true, false, true);
+            string reportTitle = ProgramID + "–" + ProgramName;
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, true, false, true);
             var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain, rptSetting);
 
             return reportCommon;

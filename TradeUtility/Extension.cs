@@ -1,29 +1,11 @@
-﻿using CsvHelper;
-using CsvHelper.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Text;
 
 namespace TradeUtility
 {
     public static class Extension
     {
-        public static void ToCsv<T>(this IEnumerable<T> items, string filePath, bool hasHeader)
-        {
-            using (var writer = new StreamWriter(filePath, false, Encoding.GetEncoding(950)))
-            {
-                var config = new CsvConfiguration(CultureInfo.InvariantCulture);
-                config.HasHeaderRecord = hasHeader;
-
-                using (var csv = new CsvWriter(writer, config))
-                {
-                    csv.WriteRecords(items);
-                }
-            }
-        }
-
         public static string ToDateStr(this DateTime item)
         {
             return item.ToString("yyyy/MM/dd");

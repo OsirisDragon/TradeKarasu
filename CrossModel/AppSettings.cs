@@ -16,6 +16,8 @@ namespace CrossModel
 
         public static string LocalReportDirectory { get; set; }
 
+        public static string LocalRoutineDataDirectory { get; set; }
+
         public static string DashForTitle { get; set; }
     }
 }

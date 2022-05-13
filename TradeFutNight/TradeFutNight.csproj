@@ -25,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -47,9 +48,6 @@
     </Reference>
     <Reference Include="ChangeTracking, Version=2.2.17.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ChangeTracking.2.2.17\lib\net452\ChangeTracking.dll</HintPath>
-    </Reference>
-    <Reference Include="CsvHelper, Version=27.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
-      <HintPath>..\packages\CsvHelper.27.2.1\lib\net47\CsvHelper.dll</HintPath>
     </Reference>
     <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.2.0.123\lib\net461\Dapper.dll</HintPath>
@@ -168,6 +166,7 @@
     </Compile>
     <Compile Include="Auth\AuthGate.cs" />
     <Compile Include="Common\CustomProp.cs" />
+    <Compile Include="Common\DragonDocumentPreviewControl.cs" />
     <Compile Include="Common\DropDownItems.cs" />
     <Compile Include="Common\MagicalHats.cs" />
     <Compile Include="Common\Utility.cs" />
@@ -211,10 +210,30 @@
       <DependentUpon>U_21002.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Prefix2\U_21002_ViewModel.cs" />
-    <Compile Include="Views\Prefix3\U_30063.xaml.cs">
-      <DependentUpon>U_30063.xaml</DependentUpon>
+    <Compile Include="Views\Prefix2\U_21032.xaml.cs">
+      <DependentUpon>U_21032.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Prefix3\U_30063_ViewModel.cs" />
+    <Compile Include="Views\Prefix2\U_21032_ViewModel.cs" />
+    <Compile Include="Views\Prefix3\U_30022.xaml.cs">
+      <DependentUpon>U_30022.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix3\U_30015.xaml.cs">
+      <DependentUpon>U_30015.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix3\U_30012.xaml.cs">
+      <DependentUpon>U_30012.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix3\U_30022_ViewModel.cs" />
+    <Compile Include="Views\Prefix3\U_30015_ViewModel.cs" />
+    <Compile Include="Views\Prefix3\U_30012_ViewModel.cs" />
+    <Compile Include="Views\Prefix3\U_30105.xaml.cs">
+      <DependentUpon>U_30105.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix3\U_30037.xaml.cs">
+      <DependentUpon>U_30037.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix3\U_30105_ViewModel.cs" />
+    <Compile Include="Views\Prefix3\U_30037_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30036_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30036.xaml.cs">
       <DependentUpon>U_30036.xaml</DependentUpon>
@@ -280,9 +299,27 @@
     <Compile Include="Views\Prefix3\U_30113_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30112_ViewModel.cs" />
     <Compile Include="Views\MainUI_ViewModel.cs" />
+    <Compile Include="Views\Prefix5\U_50301.xaml.cs">
+      <DependentUpon>U_50301.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix5\U_50301_Report.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\Prefix5\U_50301_Report.Designer.cs">
+      <DependentUpon>U_50301_Report.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix5\U_50307.xaml.cs">
+      <DependentUpon>U_50307.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix5\U_50306.xaml.cs">
+      <DependentUpon>U_50306.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Prefix5\U_50304.xaml.cs">
       <DependentUpon>U_50304.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Prefix5\U_50301_ViewModel.cs" />
+    <Compile Include="Views\Prefix5\U_50307_ViewModel.cs" />
+    <Compile Include="Views\Prefix5\U_50306_ViewModel.cs" />
     <Compile Include="Views\Prefix5\U_50305.xaml.cs">
       <DependentUpon>U_50305.xaml</DependentUpon>
     </Compile>
@@ -292,6 +329,10 @@
     </Compile>
     <Compile Include="Views\Prefix5\U_50305_ViewModel.cs" />
     <Compile Include="Views\Prefix5\U_50333_ViewModel.cs" />
+    <Compile Include="Views\Prefix9\U_90209.xaml.cs">
+      <DependentUpon>U_90209.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix9\U_90209_ViewModel.cs" />
     <Compile Include="Views\Prefix9\U_90002.xaml.cs">
       <DependentUpon>U_90002.xaml</DependentUpon>
     </Compile>
@@ -386,7 +427,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Prefix3\U_30063.xaml">
+    <Page Include="Views\Prefix2\U_21032.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix3\U_30022.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix3\U_30015.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix3\U_30012.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix3\U_30105.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix3\U_30037.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -454,6 +515,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Prefix5\U_50301.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix5\U_50307.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix5\U_50306.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Prefix5\U_50304.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -463,6 +536,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Prefix5\U_50333.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix9\U_90209.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -566,6 +643,9 @@
     <EmbeddedResource Include="Reports\ReportCommonLandscapeHeader.resx">
       <DependentUpon>ReportCommonLandscapeHeader.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Prefix5\U_50301_Report.resx">
+      <DependentUpon>U_50301_Report.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -606,11 +686,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Reports\Prefix2\" />
-    <Folder Include="Reports\Prefix3\" />
-    <Folder Include="Reports\PrefixC\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="mapp.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

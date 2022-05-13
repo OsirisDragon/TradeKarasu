@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
+using TradeUtility.File;
 
 namespace TradeFutNight.Views.Prefix5
 {
@@ -66,20 +66,7 @@ namespace TradeFutNight.Views.Prefix5
 
         public void Delete()
         {
-            bool isNeedConfirm = true;
-            var selectedItem = gridMain.SelectedItem;
-            if (selectedItem != null)
-            {
-                if (isNeedConfirm)
-                {
-                    if (MessageBoxExService.Instance().Confirm(MessageConst.ConfirmDelete) == MessageBoxResult.Yes)
-                        _vm.Delete(selectedItem);
-                }
-                else
-                {
-                    _vm.Delete(selectedItem);
-                }
-            }
+            base.Delete(gridMain, _vm);
         }
 
         public async Task<bool> CheckField()
@@ -157,7 +144,7 @@ namespace TradeFutNight.Views.Prefix5
             await reportGate.ExportPdf(GetExportFilePath());
             await reportGate.Print();
 
-            gridView.ExportToCsv(GetExportFilePath(FileType.Csv));
+            ExportElf.ToCsv(_vm.MainGridData, GetExportFilePath(FileType.Csv), true);
 
             MessageBoxExService.Instance().Info(MessageConst.PrintSuccess);
         }

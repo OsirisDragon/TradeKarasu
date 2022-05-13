@@ -1,14 +1,11 @@
 ﻿using ChangeTracking;
 using CrossModel;
 using CrossModel.Enum;
-using DevExpress.XtraPrinting;
 using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
@@ -68,20 +65,7 @@ namespace TradeFutNight.Views.Prefix3
 
         public void Delete()
         {
-            bool isNeedConfirm = true;
-            var selectedItem = gridMain.SelectedItem;
-            if (selectedItem != null)
-            {
-                if (isNeedConfirm)
-                {
-                    if (MessageBoxExService.Instance().Confirm(MessageConst.ConfirmDelete) == MessageBoxResult.Yes)
-                        _vm.Delete(selectedItem);
-                }
-                else
-                {
-                    _vm.Delete(selectedItem);
-                }
-            }
+            base.Delete(gridMain, _vm);
         }
 
         public async Task<bool> CheckField()
