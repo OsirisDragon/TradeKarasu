@@ -49,9 +49,6 @@
     <Reference Include="ChangeTracking, Version=2.2.17.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ChangeTracking.2.2.17\lib\net452\ChangeTracking.dll</HintPath>
     </Reference>
-    <Reference Include="CsvHelper, Version=27.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
-      <HintPath>..\packages\CsvHelper.27.2.1\lib\net47\CsvHelper.dll</HintPath>
-    </Reference>
     <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.2.0.123\lib\net461\Dapper.dll</HintPath>
     </Reference>
@@ -169,6 +166,7 @@
     </Compile>
     <Compile Include="Auth\AuthGate.cs" />
     <Compile Include="Common\CustomProp.cs" />
+    <Compile Include="Common\DragonDocumentPreviewControl.cs" />
     <Compile Include="Common\DropDownItems.cs" />
     <Compile Include="Common\MagicalHats.cs" />
     <Compile Include="Common\Utility.cs" />
@@ -303,6 +301,12 @@
     <Compile Include="Views\MainUI_ViewModel.cs" />
     <Compile Include="Views\Prefix5\U_50301.xaml.cs">
       <DependentUpon>U_50301.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix5\U_50301_Report.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\Prefix5\U_50301_Report.Designer.cs">
+      <DependentUpon>U_50301_Report.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Prefix5\U_50307.xaml.cs">
       <DependentUpon>U_50307.xaml</DependentUpon>
@@ -639,6 +643,9 @@
     <EmbeddedResource Include="Reports\ReportCommonLandscapeHeader.resx">
       <DependentUpon>ReportCommonLandscapeHeader.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Prefix5\U_50301_Report.resx">
+      <DependentUpon>U_50301_Report.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -679,11 +686,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Reports\Prefix2\" />
-    <Folder Include="Reports\Prefix3\" />
-    <Folder Include="Reports\PrefixC\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="mapp.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

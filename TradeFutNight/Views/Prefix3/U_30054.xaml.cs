@@ -101,7 +101,7 @@ namespace TradeFutNight.Views.Prefix3
                 {
                     var dPdk = new D_PDK(das);
                     // 非股票類
-                    pdkNotStock = dPdk.ListDistinctKindIdNotStock();
+                    pdkNotStock = dPdk.ListKindIdNotStock();
                     // 股票關聯KEY值
                     pdkStock = dPdk.ListDistinctParamKeyStock();
                 }

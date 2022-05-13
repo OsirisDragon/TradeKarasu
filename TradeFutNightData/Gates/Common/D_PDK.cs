@@ -79,7 +79,16 @@ namespace TradeFutNightData.Gates.Common
             return query.ToList();
         }
 
-        public IList<PDK> ListDistinctKindIdNotStock()
+        public IList<PDK> ListKindIdStock()
+        {
+            var query = _das.DataConn.GetTable<PDK>()
+                .Where(c => c.PDK_SUBTYPE == 'S')
+                .Select(c => new PDK() { PDK_KIND_ID = c.PDK_KIND_ID }).Distinct();
+
+            return query.ToList();
+        }
+
+        public IList<PDK> ListKindIdNotStock()
         {
             var query = _das.DataConn.GetTable<PDK>()
                 .Where(c => c.PDK_SUBTYPE != 'S')

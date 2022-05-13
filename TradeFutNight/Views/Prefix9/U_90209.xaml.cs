@@ -119,10 +119,12 @@ namespace TradeFutNight.Views.Prefix9
                 string fileName = $"{sysName}_PVC.txt";
                 string dir = "";
 
-                SaveFileDialog open = new SaveFileDialog();
-                open.Filter = $"*.txt (*.txt)|*.txt";
-                open.Title = "請點選儲存檔案之目錄";
-                open.FileName = fileName;
+                var open = new SaveFileDialog
+                {
+                    Filter = $"*.txt (*.txt)|*.txt",
+                    Title = "請點選儲存檔案之目錄",
+                    FileName = fileName
+                };
                 DialogResult openResult = open.ShowDialog();
 
                 if (openResult == DialogResult.OK)
@@ -163,6 +165,8 @@ namespace TradeFutNight.Views.Prefix9
                 VmMainUi.HideLoadingWindow();
                 CloseWindow();
             }
+
+            await Task.Yield();
         }
 
         private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)

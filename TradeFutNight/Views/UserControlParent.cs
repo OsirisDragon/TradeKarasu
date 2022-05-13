@@ -353,6 +353,32 @@ namespace TradeFutNight.Views
             }
         }
 
+        /// <summary>
+        /// 抓出非股票類的PDK資料
+        /// </summary>
+        public IList<PDK> ListKindIdNotStock()
+        {
+            using (var das = new DalSession())
+            {
+                var dPdk = new D_PDK(das);
+                var listKindIdNotStock = dPdk.ListKindIdNotStock();
+                return listKindIdNotStock;
+            }
+        }
+
+        /// <summary>
+        /// 抓出股票類的PDK資料
+        /// </summary>
+        public IList<PDK> ListKindIdStock()
+        {
+            using (var das = new DalSession())
+            {
+                var dPdk = new D_PDK(das);
+                var listKindIdStock = dPdk.ListKindIdStock();
+                return listKindIdStock;
+            }
+        }
+
         public void CloseWindow()
         {
             // 只把畫面上的程式畫面關掉
