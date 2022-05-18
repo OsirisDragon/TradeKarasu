@@ -80,4 +80,13 @@ namespace TradeFutNight.Views.Prefix3
         public virtual string EX_TIME { get; set; }
         public virtual decimal EX_MID { get; set; }
     }
+
+    public class MexReceivedData_30063
+    {
+        public string type { get; set; }
+        public int bid { get; set; }
+        public int ask { get; set; }
+        public string time { get; set; }
+        public int price { get; set; }
+    }
 }

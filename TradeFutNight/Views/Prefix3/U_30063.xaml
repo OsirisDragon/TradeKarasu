@@ -37,7 +37,7 @@
             <Button
                 x:Name="btnRefresh"
                 Click="BtnRefresh_Click"
-                IsEnabled="False">
+                IsEnabled="True">
                 更新匯率
             </Button>
         </dxlc:FlowLayoutControl>
