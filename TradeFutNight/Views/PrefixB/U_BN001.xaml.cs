@@ -4,7 +4,7 @@ using DataEngine;
 using DevExpress.Xpf.Editors;
 using DevExpress.Xpf.Grid;
 using DevExpress.XtraReports.UI;
-using Shield.File;
+using Shield.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -241,7 +241,7 @@ namespace TradeFutNight.Views.PrefixB
                 }
 
                 // 更新日盤期貨的資料
-                using (var dasDayFut = Factory.CreateDalSession(SettingFile.Database.Futures))
+                using (var dasDayFut = Factory.CreateDalSession(SettingDatabaseInfo.FutDay))
                 {
                     dasDayFut.Begin();
 
@@ -617,7 +617,7 @@ namespace TradeFutNight.Views.PrefixB
 
                 if (item.PROD_ID_OUT == "BRF")
                 {
-                    using (var das = Factory.CreateDalSession(SettingFile.Database.Tfxm))
+                    using (var das = Factory.CreateDalSession(SettingDatabaseInfo.TfxmDay))
                     {
                         var dCmemdSettle = new D_CMEMD_SETTLE(das);
                         var latestCmemdSettle = dCmemdSettle.GetLatest(Ocf.OCF_DATE, "LCO%", transferMonth);

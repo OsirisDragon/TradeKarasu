@@ -2,7 +2,7 @@
 using CrossModel;
 using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
-using Shield.File;
+using Shield.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -111,7 +111,7 @@ namespace TradeFutNight.Views.PrefixC
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
                 var domainData = CustomMapper<FRP>(trackableData.ChangedItems);
 
-                using (var dasTfxm = Factory.CreateDalSession(SettingFile.Database.Tfxm_AH))
+                using (var dasTfxm = Factory.CreateDalSession(SettingDatabaseInfo.TfxmNight))
                 {
                     dasTfxm.Begin();
 

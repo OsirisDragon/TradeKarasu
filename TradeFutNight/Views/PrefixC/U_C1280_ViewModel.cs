@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ChangeTracking;
 using CrossModel;
-using Shield.File;
+using Shield.Mapping;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using TradeFutNight.Common;
@@ -33,7 +33,7 @@ namespace TradeFutNight.Views.PrefixC
 
             FRPProdId = DropDownItems.FrpProdId();
 
-            using (var das = Factory.CreateDalSession(SettingFile.Database.Tfxm_AH))
+            using (var das = Factory.CreateDalSession(SettingDatabaseInfo.TfxmNight))
             {
                 var dFRP = new D_FRP(das);
                 var list = new ObservableCollection<FRP>();
