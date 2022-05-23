@@ -2,13 +2,17 @@
 using CrossModel;
 using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
+using Eagle;
+using Newtonsoft.Json;
 using Shield.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using TradeFutNight.Auth;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
@@ -16,6 +20,7 @@ using TradeFutNightData;
 using TradeFutNightData.Gates.Common;
 using TradeFutNightData.Gates.Tfxm;
 using TradeFutNightData.Models.Common;
+using TradeUtility;
 
 namespace TradeFutNight.Views.Prefix3
 {
@@ -25,6 +30,10 @@ namespace TradeFutNight.Views.Prefix3
     public partial class U_30063 : UserControlParent, IViewSword
     {
         private U_30063_ViewModel _vm;
+
+        private Timer _timer;
+        private Dictionary<char, string> _currencysReceive = new Dictionary<char, string>();
+        private Dictionary<char, string> _currencysCompare = new Dictionary<char, string>();
 
         public U_30063()
         {
@@ -63,6 +72,23 @@ namespace TradeFutNight.Views.Prefix3
                 DbLog(MessageConst.Open);
             });
             await task;
+
+            int currOpenSw = 0;
+            using (var das = Factory.CreateDalSession())
+            {
+                var dOswcur = new D_OSWCUR(das);
+                currOpenSw = dOswcur.GetCurrOpenSwByGrp(5);
+            }
+
+            // 日盤專用
+            if (currOpenSw >= 130)
+            {
+                MessageBoxExService.Instance().Info("第二盤每日結算價業已發送，如需更新匯率，請輸入另一作業人員帳號密碼");
+                if (!new AuthGate().ShowAuthDouble(ProgramID))
+                    return;
+            }
+
+            BtnRefresh_Click(btnRefresh, null);
         }
 
         public void Insert()
@@ -114,31 +140,33 @@ namespace TradeFutNight.Views.Prefix3
                     return false;
                 }
 
-                foreach (var item in trackableData.ChangedItems)
+                foreach (var item in _vm.MainGridData)
                 {
-                    //if (item.TPPINTD_SECOND_MONTH > 0 && string.IsNullOrEmpty(item.TPPINTD_SECOND_KIND_ID))
-                    //{
-                    //    resultItem.AppendErrorMessage($"請輸入第{trackableData.AsEnumerable().IndexOf(item) + 1}筆的第二支腳契約代碼");
-                    //}
+                    // 檢查美元兌台幣不可輸入超過小數4位
+                    if (item.EXRT_CURRENCY_TYPE == '2' && item.EXRT_COUNT_CURRENCY == '1')
+                    {
+                        if (Decimal.Round(item.EXRT_EXCHANGE_RATE, 4) != item.EXRT_EXCHANGE_RATE)
+                        {
+                            MessageBoxExService.Instance().Error("美元兌台幣不可輸入資料超過小數4位");
+                            return false;
+                        }
+                    }
 
-                    //if (!string.IsNullOrEmpty(item.TPPINTD_SECOND_KIND_ID) && item.TPPINTD_SECOND_MONTH <= 0)
-                    //{
-                    //    resultItem.AppendErrorMessage($"請輸入第{trackableData.AsEnumerable().IndexOf(item) + 1}筆的第二支腳月份序號");
-                    //}
+                    // 設定EXRT_MARKET_EXCHANGE_RATE
+                    item.EXRT_MARKET_EXCHANGE_RATE = item.EX_MID;
 
-                    //Dispatcher.Invoke(() =>
-                    //{
-                    //    item.TPPINTD_USER_ID = UserID;
-                    //    item.TPPINTD_W_TIME = DateTime.Now;
-                    //});
+                    if (item.EXRT_MARKET_EXCHANGE_RATE == 0)
+                    {
+                        item.EXRT_EXCHANGE_RATE = item.EXRT_EXCHANGE_RATE;
+                    }
+
+                    // 設定使用者和時間
+                    item.EXRT_USER_ID = UserID;
+                    item.EXRT_W_TIME = DateTime.Now;
                 }
 
-                if (resultItem.HasError)
-                {
-                    VmMainUi.HideLoadingWindow();
-                    MessageBoxExService.Instance().Error(resultItem.ErrorMessage);
+                if (MessageBoxExService.Instance().Confirm(MessageConst.ConfirmDelete) == MessageBoxResult.No)
                     return false;
-                }
 
                 return true;
             });
@@ -268,21 +296,79 @@ namespace TradeFutNight.Views.Prefix3
         {
             var button = ((Button)sender);
             button.IsEnabled = false;
+            VmMainUi.IsButtonSaveEnabled = false;
 
-            using (var das = Factory.CreateDalSession(SettingDatabaseInfo.TfxmDay))
+            // 這是比對用，比對Mex傳回來的匯率有沒有完整的這些
+            _currencysCompare.Clear();
+            _currencysCompare.Add('2', "美元");
+            _currencysCompare.Add('3', "歐元");
+            _currencysCompare.Add('4', "日幣");
+            _currencysCompare.Add('5', "英鎊");
+            _currencysCompare.Add('6', "澳幣");
+            _currencysCompare.Add('7', "港幣");
+            _currencysCompare.Add('8', "人民幣");
+            _currencysCompare.Add('A', "南非幣");
+            _currencysCompare.Add('G', "紐幣");
+
+            // 即將要收到的幣別先清空
+            _currencysReceive.Clear();
+
+            var task = Task.Run(() =>
             {
-                var dGdex = new D_GDEX(das);
-                var gdex = dGdex.GetTopOne(1, Ocf.OCF_DATE);
-            }
+                IEagleGate eagleGate = new MexGate(MsgSysType.FutNight, "TFX.FXM.TXR.QUERY", "all");
+                EagleArgs ea = new EagleArgs();
+                ea.AddEagleContent(new EagleContent() { Item = "QuerySingle", Value = "all" });
+                eagleGate.AddArgument(ea);
+                string result = eagleGate.SendAndReceiveData("FXM.TFX.TXR.RESULT", "all", 1500).ReceiveData;
+                var mexReceivedData = JsonConvert.DeserializeObject<List<MexReceivedData_30063>>(result);
 
-            //IEagleGate eagleGate = new MexGate(MsgSysType.FutNight, "TFX.FXM.TXR.QUERY", "all");
-            //EagleArgs ea = new EagleArgs();
-            //ea.AddEagleContent(new EagleContent() { Item = "QuerySingle", Value = "all" });
-            //eagleGate.AddArgument(ea);
-            //string result = eagleGate.SendAndReceiveData("FXM.TFX.TXR.RESULT", "all", 3000).ReceiveData;
-            //var mexReceivedData = JsonConvert.DeserializeObject<List<MexReceivedData_30063>>(result);
+                Dispatcher.Invoke(() =>
+                {
+                    MexReceivedDataProcess(mexReceivedData);
+                });
+            });
 
-            button.IsEnabled = true;
+            var timerState = new TimerState { Counter = 6 };
+            _timer = new Timer(callback: new TimerCallback(TimerTask), state: timerState, dueTime: 0, period: 1000);
+        }
+
+        private void TimerTask(object timerState)
+        {
+            var state = timerState as TimerState;
+
+            Dispatcher.Invoke(() =>
+            {
+                if (state.Counter == 0)
+                {
+                    // 停止計時器
+                    _timer.Dispose();
+
+                    btnRefresh.Content = "更新匯率";
+
+                    string msgResult = "";
+
+                    // 檢查mex是不是都有回傳該傳回的幣別
+                    foreach (var curKey in _currencysCompare)
+                    {
+                        if (!_currencysReceive.ContainsKey(curKey.Key))
+                        {
+                            msgResult += curKey.Value + ",";
+                        }
+                    }
+
+                    if (msgResult != "")
+                        MessageBoxExService.Instance().Info(msgResult + "資料沒有傳回，請再按一次更新匯率按鈕");
+
+                    btnRefresh.IsEnabled = true;
+                    VmMainUi.IsButtonSaveEnabled = true;
+                }
+                else
+                {
+                    btnRefresh.Content = $"更新匯率({state.Counter})";
+                }
+            });
+
+            Interlocked.Decrement(ref state.Counter);
         }
 
         private void MexReceivedDataProcess(List<MexReceivedData_30063> items)
@@ -295,9 +381,20 @@ namespace TradeFutNight.Views.Prefix3
                 decimal mAsk = item.ask / (decimal)10000;
                 decimal mPrice = item.price / (decimal)10000;
 
+                #region 檢查每一種匯率是否都有傳回來
+
+                // 這段是因為發生了mex訊息有漏傳回的現象，才要做這個檢查確保每一種type幣別都有回來
+                // 總共有9種type會傳回:2,3,4,5,6,7,8,A,G
+                // 傳回的筆數不一定(正式環境是一種type傳回2筆，總共傳回18筆。測試環境不一定)，因為後面現貨主機很多台，所以每次每種type會傳回很多筆
+                if (!_currencysReceive.ContainsKey(mType))
+                {
+                    _currencysReceive.Add(mType, "");
+                }
+
+                #endregion 檢查每一種匯率是否都有傳回來
+
                 #region 找出對應的row
 
-                string filterStr = "";
                 UIModel_30063 findItem = null;
 
                 if (mType == '2')
@@ -313,6 +410,28 @@ namespace TradeFutNight.Views.Prefix3
                 {
                     findItem = new UIModel_30063();
                 }
+
+                #region 現貨兩台主機資料檢查
+
+                // 因為mex後面的現貨主機有兩台，常常發生一台掛掉一台正常
+                // 導致匯率有時回正確的那台，有時回錯誤的那台
+                // 故改成兩台都會傳回來，同樣的幣別我會收到兩筆
+                // 取時間比較後面的那筆來顯示
+
+                if (!string.IsNullOrEmpty(findItem.EX_TIME))
+                {
+                    DateTime newDateTime, originalDateTime;
+                    if (DateTime.TryParse(DateTime.Now.ToDateStr() + " " + mTime, out newDateTime) && DateTime.TryParse(DateTime.Now.ToDateStr() + " " + findItem.EX_TIME, out originalDateTime))
+                    {
+                        if (newDateTime <= originalDateTime)
+                        {
+                            // 小於等於原本的日期就跳過此筆
+                            continue;
+                        }
+                    }
+                }
+
+                #endregion 現貨兩台主機資料檢查
 
                 findItem.EXRT_CURRENCY_TYPE = mType;
                 findItem.EX_OK = mPrice;
@@ -369,7 +488,7 @@ namespace TradeFutNight.Views.Prefix3
                         else if (mPrice == 0)
                         {
                             // 早上路透社未能收美元商品，用昨天日期
-                            double GDEX_EX_RATE = 0;
+                            decimal GDEX_EX_RATE = 0;
 
                             using (var das = Factory.CreateDalSession(SettingDatabaseInfo.TfxmDay))
                             {
@@ -378,9 +497,11 @@ namespace TradeFutNight.Views.Prefix3
 
                                 if (gdex != null)
                                 {
-                                    findItem.EXRT_EXCHANGE_RATE = Math.Round(gdex.GDEX_EX_RATE, 6);
+                                    GDEX_EX_RATE = gdex.GDEX_EX_RATE.GetValueOrDefault();
                                 }
                             }
+
+                            findItem.EXRT_EXCHANGE_RATE = Math.Round(GDEX_EX_RATE, 6);
                         }
 
                         break;
@@ -393,53 +514,43 @@ namespace TradeFutNight.Views.Prefix3
 
                 #region 設定特定的匯率
 
-                double fxUsdToTwd = 0;
+                decimal fxUsdToTwd = 0;
 
                 // 取得美元兌台幣匯率
-                dv = gridViewMain.Find("EXRT_CURRENCY_TYPE='2' AND EXRT_COUNT_CURRENCY  ='1' ");
+                findItem = _vm.MainGridData.Where(c => c.EXRT_CURRENCY_TYPE == '2' && c.EXRT_COUNT_CURRENCY == '1').SingleOrDefault();
 
-                if (dv.Count > 0)
+                if (findItem != null)
                 {
-                    fxUsdToTwd = dv[0]["EXRT_EXCHANGE_RATE"].AsDouble();
+                    fxUsdToTwd = findItem.EXRT_EXCHANGE_RATE;
 
                     #region 設定人民幣兌台幣匯率
 
-                    double fxCnyToTwd = 0;
+                    decimal fxCnyToTwd = 0;
 
-                    if (mType == "8")
+                    if (mType == '8')
                     {
                         // 人民幣兌台幣匯率 = 人民幣兌美元匯率(8->2)*美元兌台幣匯率(2->1)(四捨五入至小數後6位)
-                        filterStr = "EXRT_CURRENCY_TYPE='" + mType + "' AND EXRT_COUNT_CURRENCY='2' ";
+                        findItem = _vm.MainGridData.Where(c => c.EXRT_CURRENCY_TYPE == mType && c.EXRT_COUNT_CURRENCY == '2').SingleOrDefault();
 
-                        dv = gridViewMain.Find(filterStr);
-
-                        if (dv.Count > 0)
+                        if (findItem != null)
                         {
-                            row = dv[0].Row;
+                            fxCnyToTwd = Math.Round(findItem.EXRT_EXCHANGE_RATE * fxUsdToTwd, 6);
 
-                            fxCnyToTwd = Math.Round(row["EXRT_EXCHANGE_RATE"].AsDouble() * fxUsdToTwd, 6);
+                            findItem = _vm.MainGridData.Where(c => c.EXRT_CURRENCY_TYPE == mType && c.EXRT_COUNT_CURRENCY == '1').SingleOrDefault();
 
-                            filterStr = "EXRT_CURRENCY_TYPE='" + mType + "' AND EXRT_COUNT_CURRENCY='1' ";
-
-                            dv = gridViewMain.Find(filterStr);
-
-                            if (dv.Count > 0)
+                            if (findItem == null)
                             {
-                                row = dv[0].Row;
-                            }
-                            else
-                            {
-                                row = gridViewMain.AddRow();
+                                findItem = new UIModel_30063();
+                                findItem.EXRT_CURRENCY_TYPE = '8';
+                                findItem.EXRT_COUNT_CURRENCY = '1';
                             }
 
-                            row["EXRT_EXCHANGE_RATE"] = fxCnyToTwd;
-                            row["EXRT_CURRENCY_TYPE"] = "8";
-                            row["EXRT_COUNT_CURRENCY"] = "1";
-                            row["EX_TIME"] = DateTime.Now.ToString("HH:mm:ss");
+                            findItem.EXRT_EXCHANGE_RATE = fxCnyToTwd;
+                            findItem.EX_TIME = DateTime.Now.ToString("HH:mm:ss");
                         }
                         else
                         {
-                            MessageDisplay.Error("找不到人民幣兌美元匯率(8->2)");
+                            MessageBoxExService.Instance().Info("找不到人民幣兌美元匯率(8->2)");
                         }
                     }
 
@@ -447,42 +558,32 @@ namespace TradeFutNight.Views.Prefix3
 
                     #region 設定日幣兌台幣匯率
 
-                    double fxJpyToTwd = 0;
+                    decimal fxJpyToTwd = 0;
 
-                    if (mType == "4")
+                    if (mType == '4')
                     {
                         // 日幣兌台幣匯率 = 日幣兌美元匯率(4->2) * 美元兌台幣匯率(2->1) (四捨五入至小數後6位)
-                        filterStr = "EXRT_CURRENCY_TYPE='" + mType + "' AND EXRT_COUNT_CURRENCY='2' ";
+                        findItem = _vm.MainGridData.Where(c => c.EXRT_CURRENCY_TYPE == mType && c.EXRT_COUNT_CURRENCY == '2').SingleOrDefault();
 
-                        dv = gridViewMain.Find(filterStr);
-
-                        if (dv.Count > 0)
+                        if (findItem != null)
                         {
-                            row = dv[0].Row;
+                            fxJpyToTwd = Math.Round(findItem.EXRT_EXCHANGE_RATE * fxUsdToTwd, 6);
 
-                            fxJpyToTwd = Math.Round(row["EXRT_EXCHANGE_RATE"].AsDouble() * fxUsdToTwd, 6);
+                            findItem = _vm.MainGridData.Where(c => c.EXRT_CURRENCY_TYPE == mType && c.EXRT_COUNT_CURRENCY == '1').SingleOrDefault();
 
-                            filterStr = "EXRT_CURRENCY_TYPE='" + mType + "' AND EXRT_COUNT_CURRENCY='1' ";
-
-                            dv = gridViewMain.Find(filterStr);
-
-                            if (dv.Count > 0)
+                            if (findItem == null)
                             {
-                                row = dv[0].Row;
-                            }
-                            else
-                            {
-                                row = gridViewMain.AddRow();
+                                findItem = new UIModel_30063();
+                                findItem.EXRT_CURRENCY_TYPE = '4';
+                                findItem.EXRT_COUNT_CURRENCY = '1';
                             }
 
-                            row["EXRT_EXCHANGE_RATE"] = fxJpyToTwd;
-                            row["EXRT_CURRENCY_TYPE"] = "4";
-                            row["EXRT_COUNT_CURRENCY"] = "1";
-                            row["EX_TIME"] = DateTime.Now.ToString("HH:mm:ss");
+                            findItem.EXRT_EXCHANGE_RATE = fxJpyToTwd;
+                            findItem.EX_TIME = DateTime.Now.ToString("HH:mm:ss");
                         }
                         else
                         {
-                            MessageDisplay.Error("找不到日幣兌美元匯率(4->2)");
+                            MessageBoxExService.Instance().Info("找不到日幣兌美元匯率(4->2)");
                         }
                     }
 
@@ -490,7 +591,7 @@ namespace TradeFutNight.Views.Prefix3
                 }
                 else
                 {
-                    MessageDisplay.Error("找不到美元兌台幣匯率(2->1)");
+                    MessageBoxExService.Instance().Info("找不到美元兌台幣匯率(2->1)");
                 }
 
                 #endregion 設定特定的匯率

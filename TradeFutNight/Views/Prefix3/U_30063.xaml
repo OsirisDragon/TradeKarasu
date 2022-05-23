@@ -78,31 +78,31 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="85"
+                Width="90"
                 FieldName="EX_OK"
                 Header="市場成交價">
                 <dxg:GridColumn.EditSettings>
-                    <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
-                </dxg:GridColumn.EditSettings>
-            </dxg:GridColumn>
-            <dxg:GridColumn
-                Width="85"
-                FieldName="EX_BID"
-                Header="市場買價">
-                <dxg:GridColumn.EditSettings>
-                    <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
-                </dxg:GridColumn.EditSettings>
-            </dxg:GridColumn>
-            <dxg:GridColumn
-                Width="85"
-                FieldName="EX_ASK"
-                Header="市場賣價">
-                <dxg:GridColumn.EditSettings>
-                    <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
+                    <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.######" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
                 Width="100"
+                FieldName="EX_BID"
+                Header="市場買價">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.######" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="100"
+                FieldName="EX_ASK"
+                Header="市場賣價">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.######" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="80"
                 FieldName="EX_TIME"
                 Header="資料時間">
                 <dxg:GridColumn.EditSettings>
@@ -110,19 +110,19 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="70"
+                Width="100"
                 FieldName="EX_MID"
                 Header="市場均價">
                 <dxg:GridColumn.EditSettings>
-                    <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
+                    <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.######" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
-                Width="85"
+                Width="100"
                 FieldName="EXRT_EXCHANGE_RATE"
                 Header="本公司匯率">
                 <dxg:GridColumn.EditSettings>
-                    <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.####" />
+                    <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.000000" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn

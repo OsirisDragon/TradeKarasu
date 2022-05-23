@@ -185,7 +185,7 @@ namespace TradeFutNight.Views.Prefix5
             {
                 using (var das = Factory.CreateDalSession())
                 {
-                    currOpenSw = new D_OSWCUR(das).ListCurrOpenSW(grpSelectItem);
+                    currOpenSw = new D_OSWCUR(das).GetCurrOpenSwByGrp(grpSelectItem);
                 }
 
                 if (currOpenSw < 110 && currOpenSw > 0)

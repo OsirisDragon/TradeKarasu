@@ -225,7 +225,7 @@ namespace TradeFutNight.Views.PrefixC
             var currOpenSw = 0;
             using (var das = Factory.CreateDalSession())
             {
-                currOpenSw = new D_OSWCUR(das).ListCurrOpenSW(grpSelectItem);
+                currOpenSw = new D_OSWCUR(das).GetCurrOpenSwByGrp(grpSelectItem);
             }
 
             // 10是開始收單
