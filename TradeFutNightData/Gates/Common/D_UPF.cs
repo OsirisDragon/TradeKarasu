@@ -17,7 +17,7 @@ namespace TradeFutNightData.Gates.Common
     {
         public IEnumerable<UPF> ListAll()
         {
-            var query = _das.DataConn.GetTable<UPF>();
+            var query = _das.DataConn.GetTable<UPF>().OrderBy(c => c.UPF_USER_ID);
             return query.ToList();
         }
 

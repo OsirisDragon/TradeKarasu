@@ -1,6 +1,7 @@
 ﻿using DataEngine;
 using LinqToDB;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using TradeFutNightData.Models.Common;
 
@@ -62,6 +63,18 @@ namespace TradeFutNightData.Gates.Common
                 .OrderByDescending(c => c.LOGF_TIME)
                 .Select(c => c.LOGF_KEY_DATA).FirstOrDefault();
             return keyData;
+        }
+
+        public IEnumerable<LOGF> ListByDateAndKey(string logfItem1, string logfItem2, DateTime sdate, DateTime edate, string likeCondition)
+        {
+            var query = _das.DataConn.GetTable<LOGF>()
+                .Where(c => (c.LOGF_ITEM == logfItem1 || c.LOGF_ITEM == logfItem2) &&
+                c.LOGF_TIME >= sdate &&
+                c.LOGF_TIME < edate.AddDays(1) &&
+                !string.IsNullOrEmpty(c.LOGF_KEY_DATA) &&
+                Sql.Like(c.LOGF_KEY_DATA, likeCondition))
+                .OrderByDescending(c => c.LOGF_TIME);
+            return query;
         }
     }
 }

@@ -283,5 +283,42 @@ namespace TradeFutNight.Common
             result.Add(new ItemInfo() { Text = "不可營業", Value = 'N' });
             return result;
         }
+
+        public static IList<ItemInfo> UpfUserName()
+        {
+            using (var das = Factory.CreateDalSession())
+            {
+                var dUPF = new D_UPF(das);
+                var result = dUPF.ListAll().Select(
+                    c => new ItemInfo() { Text = c.UPF_USER_ID + "：" + c.UPF_USER_NAME, Value = c.UPF_USER_ID }).ToList();
+                result.Insert(0, new ItemInfo() { Text = "全部", Value = "%" });
+                return result;
+            }
+        }
+
+        public static IList<ItemInfo> LogfKind()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "刪除", Value = "D" });
+            result.Add(new ItemInfo() { Text = "新增", Value = "A" });
+            return result;
+        }
+
+        public static IList<ItemInfo> Dpt()
+        {
+            var result = new List<ItemInfo>();
+
+            result.Add(new ItemInfo() { Text = "資訊作業部", Value = "I" });
+            result.Add(new ItemInfo() { Text = "資訊規劃部", Value = "J" });
+            result.Add(new ItemInfo() { Text = "交易部", Value = "T" });
+            result.Add(new ItemInfo() { Text = "結算部", Value = "C" });
+            result.Add(new ItemInfo() { Text = "企劃部", Value = "B" });
+            result.Add(new ItemInfo() { Text = "期貨商輔導部", Value = "A" });
+            result.Add(new ItemInfo() { Text = "管理部", Value = "M" });
+            result.Add(new ItemInfo() { Text = "內部稽核", Value = "E" });
+            result.Add(new ItemInfo() { Text = "首長", Value = "S" });
+            result.Add(new ItemInfo() { Text = "監視部", Value = "W" });
+            return result;
+        }
     }
 }
