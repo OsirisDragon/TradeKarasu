@@ -1,4 +1,5 @@
-﻿using DataEngine;
+﻿using CrossModel;
+using DataEngine;
 using LinqToDB;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,31 @@ namespace TradeFutNightData.Gates.Common
         {
             var query = _das.DataConn.GetTable<EXRT>().OrderBy(c => c.EXRT_CURRENCY_TYPE);
             return query.ToList();
+        }
+
+        public void Save(ChangedData<EXRT> items)
+        {
+            if (items.AddedItems.Count() != 0)
+                Insert(items.AddedItems);
+
+            if (items.DeletedItems.Count() != 0)
+                Delete(items.DeletedItems);
+
+            if (items.ChangedItems.Count() != 0)
+            {
+                foreach (var item in items.ChangedItems)
+                {
+                    _das.DataConn.GetTable<EXRT>()
+                        .Where(c => c.EXRT_CURRENCY_TYPE == item.OriginalData.EXRT_CURRENCY_TYPE && c.EXRT_COUNT_CURRENCY == item.OriginalData.EXRT_COUNT_CURRENCY)
+                        .Set(c => c.EXRT_CURRENCY_TYPE, item.EXRT_CURRENCY_TYPE)
+                        .Set(c => c.EXRT_COUNT_CURRENCY, item.EXRT_COUNT_CURRENCY)
+                        .Set(c => c.EXRT_EXCHANGE_RATE, item.EXRT_EXCHANGE_RATE)
+                        .Set(c => c.EXRT_MARKET_EXCHANGE_RATE, item.EXRT_MARKET_EXCHANGE_RATE)
+                        .Set(c => c.EXRT_USER_ID, item.EXRT_USER_ID)
+                        .Set(c => c.EXRT_W_TIME, item.EXRT_W_TIME)
+                        .Update();
+                }
+            }
         }
     }
 }

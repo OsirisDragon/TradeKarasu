@@ -16,11 +16,14 @@ namespace TradeFutNight
     /// </summary>
     public partial class MainWindow : DevExpress.Xpf.Core.ThemedWindow
     {
+        private bool _isAlarmPrintFileAlreadyUsed = false;
+
         public MainWindow()
         {
             InitializeComponent();
 
             this.Dispatcher.UnhandledException += OnDispatcherUnhandledException;
+            AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
 
             // AseClient add custom charset support
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -82,6 +85,27 @@ namespace TradeFutNight
         {
             MessageBoxExService.Instance().Error(e.Exception.Message);
             e.Handled = true;
+        }
+
+        /// <summary>
+        /// 這個事件可以抓到很多平常抓不到的事件，但是也會抓到很多奇怪的事件，而且會重複抓到
+        /// </summary>
+        private void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
+        {
+            Console.WriteLine("FirstChanceException event raised in {0}: {1}",
+             AppDomain.CurrentDomain.FriendlyName, e.Exception.Message);
+
+            // 目前發現，如果列印到虛擬印表機時，儲存的虛擬印表PDF檔案如果已經被開啟的話，就會出現這個錯誤「An error occurred during printing a document」
+            // 這個錯誤在列印那邊的try catch是抓不到的，只有在這邊抓的到
+            if (e.Exception.TargetSite.Name == "OnStartPrint")
+            {
+                if (e.Exception.Message.Contains("程序無法存取檔案，因為檔案正由另一個程序使用") && !_isAlarmPrintFileAlreadyUsed)
+                {
+                    // 因為這個事件會觸發兩次，但只要跳一次就好
+                    _isAlarmPrintFileAlreadyUsed = true;
+                    MessageBoxExService.Instance().Error(e.Exception.Message);
+                }
+            }
         }
     }
 

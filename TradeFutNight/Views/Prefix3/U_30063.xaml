@@ -79,40 +79,50 @@
             </dxg:GridColumn>
             <dxg:GridColumn
                 Width="90"
+                CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="EX_OK"
-                Header="市場成交價">
+                Header="市場成交價"
+                ReadOnly="True">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.######" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
                 Width="100"
+                CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="EX_BID"
-                Header="市場買價">
+                Header="市場買價"
+                ReadOnly="True">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.######" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
                 Width="100"
+                CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="EX_ASK"
-                Header="市場賣價">
+                Header="市場賣價"
+                ReadOnly="True">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.######" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
                 Width="80"
+                CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="EX_TIME"
-                Header="資料時間">
+                Header="資料時間"
+                ReadOnly="True">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Center" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
                 Width="100"
+                CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="EX_MID"
-                Header="市場均價">
+                Header="市場均價"
+                ReadOnly="True">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.######" />
                 </dxg:GridColumn.EditSettings>
@@ -122,21 +132,29 @@
                 FieldName="EXRT_EXCHANGE_RATE"
                 Header="本公司匯率">
                 <dxg:GridColumn.EditSettings>
-                    <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="#,##0.000000" />
+                    <dxe:TextEditSettings
+                        HorizontalContentAlignment="Right"
+                        Mask="#,##0.000000"
+                        MaskType="Numeric"
+                        MaskUseAsDisplayFormat="True" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
                 Width="70"
+                CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="EXRT_USER_ID"
-                Header="異動人員">
+                Header="異動人員"
+                ReadOnly="True">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Center" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn
                 Width="165"
+                CellStyle="{StaticResource CellStyleReadOnlyChangeColor}"
                 FieldName="EXRT_W_TIME"
-                Header="異動時間">
+                Header="異動時間"
+                ReadOnly="True">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd HH:mm:ss" />
                 </dxg:GridColumn.EditSettings>

@@ -25,7 +25,7 @@ namespace TradeFutNight.Reports
             _cachedReportSource = new CachedReportSource(report, storage);
 
             // 如果不要顯示列印跳出來的系統預設視窗的話加這行
-            //_cachedReportSource.PrintingSystem.ShowPrintStatusDialog = false;
+            _cachedReportSource.PrintingSystem.ShowPrintStatusDialog = false;
         }
 
         public ReportGate(CompositeLink compositeLink)
@@ -88,8 +88,7 @@ namespace TradeFutNight.Reports
                     break;
             }
 
-            // 等待一下，因為如果不等待一下的話，後續有呼叫MessageBoxExService裡面ThemedMessageBox.Show的跳出視窗然後再按下是的話，
-            // 整個程式視窗會被縮小
+            // 等待一下，因為如果不等待一下的話，後續有呼叫MessageBoxExService裡面ThemedMessageBox.Show的跳出視窗然後再按下是的話，整個程式視窗會被縮小
             await Task.Delay(500);
             await Task.Yield();
         }
