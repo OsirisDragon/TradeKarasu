@@ -1,4 +1,5 @@
-﻿using DataEngine;
+﻿using Dapper;
+using DataEngine;
 using System.Collections.Generic;
 using System.Linq;
 using TradeFutNightData.Models.Common;
@@ -115,6 +116,20 @@ namespace TradeFutNightData.Gates.Common
                 .Select(c => new PDK() { PDK_KIND_ID = c.PDK_KIND_ID });
 
             return query.ToList();
+        }
+
+        public IList<PDK> ListDataByOSWCUR()
+        {
+            var sql = @"
+                        SELECT PDK.*
+                        FROM PDK, OSWCUR
+                        WHERE PDK_MARKET_CLOSE = CONVERT(CHAR(2),OSWCUR_OSW_GRP)
+                        AND OSWCUR_CURR_OPEN_SW >= 110
+                        ";
+
+            var result = _das.Conn.Query<PDK>(BuildCommand<PDK>(sql, null));
+
+            return result.ToList();
         }
     }
 }
