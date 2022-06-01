@@ -190,7 +190,7 @@
             this.xrLabel2.Name = "xrLabel2";
             this.xrLabel2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel2.ProcessDuplicatesMode = DevExpress.XtraReports.UI.ProcessDuplicatesMode.Suppress;
-            this.xrLabel2.SizeF = new System.Drawing.SizeF(76.55936F, 23.54164F);
+            this.xrLabel2.SizeF = new System.Drawing.SizeF(75F, 23.54F);
             this.xrLabel2.StylePriority.UseBorders = false;
             this.xrLabel2.StylePriority.UseTextAlignment = false;
             this.xrLabel2.Text = "xrLabel2";
@@ -709,7 +709,7 @@
             this.xrLabel1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel1.ProcessDuplicatesMode = DevExpress.XtraReports.UI.ProcessDuplicatesMode.Suppress;
             this.xrLabel1.ProcessDuplicatesTarget = DevExpress.XtraReports.UI.ProcessDuplicatesTarget.Tag;
-            this.xrLabel1.SizeF = new System.Drawing.SizeF(70.00001F, 23.54164F);
+            this.xrLabel1.SizeF = new System.Drawing.SizeF(68F, 23.54F);
             this.xrLabel1.StylePriority.UseBorders = false;
             this.xrLabel1.StylePriority.UseTextAlignment = false;
             this.xrLabel1.Text = "xrLabel2";
@@ -727,7 +727,7 @@
             this.xrLabel3.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel3.ProcessDuplicatesMode = DevExpress.XtraReports.UI.ProcessDuplicatesMode.Suppress;
             this.xrLabel3.ProcessDuplicatesTarget = DevExpress.XtraReports.UI.ProcessDuplicatesTarget.Tag;
-            this.xrLabel3.SizeF = new System.Drawing.SizeF(89.99995F, 23.54164F);
+            this.xrLabel3.SizeF = new System.Drawing.SizeF(88F, 23.54F);
             this.xrLabel3.StylePriority.UseBorders = false;
             this.xrLabel3.StylePriority.UseTextAlignment = false;
             this.xrLabel3.Text = "xrLabel2";
@@ -745,7 +745,7 @@
             this.xrLabel4.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel4.ProcessDuplicatesMode = DevExpress.XtraReports.UI.ProcessDuplicatesMode.Suppress;
             this.xrLabel4.ProcessDuplicatesTarget = DevExpress.XtraReports.UI.ProcessDuplicatesTarget.Tag;
-            this.xrLabel4.SizeF = new System.Drawing.SizeF(249.9999F, 23.54164F);
+            this.xrLabel4.SizeF = new System.Drawing.SizeF(248F, 23.54F);
             this.xrLabel4.StylePriority.UseBorders = false;
             this.xrLabel4.StylePriority.UseTextAlignment = false;
             this.xrLabel4.Text = "xrLabel2";
