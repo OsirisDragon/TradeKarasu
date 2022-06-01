@@ -53,5 +53,21 @@ namespace TradeFutNightData.Gates.Common
                 throw GetCustomException(ex);
             }
         }
+
+        public IEnumerable<T> proc_mtf_detail()
+        {
+            var spName = "proc_mtf_detail";
+
+            try
+            {
+                var result = _das.Conn.Query<T>(BuildCommand<T>(spName, null, commandType: CommandType.StoredProcedure));
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw GetCustomException(ex);
+            }
+        }
     }
 }
