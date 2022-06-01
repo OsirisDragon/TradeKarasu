@@ -39,7 +39,7 @@ namespace TradeFutNightData.Gates.Common
             return (items.Count() != 0) ? true : false;
         }
 
-        public void Update(IList<MOCFEX> data)
+        public void Update(IEnumerable<MOCFEX> data)
         {
             foreach (var item in data)
             {

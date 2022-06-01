@@ -4,6 +4,7 @@ using CrossModel;
 using Shield.Mapping;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using TradeFutNight.Common;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Tfxm;
@@ -31,19 +32,28 @@ namespace TradeFutNight.Views.PrefixC
                 cfg.CreateMap<FRP, UIModel_C1260>().ReverseMap();
             }));
 
-            FRPProdId = DropDownItems.FrpProdId();
+            var ddwItemsFrpProd = DropDownItems.FrpProdId();
 
             using (var das = Factory.CreateDalSession(SettingDatabaseInfo.TfxmNight))
             {
                 var dFRP = new D_FRP(das);
-                var list = new ObservableCollection<FRP>();
-                list.Add(dFRP.GetLatestByProdId("SPX_S%"));
-                list.Add(dFRP.GetLatestByProdId("VIX"));
-                list.Add(dFRP.GetLatestByProdId("FTSE_S%"));
-                list.Add(dFRP.GetLatestByProdId("BRF_S%"));
-                list.Add(dFRP.GetLatestByProdId("GDF_S%"));
+                var frps = new ObservableCollection<FRP>();
+                frps.Add(dFRP.GetLatestByProdId("SPX_S%"));
+                frps.Add(dFRP.GetLatestByProdId("VIX"));
+                frps.Add(dFRP.GetLatestByProdId("FTSE_S%"));
+                frps.Add(dFRP.GetLatestByProdId("BRF_S%"));
+                frps.Add(dFRP.GetLatestByProdId("GDF_S%"));
 
-                MainGridData = MapperInstance.Map<IList<UIModel_C1260>>(list).AsTrackable();
+                foreach (var frp in frps)
+                {
+                    if (ddwItemsFrpProd.Count(c => c.Value.ToString() == frp.FRP_PROD_ID) == 0)
+                    {
+                        ddwItemsFrpProd.Add(new ItemInfo() { Text = frp.FRP_PROD_ID, Value = frp.FRP_PROD_ID });
+                    }
+                }
+
+                FRPProdId = ddwItemsFrpProd;
+                MainGridData = MapperInstance.Map<IList<UIModel_C1260>>(frps).AsTrackable();
             }
         }
 

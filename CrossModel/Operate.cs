@@ -2,7 +2,7 @@
 
 namespace CrossModel
 {
-    public class ChangedData<T>
+    public class Operate<T>
     {
         public IEnumerable<T> AddedItems { get; set; }
         public IEnumerable<T> ChangedItems { get; set; }

@@ -341,7 +341,7 @@ namespace TradeFutNight.Views
         /// </summary>
         /// <typeparam name="ORIGIN_T">UIModel</typeparam>
         /// <typeparam name="TARGET_T">DataModel</typeparam>
-        public ChangedData<TARGET_T> GetChanges<ORIGIN_T, TARGET_T>(IList<ORIGIN_T> items, ViewModelParent<ORIGIN_T> vm) where ORIGIN_T : DtoParent<TARGET_T>
+        public Operate<TARGET_T> GetChanges<ORIGIN_T, TARGET_T>(IList<ORIGIN_T> items, ViewModelParent<ORIGIN_T> vm) where ORIGIN_T : DtoParent<TARGET_T>
         {
             var addedItems = new List<TARGET_T>();
             var deletedItems = new List<TARGET_T>();
@@ -367,7 +367,7 @@ namespace TradeFutNight.Views
                 changedItems.Add(newItem);
             }
 
-            var changeData = new ChangedData<TARGET_T>();
+            var changeData = new Operate<TARGET_T>();
             changeData.AddedItems = addedItems;
             changeData.DeletedItems = deletedItems;
             changeData.ChangedItems = changedItems;

@@ -122,9 +122,7 @@ namespace TradeFutNight.Views.Prefix2
 
             var task = Task.Run(async () =>
             {
-                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainDataAdded = CustomMapper<MOCFEX>(trackableData.AddedItems);
-                var domainDataChanged = CustomMapper<MOCFEX>(trackableData.ChangedItems);
+                var operate = GetChanges<UIModel_20016, MOCFEX>(_vm.MainGridData, _vm);
                 var operatioinType = OperationType.Save;
                 IList<MOCFEX> domainDataFinal = null;
 
@@ -135,16 +133,16 @@ namespace TradeFutNight.Views.Prefix2
                     try
                     {
                         var dMocfex = new D_MOCFEX(das);
-                        if (domainDataAdded.Count != 0)
+                        if (operate.AddedItems.Count() != 0)
                         {
-                            dMocfex.Insert(domainDataAdded);
-                            domainDataFinal = domainDataAdded;
+                            dMocfex.Insert(operate.AddedItems);
+                            domainDataFinal = operate.AddedItems.ToList();
                             operatioinType = OperationType.Insert;
                         }
-                        else if (domainDataChanged.Count != 0)
+                        else if (operate.ChangedItems.Count() != 0)
                         {
-                            dMocfex.Update(domainDataChanged);
-                            domainDataFinal = domainDataChanged;
+                            dMocfex.Update(operate.ChangedItems);
+                            domainDataFinal = operate.ChangedItems.ToList();
                             operatioinType = OperationType.Save;
                         }
 
@@ -171,20 +169,6 @@ namespace TradeFutNight.Views.Prefix2
                 CloseWindow();
             });
             await task;
-        }
-
-        private IList<T> CustomMapper<T>(IEnumerable<UIModel_20016> items) where T : MOCFEX
-        {
-            var listResult = new List<T>();
-            foreach (var item in items)
-            {
-                var newItem = _vm.MapperInstance.Map<T>(item);
-                var trackItem = item.CastToIChangeTrackable();
-                newItem.OriginalData = trackItem.GetOriginal();
-                listResult.Add(newItem);
-            }
-
-            return listResult;
         }
 
         private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)

@@ -135,8 +135,7 @@ namespace TradeFutNight.Views.Prefix3
 
             var task = Task.Run(async () =>
             {
-                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = CustomMapper<TPPINTD>(trackableData.ChangedItems);
+                var operate = GetChanges<UIModel_30026, TPPINTD>(_vm.MainGridData, _vm);
 
                 using (var das = Factory.CreateDalSession())
                 {
@@ -145,7 +144,7 @@ namespace TradeFutNight.Views.Prefix3
                     try
                     {
                         var dTppintd = new D_TPPINTD(das);
-                        dTppintd.Update(domainData);
+                        dTppintd.Update(operate.ChangedItems);
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -160,7 +159,7 @@ namespace TradeFutNight.Views.Prefix3
                     }
                 }
 
-                var report = CreateReport(domainData, OperationType.Save);
+                var report = CreateReport(operate.ChangedItems.ToList(), OperationType.Save);
                 var reportGate = await new ReportGate(report).CreateDocumentAsync();
                 await reportGate.ExportPdf(GetExportFilePath());
                 await reportGate.Print();
@@ -170,25 +169,6 @@ namespace TradeFutNight.Views.Prefix3
                 CloseWindow();
             });
             await task;
-        }
-
-        private IList<T> CustomMapper<T>(IEnumerable<UIModel_30026> items) where T : TPPINTD
-        {
-            var listResult = new List<T>();
-
-            Dispatcher.Invoke(() =>
-            {
-                foreach (var item in items)
-                {
-                    var newItem = _vm.MapperInstance.Map<T>(item);
-
-                    var trackItem = item.CastToIChangeTrackable();
-                    newItem.OriginalData = trackItem.GetOriginal();
-                    listResult.Add(newItem);
-                }
-            });
-
-            return listResult;
         }
 
         private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)

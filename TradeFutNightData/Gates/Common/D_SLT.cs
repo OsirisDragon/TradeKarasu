@@ -32,7 +32,7 @@ namespace TradeFutNightData.Gates.Common
             return query.ToList();
         }
 
-        public void Update(IList<SLT> data)
+        public void Update(IEnumerable<SLT> data)
         {
             foreach (var item in data)
             {

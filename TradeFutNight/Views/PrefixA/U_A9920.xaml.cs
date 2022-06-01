@@ -1,5 +1,4 @@
-﻿using ChangeTracking;
-using CrossModel;
+﻿using CrossModel;
 using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
 using Eagle;
@@ -165,10 +164,10 @@ namespace TradeFutNight.Views.PrefixA
 
                     try
                     {
-                        var domainData = CustomMapper<TPPADJ>(mainData);
+                        var operate = GetChanges<UIModel_A9920, TPPADJ>(_vm.MainGridData, _vm);
 
                         var dTPPADJ = new D_TPPADJ(das);
-                        dTPPADJ.Insert(domainData);
+                        dTPPADJ.Insert(operate.ChangedItems);
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -195,24 +194,6 @@ namespace TradeFutNight.Views.PrefixA
                 CloseWindow();
             });
             await task;
-        }
-
-        private IList<T> CustomMapper<T>(IEnumerable<UIModel_A9920> items) where T : TPPADJ
-        {
-            var listResult = new List<T>();
-
-            Dispatcher.Invoke(() =>
-            {
-                foreach (var item in items)
-                {
-                    var newItem = _vm.MapperInstance.Map<T>(item);
-                    var trackItem = item.CastToIChangeTrackable();
-                    newItem.OriginalData = trackItem.GetOriginal();
-                    listResult.Add(newItem);
-                }
-            });
-
-            return listResult;
         }
 
         private void SendMsgToServer(List<UIModel_A9920> mainData)

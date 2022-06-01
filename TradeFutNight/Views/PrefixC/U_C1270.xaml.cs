@@ -1,9 +1,9 @@
-﻿using ChangeTracking;
-using CrossModel;
+﻿using CrossModel;
 using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using TradeFutNight.Common;
@@ -107,8 +107,7 @@ namespace TradeFutNight.Views.PrefixC
 
             var task = Task.Run(async () =>
             {
-                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = CustomMapper<TPPBP>(trackableData.ChangedItems);
+                var operate = GetChanges<UIModel_C1270, TPPBP>(_vm.MainGridData, _vm);
 
                 using (var das = Factory.CreateDalSession())
                 {
@@ -117,7 +116,7 @@ namespace TradeFutNight.Views.PrefixC
                     try
                     {
                         var dTPPBP = new D_TPPBP(das);
-                        dTPPBP.Update(domainData);
+                        dTPPBP.Update(operate.ChangedItems);
 
                         //更新交易系統狀態
                         UpdateAccessPermission(ProgramID, das);
@@ -146,7 +145,7 @@ namespace TradeFutNight.Views.PrefixC
                     }
                 }
 
-                var report = CreateReport(domainData, OperationType.Save);
+                var report = CreateReport(operate.ChangedItems, OperationType.Save);
                 var reportGate = await new ReportGate(report).CreateDocumentAsync();
                 await reportGate.ExportPdf(GetExportFilePath());
                 await reportGate.Print();
@@ -158,30 +157,12 @@ namespace TradeFutNight.Views.PrefixC
             await task;
         }
 
-        private IList<T> CustomMapper<T>(IEnumerable<UIModel_C1270> items) where T : TPPBP
-        {
-            var listResult = new List<T>();
-
-            Dispatcher.Invoke(() =>
-            {
-                foreach (var item in items)
-                {
-                    var newItem = _vm.MapperInstance.Map<T>(item);
-                    var trackItem = item.CastToIChangeTrackable();
-                    newItem.OriginalData = trackItem.GetOriginal();
-                    listResult.Add(newItem);
-                }
-            });
-
-            return listResult;
-        }
-
-        private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
+        private XtraReport CreateReport<T>(IEnumerable<T> data, OperationType operationType)
         {
             string reportTitle = ProgramID + "–" + ProgramName;
 
             var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, true, false, true);
-            var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain, rptSetting);
+            var reportCommon = ReportNormal.CreateCommonPortrait(data.ToList(), gridMain, rptSetting);
 
             return reportCommon;
         }

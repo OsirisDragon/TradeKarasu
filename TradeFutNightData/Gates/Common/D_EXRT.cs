@@ -23,20 +23,23 @@ namespace TradeFutNightData.Gates.Common
             return query.ToList();
         }
 
-        public void Save(ChangedData<EXRT> items)
+        public void Save(Operate<EXRT> items)
         {
-            if (items.AddedItems.Count() != 0)
+            if (items.AddedItems != null && items.AddedItems.Count() != 0)
                 Insert(items.AddedItems);
 
-            if (items.DeletedItems.Count() != 0)
+            if (items.DeletedItems != null && items.DeletedItems.Count() != 0)
                 Delete(items.DeletedItems);
 
-            if (items.ChangedItems.Count() != 0)
+            if (items.ChangedItems != null && items.ChangedItems.Count() != 0)
             {
                 foreach (var item in items.ChangedItems)
                 {
+                    char originEXRT_CURRENCY_TYPE = (item.OriginalData == null) ? item.EXRT_CURRENCY_TYPE : item.OriginalData.EXRT_CURRENCY_TYPE;
+                    char originEXRT_COUNT_CURRENCY = (item.OriginalData == null) ? item.EXRT_COUNT_CURRENCY : item.OriginalData.EXRT_COUNT_CURRENCY;
+
                     _das.DataConn.GetTable<EXRT>()
-                        .Where(c => c.EXRT_CURRENCY_TYPE == item.OriginalData.EXRT_CURRENCY_TYPE && c.EXRT_COUNT_CURRENCY == item.OriginalData.EXRT_COUNT_CURRENCY)
+                        .Where(c => c.EXRT_CURRENCY_TYPE == originEXRT_CURRENCY_TYPE && c.EXRT_COUNT_CURRENCY == originEXRT_COUNT_CURRENCY)
                         .Set(c => c.EXRT_CURRENCY_TYPE, item.EXRT_CURRENCY_TYPE)
                         .Set(c => c.EXRT_COUNT_CURRENCY, item.EXRT_COUNT_CURRENCY)
                         .Set(c => c.EXRT_EXCHANGE_RATE, item.EXRT_EXCHANGE_RATE)

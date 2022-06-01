@@ -33,14 +33,38 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <dxlc:FlowLayoutControl Grid.Row="0" Orientation="Horizontal">
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="170" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
             <Button
                 x:Name="btnRefresh"
+                Grid.Row="0"
+                Grid.Column="0"
+                Width="130"
+                Margin="10,10,10,10"
+                HorizontalAlignment="Left"
                 Click="BtnRefresh_Click"
-                IsEnabled="True">
+                IsEnabled="True"
+                Visibility="Hidden">
                 更新匯率
             </Button>
-        </dxlc:FlowLayoutControl>
+            <Button
+                x:Name="btnUpdateNight"
+                Grid.Row="0"
+                Grid.Column="1"
+                Width="150"
+                Margin="10,10,10,10"
+                Click="BtnUpdateNight_Click"
+                IsEnabled="True"
+                Visibility="Hidden">
+                異常時只更新夜盤
+            </Button>
+        </Grid>
         <dxg:GridControl
             x:Name="gridMain"
             Grid.Row="1"

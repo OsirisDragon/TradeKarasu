@@ -1,5 +1,4 @@
-﻿using ChangeTracking;
-using CrossModel;
+﻿using CrossModel;
 using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
 using Eagle;
@@ -12,7 +11,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using TradeFutNight.Auth;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
@@ -57,9 +55,9 @@ namespace TradeFutNight.Views.Prefix3
         public override void ToolButtonSetting()
         {
             base.ToolButtonSetting();
-            VmMainUi.IsButtonInsertEnabled = true;
-            VmMainUi.IsButtonSaveEnabled = true;
-            VmMainUi.IsButtonDeleteEnabled = true;
+            VmMainUi.IsButtonInsertEnabled = false;
+            VmMainUi.IsButtonSaveEnabled = false;
+            VmMainUi.IsButtonDeleteEnabled = false;
             VmMainUi.IsButtonPrintEnabled = true;
         }
 
@@ -73,6 +71,7 @@ namespace TradeFutNight.Views.Prefix3
             });
             await task;
 
+            /* 日盤專用
             int currOpenSw = 0;
             using (var das = Factory.CreateDalSession())
             {
@@ -80,7 +79,6 @@ namespace TradeFutNight.Views.Prefix3
                 currOpenSw = dOswcur.GetCurrOpenSwByGrp(5);
             }
 
-            // 日盤專用
             if (currOpenSw >= 130)
             {
                 MessageBoxExService.Instance().Info("第二盤每日結算價業已發送，如需更新匯率，請輸入另一作業人員帳號密碼");
@@ -88,7 +86,8 @@ namespace TradeFutNight.Views.Prefix3
                     return;
             }
 
-            //BtnRefresh_Click(btnRefresh, null);
+            BtnRefresh_Click(btnRefresh, null);
+            */
         }
 
         public void Insert()
@@ -157,7 +156,7 @@ namespace TradeFutNight.Views.Prefix3
 
             var task = Task.Run(async () =>
             {
-                var changedData = GetChanges<UIModel_30063, EXRT>(_vm.MainGridData, _vm);
+                var operate = GetChanges<UIModel_30063, EXRT>(_vm.MainGridData, _vm);
 
                 // 日盤更新
                 using (var das = Factory.CreateDalSession())
@@ -167,12 +166,12 @@ namespace TradeFutNight.Views.Prefix3
                     try
                     {
                         var dExrt = new D_EXRT(das);
-                        dExrt.Save(changedData);
+                        dExrt.Save(operate);
 
                         using (var dasOpposite = Factory.CreateDalSession(DataBaseEngine.GetOppositeDb()))
                         {
                             var dExrtOpposite = new D_EXRT(dasOpposite);
-                            dExrtOpposite.Save(changedData);
+                            dExrtOpposite.Save(operate);
                         }
 
                         // 發送mex訊息--期貨
@@ -205,12 +204,12 @@ namespace TradeFutNight.Views.Prefix3
                     using (var dasNight = Factory.CreateDalSession(SettingDatabaseInfo.FutNight))
                     {
                         var dExrt = new D_EXRT(dasNight);
-                        dExrt.Save(changedData);
+                        dExrt.Save(operate);
 
                         using (var dasOpposite = Factory.CreateDalSession(SettingDatabaseInfo.OptNight))
                         {
                             var dExrtOpposite = new D_EXRT(dasOpposite);
-                            dExrtOpposite.Save(changedData);
+                            dExrtOpposite.Save(operate);
                         }
 
                         // 發送mex訊息--期貨夜盤
@@ -243,25 +242,6 @@ namespace TradeFutNight.Views.Prefix3
                 CloseWindow();
             });
             await task;
-        }
-
-        private IList<T> CustomMapper<T>(IEnumerable<UIModel_30063> items) where T : TPPINTD
-        {
-            var listResult = new List<T>();
-
-            Dispatcher.Invoke(() =>
-            {
-                foreach (var item in items)
-                {
-                    var newItem = _vm.MapperInstance.Map<T>(item);
-
-                    var trackItem = item.CastToIChangeTrackable();
-                    //newItem.OriginalData = trackItem.GetOriginal();
-                    listResult.Add(newItem);
-                }
-            });
-
-            return listResult;
         }
 
         private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
@@ -626,6 +606,50 @@ namespace TradeFutNight.Views.Prefix3
                     #endregion 設定特定的匯率
                 }
             }
+        }
+
+        private void BtnUpdateNight_Click(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<EXRT> exrtsDay = null;
+
+            using (var das = Factory.CreateDalSession())
+            {
+                var dExrt = new D_EXRT(das);
+                exrtsDay = dExrt.ListAll();
+
+                var changedData = new Operate<EXRT>();
+                changedData.ChangedItems = exrtsDay;
+
+                using (var dasNight = Factory.CreateDalSession(SettingDatabaseInfo.FutNight))
+                {
+                    var dExrtNight = new D_EXRT(dasNight);
+                    dExrtNight.Save(changedData);
+
+                    using (var dasOpposite = Factory.CreateDalSession(SettingDatabaseInfo.OptNight))
+                    {
+                        var dExrtOpposite = new D_EXRT(dasOpposite);
+                        dExrtOpposite.Save(changedData);
+                    }
+
+                    // 發送mex訊息--期貨夜盤
+                    IEagleGate eagleGate = new MexGate(MsgSysType.FutNight, "TFX.FUT.PROD.EXRT", "all");
+                    EagleArgs ea = new EagleArgs();
+                    ea.AddEagleContent(new EagleContent() { Item = "EXRT", Value = "send" });
+                    eagleGate.AddArgument(ea);
+                    eagleGate.Send();
+
+                    // 發送mex訊息--選擇權夜盤
+                    eagleGate = new MexGate(MsgSysType.OptNight, "TFX.OPT.PROD.EXRT", "all");
+                    ea = new EagleArgs();
+                    ea.AddEagleContent(new EagleContent() { Item = "EXRT", Value = "send" });
+                    eagleGate.AddArgument(ea);
+                    eagleGate.Send();
+
+                    DbLog("異常時只更新夜盤", das);
+                }
+            }
+
+            MessageBoxExService.Instance().Info("更新夜盤成功");
         }
     }
 }
