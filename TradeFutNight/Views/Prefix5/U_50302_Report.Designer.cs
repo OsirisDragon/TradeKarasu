@@ -200,12 +200,12 @@
             this.xrLabel2.Borders = DevExpress.XtraPrinting.BorderSide.None;
             this.xrLabel2.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[FMIFSTG_PROD_ID]")});
-            this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(3.814697E-06F, 1.041667F);
+            this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 1.041667F);
             this.xrLabel2.Multiline = true;
             this.xrLabel2.Name = "xrLabel2";
             this.xrLabel2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel2.ProcessDuplicatesMode = DevExpress.XtraReports.UI.ProcessDuplicatesMode.Suppress;
-            this.xrLabel2.SizeF = new System.Drawing.SizeF(83F, 23.54F);
+            this.xrLabel2.SizeF = new System.Drawing.SizeF(83.95834F, 23.54165F);
             this.xrLabel2.StylePriority.UseBorders = false;
             this.xrLabel2.StylePriority.UseTextAlignment = false;
             this.xrLabel2.Text = "xrLabel2";
