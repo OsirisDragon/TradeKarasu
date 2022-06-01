@@ -2,7 +2,7 @@
 using CrossModel;
 using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
-using Shield.File;
+using Shield.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -207,7 +207,7 @@ namespace TradeFutNight.Views.PrefixS
             List<PDK> pdkOpt = null;
 
             //選擇權夜盤
-            using (var das = Factory.CreateDalSession(SettingFile.Database.Options_AH))
+            using (var das = Factory.CreateDalSession(SettingDatabaseInfo.OptNight))
             {
                 pdkOpt = new D_PDK(das).ListKindId().ToList();
             }

@@ -122,8 +122,7 @@ namespace TradeFutNight.Views.Prefix3
 
             var task = Task.Run(async () =>
             {
-                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = CustomMapper<TPPDK>(trackableData.ChangedItems);
+                var operate = GetChanges<UIModel_30040, TPPDK>(_vm.MainGridData, _vm);
 
                 using (var das = Factory.CreateDalSession())
                 {
@@ -132,7 +131,7 @@ namespace TradeFutNight.Views.Prefix3
                     try
                     {
                         var dTPPDK = new D_TPPDK(das);
-                        dTPPDK.Update(domainData);
+                        dTPPDK.Update(operate.ChangedItems);
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -147,7 +146,7 @@ namespace TradeFutNight.Views.Prefix3
                     }
                 }
 
-                var report = CreateReport(domainData, OperationType.Save);
+                var report = CreateReport(operate.ChangedItems.ToList(), OperationType.Save);
                 var reportGate = await new ReportGate(report).CreateDocumentAsync();
                 await reportGate.ExportPdf(GetExportFilePath());
                 await reportGate.Print();
@@ -157,25 +156,6 @@ namespace TradeFutNight.Views.Prefix3
                 CloseWindow();
             });
             await task;
-        }
-
-        private IList<T> CustomMapper<T>(IEnumerable<UIModel_30040> items) where T : TPPDK
-        {
-            var listResult = new List<T>();
-
-            Dispatcher.Invoke(() =>
-            {
-                foreach (var item in items)
-                {
-                    var newItem = _vm.MapperInstance.Map<T>(item);
-
-                    var trackItem = item.CastToIChangeTrackable();
-                    newItem.OriginalData = trackItem.GetOriginal();
-                    listResult.Add(newItem);
-                }
-            });
-
-            return listResult;
         }
 
         private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)

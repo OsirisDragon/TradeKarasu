@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using Shield.File;
+using System.Xml.Serialization;
 
 namespace Shield.Mapping
 {
@@ -101,6 +102,54 @@ namespace Shield.Mapping
         public string Type { get; set; }
 
         public string Filters { get; set; }
+
+        public static SettingDatabaseInfo FutDay
+        {
+            get
+            {
+                return SettingFile.Database.Futures;
+            }
+        }
+
+        public static SettingDatabaseInfo FutNight
+        {
+            get
+            {
+                return SettingFile.Database.Futures_AH;
+            }
+        }
+
+        public static SettingDatabaseInfo OptDay
+        {
+            get
+            {
+                return SettingFile.Database.Options;
+            }
+        }
+
+        public static SettingDatabaseInfo OptNight
+        {
+            get
+            {
+                return SettingFile.Database.Options_AH;
+            }
+        }
+
+        public static SettingDatabaseInfo TfxmDay
+        {
+            get
+            {
+                return SettingFile.Database.Tfxm;
+            }
+        }
+
+        public static SettingDatabaseInfo TfxmNight
+        {
+            get
+            {
+                return SettingFile.Database.Tfxm_AH;
+            }
+        }
     }
 
     [System.SerializableAttribute()]

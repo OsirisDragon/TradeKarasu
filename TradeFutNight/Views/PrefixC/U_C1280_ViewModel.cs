@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using ChangeTracking;
 using CrossModel;
-using Shield.File;
+using Shield.Mapping;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using TradeFutNight.Common;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Tfxm;
@@ -31,15 +32,24 @@ namespace TradeFutNight.Views.PrefixC
                 cfg.CreateMap<FRP, UIModel_C1280>().ReverseMap();
             }));
 
-            FRPProdId = DropDownItems.FrpProdId();
+            var ddwItemsFrpProd = DropDownItems.FrpProdId();
 
-            using (var das = Factory.CreateDalSession(SettingFile.Database.Tfxm_AH))
+            using (var das = Factory.CreateDalSession(SettingDatabaseInfo.TfxmNight))
             {
                 var dFRP = new D_FRP(das);
-                var list = new ObservableCollection<FRP>();
-                list.Add(dFRP.GetLatestByProdId("STWNam%"));
+                var frps = new ObservableCollection<FRP>();
+                frps.Add(dFRP.GetLatestByProdId("STWNam%"));
 
-                MainGridData = MapperInstance.Map<IList<UIModel_C1280>>(list).AsTrackable();
+                foreach (var frp in frps)
+                {
+                    if (ddwItemsFrpProd.Count(c => c.Value.ToString() == frp.FRP_PROD_ID) == 0)
+                    {
+                        ddwItemsFrpProd.Add(new ItemInfo() { Text = frp.FRP_PROD_ID, Value = frp.FRP_PROD_ID });
+                    }
+                }
+
+                FRPProdId = ddwItemsFrpProd;
+                MainGridData = MapperInstance.Map<IList<UIModel_C1280>>(frps).AsTrackable();
             }
         }
 

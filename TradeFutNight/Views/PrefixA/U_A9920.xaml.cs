@@ -1,9 +1,7 @@
-﻿using ChangeTracking;
-using CrossModel;
+﻿using CrossModel;
 using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
 using Eagle;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -166,10 +164,10 @@ namespace TradeFutNight.Views.PrefixA
 
                     try
                     {
-                        var domainData = CustomMapper<TPPADJ>(mainData);
+                        var operate = GetChanges<UIModel_A9920, TPPADJ>(_vm.MainGridData, _vm);
 
                         var dTPPADJ = new D_TPPADJ(das);
-                        dTPPADJ.Insert(domainData);
+                        dTPPADJ.Insert(operate.ChangedItems);
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -196,24 +194,6 @@ namespace TradeFutNight.Views.PrefixA
                 CloseWindow();
             });
             await task;
-        }
-
-        private IList<T> CustomMapper<T>(IEnumerable<UIModel_A9920> items) where T : TPPADJ
-        {
-            var listResult = new List<T>();
-
-            Dispatcher.Invoke(() =>
-            {
-                foreach (var item in items)
-                {
-                    var newItem = _vm.MapperInstance.Map<T>(item);
-                    var trackItem = item.CastToIChangeTrackable();
-                    newItem.OriginalData = trackItem.GetOriginal();
-                    listResult.Add(newItem);
-                }
-            });
-
-            return listResult;
         }
 
         private void SendMsgToServer(List<UIModel_A9920> mainData)
@@ -433,30 +413,5 @@ namespace TradeFutNight.Views.PrefixA
 
             MessageBoxExService.Instance().Info("OK");
         }
-
-        /// <summary>
-        /// 這是為了30063而寫的，只是先在這邊測試，等到30063開始寫再移過去
-        /// </summary>
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            IEagleGate eagleGate = new MexGate(MsgSysType.FutNight, "TFX.FXM.TXR.QUERY", "all");
-            EagleArgs ea = new EagleArgs();
-            ea.AddEagleContent(new EagleContent() { Item = "QuerySingle", Value = "all" });
-            eagleGate.AddArgument(ea);
-            string result = eagleGate.SendAndReceiveData("FXM.TFX.TXR.RESULT", "all", 3000).ReceiveData;
-            var mexReceivedData = JsonConvert.DeserializeObject<List<MexReceivedData>>(result);
-        }
-    }
-
-    /// <summary>
-    /// 這是為了30063而寫的，只是先在這邊測試，等到30063開始寫再移過去
-    /// </summary>
-    public class MexReceivedData
-    {
-        public string type { get; set; }
-        public int bid { get; set; }
-        public int ask { get; set; }
-        public string time { get; set; }
-        public int price { get; set; }
     }
 }

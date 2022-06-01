@@ -1,4 +1,5 @@
 ﻿using CrossModel;
+using DataEngine;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Docking;
 using Shield.File;
@@ -113,6 +114,8 @@ namespace TradeFutNight.Views
             {
                 _vm.IsLoadingVisible = true;
                 var activeItem = dockLayoutManagerMain.LayoutController.ActiveItem;
+
+                CheckSystem();
 
                 if (activeItem != null)
                 {
@@ -368,6 +371,23 @@ namespace TradeFutNight.Views
                             MessageBoxExService.Instance().Error(ex.Message);
                         }
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 怕介面放太久，有些資料會變掉，像是營業日之類
+        /// </summary>
+        private void CheckSystem()
+        {
+            using (var das = new DalSession())
+            {
+                var dOcf = new D_OCF(das);
+                var currentOcf = dOcf.Get();
+
+                if (MagicalHats.Ocf.OCF_DATE != currentOcf.OCF_DATE)
+                {
+                    throw new Exception($"資料庫營業日OCF_DATE已經變更成{currentOcf.OCF_DATE.ToDateStr()}，請關閉整個程式，再重新開啟");
                 }
             }
         }

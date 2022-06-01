@@ -1,4 +1,5 @@
-﻿using CrossModel;
+﻿using ChangeTracking;
+using CrossModel;
 using CrossModel.Enum;
 using DataEngine;
 using DevExpress.Xpf.Grid;
@@ -287,6 +288,7 @@ namespace TradeFutNight.Views
             {
                 int rowHandle = grid.GetRowHandleByVisibleIndex(i);
                 int listIndex = grid.GetListIndexByRowHandle(rowHandle);
+
                 var item = vm.MainGridData[listIndex];
 
                 foreach (PropertyInfo prop in item.GetType().GetProperties())
@@ -302,6 +304,7 @@ namespace TradeFutNight.Views
                             if (prop.GetValue(item) == null || prop.GetValue(item).ToString().Trim() == "" || prop.GetValue(item).ToString().Trim() == "\0")
                             {
                                 vm.FocusRow(item);
+
                                 MessageBoxExService.Instance().Error($"{col.Header}不允許空值");
                                 return false;
                             }
@@ -331,6 +334,65 @@ namespace TradeFutNight.Views
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// 取得異動的物件，像是新增、刪除、變更
+        /// </summary>
+        /// <typeparam name="ORIGIN_T">UIModel</typeparam>
+        /// <typeparam name="TARGET_T">DataModel</typeparam>
+        public Operate<TARGET_T> GetChanges<ORIGIN_T, TARGET_T>(IList<ORIGIN_T> items, ViewModelParent<ORIGIN_T> vm) where ORIGIN_T : DtoParent<TARGET_T>
+        {
+            var addedItems = new List<TARGET_T>();
+            var deletedItems = new List<TARGET_T>();
+            var changedItems = new List<TARGET_T>();
+
+            var trackList = (IChangeTrackableCollection<ORIGIN_T>)items;
+
+            foreach (IChangeTrackable<ORIGIN_T> item in trackList.DeletedItems)
+            {
+                var newItem = SetOriginalData<ORIGIN_T, TARGET_T>(item, vm);
+                deletedItems.Add(newItem);
+            }
+
+            foreach (IChangeTrackable<ORIGIN_T> item in trackList.AddedItems)
+            {
+                var newItem = SetOriginalData<ORIGIN_T, TARGET_T>(item, vm);
+                addedItems.Add(newItem);
+            }
+
+            foreach (IChangeTrackable<ORIGIN_T> item in trackList.ChangedItems)
+            {
+                var newItem = SetOriginalData<ORIGIN_T, TARGET_T>(item, vm);
+                changedItems.Add(newItem);
+            }
+
+            var changeData = new Operate<TARGET_T>();
+            changeData.AddedItems = addedItems;
+            changeData.DeletedItems = deletedItems;
+            changeData.ChangedItems = changedItems;
+
+            return changeData;
+        }
+
+        /// <summary>
+        /// 設定物件的原始物件，也就是該物件如果被異動之前的原始資料
+        /// </summary>
+        private TARGET_T SetOriginalData<ORIGIN_T, TARGET_T>(IChangeTrackable<ORIGIN_T> item, ViewModelParent<ORIGIN_T> vm) where ORIGIN_T : DtoParent<TARGET_T>
+        {
+            // 取得原始物件
+            var original = item.GetOriginal();
+
+            // 將UIModel轉成DataModel，像是UIModel_30063轉成EXRT這樣
+            var originalTarget = vm.MapperInstance.Map<TARGET_T>(original);
+
+            // 取得現在的物件，並把原始物件指給他的屬性
+            var current = item.GetCurrent();
+            current.OriginalData = originalTarget;
+
+            var currentTarget = vm.MapperInstance.Map<TARGET_T>(current);
+
+            return currentTarget;
         }
 
         public void Delete<T>(GridControl gridControl, ViewModelParent<T> vm, bool isNeedConfirm = true)

@@ -2,7 +2,7 @@
 using CrossModel;
 using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
-using Shield.File;
+using Shield.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -108,10 +108,9 @@ namespace TradeFutNight.Views.PrefixC
 
             var task = Task.Run(async () =>
             {
-                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = CustomMapper<FRP>(trackableData.ChangedItems);
+                var operate = GetChanges<UIModel_C1280, FRP>(_vm.MainGridData, _vm);
 
-                using (var dasTfxm = Factory.CreateDalSession(SettingFile.Database.Tfxm_AH))
+                using (var dasTfxm = Factory.CreateDalSession(SettingDatabaseInfo.TfxmNight))
                 {
                     dasTfxm.Begin();
 
@@ -120,7 +119,7 @@ namespace TradeFutNight.Views.PrefixC
                         var dFRP = new D_FRP(dasTfxm);
 
                         //更新現貨資料
-                        dFRP.Update(domainData);
+                        dFRP.Update(operate.ChangedItems);
 
                         using (var das = Factory.CreateDalSession())
                         {
@@ -151,7 +150,7 @@ namespace TradeFutNight.Views.PrefixC
                     }
                 }
 
-                var report = CreateReport(domainData, OperationType.Save);
+                var report = CreateReport(_vm.MainGridData, OperationType.Save);
                 var reportGate = await new ReportGate(report).CreateDocumentAsync();
                 await reportGate.ExportPdf(GetExportFilePath());
                 await reportGate.Print();
@@ -161,25 +160,6 @@ namespace TradeFutNight.Views.PrefixC
                 CloseWindow();
             });
             await task;
-        }
-
-        private IList<T> CustomMapper<T>(IEnumerable<UIModel_C1280> items) where T : FRP
-        {
-            var listResult = new List<T>();
-
-            Dispatcher.Invoke(() =>
-            {
-                foreach (var item in items)
-                {
-                    var newItem = _vm.MapperInstance.Map<T>(item);
-
-                    var trackItem = item.CastToIChangeTrackable();
-                    newItem.OriginalData = trackItem.GetOriginal();
-                    listResult.Add(newItem);
-                }
-            });
-
-            return listResult;
         }
 
         private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)

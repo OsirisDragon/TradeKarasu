@@ -34,7 +34,7 @@ namespace TradeFutNightData.Gates.Tfxm
             return result;
         }
 
-        public void Update(IList<FRP> data)
+        public void Update(IEnumerable<FRP> data)
         {
             foreach (var item in data)
             {

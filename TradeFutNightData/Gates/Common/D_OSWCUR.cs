@@ -15,7 +15,7 @@ namespace TradeFutNightData.Gates.Common
 
     public class D_OSWCUR<T> : ParentGate
     {
-        public int ListCurrOpenSW(int oswGrp)
+        public int GetCurrOpenSwByGrp(int oswGrp)
         {
             var query = _das.DataConn.GetTable<OSWCUR>()
                 .Where(c => c.OSWCUR_OSW_GRP == oswGrp)

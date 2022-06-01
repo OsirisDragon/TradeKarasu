@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ChangeTracking;
 using CrossModel;
-using Shield.File;
+using Shield.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -56,7 +56,7 @@ namespace TradeFutNight.Views.PrefixC
                     list = list.Where(x => x.PDK_SUBTYPE == "C").ToList();
                 }
 
-                using (var das = Factory.CreateDalSession(SettingFile.Database.Tfxm))
+                using (var das = Factory.CreateDalSession(SettingDatabaseInfo.TfxmDay))
                 {
                     var dRSFD = new D_RSFD(das);
 
