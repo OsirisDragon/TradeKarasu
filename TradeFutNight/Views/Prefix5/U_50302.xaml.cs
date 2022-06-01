@@ -90,7 +90,7 @@ namespace TradeFutNight.Views.Prefix5
 
         private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
         {
-            string reportTitle = ProgramID + AppSettings.DashForTitle + ProgramName;
+            string reportTitle = ProgramID + AppSettings.DashForTitle + "期貨價差委託交易行情表";
             ReportSetting rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, true, false, true);
 
             U_50302_Report report = new U_50302_Report

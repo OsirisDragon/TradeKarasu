@@ -82,6 +82,7 @@
             this.xrTableCell49 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell50 = new DevExpress.XtraReports.UI.XRTableCell();
             this.PageHeader = new DevExpress.XtraReports.UI.PageHeaderBand();
+            this.xrSubreportHeader = new DevExpress.XtraReports.UI.XRSubreport();
             this.OcfRocDate = new DevExpress.XtraReports.Parameters.Parameter();
             this.UserName = new DevExpress.XtraReports.Parameters.Parameter();
             this.ReportID = new DevExpress.XtraReports.Parameters.Parameter();
@@ -108,7 +109,6 @@
             this.xrTableCell69 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell70 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell71 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrSubreportHeader = new DevExpress.XtraReports.UI.XRSubreport();
             this.objectDataSource1 = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.xrTable3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).BeginInit();
@@ -205,7 +205,7 @@
             this.xrLabel2.Name = "xrLabel2";
             this.xrLabel2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel2.ProcessDuplicatesMode = DevExpress.XtraReports.UI.ProcessDuplicatesMode.Suppress;
-            this.xrLabel2.SizeF = new System.Drawing.SizeF(85.00001F, 23.54164F);
+            this.xrLabel2.SizeF = new System.Drawing.SizeF(83F, 23.54F);
             this.xrLabel2.StylePriority.UseBorders = false;
             this.xrLabel2.StylePriority.UseTextAlignment = false;
             this.xrLabel2.Text = "xrLabel2";
@@ -610,6 +610,17 @@
             this.PageHeader.HeightF = 109.375F;
             this.PageHeader.Name = "PageHeader";
             // 
+            // xrSubreportHeader
+            // 
+            this.xrSubreportHeader.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
+            this.xrSubreportHeader.Name = "xrSubreportHeader";
+            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("OcfRocDate", this.OcfRocDate));
+            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("UserName", this.UserName));
+            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("ReportID", this.ReportID));
+            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("ReportTitle", this.ReportTitle));
+            this.xrSubreportHeader.ReportSource = new TradeFutNight.Reports.ReportCommonPortraitHeader();
+            this.xrSubreportHeader.SizeF = new System.Drawing.SizeF(786.9999F, 109.375F);
+            // 
             // OcfRocDate
             // 
             this.OcfRocDate.AllowNull = true;
@@ -825,17 +836,6 @@
             this.xrTableCell71.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
             this.xrTableCell71.TextFormatString = "{0:#,##0.####}";
             this.xrTableCell71.Weight = 0.99539700959193966D;
-            // 
-            // xrSubreportHeader
-            // 
-            this.xrSubreportHeader.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
-            this.xrSubreportHeader.Name = "xrSubreportHeader";
-            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("OcfRocDate", this.OcfRocDate));
-            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("UserName", this.UserName));
-            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("ReportID", this.ReportID));
-            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("ReportTitle", this.ReportTitle));
-            this.xrSubreportHeader.ReportSource = new TradeFutNight.Reports.ReportCommonPortraitHeader();
-            this.xrSubreportHeader.SizeF = new System.Drawing.SizeF(786.9999F, 109.375F);
             // 
             // objectDataSource1
             // 
