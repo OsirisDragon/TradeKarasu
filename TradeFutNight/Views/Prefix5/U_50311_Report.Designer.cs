@@ -60,8 +60,8 @@
             this.xrTableCell5 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell6 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell8 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.GroupHeaderBandProdIdOut = new DevExpress.XtraReports.UI.GroupHeaderBand();
-            this.GroupFooterBandProdIdOut = new DevExpress.XtraReports.UI.GroupFooterBand();
+            this.GroupHeaderBandFcmNo = new DevExpress.XtraReports.UI.GroupHeaderBand();
+            this.GroupFooterBandFcmNo = new DevExpress.XtraReports.UI.GroupFooterBand();
             this.xrTable2 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow2 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell16 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -408,19 +408,19 @@
             this.xrTableCell8.Text = "經手費";
             this.xrTableCell8.Weight = 0.987809337457744D;
             // 
-            // GroupHeaderBandProdIdOut
+            // GroupHeaderBandFcmNo
             // 
-            this.GroupHeaderBandProdIdOut.GroupFields.AddRange(new DevExpress.XtraReports.UI.GroupField[] {
+            this.GroupHeaderBandFcmNo.GroupFields.AddRange(new DevExpress.XtraReports.UI.GroupField[] {
             new DevExpress.XtraReports.UI.GroupField("FCM_NO", DevExpress.XtraReports.UI.XRColumnSortOrder.Ascending)});
-            this.GroupHeaderBandProdIdOut.HeightF = 0F;
-            this.GroupHeaderBandProdIdOut.Name = "GroupHeaderBandProdIdOut";
+            this.GroupHeaderBandFcmNo.HeightF = 0F;
+            this.GroupHeaderBandFcmNo.Name = "GroupHeaderBandFcmNo";
             // 
-            // GroupFooterBandProdIdOut
+            // GroupFooterBandFcmNo
             // 
-            this.GroupFooterBandProdIdOut.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.GroupFooterBandFcmNo.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrTable2});
-            this.GroupFooterBandProdIdOut.HeightF = 25F;
-            this.GroupFooterBandProdIdOut.Name = "GroupFooterBandProdIdOut";
+            this.GroupFooterBandFcmNo.HeightF = 25F;
+            this.GroupFooterBandFcmNo.Name = "GroupFooterBandFcmNo";
             // 
             // xrTable2
             // 
@@ -729,8 +729,8 @@
             this.BottomMargin,
             this.Detail,
             this.GroupHeaderTitle,
-            this.GroupHeaderBandProdIdOut,
-            this.GroupFooterBandProdIdOut,
+            this.GroupHeaderBandFcmNo,
+            this.GroupFooterBandFcmNo,
             this.PageHeader,
             this.ReportFooter});
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
@@ -771,8 +771,8 @@
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell4;
         private DevExpress.DataAccess.ObjectBinding.ObjectDataSource objectDataSource1;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell3;
-        private DevExpress.XtraReports.UI.GroupHeaderBand GroupHeaderBandProdIdOut;
-        private DevExpress.XtraReports.UI.GroupFooterBand GroupFooterBandProdIdOut;
+        private DevExpress.XtraReports.UI.GroupHeaderBand GroupHeaderBandFcmNo;
+        private DevExpress.XtraReports.UI.GroupFooterBand GroupFooterBandFcmNo;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell5;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell6;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell8;

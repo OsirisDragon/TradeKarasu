@@ -42,11 +42,11 @@
             }
         }
 
-        public bool HasGroupProdIdOut
+        public bool HasGroupFcmNo
         {
             set
             {
-                this.GroupFooterBandProdIdOut.Visible = value;
+                this.GroupFooterBandFcmNo.Visible = value;
             }
         }
 
@@ -60,7 +60,7 @@
             if (RowCount == 0)
             {
                 Detail.Visible = false;
-                GroupFooterBandProdIdOut.Visible = false;
+                GroupFooterBandFcmNo.Visible = false;
                 ReportFooter.Visible = false;
             }
         }
