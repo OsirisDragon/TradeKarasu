@@ -3,7 +3,6 @@ using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
@@ -53,7 +52,10 @@ namespace TradeFutNight.Views.Prefix5
                 DbLog(MessageConst.Open);
             });
             await task;
-
+            if (_vm.MainGridData.Count == 0)
+            {
+                MessageBoxExService.Instance().Info("尚無此交易資料");
+            }
             var report = CreateReport(_vm.MainGridData, OperationType.Query);
 
             _vm.Report = report;

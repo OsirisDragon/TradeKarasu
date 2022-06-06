@@ -69,6 +69,23 @@ namespace TradeFutNightData.Gates.Common
                 throw GetCustomException(ex);
             }
         }
+
+        public IEnumerable<T> proc_BTRD_mtf_detail()
+        {
+            var spName = "proc_BTRD_mtf_detail";
+
+            try
+            {
+                var result = _das.Conn.Query<T>(BuildCommand<T>(spName, null, commandType: CommandType.StoredProcedure));
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw GetCustomException(ex);
+            }
+        }
+
         public IEnumerable<T> proc_everyday_tal()
         {
             var spName = "proc_everyday_tal";
@@ -84,6 +101,7 @@ namespace TradeFutNightData.Gates.Common
                 throw GetCustomException(ex);
             }
         }
+
         public IEnumerable<T> proc_day_fee()
         {
             var spName = "proc_day_fee";

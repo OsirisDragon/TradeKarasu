@@ -3,6 +3,7 @@ using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
@@ -11,16 +12,16 @@ using TradeFutNight.Reports;
 namespace TradeFutNight.Views.Prefix5
 {
     /// <summary>
-    /// U_50308.xaml 的互動邏輯
+    /// U_52303.xaml 的互動邏輯
     /// </summary>
-    public partial class U_50308 : UserControlParent, IViewSword
+    public partial class U_52303 : UserControlParent, IViewSword
     {
-        private U_50308_ViewModel _vm;
+        private U_52303_ViewModel _vm;
 
-        public U_50308()
+        public U_52303()
         {
             InitializeComponent();
-            _vm = (U_50308_ViewModel)DataContext;
+            _vm = (U_52303_ViewModel)DataContext;
         }
 
         public async Task<bool> IsCanRun()
@@ -39,7 +40,9 @@ namespace TradeFutNight.Views.Prefix5
         public override void ToolButtonSetting()
         {
             base.ToolButtonSetting();
-            VmMainUi.IsButtonPrintEnabled = true;
+            VmMainUi.IsButtonPrintIndexEnabled = true;
+            VmMainUi.IsButtonPrintStockEnabled = true;
+            VmMainUi.IsButtonSaveEnabled = false;
         }
 
         public async Task Open()
@@ -52,9 +55,10 @@ namespace TradeFutNight.Views.Prefix5
                 DbLog(MessageConst.Open);
             });
             await task;
+
             if (_vm.MainGridData.Count == 0)
             {
-                MessageBoxExService.Instance().Info("尚無此交易資料");
+                MessageBoxExService.Instance().Info("無鉅額成交資料");
             }
 
             var report = CreateReport(_vm.MainGridData, OperationType.Query);
@@ -92,9 +96,9 @@ namespace TradeFutNight.Views.Prefix5
         private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
         {
             string reportTitle = ProgramID + AppSettings.DashForTitle + ProgramName;
-            ReportSetting rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, true, false, true);
+            ReportSetting rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, false, false, false);
 
-            U_50308_Report report = new U_50308_Report
+            U_52303_Report report = new U_52303_Report
             {
                 DataSource = data,
                 HasHandlePerson = rptSetting.HasHandlePerson,
@@ -114,6 +118,14 @@ namespace TradeFutNight.Views.Prefix5
                     report.TableFooterVisible = false;
                     break;
 
+                case OperationType.PrintIndex:
+                    rptSetting.ReportTitle += AppSettings.DashForTitle + "指數類";
+                    break;
+
+                case OperationType.PrintStock:
+                    rptSetting.ReportTitle += AppSettings.DashForTitle + "股票類";
+                    break;
+
                 default:
                     break;
             }
@@ -131,25 +143,26 @@ namespace TradeFutNight.Views.Prefix5
 
         public async Task Print()
         {
-            var report = CreateReport(_vm.MainGridData, OperationType.Print);
-            var reportGate = await new ReportGate(report).CreateDocumentAsync();
-            await reportGate.ExportPdf(GetExportFilePath());
-            await reportGate.Print();
-
-            VmMainUi.HideLoadingWindow();
-            MessageBoxExService.Instance().Info(MessageConst.PrintSuccess);
+            await Task.FromResult<object>(null);
+            throw new NotImplementedException();
         }
 
         public async Task PrintIndex()
         {
-            await Task.FromResult<object>(null);
-            throw new NotImplementedException();
+            var report = CreateReport(_vm.MainGridData.Where(c => c.PDK_SUBTYPE != "S").ToList(), OperationType.PrintIndex);
+            var reportGate = await new ReportGate(report).CreateDocumentAsync();
+            await reportGate.ExportPdf(GetExportFilePath());
+
+            MessageBoxExService.Instance().Info("存檔完成，如欲印相關報表，請利用PDF檔列印");
         }
 
         public async Task PrintStock()
         {
-            await Task.FromResult<object>(null);
-            throw new NotImplementedException();
+            var report = CreateReport(_vm.MainGridData.Where(c => c.PDK_SUBTYPE == "S").ToList(), OperationType.PrintStock);
+            var reportGate = await new ReportGate(report).CreateDocumentAsync();
+            await reportGate.ExportPdf(GetExportFilePath());
+
+            MessageBoxExService.Instance().Info("存檔完成，如欲印相關報表，請利用PDF檔列印");
         }
     }
 }
