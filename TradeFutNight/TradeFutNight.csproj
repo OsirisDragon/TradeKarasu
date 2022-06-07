@@ -303,6 +303,29 @@
     <Compile Include="Views\Prefix3\U_30113_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30112_ViewModel.cs" />
     <Compile Include="Views\MainUI_ViewModel.cs" />
+    <Compile Include="Views\Prefix5\U_52303.xaml.cs">
+      <DependentUpon>U_52303.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix5\U_52303_Report.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\Prefix5\U_52303_Report.Designer.cs">
+      <DependentUpon>U_52303_Report.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix5\U_52303_ViewModel.cs" />
+    <Compile Include="Views\Prefix5\U_50311.xaml.cs">
+      <DependentUpon>U_50311.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix5\U_50311_Report.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\Prefix5\U_50311_Report.Designer.cs">
+      <DependentUpon>U_50311_Report.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix5\U_50311_ViewModel.cs" />
+    <Compile Include="Views\Prefix5\U_50308.xaml.cs">
+      <DependentUpon>U_50308.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Prefix5\U_50303.xaml.cs">
       <DependentUpon>U_50303.xaml</DependentUpon>
     </Compile>
@@ -311,6 +334,12 @@
     </Compile>
     <Compile Include="Views\Prefix5\U_50301.xaml.cs">
       <DependentUpon>U_50301.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix5\U_50308_Report.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\Prefix5\U_50308_Report.Designer.cs">
+      <DependentUpon>U_50308_Report.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Prefix5\U_50303_Report.cs">
       <SubType>Component</SubType>
@@ -330,6 +359,7 @@
     <Compile Include="Views\Prefix5\U_50301_Report.Designer.cs">
       <DependentUpon>U_50301_Report.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Prefix5\U_50308_ViewModel.cs" />
     <Compile Include="Views\Prefix5\U_50303_ViewModel.cs" />
     <Compile Include="Views\Prefix5\U_50302_ViewModel.cs" />
     <Compile Include="Views\Prefix5\U_50307.xaml.cs">
@@ -551,6 +581,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Prefix5\U_52303.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix5\U_50311.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix5\U_50308.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Prefix5\U_50303.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -694,6 +736,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\ReportCommonLandscapeHeader.resx">
       <DependentUpon>ReportCommonLandscapeHeader.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Prefix5\U_52303_Report.resx">
+      <DependentUpon>U_52303_Report.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Prefix5\U_50311_Report.resx">
+      <DependentUpon>U_50311_Report.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Prefix5\U_50308_Report.resx">
+      <DependentUpon>U_50308_Report.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Prefix5\U_50303_Report.resx">
       <DependentUpon>U_50303_Report.cs</DependentUpon>
