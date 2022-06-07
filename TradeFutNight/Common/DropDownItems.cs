@@ -308,16 +308,17 @@ namespace TradeFutNight.Common
         {
             var result = new List<ItemInfo>();
 
-            result.Add(new ItemInfo() { Text = "資訊作業部", Value = "I" });
-            result.Add(new ItemInfo() { Text = "資訊規劃部", Value = "J" });
-            result.Add(new ItemInfo() { Text = "交易部", Value = "T" });
-            result.Add(new ItemInfo() { Text = "結算部", Value = "C" });
-            result.Add(new ItemInfo() { Text = "企劃部", Value = "B" });
-            result.Add(new ItemInfo() { Text = "期貨商輔導部", Value = "A" });
-            result.Add(new ItemInfo() { Text = "管理部", Value = "M" });
-            result.Add(new ItemInfo() { Text = "內部稽核", Value = "E" });
-            result.Add(new ItemInfo() { Text = "首長", Value = "S" });
-            result.Add(new ItemInfo() { Text = "監視部", Value = "W" });
+            result.Add(new ItemInfo() { Text = "全部", Value = '%' });
+            result.Add(new ItemInfo() { Text = "資訊作業部", Value = 'I' });
+            result.Add(new ItemInfo() { Text = "資訊規劃部", Value = 'J' });
+            result.Add(new ItemInfo() { Text = "交易部", Value = 'T' });
+            result.Add(new ItemInfo() { Text = "結算部", Value = 'C' });
+            result.Add(new ItemInfo() { Text = "企劃部", Value = 'B' });
+            result.Add(new ItemInfo() { Text = "期貨商輔導部", Value = 'A' });
+            result.Add(new ItemInfo() { Text = "管理部", Value = 'M' });
+            result.Add(new ItemInfo() { Text = "內部稽核", Value = 'E' });
+            result.Add(new ItemInfo() { Text = "首長", Value = 'S' });
+            result.Add(new ItemInfo() { Text = "監視部", Value = 'W' });
             return result;
         }
     }

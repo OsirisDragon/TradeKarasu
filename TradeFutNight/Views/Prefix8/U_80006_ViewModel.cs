@@ -89,7 +89,7 @@ namespace TradeFutNight.Views.Prefix8
                             model.OP_USER_ID = data[0];
                             model.OP_USER_NAME = data[1];
                             model.OP_W_TIME = data[2].AsDateTime();
-                            model.DEPT_ID = data[3];
+                            model.DEPT_ID = data[3].ToCharArray()[0];
                             model.CHANGE_USER = data[4];
                             model.TXN_ID = data[5];
                             model.TXN_NAME = data[6];
@@ -113,7 +113,7 @@ namespace TradeFutNight.Views.Prefix8
 
         public virtual DateTime OP_W_TIME { get; set; }
 
-        public virtual string DEPT_ID { get; set; }
+        public virtual char DEPT_ID { get; set; }
 
         public virtual string CHANGE_USER { get; set; }
 
