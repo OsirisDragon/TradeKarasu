@@ -35,6 +35,8 @@ namespace CrossModel
 
         public string FooterMemoText { get; set; }
 
+        public Align HeaderMemoTextAlign { get; set; }
+
         public bool HasHandlePerson { get; set; }
 
         public bool HasConfirmPerson { get; set; }

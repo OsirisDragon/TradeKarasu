@@ -1,4 +1,5 @@
 ﻿using CrossModel;
+using CrossModel.Enum;
 using DevExpress.Xpf.Grid;
 using DevExpress.XtraReports.Parameters;
 using DevExpress.XtraReports.UI;
@@ -87,6 +88,14 @@ namespace TradeFutNight.Reports
             }
         }
 
+        public DevExpress.XtraPrinting.TextAlignment HeaderMemoTextAlign
+        {
+            set
+            {
+                lblHeaderMemo.TextAlignment = value;
+            }
+        }
+
         public ReportCommonLandscapeBase()
         {
             InitializeComponent();
@@ -147,6 +156,23 @@ namespace TradeFutNight.Reports
             if (!string.IsNullOrEmpty(rptSetting.HeaderMemoText))
             {
                 HeaderMemoText = rptSetting.HeaderMemoText;
+            }
+
+            // 對齊
+            if (rptSetting.HeaderMemoTextAlign != Align.None)
+            {
+                if (rptSetting.HeaderMemoTextAlign == Align.Left)
+                {
+                    HeaderMemoTextAlign = DevExpress.XtraPrinting.TextAlignment.TopLeft;
+                }
+                else if (rptSetting.HeaderMemoTextAlign == Align.Center)
+                {
+                    HeaderMemoTextAlign = DevExpress.XtraPrinting.TextAlignment.TopCenter;
+                }
+                else if (rptSetting.HeaderMemoTextAlign == Align.Right)
+                {
+                    HeaderMemoTextAlign = DevExpress.XtraPrinting.TextAlignment.TopRight;
+                }
             }
 
             this.DataSource = exportData;
