@@ -37,6 +37,8 @@
             this.UserName = new DevExpress.XtraReports.Parameters.Parameter();
             this.ReportID = new DevExpress.XtraReports.Parameters.Parameter();
             this.ReportTitle = new DevExpress.XtraReports.Parameters.Parameter();
+            this.SubBandHeaderMemo = new DevExpress.XtraReports.UI.SubBand();
+            this.lblHeaderMemo = new DevExpress.XtraReports.UI.XRLabel();
             this.ReportFooter = new DevExpress.XtraReports.UI.ReportFooterBand();
             this.tableFooter = new DevExpress.XtraReports.UI.XRTable();
             this.tableRowMemo = new DevExpress.XtraReports.UI.XRTableRow();
@@ -72,8 +74,10 @@
             this.PageHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrSubreportHeader});
             this.PageHeader.Dpi = 96F;
-            this.PageHeader.HeightF = 105F;
+            this.PageHeader.HeightF = 95F;
             this.PageHeader.Name = "PageHeader";
+            this.PageHeader.SubBands.AddRange(new DevExpress.XtraReports.UI.SubBand[] {
+            this.SubBandHeaderMemo});
             // 
             // xrSubreportHeader
             // 
@@ -85,7 +89,7 @@
             this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("ReportID", this.ReportID));
             this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("ReportTitle", this.ReportTitle));
             this.xrSubreportHeader.ReportSource = new TradeFutNight.Reports.ReportCommonPortraitHeader();
-            this.xrSubreportHeader.SizeF = new System.Drawing.SizeF(754F, 105F);
+            this.xrSubreportHeader.SizeF = new System.Drawing.SizeF(754F, 95F);
             // 
             // OcfRocDate
             // 
@@ -114,6 +118,29 @@
             this.ReportTitle.Description = "ReportTitle";
             this.ReportTitle.Name = "ReportTitle";
             this.ReportTitle.Visible = false;
+            // 
+            // SubBandHeaderMemo
+            // 
+            this.SubBandHeaderMemo.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.lblHeaderMemo});
+            this.SubBandHeaderMemo.Dpi = 96F;
+            this.SubBandHeaderMemo.HeightF = 22.08F;
+            this.SubBandHeaderMemo.Name = "SubBandHeaderMemo";
+            // 
+            // lblHeaderMemo
+            // 
+            this.lblHeaderMemo.AutoWidth = true;
+            this.lblHeaderMemo.CanShrink = true;
+            this.lblHeaderMemo.Dpi = 96F;
+            this.lblHeaderMemo.Font = new System.Drawing.Font("標楷體", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblHeaderMemo.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
+            this.lblHeaderMemo.Multiline = true;
+            this.lblHeaderMemo.Name = "lblHeaderMemo";
+            this.lblHeaderMemo.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
+            this.lblHeaderMemo.SizeF = new System.Drawing.SizeF(754F, 22.08F);
+            this.lblHeaderMemo.StylePriority.UseFont = false;
+            this.lblHeaderMemo.StylePriority.UseTextAlignment = false;
+            this.lblHeaderMemo.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
             // 
             // ReportFooter
             // 
@@ -254,5 +281,7 @@
         private DevExpress.XtraReports.Parameters.Parameter UserName;
         private DevExpress.XtraReports.Parameters.Parameter ReportTitle;
         private DevExpress.XtraReports.Parameters.Parameter ReportID;
+        private DevExpress.XtraReports.UI.SubBand SubBandHeaderMemo;
+        private DevExpress.XtraReports.UI.XRLabel lblHeaderMemo;
     }
 }

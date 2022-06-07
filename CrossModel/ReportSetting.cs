@@ -31,6 +31,8 @@ namespace CrossModel
 
         public SystemType SystemType { get; set; }
 
+        public string HeaderMemoText { get; set; }
+
         public string FooterMemoText { get; set; }
 
         public bool HasHandlePerson { get; set; }

@@ -78,6 +78,15 @@ namespace TradeFutNight.Reports
             }
         }
 
+        public string HeaderMemoText
+        {
+            set
+            {
+                this.lblHeaderMemo.Text = value;
+                this.SubBandHeaderMemo.Visible = true;
+            }
+        }
+
         public ReportCommonPortraitBase()
         {
             InitializeComponent();
@@ -133,6 +142,12 @@ namespace TradeFutNight.Reports
                 if (exportData.Count > 0)
                     GetDetailBand().Controls.Add(ReportNormal.CreateContentTable(exportData, rptSetting, gridControl));
             });
+
+            // 如果有填入Header的Memo的話，這就是放一些像是查詢條件之類的額外資訊用的
+            if (!string.IsNullOrEmpty(rptSetting.HeaderMemoText))
+            {
+                HeaderMemoText = rptSetting.HeaderMemoText;
+            }
 
             this.DataSource = exportData;
         }
