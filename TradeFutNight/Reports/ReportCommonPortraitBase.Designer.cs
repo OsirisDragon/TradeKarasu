@@ -136,9 +136,10 @@
             this.lblHeaderMemo.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.lblHeaderMemo.Multiline = true;
             this.lblHeaderMemo.Name = "lblHeaderMemo";
-            this.lblHeaderMemo.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
+            this.lblHeaderMemo.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 0, 0, 0, 96F);
             this.lblHeaderMemo.SizeF = new System.Drawing.SizeF(754F, 22.08F);
             this.lblHeaderMemo.StylePriority.UseFont = false;
+            this.lblHeaderMemo.StylePriority.UsePadding = false;
             this.lblHeaderMemo.StylePriority.UseTextAlignment = false;
             this.lblHeaderMemo.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
             // 

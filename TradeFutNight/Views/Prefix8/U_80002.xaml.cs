@@ -171,6 +171,7 @@ namespace TradeFutNight.Views.Prefix8
                     rptSetting.ReportTitle = reportTitle.Replace("、刪除", "");
                     rptSetting.HasHandlePerson = false;
                     rptSetting.HasManagerPerson = false;
+                    rptSetting.HeaderMemoText = "查詢條件：" + cbDptId.Text;
                     break;
 
                 default:
