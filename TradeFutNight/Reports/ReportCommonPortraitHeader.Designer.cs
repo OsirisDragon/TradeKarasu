@@ -40,25 +40,17 @@
             this.xrTableCell5 = new DevExpress.XtraReports.UI.XRTableCell();
             this.lblHeaderTitle = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTableRow3 = new DevExpress.XtraReports.UI.XRTableRow();
-            this.xrTableCell7 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.lblHeaderReportIDDisplay = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTableCell15 = new DevExpress.XtraReports.UI.XRTableCell();
             this.lblHeaderReportID = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTableCell8 = new DevExpress.XtraReports.UI.XRTableCell();
             this.lblHeaderChineseDatetime = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrTableCell9 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.lblPageDisplay = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTableCell19 = new DevExpress.XtraReports.UI.XRTableCell();
             this.pageInfoMain = new DevExpress.XtraReports.UI.XRPageInfo();
             this.xrTableRow4 = new DevExpress.XtraReports.UI.XRTableRow();
-            this.xrTableCell10 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.lblHeaderOperateTimeDisplay = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTableCell16 = new DevExpress.XtraReports.UI.XRTableCell();
             this.lblHeaderOperateTime = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTableCell11 = new DevExpress.XtraReports.UI.XRTableCell();
             this.lblHeaderOperateDate = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrTableCell12 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.lblHeaderUserNameDisplay = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTableCell20 = new DevExpress.XtraReports.UI.XRTableCell();
             this.lblHeaderUserName = new DevExpress.XtraReports.UI.XRLabel();
             this.OcfRocDate = new DevExpress.XtraReports.Parameters.Parameter();
@@ -167,39 +159,12 @@
             // xrTableRow3
             // 
             this.xrTableRow3.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
-            this.xrTableCell7,
             this.xrTableCell15,
             this.xrTableCell8,
-            this.xrTableCell9,
             this.xrTableCell19});
             this.xrTableRow3.Dpi = 96F;
             this.xrTableRow3.Name = "xrTableRow3";
             this.xrTableRow3.Weight = 1D;
-            // 
-            // xrTableCell7
-            // 
-            this.xrTableCell7.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.lblHeaderReportIDDisplay});
-            this.xrTableCell7.Dpi = 96F;
-            this.xrTableCell7.Multiline = true;
-            this.xrTableCell7.Name = "xrTableCell7";
-            this.xrTableCell7.Text = "xrTableCell7";
-            this.xrTableCell7.Weight = 0.39754638391163388D;
-            // 
-            // lblHeaderReportIDDisplay
-            // 
-            this.lblHeaderReportIDDisplay.Dpi = 96F;
-            this.lblHeaderReportIDDisplay.Font = new System.Drawing.Font("標楷體", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.lblHeaderReportIDDisplay.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
-            this.lblHeaderReportIDDisplay.Multiline = true;
-            this.lblHeaderReportIDDisplay.Name = "lblHeaderReportIDDisplay";
-            this.lblHeaderReportIDDisplay.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 0, 0, 0, 96F);
-            this.lblHeaderReportIDDisplay.SizeF = new System.Drawing.SizeF(78F, 24F);
-            this.lblHeaderReportIDDisplay.StylePriority.UseFont = false;
-            this.lblHeaderReportIDDisplay.StylePriority.UsePadding = false;
-            this.lblHeaderReportIDDisplay.StylePriority.UseTextAlignment = false;
-            this.lblHeaderReportIDDisplay.Text = "報表代號：";
-            this.lblHeaderReportIDDisplay.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // xrTableCell15
             // 
@@ -209,7 +174,7 @@
             this.xrTableCell15.Multiline = true;
             this.xrTableCell15.Name = "xrTableCell15";
             this.xrTableCell15.Text = "xrTableCell15";
-            this.xrTableCell15.Weight = 0.40773987500571829D;
+            this.xrTableCell15.Weight = 0.80528625891735217D;
             // 
             // lblHeaderReportID
             // 
@@ -220,13 +185,14 @@
             this.lblHeaderReportID.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.lblHeaderReportID.Multiline = true;
             this.lblHeaderReportID.Name = "lblHeaderReportID";
-            this.lblHeaderReportID.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 96F);
-            this.lblHeaderReportID.SizeF = new System.Drawing.SizeF(80F, 24F);
+            this.lblHeaderReportID.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 0, 0, 0, 96F);
+            this.lblHeaderReportID.SizeF = new System.Drawing.SizeF(158F, 24F);
             this.lblHeaderReportID.StylePriority.UseFont = false;
             this.lblHeaderReportID.StylePriority.UsePadding = false;
             this.lblHeaderReportID.StylePriority.UseTextAlignment = false;
             this.lblHeaderReportID.Text = "F00000";
             this.lblHeaderReportID.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.lblHeaderReportID.TextFormatString = "報表代號：{0}";
             // 
             // xrTableCell8
             // 
@@ -236,7 +202,7 @@
             this.xrTableCell8.Multiline = true;
             this.xrTableCell8.Name = "xrTableCell8";
             this.xrTableCell8.Text = "xrTableCell8";
-            this.xrTableCell8.Weight = 2.2323759334584423D;
+            this.xrTableCell8.Weight = 2.2323759256551878D;
             // 
             // lblHeaderChineseDatetime
             // 
@@ -255,31 +221,6 @@
             this.lblHeaderChineseDatetime.Text = "中華民國000年00月00日";
             this.lblHeaderChineseDatetime.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
-            // xrTableCell9
-            // 
-            this.xrTableCell9.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.lblPageDisplay});
-            this.xrTableCell9.Dpi = 96F;
-            this.xrTableCell9.Multiline = true;
-            this.xrTableCell9.Name = "xrTableCell9";
-            this.xrTableCell9.Text = "xrTableCell9";
-            this.xrTableCell9.Weight = 0.3975463809307907D;
-            // 
-            // lblPageDisplay
-            // 
-            this.lblPageDisplay.Dpi = 96F;
-            this.lblPageDisplay.Font = new System.Drawing.Font("標楷體", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.lblPageDisplay.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
-            this.lblPageDisplay.Multiline = true;
-            this.lblPageDisplay.Name = "lblPageDisplay";
-            this.lblPageDisplay.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 96F);
-            this.lblPageDisplay.SizeF = new System.Drawing.SizeF(78F, 24F);
-            this.lblPageDisplay.StylePriority.UseFont = false;
-            this.lblPageDisplay.StylePriority.UsePadding = false;
-            this.lblPageDisplay.StylePriority.UseTextAlignment = false;
-            this.lblPageDisplay.Text = "頁　　次：";
-            this.lblPageDisplay.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            // 
             // xrTableCell19
             // 
             this.xrTableCell19.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
@@ -288,7 +229,7 @@
             this.xrTableCell19.Multiline = true;
             this.xrTableCell19.Name = "xrTableCell19";
             this.xrTableCell19.Text = "xrTableCell19";
-            this.xrTableCell19.Weight = 0.40773985112251959D;
+            this.xrTableCell19.Weight = 0.80528623985656489D;
             // 
             // pageInfoMain
             // 
@@ -297,48 +238,22 @@
             this.pageInfoMain.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.pageInfoMain.Name = "pageInfoMain";
             this.pageInfoMain.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 96F);
-            this.pageInfoMain.SizeF = new System.Drawing.SizeF(80F, 24F);
+            this.pageInfoMain.SizeF = new System.Drawing.SizeF(158F, 24F);
             this.pageInfoMain.StylePriority.UseFont = false;
             this.pageInfoMain.StylePriority.UsePadding = false;
             this.pageInfoMain.StylePriority.UseTextAlignment = false;
             this.pageInfoMain.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
+            this.pageInfoMain.TextFormatString = "頁次： {0} / {1}";
             // 
             // xrTableRow4
             // 
             this.xrTableRow4.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
-            this.xrTableCell10,
             this.xrTableCell16,
             this.xrTableCell11,
-            this.xrTableCell12,
             this.xrTableCell20});
             this.xrTableRow4.Dpi = 96F;
             this.xrTableRow4.Name = "xrTableRow4";
             this.xrTableRow4.Weight = 1D;
-            // 
-            // xrTableCell10
-            // 
-            this.xrTableCell10.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.lblHeaderOperateTimeDisplay});
-            this.xrTableCell10.Dpi = 96F;
-            this.xrTableCell10.Multiline = true;
-            this.xrTableCell10.Name = "xrTableCell10";
-            this.xrTableCell10.Text = "xrTableCell10";
-            this.xrTableCell10.Weight = 0.39754638391163388D;
-            // 
-            // lblHeaderOperateTimeDisplay
-            // 
-            this.lblHeaderOperateTimeDisplay.Dpi = 96F;
-            this.lblHeaderOperateTimeDisplay.Font = new System.Drawing.Font("標楷體", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.lblHeaderOperateTimeDisplay.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
-            this.lblHeaderOperateTimeDisplay.Multiline = true;
-            this.lblHeaderOperateTimeDisplay.Name = "lblHeaderOperateTimeDisplay";
-            this.lblHeaderOperateTimeDisplay.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 0, 0, 0, 96F);
-            this.lblHeaderOperateTimeDisplay.SizeF = new System.Drawing.SizeF(78F, 24F);
-            this.lblHeaderOperateTimeDisplay.StylePriority.UseFont = false;
-            this.lblHeaderOperateTimeDisplay.StylePriority.UsePadding = false;
-            this.lblHeaderOperateTimeDisplay.StylePriority.UseTextAlignment = false;
-            this.lblHeaderOperateTimeDisplay.Text = "作業時間：";
-            this.lblHeaderOperateTimeDisplay.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // xrTableCell16
             // 
@@ -348,7 +263,7 @@
             this.xrTableCell16.Multiline = true;
             this.xrTableCell16.Name = "xrTableCell16";
             this.xrTableCell16.Text = "xrTableCell16";
-            this.xrTableCell16.Weight = 0.40773987500571829D;
+            this.xrTableCell16.Weight = 0.80528625891735217D;
             // 
             // lblHeaderOperateTime
             // 
@@ -360,15 +275,15 @@
             this.lblHeaderOperateTime.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.lblHeaderOperateTime.Multiline = true;
             this.lblHeaderOperateTime.Name = "lblHeaderOperateTime";
-            this.lblHeaderOperateTime.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 96F);
-            this.lblHeaderOperateTime.SizeF = new System.Drawing.SizeF(80F, 24F);
+            this.lblHeaderOperateTime.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 0, 0, 0, 96F);
+            this.lblHeaderOperateTime.SizeF = new System.Drawing.SizeF(158F, 24F);
             this.lblHeaderOperateTime.StylePriority.UseBackColor = false;
             this.lblHeaderOperateTime.StylePriority.UseFont = false;
             this.lblHeaderOperateTime.StylePriority.UsePadding = false;
             this.lblHeaderOperateTime.StylePriority.UseTextAlignment = false;
             this.lblHeaderOperateTime.Text = "00:00:00";
             this.lblHeaderOperateTime.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            this.lblHeaderOperateTime.TextFormatString = "{0:HH:mm:ss}";
+            this.lblHeaderOperateTime.TextFormatString = "作業時間：{0:HH:mm:ss}";
             // 
             // xrTableCell11
             // 
@@ -378,7 +293,7 @@
             this.xrTableCell11.Multiline = true;
             this.xrTableCell11.Name = "xrTableCell11";
             this.xrTableCell11.Text = "xrTableCell11";
-            this.xrTableCell11.Weight = 2.2323759334584423D;
+            this.xrTableCell11.Weight = 2.2323759256551878D;
             // 
             // lblHeaderOperateDate
             // 
@@ -398,31 +313,6 @@
             this.lblHeaderOperateDate.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.lblHeaderOperateDate.TextFormatString = "作業日期：{0:yyyy/MM/dd}";
             // 
-            // xrTableCell12
-            // 
-            this.xrTableCell12.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.lblHeaderUserNameDisplay});
-            this.xrTableCell12.Dpi = 96F;
-            this.xrTableCell12.Multiline = true;
-            this.xrTableCell12.Name = "xrTableCell12";
-            this.xrTableCell12.Text = "xrTableCell12";
-            this.xrTableCell12.Weight = 0.3975463809307907D;
-            // 
-            // lblHeaderUserNameDisplay
-            // 
-            this.lblHeaderUserNameDisplay.Dpi = 96F;
-            this.lblHeaderUserNameDisplay.Font = new System.Drawing.Font("標楷體", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.lblHeaderUserNameDisplay.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
-            this.lblHeaderUserNameDisplay.Multiline = true;
-            this.lblHeaderUserNameDisplay.Name = "lblHeaderUserNameDisplay";
-            this.lblHeaderUserNameDisplay.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 96F);
-            this.lblHeaderUserNameDisplay.SizeF = new System.Drawing.SizeF(78F, 24F);
-            this.lblHeaderUserNameDisplay.StylePriority.UseFont = false;
-            this.lblHeaderUserNameDisplay.StylePriority.UsePadding = false;
-            this.lblHeaderUserNameDisplay.StylePriority.UseTextAlignment = false;
-            this.lblHeaderUserNameDisplay.Text = "作業人員：";
-            this.lblHeaderUserNameDisplay.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            // 
             // xrTableCell20
             // 
             this.xrTableCell20.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
@@ -431,7 +321,7 @@
             this.xrTableCell20.Multiline = true;
             this.xrTableCell20.Name = "xrTableCell20";
             this.xrTableCell20.Text = "xrTableCell20";
-            this.xrTableCell20.Weight = 0.40773985112251959D;
+            this.xrTableCell20.Weight = 0.80528623985656489D;
             // 
             // lblHeaderUserName
             // 
@@ -443,12 +333,13 @@
             this.lblHeaderUserName.Multiline = true;
             this.lblHeaderUserName.Name = "lblHeaderUserName";
             this.lblHeaderUserName.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 96F);
-            this.lblHeaderUserName.SizeF = new System.Drawing.SizeF(80F, 24F);
+            this.lblHeaderUserName.SizeF = new System.Drawing.SizeF(158F, 24F);
             this.lblHeaderUserName.StylePriority.UseFont = false;
             this.lblHeaderUserName.StylePriority.UsePadding = false;
             this.lblHeaderUserName.StylePriority.UseTextAlignment = false;
             this.lblHeaderUserName.Text = "測試人員";
             this.lblHeaderUserName.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
+            this.lblHeaderUserName.TextFormatString = "作業人員：{0}";
             // 
             // OcfRocDate
             // 
@@ -510,13 +401,9 @@
         private DevExpress.XtraReports.UI.DetailBand Detail;
         private DevExpress.XtraReports.UI.XRLabel lblHeaderUserName;
         private DevExpress.XtraReports.UI.XRLabel lblHeaderReportID;
-        private DevExpress.XtraReports.UI.XRLabel lblHeaderReportIDDisplay;
-        private DevExpress.XtraReports.UI.XRLabel lblHeaderOperateTimeDisplay;
         private DevExpress.XtraReports.UI.XRLabel lblHeaderOperateTime;
         private DevExpress.XtraReports.UI.XRLabel lblHeaderChineseDatetime;
         private DevExpress.XtraReports.UI.XRLabel lblHeaderOperateDate;
-        private DevExpress.XtraReports.UI.XRLabel lblPageDisplay;
-        private DevExpress.XtraReports.UI.XRLabel lblHeaderUserNameDisplay;
         private DevExpress.XtraReports.UI.XRLabel lblHeaderTitle;
         private DevExpress.XtraReports.UI.XRPageInfo pageInfoMain;
         private DevExpress.XtraReports.UI.XRPictureBox pictureBoxTitle;
@@ -530,16 +417,12 @@
         private DevExpress.XtraReports.UI.XRTableRow xrTableRow2;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell5;
         private DevExpress.XtraReports.UI.XRTableRow xrTableRow3;
-        private DevExpress.XtraReports.UI.XRTableCell xrTableCell7;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell15;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell8;
-        private DevExpress.XtraReports.UI.XRTableCell xrTableCell9;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell19;
         private DevExpress.XtraReports.UI.XRTableRow xrTableRow4;
-        private DevExpress.XtraReports.UI.XRTableCell xrTableCell10;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell16;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell11;
-        private DevExpress.XtraReports.UI.XRTableCell xrTableCell12;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell20;
     }
 }

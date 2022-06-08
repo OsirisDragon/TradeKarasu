@@ -163,15 +163,15 @@ namespace TradeFutNight.Reports
             {
                 if (rptSetting.HeaderMemoTextAlign == Align.Left)
                 {
-                    HeaderMemoTextAlign = DevExpress.XtraPrinting.TextAlignment.TopLeft;
+                    HeaderMemoTextAlign = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
                 }
                 else if (rptSetting.HeaderMemoTextAlign == Align.Center)
                 {
-                    HeaderMemoTextAlign = DevExpress.XtraPrinting.TextAlignment.TopCenter;
+                    HeaderMemoTextAlign = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
                 }
                 else if (rptSetting.HeaderMemoTextAlign == Align.Right)
                 {
-                    HeaderMemoTextAlign = DevExpress.XtraPrinting.TextAlignment.TopRight;
+                    HeaderMemoTextAlign = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
                 }
             }
 
