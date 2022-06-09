@@ -383,6 +383,10 @@
     </Compile>
     <Compile Include="Views\Prefix5\U_50305_ViewModel.cs" />
     <Compile Include="Views\Prefix5\U_50333_ViewModel.cs" />
+    <Compile Include="Views\Prefix8\U_80001.xaml.cs">
+      <DependentUpon>U_80001.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix8\U_80001_ViewModel.cs" />
     <Compile Include="Views\Prefix8\U_80002.xaml.cs">
       <DependentUpon>U_80002.xaml</DependentUpon>
     </Compile>
@@ -622,6 +626,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Prefix5\U_50333.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix8\U_80001.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

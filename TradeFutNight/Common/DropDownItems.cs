@@ -304,11 +304,14 @@ namespace TradeFutNight.Common
             return result;
         }
 
-        public static IList<ItemInfo> Dpt()
+        public static IList<ItemInfo> Dpt(bool hasAll = false)
         {
             var result = new List<ItemInfo>();
 
-            result.Add(new ItemInfo() { Text = "全部", Value = '%' });
+            if (hasAll)
+            {
+                result.Add(new ItemInfo() { Text = "全部", Value = '%' });
+            }
             result.Add(new ItemInfo() { Text = "資訊作業部", Value = 'I' });
             result.Add(new ItemInfo() { Text = "資訊規劃部", Value = 'J' });
             result.Add(new ItemInfo() { Text = "交易部", Value = 'T' });
