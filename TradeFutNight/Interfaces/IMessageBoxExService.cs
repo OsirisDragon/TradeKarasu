@@ -7,7 +7,7 @@ namespace TradeFutNight.Interfaces
     {
         MainUI_ViewModel VmMainUi { get; set; }
 
-        MessageBoxResult Confirm(string content);
+        MessageBoxResult Confirm(string content, MessageBoxResult defaultButton = MessageBoxResult.No);
 
         MessageBoxResult Error(string content);
 

@@ -36,7 +36,7 @@ namespace TradeFutNight.Common
             return instance;
         }
 
-        public MessageBoxResult Confirm(string content)
+        public MessageBoxResult Confirm(string content, MessageBoxResult defaultButton = MessageBoxResult.No)
         {
             // 等待一些時間，讓前面的UI有些動作可以先執行，不然前面的某些UI動作像是Focus到Grid之類的還沒作完，會被後面的跳視窗的程式蓋掉
             Thread.Sleep(300);
@@ -47,7 +47,7 @@ namespace TradeFutNight.Common
             Application.Current.Dispatcher.Invoke(() =>
             {
                 // 加owner防止視窗跑到主視窗後面就看不到他了
-                result = ThemedMessageBox.Show(title: MessageConst.Attention, text: content, messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Question, owner: Application.Current.MainWindow);
+                result = ThemedMessageBox.Show(title: MessageConst.Attention, text: content, messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Question, owner: Application.Current.MainWindow, defaultButton: defaultButton);
             });
             return result;
         }
