@@ -383,6 +383,16 @@
     </Compile>
     <Compile Include="Views\Prefix5\U_50305_ViewModel.cs" />
     <Compile Include="Views\Prefix5\U_50333_ViewModel.cs" />
+    <Compile Include="Views\Prefix8\U_80003.xaml.cs">
+      <DependentUpon>U_80003.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix8\U_80003_Report.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\Prefix8\U_80003_Report.Designer.cs">
+      <DependentUpon>U_80003_Report.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix8\U_80003_ViewModel.cs" />
     <Compile Include="Views\Prefix8\U_80002.xaml.cs">
       <DependentUpon>U_80002.xaml</DependentUpon>
     </Compile>
@@ -625,6 +635,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Prefix8\U_80003.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Prefix8\U_80002.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -754,6 +768,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Prefix5\U_50301_Report.resx">
       <DependentUpon>U_50301_Report.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Prefix8\U_80003_Report.resx">
+      <DependentUpon>U_80003_Report.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
