@@ -1,5 +1,6 @@
 ﻿using DataEngine;
 using LinqToDB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TradeFutNightData.Models.Common;
@@ -54,6 +55,30 @@ namespace TradeFutNightData.Gates.Common
                 .Select(c => new TPPST() { TPPST_KIND_ID = c.TPPST_KIND_ID }).Distinct();
 
             return query.ToList();
+        }
+
+        public void Update(IEnumerable<TPPST> data)
+        {
+            foreach (var item in data)
+            {
+                _das.DataConn.GetTable<TPPST>()
+                    .Where(c => c.TPPST_KIND_ID == item.OriginalData.TPPST_KIND_ID &&
+                                c.TPPST_MONTH == item.OriginalData.TPPST_MONTH)
+                    .Set(c => c.TPPST_KIND_ID, item.TPPST_KIND_ID)
+                    .Set(c => c.TPPST_MONTH, item.TPPST_MONTH)
+                    .Set(c => c.TPPST_M_PRICE_LIMIT, item.TPPST_M_PRICE_LIMIT)
+                    .Set(c => c.TPPST_M_PRICE_LIMIT_F, item.TPPST_M_PRICE_LIMIT_F)
+                    .Set(c => c.TPPST_M_INTERVAL, item.TPPST_M_INTERVAL)
+                    .Set(c => c.TPPST_ACCU_QNTY, item.TPPST_ACCU_QNTY)
+                    .Set(c => c.TPPST_M_PRICE_FILTER, item.TPPST_M_PRICE_FILTER)
+                    .Set(c => c.TPPST_BS_PRICE_FILTER, item.TPPST_BS_PRICE_FILTER)
+                    .Set(c => c.TPPST_INDEX_ID, item.TPPST_INDEX_ID)
+                    .Set(c => c.TPPST_UNIT, item.TPPST_UNIT)
+                    .Set(c => c.TPPST_UNDERLYING_MARKET, item.TPPST_UNDERLYING_MARKET)
+                    .Set(c => c.TPPST_USER_ID, item.TPPST_USER_ID)
+                    .Set(c => c.TPPST_W_TIME, DateTime.Now)
+                    .Update();
+            }
         }
     }
 }
