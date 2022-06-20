@@ -1,0 +1,151 @@
+﻿<myTypes:UserControlParent
+    x:Class="TradeFutNight.Views.Prefix3.U_30042"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:myTypes="clr-namespace:TradeFutNight.Views"
+    xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.Prefix3"
+    Margin="1,1,1,1"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <myTypes:UserControlParent.DataContext>
+        <myTypesPrefix:U_30042_ViewModel />
+    </myTypes:UserControlParent.DataContext>
+    <myTypes:UserControlParent.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\ShareStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </myTypes:UserControlParent.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" MinHeight="35" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <dxlc:FlowLayoutControl Grid.Row="0" Orientation="Horizontal">
+            <Label HorizontalAlignment="Right" VerticalAlignment="Center">
+                契約代碼：
+            </Label>
+            <dxe:ComboBoxEdit
+                x:Name="cbKindId"
+                MinWidth="100"
+                Margin="0,0,10,0"
+                DisplayMember="Text"
+                ItemsSource="{Binding TPPSTKindId}"
+                Text="全部"
+                ValueMember="Value" />
+
+            <Button x:Name="btnQuery" Click="BtnQuery_Click">
+                查詢
+            </Button>
+            <Button x:Name="btnExport" Click="BtnExport_Click">
+                匯出CSV
+            </Button>
+        </dxlc:FlowLayoutControl>
+        <dxg:GridControl
+            x:Name="gridMain"
+            Grid.Row="1"
+            CurrentItem="{Binding Path=CurrentItem, Mode=TwoWay}"
+            ItemsSource="{Binding MainGridData}"
+            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
+            <dxg:GridControl.View>
+                <dxg:TableView x:Name="gridView" AllowEditing="False" />
+            </dxg:GridControl.View>
+            <dxg:GridColumn
+                Name="rowNumber"
+                Width="45"
+                AllowEditing="False"
+                Header="編號">
+                <dxg:GridColumn.CellTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{DXBinding 'RowData.RowHandle.Value + 1'}" />
+                        </Grid>
+                    </DataTemplate>
+                </dxg:GridColumn.CellTemplate>
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="80"
+                FieldName="TPPST_KIND_ID"
+                Header="契約代碼">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings CharacterCasing="Upper" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="80"
+                FieldName="TPPST_MONTH"
+                Header="月份序號" />
+            <dxg:GridColumn
+                Width="100"
+                FieldName="TPPST_M_PRICE_LIMIT"
+                Header="現貨開盤後&#xA;偏離濾網(%)" />
+            <dxg:GridColumn
+                Width="100"
+                FieldName="TPPST_M_PRICE_LIMIT_F"
+                Header="現貨開盤前&#xA;偏離濾網(%)" />
+            <dxg:GridColumn
+                Width="80"
+                FieldName="TPPST_M_INTERVAL"
+                Header="成交&#xA;間隔毫秒" />
+            <dxg:GridColumn
+                Width="80"
+                FieldName="TPPST_ACCU_QNTY"
+                Header="最小&#xA;累計口數" />
+            <dxg:GridColumn
+                Width="110"
+                FieldName="TPPST_M_PRICE_FILTER"
+                Header="成交價濾網 (%)" />
+            <dxg:GridColumn FieldName="TPPST_BS_PRICE_FILTER" Header="買賣中價濾網 (%)" />
+            <dxg:GridColumn
+                Width="80"
+                FieldName="TPPST_UNIT"
+                Header="動態退單&#xA;百分比" />
+            <dxg:GridColumn
+                Width="70"
+                FieldName="TPPST_USER_ID"
+                Header="員工代碼">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn
+                Width="165"
+                FieldName="TPPST_W_TIME"
+                Header="寫檔時間">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd HH:mm:ss" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+        </dxg:GridControl>
+        <TextBlock
+            x:Name="txtMemo"
+            Grid.Row="2"
+            Margin="10,0"
+            xml:space="preserve"
+            Foreground="OrangeRed"
+            TextWrapping="Wrap">
+1.契約代碼僅需設定兩碼。(即標準型與調整型適用相同參數)
+2.月份序號0表示複式單，1~5表示單式單之第1~第5到期月份
+3.「成交價濾網」及「買賣中價濾網」填入之數值係代入基準價程式中，例如：ETF期貨成交價價差濾網單式委託與價差委託採0.225%(=0.45%/2)，因複式單價差濾網公式緣故，須輸入0.1125
+4.退單百分比為0表示不啟用動態價格穩定措施退單機制
+        </TextBlock>
+    </Grid>
+</myTypes:UserControlParent>

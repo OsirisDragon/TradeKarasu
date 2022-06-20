@@ -321,5 +321,17 @@ namespace TradeFutNight.Common
             result.Add(new ItemInfo() { Text = "監視部", Value = 'W' });
             return result;
         }
+
+        public static IList<ItemInfo> TppstKindId()
+        {
+            using (var das = Factory.CreateDalSession())
+            {
+                var dTppst = new D_TPPST(das);
+                var result = dTppst.ListKindID().Select(
+                    c => new ItemInfo() { Text = c.TPPST_KIND_ID, Value = c.TPPST_KIND_ID }).ToList();
+                result.Insert(0, new ItemInfo() { Text = "全部", Value = "%" });
+                return result;
+            }
+        }
     }
 }

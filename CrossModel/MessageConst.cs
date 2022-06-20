@@ -10,6 +10,7 @@
         public static string ProcessResult = "處理結果";
         public static string ProcessSuccess = "處理完成，請保留單據以備查核";
         public static string PrintSuccess = "印表完成";
+        public static string ExportSuccess = "匯出成功";
         public static string ExecuteSuccess = "執行完成";
         public static string ConfirmDelete = "確認是否要刪除此筆?";
         public static string ConfirmSave = "確認是否要存檔?";

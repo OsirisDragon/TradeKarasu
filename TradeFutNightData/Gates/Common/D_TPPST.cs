@@ -25,8 +25,13 @@ namespace TradeFutNightData.Gates.Common
 
         public IList<TPPST> ListByKindId(string kindId)
         {
-            var query = _das.DataConn.GetTable<TPPST>()
-                .Where(c => c.TPPST_KIND_ID == kindId);
+            IQueryable<TPPST> query = _das.DataConn.GetTable<TPPST>()
+                                    .OrderBy(c => c.TPPST_KIND_ID)
+                                    .ThenBy(c => c.TPPST_MONTH);
+            if (kindId != "%")
+            {
+                query = query.Where(c => c.TPPST_KIND_ID == kindId);
+            }
 
             return query.ToList();
         }
@@ -38,6 +43,15 @@ namespace TradeFutNightData.Gates.Common
         {
             var query = _das.DataConn.GetTable<TPPST>().Where(c => c.TPPST_MONTH != 0)
                 .OrderBy(c => c.TPPST_KIND_ID).ThenBy(c => c.TPPST_MONTH);
+
+            return query.ToList();
+        }
+
+        public IEnumerable<TPPST> ListKindID()
+        {
+            var query = _das.DataConn.GetTable<TPPST>()
+                .OrderBy(c => c.TPPST_KIND_ID)
+                .Select(c => new TPPST() { TPPST_KIND_ID = c.TPPST_KIND_ID }).Distinct();
 
             return query.ToList();
         }
