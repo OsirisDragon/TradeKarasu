@@ -7,6 +7,7 @@
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
+    xmlns:dxpt="http://schemas.devexpress.com/winfx/2008/xaml/printing/themekeys"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:myTypes="clr-namespace:TradeFutNight.Views"
     xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.Prefix8"
@@ -18,11 +19,12 @@
         <myTypesPrefix:U_80003_ViewModel />
     </myTypes:UserControlParent.DataContext>
     <myTypes:UserControlParent.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="..\ShareStyle.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <DataTemplate x:Key="{dxpt:EditingFieldThemeKeyExtension ResourceKey=ComboBoxEditor}">
+            <dxe:ComboBoxEdit
+                x:Name="xtraReportComboBoxEditor"
+                IsTextEditable="False"
+                ItemsSource="{Binding Path=(dxp:DocumentPreviewControl.ActualViewer).DataContext.ComboBoxItemsSource, RelativeSource={RelativeSource Self}}" />
+        </DataTemplate>
     </myTypes:UserControlParent.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

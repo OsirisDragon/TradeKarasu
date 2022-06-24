@@ -32,8 +32,10 @@
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
             this.txtUpfUserId = new DevExpress.XtraReports.UI.XRLabel();
             this.PageHeader = new DevExpress.XtraReports.UI.PageHeaderBand();
+            this.xrSubreportHeader = new DevExpress.XtraReports.UI.XRSubreport();
             this.OcfRocDate = new DevExpress.XtraReports.Parameters.Parameter();
             this.UserName = new DevExpress.XtraReports.Parameters.Parameter();
             this.ReportID = new DevExpress.XtraReports.Parameters.Parameter();
@@ -46,7 +48,6 @@
             this.tableCellHandlePerson = new DevExpress.XtraReports.UI.XRTableCell();
             this.tableCellConfirmPerson = new DevExpress.XtraReports.UI.XRTableCell();
             this.tableCellManagerPerson = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrSubreportHeader = new DevExpress.XtraReports.UI.XRSubreport();
             this.objectDataSource1 = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.tableFooter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.objectDataSource1)).BeginInit();
@@ -65,9 +66,25 @@
             // Detail
             // 
             this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel1,
             this.txtUpfUserId});
             this.Detail.HeightF = 256.6667F;
             this.Detail.Name = "Detail";
+            // 
+            // xrLabel1
+            // 
+            this.xrLabel1.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
+            | DevExpress.XtraPrinting.BorderSide.Right) 
+            | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.xrLabel1.BorderWidth = 1F;
+            this.xrLabel1.EditOptions.Enabled = true;
+            this.xrLabel1.LocationFloat = new DevExpress.Utils.PointFloat(357.8639F, 36.83332F);
+            this.xrLabel1.Multiline = true;
+            this.xrLabel1.Name = "xrLabel1";
+            this.xrLabel1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel1.SizeF = new System.Drawing.SizeF(100F, 23F);
+            this.xrLabel1.StylePriority.UseBorders = false;
+            this.xrLabel1.StylePriority.UseBorderWidth = false;
             // 
             // txtUpfUserId
             // 
@@ -76,6 +93,7 @@
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.txtUpfUserId.BorderWidth = 1F;
             this.txtUpfUserId.EditOptions.Enabled = true;
+            this.txtUpfUserId.EditOptions.ID = "UPF_USER_ID";
             this.txtUpfUserId.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[UPF_USER_ID]")});
             this.txtUpfUserId.LocationFloat = new DevExpress.Utils.PointFloat(167.5F, 36.83332F);
@@ -92,6 +110,17 @@
             this.xrSubreportHeader});
             this.PageHeader.HeightF = 109.375F;
             this.PageHeader.Name = "PageHeader";
+            // 
+            // xrSubreportHeader
+            // 
+            this.xrSubreportHeader.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
+            this.xrSubreportHeader.Name = "xrSubreportHeader";
+            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("OcfRocDate", this.OcfRocDate));
+            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("UserName", this.UserName));
+            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("ReportID", this.ReportID));
+            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("ReportTitle", this.ReportTitle));
+            this.xrSubreportHeader.ReportSource = new TradeFutNight.Reports.ReportCommonLandscapeHeader();
+            this.xrSubreportHeader.SizeF = new System.Drawing.SizeF(1128.125F, 109.375F);
             // 
             // OcfRocDate
             // 
@@ -191,17 +220,6 @@
             this.tableCellManagerPerson.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             this.tableCellManagerPerson.Weight = 1.1931096178125713D;
             // 
-            // xrSubreportHeader
-            // 
-            this.xrSubreportHeader.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
-            this.xrSubreportHeader.Name = "xrSubreportHeader";
-            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("OcfRocDate", this.OcfRocDate));
-            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("UserName", this.UserName));
-            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("ReportID", this.ReportID));
-            this.xrSubreportHeader.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("ReportTitle", this.ReportTitle));
-            this.xrSubreportHeader.ReportSource = new TradeFutNight.Reports.ReportCommonLandscapeHeader();
-            this.xrSubreportHeader.SizeF = new System.Drawing.SizeF(1128.125F, 109.375F);
-            // 
             // objectDataSource1
             // 
             this.objectDataSource1.DataSource = typeof(TradeFutNight.Views.Prefix8.UIModel_80003);
@@ -258,5 +276,6 @@
         private DevExpress.XtraReports.UI.XRTableCell tableCellConfirmPerson;
         private DevExpress.XtraReports.UI.XRTableCell tableCellManagerPerson;
         private DevExpress.XtraReports.UI.XRLabel txtUpfUserId;
+        public DevExpress.XtraReports.UI.XRLabel xrLabel1;
     }
 }

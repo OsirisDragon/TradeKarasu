@@ -1,6 +1,7 @@
 ﻿using CrossModel;
 using CrossModel.Enum;
 using DevExpress.Xpf.DocumentViewer;
+using DevExpress.Xpf.Printing;
 using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
@@ -57,7 +58,11 @@ namespace TradeFutNight.Views.Prefix8
             });
             await task;
 
-            var report = CreateReport(_vm.MainGridData, OperationType.Query);
+            var report = (U_80003_Report)CreateReport(_vm.MainGridData, OperationType.Query);
+
+            EditingFieldExtensions.Instance.RegisterEditorInfo("ComboBoxEditor", "Custom", "ComboBox Editor");
+            report.xrLabel1.EditOptions.Enabled = true;
+            report.xrLabel1.EditOptions.EditorName = "ComboBoxEditor";
 
             _vm.Report = report;
         }
@@ -96,7 +101,7 @@ namespace TradeFutNight.Views.Prefix8
 
             U_80003_Report report = new U_80003_Report
             {
-                DataSource = _vm.MainGridData,
+                DataSource = data,
                 HasHandlePerson = rptSetting.HasHandlePerson,
                 HasConfirmPerson = rptSetting.HasConfirmPerson,
                 HasManagerPerson = rptSetting.HasManagerPerson,
@@ -145,6 +150,8 @@ namespace TradeFutNight.Views.Prefix8
 
         public async Task PrintIndex()
         {
+            CloseEditor(docPreviewControl);
+
             await Task.FromResult<object>(null);
             throw new NotImplementedException();
         }

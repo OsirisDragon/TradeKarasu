@@ -1,5 +1,6 @@
 ﻿using DevExpress.DataAccess.ObjectBinding;
 using DevExpress.XtraReports.UI;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using TradeFutNightData;
@@ -16,9 +17,14 @@ namespace TradeFutNight.Views.Prefix8
             set { SetProperty(() => Report, value); }
         }
 
+        public IEnumerable<string> ComboBoxItemsSource { get; set; }
+
         public U_80003_ViewModel()
         {
             MainGridData = new ObservableCollection<UIModel_80003>();
+
+            ComboBoxItemsSource = Enumerable.Range(1, 20)
+                .Select(x => string.Format("Item {0}", x));
         }
 
         public void Open()
