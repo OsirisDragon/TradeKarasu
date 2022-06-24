@@ -141,7 +141,7 @@ namespace TradeFutNight.Reports
                 }
                 else
                 {
-                    if (col.Name == "rowNumber")
+                    if (col.Name.StartsWith("rowNumber"))
                     {
                         cell.Summary.Running = SummaryRunning.Report;
                         cell.Summary.Func = SummaryFunc.RecordNumber;

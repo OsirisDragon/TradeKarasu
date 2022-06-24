@@ -284,14 +284,17 @@ namespace TradeFutNight.Common
             return result;
         }
 
-        public static IList<ItemInfo> UpfUserName()
+        public static IList<ItemInfo> UpfUserName(bool hasAll = true)
         {
             using (var das = Factory.CreateDalSession())
             {
                 var dUPF = new D_UPF(das);
                 var result = dUPF.ListAll().Select(
                     c => new ItemInfo() { Text = c.UPF_USER_ID + "：" + c.UPF_USER_NAME, Value = c.UPF_USER_ID }).ToList();
-                result.Insert(0, new ItemInfo() { Text = "全部", Value = "%" });
+                if (hasAll)
+                {
+                    result.Insert(0, new ItemInfo() { Text = "全部", Value = "%" });
+                }
                 return result;
             }
         }
@@ -322,6 +325,7 @@ namespace TradeFutNight.Common
             result.Add(new ItemInfo() { Text = "內部稽核", Value = 'E' });
             result.Add(new ItemInfo() { Text = "首長", Value = 'S' });
             result.Add(new ItemInfo() { Text = "監視部", Value = 'W' });
+
             return result;
         }
 
@@ -335,6 +339,51 @@ namespace TradeFutNight.Common
                 result.Insert(0, new ItemInfo() { Text = "全部", Value = "%" });
                 return result;
             }
+        }
+
+        public static IList<ItemInfo> Txn()
+        {
+            using (var das = Factory.CreateDalSession())
+            {
+                var dTxn = new D_TXN(das);
+                var result = dTxn.ListAll().Select(
+                    c => new ItemInfo() { Text = c.TXN_ID + " — " + c.TXN_NAME, Value = c.TXN_ID }).ToList();
+                return result;
+            }
+        }
+
+        public static IList<ItemInfo> OperationType()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "應用功能作業", Value = "Txn" });
+            result.Add(new ItemInfo() { Text = "批次作業", Value = "Opf" });
+            return result;
+        }
+
+        public static IList<ItemInfo> SearchType(string OperationType = "Txn")
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "依交易 (查使用者)", Value = "Txn" });
+
+            if (OperationType == "Txn")
+            {
+                result.Add(new ItemInfo() { Text = "依使用者 (查交易)", Value = "User" });
+                result.Add(new ItemInfo() { Text = "依部門 (查所有使用者權限)", Value = "Dpt" });
+            }
+
+            result.Add(new ItemInfo() { Text = "作業項目", Value = "Id" });
+            return result;
+        }
+
+        public static IList<ItemInfo> OpfKind()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = @"C:\", Value = 'C' });
+            result.Add(new ItemInfo() { Text = "其他", Value = 'O' });
+            result.Add(new ItemInfo() { Text = "報表", Value = 'R' });
+            result.Add(new ItemInfo() { Text = "SP", Value = 'S' });
+
+            return result;
         }
     }
 }

@@ -27,6 +27,12 @@ namespace TradeFutNightData.Gates.Common
             return query.SingleOrDefault();
         }
 
+        public IEnumerable<UPF> ListByDpt(char dptId)
+        {
+            var query = _das.DataConn.GetTable<UPF>().Where(c => c.UPF_DEPT_ID == dptId);
+            return query.ToList();
+        }
+
         public UPF GetByUserAdAccount(string adAccount)
         {
             var query = _das.DataConn.GetTable<UPF>().Where(c => c.UPF_USER_AD == adAccount);
