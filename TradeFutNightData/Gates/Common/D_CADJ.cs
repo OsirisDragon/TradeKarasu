@@ -19,7 +19,6 @@ namespace TradeFutNightData.Gates.Common
     {
         public IList<CADJ> ListByDate(DateTime CADJ_BASE_DATE)
         {
-            //只要除息的就好，除權0、增資0、減資0、股份轉換0
             var query = _das.DataConn.GetTable<CADJ>()
                 .Where(c => c.CADJ_BASE_DATE == CADJ_BASE_DATE)
                 .OrderBy(c => c.CADJ_BF_STOCK_ID)
