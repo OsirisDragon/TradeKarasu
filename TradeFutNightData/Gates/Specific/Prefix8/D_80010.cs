@@ -26,6 +26,7 @@ namespace TradeFutNightData.Gates.Specific.Prefix8
                        AND ( UTP.UTP_USER_ID = UPF.UPF_USER_ID )
                        AND ( ( UTP.UTP_YN_CODE = 'Y' )
                        AND ( TXN.TXN_ID = @TXN_ID ) )
+                       ORDER BY UTP_USER_ID
                         ";
             var p = new DynamicParameters();
             p.Add("@TXN_ID", txnId);
@@ -50,6 +51,7 @@ namespace TradeFutNightData.Gates.Specific.Prefix8
                         AND UTP_YN_CODE = 'Y'
                         AND UTP.UTP_USER_ID = UPF.UPF_USER_ID
                         AND UPF_USER_ID =  @USER_ID
+                        ORDER BY UTP_USER_ID, UTP_TXN_ID
                         ";
             var p = new DynamicParameters();
             p.Add("@USER_ID", userId);
@@ -74,6 +76,7 @@ namespace TradeFutNightData.Gates.Specific.Prefix8
                              AND UTP_YN_CODE = 'Y'
                              AND UTP.UTP_USER_ID = UPF.UPF_USER_ID
                              AND UPF_DEPT_ID = @DPT_ID
+                       ORDER BY UTP_USER_ID, UTP_TXN_ID
                         ";
             var p = new DynamicParameters();
             p.Add("@DPT_ID", dptId);

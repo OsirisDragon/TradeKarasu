@@ -180,7 +180,7 @@ namespace TradeFutNight.Views.Prefix8
                                     cfg.CreateMap<UPF, UIModel_80010_OpfTxn>().ReverseMap();
                                 }));
                                 OpfTxnGridData = MapperInstance.Map<IList<UIModel_80010_OpfTxn>>(dUpf.ListByDpt('I')).AsTrackable();
-                                break; ;
+                                break;
 
                             case "Id":
                                 var dOpf = new D_OPF(das);
@@ -189,7 +189,17 @@ namespace TradeFutNight.Views.Prefix8
                                     cfg.CreateMap<OPF, UIModel_80010_OpfId>().ReverseMap();
                                 }));
                                 OpfIdGridData = MapperInstance.Map<IList<UIModel_80010_OpfId>>(dOpf.ListAll()).AsTrackable();
-                                break; ;
+
+                                var kindList = OpfIdGridData.Select(c => c.OPF_KIND).Distinct();
+                                foreach (var k in kindList)
+                                {
+                                    if (OpfKind.Count(c => c.Value.ToString() == k.ToString()) == 0)
+                                    {
+                                        OpfKind.Add(new ItemInfo() { Text = k.ToString(), Value = (char)k });
+                                    }
+                                }
+
+                                break;
                         }
                     }
                 }
