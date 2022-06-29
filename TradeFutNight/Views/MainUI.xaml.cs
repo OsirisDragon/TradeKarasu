@@ -1,5 +1,6 @@
 ﻿using CrossModel;
 using DataEngine;
+using DevExpress.Xpf.Accordion;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Docking;
 using Shield.File;
@@ -12,6 +13,7 @@ using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Common;
+using TradeFutNightData.Models.Common;
 using TradeUtility;
 
 namespace TradeFutNight.Views
@@ -223,14 +225,19 @@ namespace TradeFutNight.Views
             }
         }
 
-        private async void AccordionItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private async void MenuControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             try
             {
-                var programID = "30027";
-                var programName = "造市者報價限制檔新增";
+                AccordionControl control = (AccordionControl)sender;
+                if (control.SelectedItem.GetType() == typeof(TXN))
+                {
+                    var selectItem = (TXN)control.SelectedItem;
+                    var programID = selectItem.TXN_ID;
+                    var programName = selectItem.TXN_NAME;
 
-                await OpenProgram(programID, programName);
+                    await OpenProgram(programID, programName);
+                }
             }
             catch (Exception ex)
             {

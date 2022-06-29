@@ -54,7 +54,7 @@
                 <dxdo:LayoutGroup Caption="LayoutRoot">
                     <dxdo:LayoutPanel
                         x:Name="layoutPanelLeft"
-                        MinWidth="200"
+                        MinWidth="300"
                         AllowClose="False"
                         AllowDock="False"
                         AllowDrag="False"
@@ -82,11 +82,13 @@
                                     KeyDown="TxtTxnId_KeyDown" />
                             </StackPanel>
 
-                            <dxa:AccordionControl Grid.Row="1">
-                                <dxa:AccordionItem Header="Item0" MouseDoubleClick="AccordionItem_MouseDoubleClick" />
-                                <dxa:AccordionItem Header="Item1" />
-                                <dxa:AccordionItem Header="Item2" />
-                            </dxa:AccordionControl>
+                            <dxa:AccordionControl
+                                Name="menuControl"
+                                Grid.Row="1"
+                                ChildrenPath="Txns"
+                                ExpandMode="SingleOrNone"
+                                ItemsSource="{Binding TxnGridData}"
+                                MouseDoubleClick="MenuControl_MouseDoubleClick" />
                         </Grid>
                     </dxdo:LayoutPanel>
                     <dxdo:LayoutGroup Orientation="Vertical">
