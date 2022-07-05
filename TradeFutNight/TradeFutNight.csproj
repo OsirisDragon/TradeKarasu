@@ -167,6 +167,7 @@
       <DependentUpon>AuthDoubleWithoutCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Auth\AuthGate.cs" />
+    <Compile Include="Common\Converter\BooleanConverter.cs" />
     <Compile Include="Common\CustomProp.cs" />
     <Compile Include="Common\DragonDocumentPreviewControl.cs" />
     <Compile Include="Common\DropDownItems.cs" />
@@ -410,10 +411,14 @@
     <Compile Include="Views\Prefix8\U_80014.xaml.cs">
       <DependentUpon>U_80014.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Prefix8\U_89004.xaml.cs">
+      <DependentUpon>U_89004.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Prefix8\U_80002.xaml.cs">
       <DependentUpon>U_80002.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Prefix8\U_80014_ViewModel.cs" />
+    <Compile Include="Views\Prefix8\U_89004_ViewModel.cs" />
     <Compile Include="Views\Prefix8\U_80002_ViewModel.cs" />
     <Compile Include="Views\Prefix8\U_89010.xaml.cs">
       <DependentUpon>U_89010.xaml</DependentUpon>
@@ -686,6 +691,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Prefix8\U_80002.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix8\U_89004.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
