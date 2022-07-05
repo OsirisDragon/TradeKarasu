@@ -16,5 +16,10 @@ namespace TradeFutNightData.Models.Common
         public virtual string TXN_TYPE { get; set; }
         public virtual string TXN_DEFAULT { get; set; }
         public virtual int? TXN_OSW_GRP { get; set; }
+
+        public override string ToString()
+        {
+            return TXN_ID + " " + TXN_NAME;
+        }
     }
 }
