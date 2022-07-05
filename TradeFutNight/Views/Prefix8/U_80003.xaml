@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
     xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
     xmlns:dxpt="http://schemas.devexpress.com/winfx/2008/xaml/printing/themekeys"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -36,29 +37,21 @@
         </Grid.RowDefinitions>
         <dxlc:FlowLayoutControl Grid.Row="0" Orientation="Horizontal">
             <Label HorizontalAlignment="Right" VerticalAlignment="Center">
-                代號：
+                使用者代號：
             </Label>
-            <dxe:TextEdit
-                Name="txtProdId"
-                MinWidth="70"
-                Margin="0,0,0,0"
-                CharacterCasing="Upper"
-                NullText=""
-                NullValue=""
-                Text="{Binding ProdId}" />
-            <Button x:Name="btnSearch" Click="BtnSearch_Click">
-                搜尋
-            </Button>
-            <Button
-                x:Name="btnDownload"
-                Margin="60,0,10,0"
-                HorizontalAlignment="Right"
-                HorizontalContentAlignment="Right"
-                Click="BtnDownload_Click">
-                下載每日結算價
+            <dxe:ComboBoxEdit
+                x:Name="cbUserId"
+                MinWidth="170"
+                Margin="0,0,10,0"
+                DisplayMember="Text"
+                IsTextEditable="False"
+                ItemsSource="{Binding UpfUserIdName}"
+                ValueMember="Value" />
+            <Button x:Name="btnQuery" Click="BtnQuery_Click">
+                查詢
             </Button>
         </dxlc:FlowLayoutControl>
-        <c:DragonDocumentPreviewControl
+        <!--<c:DragonDocumentPreviewControl
             x:Name="docPreviewControl"
             Grid.Row="1"
             AutoShowParametersPanel="False"
@@ -68,6 +61,114 @@
             HighlightEditingFields="False"
             RequestDocumentCreation="True"
             ShowPageMargins="False"
-            ZoomMode="ActualSize" />
+            ZoomMode="ActualSize" />-->
+        <ScrollViewer
+            Name="scrollViewerMain"
+            Grid.Row="1"
+            Width="400"
+            HorizontalAlignment="Left"
+            HorizontalScrollBarVisibility="Hidden">
+            <dxlc:LayoutControl Orientation="Vertical">
+                <dxlc:LayoutGroup Width="600" Orientation="Vertical">
+                    <dxlc:LayoutItem
+                        AddColonToLabel="True"
+                        Label="員工代號"
+                        LabelHorizontalAlignment="Right">
+                        <dxe:TextEdit
+                            Width="100"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            EditValue="{Binding Path=MainFormData.UPF_USER_ID}"
+                            IsEnabled="False"
+                            IsReadOnly="True" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem
+                        AddColonToLabel="True"
+                        Label="姓名"
+                        LabelHorizontalAlignment="Right">
+                        <dxe:TextEdit
+                            Width="100"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            EditValue="{Binding Path=MainFormData.UPF_USER_NAME, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:EventToCommand
+                                    Command="{Binding SearchByKeyCommand}"
+                                    EventName="KeyDown"
+                                    PassEventArgsToCommand="True" />
+                            </dxmvvm:Interaction.Behaviors>
+                        </dxe:TextEdit>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem
+                        AddColonToLabel="True"
+                        Label="AD帳號"
+                        LabelHorizontalAlignment="Right">
+                        <dxe:TextEdit
+                            Width="100"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            EditValue="{Binding Path=MainFormData.UPF_USER_AD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem
+                        AddColonToLabel="True"
+                        Label="憑證卡號"
+                        LabelHorizontalAlignment="Right">
+                        <dxe:TextEdit
+                            Width="100"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            EditValue="{Binding Path=MainFormData.UPFCRD_CARD_NO, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem
+                        AddColonToLabel="True"
+                        Label="部門"
+                        LabelHorizontalAlignment="Right">
+                        <dxe:ComboBoxEdit
+                            Width="100"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            DisplayMember="Text"
+                            EditValue="{Binding MainFormData.UPF_DEPT_ID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            IsTextEditable="False"
+                            ItemsSource="{Binding Dpt}"
+                            ValueMember="Value" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem
+                        AddColonToLabel="True"
+                        Label="員工編號"
+                        LabelHorizontalAlignment="Right">
+                        <dxe:TextEdit
+                            Width="100"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            EditValue="{Binding Path=MainFormData.UPF_EMPLOYEE_ID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem
+                        AddColonToLabel="True"
+                        Label="異動時間"
+                        LabelHorizontalAlignment="Right">
+                        <dxe:TextEdit
+                            Width="180"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            EditValue="{Binding Path=MainFormData.UPF_W_DATE}"
+                            IsEnabled="False"
+                            IsReadOnly="True" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem
+                        AddColonToLabel="True"
+                        Label="異動者"
+                        LabelHorizontalAlignment="Right">
+                        <dxe:TextEdit
+                            Width="100"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            EditValue="{Binding Path=MainFormData.UPF_W_USER_ID}"
+                            IsEnabled="False"
+                            IsReadOnly="True" />
+                    </dxlc:LayoutItem>
+                </dxlc:LayoutGroup>
+            </dxlc:LayoutControl>
+        </ScrollViewer>
     </Grid>
 </myTypes:UserControlParent>

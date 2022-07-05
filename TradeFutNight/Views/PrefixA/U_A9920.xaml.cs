@@ -61,6 +61,8 @@ namespace TradeFutNight.Views.PrefixA
                 DbLog(MessageConst.Open);
             });
             await task;
+
+            if (!MagicalHats.CheckMsgServerConnection()) CloseWindow();
         }
 
         public void Insert()

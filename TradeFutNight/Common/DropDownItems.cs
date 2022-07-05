@@ -284,7 +284,7 @@ namespace TradeFutNight.Common
             return result;
         }
 
-        public static IList<ItemInfo> UpfUserName()
+        public static IList<ItemInfo> UpfUserIdName()
         {
             using (var das = Factory.CreateDalSession())
             {

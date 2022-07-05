@@ -1,15 +1,19 @@
 ﻿using CrossModel;
 using CrossModel.Enum;
-using DevExpress.Xpf.DocumentViewer;
+using DevExpress.Xpf.Editors;
 using DevExpress.Xpf.Printing;
 using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using TradeFutNight.Common;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
+using TradeUtility;
 
 namespace TradeFutNight.Views.Prefix8
 {
@@ -150,10 +154,22 @@ namespace TradeFutNight.Views.Prefix8
 
         public async Task PrintIndex()
         {
-            CloseEditor(docPreviewControl);
+            //CloseEditor(docPreviewControl);
 
-            await Task.FromResult<object>(null);
-            throw new NotImplementedException();
+            SnapShotPNG((UIElement)scrollViewerMain.Content, 1);
+
+            //RenderTargetBitmap rtb = new RenderTargetBitmap((int)this.ActualWidth, (int)this.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+            //rtb.Render(this);
+
+            //PngBitmapEncoder png = new PngBitmapEncoder();
+            //png.Frames.Add(BitmapFrame.Create(rtb));
+            //MemoryStream stream = new MemoryStream();
+            //png.Save(stream);
+            //Image image = Image.FromStream(stream);
+            //image.Save("test.jpg");
+
+            //await Task.FromResult<object>(null);
+            //throw new NotImplementedException();
         }
 
         public async Task PrintStock()
@@ -162,20 +178,74 @@ namespace TradeFutNight.Views.Prefix8
             throw new NotImplementedException();
         }
 
-        private void BtnDownload_Click(object sender, RoutedEventArgs e)
+        private async void BtnQuery_Click(object sender, RoutedEventArgs e)
         {
-            //var data = _vm.ListForGenerateFile();
-            //ExportElf.ToTxt(data, Path.Combine(AppSettings.LocalRoutineDataDirectory, "80003.txt"), false);
+            VmMainUi.ShowLoadingWindow();
 
-            MessageBoxExService.Instance().Info("下載完成");
+            var button = ((Button)sender);
+            button.IsEnabled = false;
+
+            var userId = cbUserId.EditValue.AsString();
+
+            await _vm.Query(userId);
+
+            button.IsEnabled = true;
+            VmMainUi.HideLoadingWindow();
         }
 
-        private void BtnSearch_Click(object sender, RoutedEventArgs e)
+        public void SnapShotPNG(UIElement source, int zoom)
         {
-            var paramsText = new TextSearchParameter() { Text = txtProdId.Text };
+            try
+            {
+                double actualHeight = source.RenderSize.Height;
+                double actualWidth = source.RenderSize.Width;
 
-            if (docPreviewControl.FindTextCommand.CanExecute(paramsText))
-                docPreviewControl.FindTextCommand.Execute(paramsText);
+                double renderHeight = actualHeight * zoom;
+                double renderWidth = actualWidth * zoom;
+
+                RenderTargetBitmap renderTarget = new RenderTargetBitmap((int)renderWidth, (int)renderHeight, 96, 96, PixelFormats.Pbgra32);
+                VisualBrush sourceBrush = new VisualBrush(source);
+
+                DrawingVisual drawingVisual = new DrawingVisual();
+                DrawingContext drawingContext = drawingVisual.RenderOpen();
+
+                using (drawingContext)
+                {
+                    drawingContext.PushTransform(new ScaleTransform(zoom, zoom));
+                    drawingContext.DrawRectangle(sourceBrush, null, new Rect(new System.Windows.Point(0, 0), new System.Windows.Point(actualWidth, actualHeight)));
+                }
+                renderTarget.Render(drawingVisual);
+
+                PngBitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(renderTarget));
+                //using (FileStream stream = new FileStream("test.jpg", FileMode.Create, FileAccess.Write))
+                //{
+                //    encoder.Save(stream);
+                //}
+
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    encoder.Save(ms);
+
+                    System.Drawing.Image image = System.Drawing.Image.FromStream(ms);
+
+                    var rptSetting = ReportNormal.CreateSetting(ProgramID, "QQ", UserName, Memo, Ocf.OCF_DATE, true, false, true);
+                    var reportCommon = ReportNormal.CreateCommonPortraitForScreenImage(image, rptSetting);
+                    reportCommon.CreateDocument();
+                    reportCommon.ExportToPdf("test.pdf");
+                }
+            }
+            catch (Exception e)
+            {
+            }
+        }
+
+        private void TextEdit_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            var editor = e.Source as TextEdit;
+            if (editor == null) return;
+
+            editor.Background = new SolidColorBrush(Color.FromRgb(100, 100, 100));
         }
     }
 }

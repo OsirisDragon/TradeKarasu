@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using DataEngine;
-using System.Collections.Generic;
 
 namespace TradeFutNightData.Gates.Specific.Prefix8
 {
@@ -11,7 +10,7 @@ namespace TradeFutNightData.Gates.Specific.Prefix8
             this._das = das;
         }
 
-        public IEnumerable<T> GetUserAndCard(string userId)
+        public T GetUserAndCard(string userId)
         {
             var sql = @"
                         SELECT
@@ -31,7 +30,7 @@ namespace TradeFutNightData.Gates.Specific.Prefix8
             var p = new DynamicParameters();
             p.Add("@UPF_USER_ID", userId);
 
-            var result = _das.Conn.Query<T>(BuildCommand<T>(sql, p));
+            var result = _das.Conn.QuerySingle<T>(BuildCommand<T>(sql, p));
 
             return result;
         }
