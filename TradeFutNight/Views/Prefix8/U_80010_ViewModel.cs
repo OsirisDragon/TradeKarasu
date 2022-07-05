@@ -216,7 +216,6 @@ namespace TradeFutNight.Views.Prefix8
         public void GetSearchSubType()
         {
             SearchSubType = null;
-            SearchSubTypeVal = null;
             SearchSubTypeName = "";
 
             if (OperationTypeVal == "Txn")
@@ -239,6 +238,7 @@ namespace TradeFutNight.Views.Prefix8
                         break;
                 }
             }
+            SearchSubTypeVal = null;
         }
     }
 

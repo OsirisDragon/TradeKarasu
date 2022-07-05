@@ -352,6 +352,17 @@ namespace TradeFutNight.Common
             }
         }
 
+        public static IList<ItemInfo> Ytxn()
+        {
+            using (var das = Factory.CreateDalSession())
+            {
+                var dYtxn = new D_YTXN(das);
+                var result = dYtxn.ListAll().Select(
+                    c => new ItemInfo() { Text = c.YTXN_ID + " — " + c.YTXN_NAME, Value = c.YTXN_ID }).ToList();
+                return result;
+            }
+        }
+
         public static IList<ItemInfo> OperationType()
         {
             var result = new List<ItemInfo>();
@@ -383,6 +394,15 @@ namespace TradeFutNight.Common
             result.Add(new ItemInfo() { Text = "報表", Value = 'R' });
             result.Add(new ItemInfo() { Text = "SP", Value = 'S' });
 
+            return result;
+        }
+
+        public static IList<ItemInfo> YtxnType()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "Infor", Value = 'Y' });
+            result.Add(new ItemInfo() { Text = "其他", Value = 'O' });
+            result.Add(new ItemInfo() { Text = "報表", Value = 'R' });
             return result;
         }
     }

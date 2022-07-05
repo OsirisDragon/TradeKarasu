@@ -415,12 +415,16 @@
     </Compile>
     <Compile Include="Views\Prefix8\U_80014_ViewModel.cs" />
     <Compile Include="Views\Prefix8\U_80002_ViewModel.cs" />
+    <Compile Include="Views\Prefix8\U_89010.xaml.cs">
+      <DependentUpon>U_89010.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Prefix8\U_80010.xaml.cs">
       <DependentUpon>U_80010.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Prefix8\U_80006.xaml.cs">
       <DependentUpon>U_80006.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Prefix8\U_89010_ViewModel.cs" />
     <Compile Include="Views\Prefix8\U_80010_ViewModel.cs" />
     <Compile Include="Views\Prefix8\U_80006_ViewModel.cs" />
     <Compile Include="Views\Prefix9\U_90209.xaml.cs">
@@ -682,6 +686,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Prefix8\U_80002.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix8\U_89010.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
