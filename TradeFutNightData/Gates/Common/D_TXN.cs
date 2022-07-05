@@ -24,6 +24,14 @@ namespace TradeFutNightData.Gates.Common
             return query.ToList();
         }
 
+        public IEnumerable<TXN> ListNotDefault()
+        {
+            var query = _das.DataConn.GetTable<TXN>()
+                        .Where(c => c.TXN_DEFAULT != "Y")
+                        .OrderBy(c => c.TXN_ID);
+            return query.ToList();
+        }
+
         public IEnumerable<T> ListByUser(string userID)
         {
             var sql = @"

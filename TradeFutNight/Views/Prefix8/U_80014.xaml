@@ -1,0 +1,219 @@
+﻿<myTypes:UserControlParent
+    x:Class="TradeFutNight.Views.Prefix8.U_80014"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:TradeFutNight.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:myTypes="clr-namespace:TradeFutNight.Views"
+    xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.Prefix8"
+    Margin="1,1,1,1"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <myTypes:UserControlParent.DataContext>
+        <myTypesPrefix:U_80014_ViewModel />
+    </myTypes:UserControlParent.DataContext>
+    <myTypes:UserControlParent.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\ShareStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </myTypes:UserControlParent.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" MinHeight="35" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <dxlc:FlowLayoutControl Grid.Row="0" Orientation="Horizontal">
+            <Label HorizontalAlignment="Left" VerticalAlignment="Center">
+                使用者代號：
+            </Label>
+            <dxe:ListBoxEdit
+                Name="lbOriUpf"
+                Height="150"
+                MinWidth="170"
+                Margin="0,0,30,0"
+                Padding="1,1,20,1"
+                HorizontalAlignment="Left"
+                DisplayMember="Text"
+                ItemsSource="{Binding OriUpfUserName}"
+                ValueMember="Value" />
+            <StackPanel>
+                <Button
+                    x:Name="btnChoose"
+                    Margin="0,0,0,10"
+                    Click="BtnChoose_Click"
+                    Content="❯❯❯❯" />
+                <Button
+                    x:Name="btnDechoose"
+                    Click="BtnDechoose_Click"
+                    Content="❮❮❮❮" />
+            </StackPanel>
+            <dxe:ListBoxEdit
+                Name="lbCurUpf"
+                Height="150"
+                MinWidth="170"
+                Margin="30,0"
+                Padding="1,1,20,1"
+                HorizontalAlignment="Left"
+                DisplayMember="Text"
+                ItemsSource="{Binding CurUpfUserName}"
+                ValueMember="Value" />
+            <Label HorizontalAlignment="Right" VerticalAlignment="Center">
+                複製指定使用者之權限：
+            </Label>
+            <dxe:ComboBoxEdit
+                x:Name="cbUserId"
+                MinWidth="170"
+                Margin="0,0,10,0"
+                DisplayMember="Text"
+                IsEnabled="False"
+                IsTextEditable="False"
+                ItemsSource="{Binding UpfUserName}"
+                SelectedIndexChanged="CbUserId_SelectedIndexChanged"
+                ValueMember="Value" />
+        </dxlc:FlowLayoutControl>
+
+        <dx:DXTabControl
+            Name="tabControl"
+            Grid.Row="1"
+            Padding="0">
+            <dx:DXTabControl.View>
+                <dx:TabControlScrollView HeaderLocation="None" ShowHeaderMenu="False" />
+            </dx:DXTabControl.View>
+
+            <dx:DXTabItem Name="tabMain">
+                <dxg:GridControl
+                    x:Name="gridMain"
+                    Grid.Row="0"
+                    CurrentItem="{Binding Path=CurrentItem, Mode=TwoWay}"
+                    ItemsSource="{Binding MainGridData}"
+                    SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
+                    <dxg:GridControl.View>
+                        <dxg:TableView x:Name="gridView" CellValueChanged="view_CellValueChanged" />
+                    </dxg:GridControl.View>
+
+                    <dxg:GridColumn
+                        Name="rowNumber"
+                        Width="45"
+                        AllowEditing="False"
+                        Header="編號">
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Text="{DXBinding 'RowData.RowHandle.Value + 1'}" />
+                                </Grid>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+
+                    <dxg:GridColumn
+                        Width="40"
+                        FieldName="UTP_YN_CODE"
+                        Header="權限">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:CheckEditSettings HorizontalContentAlignment="Center" IsThreeState="False" />
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn
+                        Width="80"
+                        AllowEditing="False"
+                        FieldName="TXN_ID"
+                        Header="交易代號">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn
+                        Width="320"
+                        AllowEditing="False"
+                        FieldName="TXN_NAME"
+                        Header="交易名稱" />
+                </dxg:GridControl>
+            </dx:DXTabItem>
+
+            <dx:DXTabItem Name="tabPrint">
+                <dxg:GridControl
+                    x:Name="gridMainPrint"
+                    ItemsSource="{Binding PrintGridData}"
+                    SelectionMode="None">
+                    <dxg:GridControl.View>
+                        <dxg:TableView x:Name="gridViewPrint" AllowEditing="False" />
+                    </dxg:GridControl.View>
+                    <dxg:GridColumn
+                        Name="rowNumberPrint"
+                        Width="40"
+                        AllowEditing="False"
+                        Header="編號">
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Text="{DXBinding 'RowData.RowHandle.Value + 1'}" />
+                                </Grid>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn
+                        Width="70"
+                        FieldName="C_TYPE"
+                        Header="異動種類">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings HorizontalContentAlignment="Center" VerticalContentAlignment="Top" />
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn
+                        Width="70"
+                        FieldName="UTP_TXN_ID"
+                        Header="工作代號">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings HorizontalContentAlignment="Center" VerticalContentAlignment="Top" />
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn
+                        Width="280"
+                        FieldName="TXN_NAME"
+                        Header="工作名稱" />
+
+                    <dxg:GridColumn
+                        Width="150"
+                        FieldName="UTP_USER_ID"
+                        Header="被異動者代號">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn
+                        Width="165"
+                        FieldName="W_TIME"
+                        Header="異動時間">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings HorizontalContentAlignment="Center" DisplayFormat="yyyy/MM/dd HH:mm:ss" />
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                </dxg:GridControl>
+            </dx:DXTabItem>
+        </dx:DXTabControl>
+    </Grid>
+</myTypes:UserControlParent>
