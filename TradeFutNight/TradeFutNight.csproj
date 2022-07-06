@@ -167,7 +167,7 @@
       <DependentUpon>AuthDoubleWithoutCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Auth\AuthGate.cs" />
-    <Compile Include="Common\Converter\BooleanConverter.cs" />
+    <Compile Include="Common\Converter\CharBooleanConverter.cs" />
     <Compile Include="Common\CustomProp.cs" />
     <Compile Include="Common\DragonDocumentPreviewControl.cs" />
     <Compile Include="Common\DropDownItems.cs" />

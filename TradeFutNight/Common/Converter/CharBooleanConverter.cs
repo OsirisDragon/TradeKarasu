@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace TradeFutNight.Common.Converter
 {
-    internal class BooleanConverter : IValueConverter
+    internal class CharBooleanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

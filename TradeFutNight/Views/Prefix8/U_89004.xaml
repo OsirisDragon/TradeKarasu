@@ -26,7 +26,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="..\ShareStyle.xaml" />
                 <ResourceDictionary>
-                    <cvt:BooleanConverter x:Key="BooleanConverter" />
+                    <cvt:CharBooleanConverter x:Key="CharBooleanConverter" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -134,10 +134,13 @@
                                 <dxe:CheckEdit
                                     x:Name="PART_Editor"
                                     HorizontalAlignment="Center"
-                                    EditValue="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanConverter}}"
+                                    EditValue="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource CharBooleanConverter}}"
                                     IsThreeState="False" />
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                        </dxg:GridColumn.EditSettings>
                     </dxg:GridColumn>
                     <dxg:GridColumn
                         Width="80"
