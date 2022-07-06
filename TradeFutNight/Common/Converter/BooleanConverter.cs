@@ -16,7 +16,7 @@ namespace TradeFutNight.Common.Converter
                 }
                 else if (value.GetType() == typeof(bool))
                 {
-                    return (bool)value ? "Y" : " ";
+                    return (bool)value ? 'Y' : ' ';
                 }
             }
 
@@ -26,7 +26,7 @@ namespace TradeFutNight.Common.Converter
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var v = (bool)value;
-            return v ? "Y" : " ";
+            return v ? 'Y' : ' ';
         }
     }
 }

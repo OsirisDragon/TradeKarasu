@@ -21,23 +21,29 @@ namespace TradeFutNight.Views.Prefix8
             set { SetProperty(() => UpfUserName, value); }
         }
 
-        public IList<UIModel_89004_Add> PrintGridData
+        public IList<UIModel_89004_Change> PrintGridData
         {
             get { return GetProperty(() => PrintGridData); }
             set { SetProperty(() => PrintGridData, value); }
         }
 
+        public string UserInfo
+        {
+            get { return GetProperty(() => UserInfo); }
+            set { SetProperty(() => UserInfo, value); }
+        }
+
         public U_89004_ViewModel()
         {
             MainGridData = new ObservableCollection<UIModel_89004>();
-            PrintGridData = new ObservableCollection<UIModel_89004_Add>();
+            PrintGridData = new ObservableCollection<UIModel_89004_Change>();
         }
 
         public void Open()
         {
             MapperInstance = new Mapper(new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<YTXN, UIModel_89004>().ReverseMap();
+                cfg.CreateMap<YUTP, UIModel_89004>().ReverseMap();
             }));
 
             UpfUserName = DropDownItems.UpfUserName(false);
@@ -71,7 +77,7 @@ namespace TradeFutNight.Views.Prefix8
         public virtual string YTXN_NAME { get; set; }
     }
 
-    public class UIModel_89004_Add
+    public class UIModel_89004_Change
     {
         public virtual string C_TYPE { get; set; }
         public virtual string YUTP_YTXN_ID { get; set; }

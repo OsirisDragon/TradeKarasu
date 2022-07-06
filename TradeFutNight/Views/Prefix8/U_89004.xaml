@@ -53,12 +53,21 @@
                 DisplayMember="Text"
                 IsTextEditable="False"
                 ItemsSource="{Binding UpfUserName}"
+                Text="{Binding UserInfo}"
                 ValueMember="Value" />
             <Button
                 x:Name="btnQuery"
                 HorizontalAlignment="Left"
                 Click="BtnQuery_Click">
                 查詢
+            </Button>
+
+            <Button
+                x:Name="btnInsert"
+                Margin="10,0,0,0"
+                HorizontalAlignment="Left"
+                Click="BtnInsert_Click">
+                使用前資料同步
             </Button>
         </dxlc:FlowLayoutControl>
 
@@ -119,14 +128,14 @@
                     <dxg:GridColumn
                         Width="40"
                         FieldName="YUTP_YN_CODE"
-                        Header="權限"
-                        UnboundType="Boolean">
+                        Header="權限">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <dxe:CheckEdit
                                     x:Name="PART_Editor"
                                     HorizontalAlignment="Center"
-                                    EditValue="{Binding Path=Data.YUTP_YN_CODE, Converter={StaticResource BooleanConverter}}" />
+                                    EditValue="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanConverter}}"
+                                    IsThreeState="False" />
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
