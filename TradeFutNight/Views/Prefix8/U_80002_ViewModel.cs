@@ -32,7 +32,7 @@ namespace TradeFutNight.Views.Prefix8
                 cfg.CreateMap<UPF, UIModel_80002>().ReverseMap();
             }));
 
-            Dpt = DropDownItems.Dpt();
+            Dpt = DropDownItems.Dpt(true);
         }
 
         public void Insert()

@@ -87,10 +87,12 @@
     <Reference Include="DevExpress.Xpf.ReportDesigner.v19.2, Version=19.2.12.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Xpf.Ribbon.v19.2, Version=19.2.12.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Xpf.RichEdit.v19.2, Version=19.2.12.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Scheduling.v19.2, Version=19.2.12.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Xpo.v19.2, Version=19.2.12.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraCharts.v19.2, Version=19.2.12.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraGauges.v19.2.Core, Version=19.2.12.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraReports.v19.2, Version=19.2.12.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraScheduler.v19.2.Core, Version=19.2.12.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="linq2db, Version=3.6.0.0, Culture=neutral, PublicKeyToken=e41013125f9e410a, processorArchitecture=MSIL">
       <HintPath>..\packages\linq2db.3.6.0\lib\net472\linq2db.dll</HintPath>
     </Reference>
@@ -214,6 +216,8 @@
       <DependentUpon>U_21032.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Prefix2\U_21032_ViewModel.cs" />
+    <Compile Include="Views\Prefix3\U_30010_ViewModel.cs" />
+    <Compile Include="Views\Prefix3\U_30010_B_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30022.xaml.cs">
       <DependentUpon>U_30022.xaml</DependentUpon>
     </Compile>
@@ -226,6 +230,18 @@
     <Compile Include="Views\Prefix3\U_30022_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30015_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30012_ViewModel.cs" />
+    <Compile Include="Views\Prefix3\U_30043.xaml.cs">
+      <DependentUpon>U_30043.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix3\U_30043_ViewModel.cs" />
+    <Compile Include="Views\Prefix3\U_30042.xaml.cs">
+      <DependentUpon>U_30042.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix3\U_30042_ViewModel.cs" />
+    <Compile Include="Views\Prefix3\U_30041.xaml.cs">
+      <DependentUpon>U_30041.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix3\U_30041_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30063.xaml.cs">
       <DependentUpon>U_30063.xaml</DependentUpon>
     </Compile>
@@ -303,6 +319,10 @@
     <Compile Include="Views\Prefix3\U_30113_ViewModel.cs" />
     <Compile Include="Views\Prefix3\U_30112_ViewModel.cs" />
     <Compile Include="Views\MainUI_ViewModel.cs" />
+    <Compile Include="Views\Prefix3\U_30010.xaml.cs">
+      <DependentUpon>U_30010.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix3\U_30010_A_ViewModel.cs" />
     <Compile Include="Views\Prefix5\U_52303.xaml.cs">
       <DependentUpon>U_52303.xaml</DependentUpon>
     </Compile>
@@ -383,6 +403,13 @@
     </Compile>
     <Compile Include="Views\Prefix5\U_50305_ViewModel.cs" />
     <Compile Include="Views\Prefix5\U_50333_ViewModel.cs" />
+    <Compile Include="Views\Prefix8\U_80001.xaml.cs">
+      <DependentUpon>U_80001.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix8\U_80001_ViewModel.cs" />
+    <Compile Include="Views\Prefix8\U_80014.xaml.cs">
+      <DependentUpon>U_80014.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Prefix8\U_80003.xaml.cs">
       <DependentUpon>U_80003.xaml</DependentUpon>
     </Compile>
@@ -396,10 +423,19 @@
     <Compile Include="Views\Prefix8\U_80002.xaml.cs">
       <DependentUpon>U_80002.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Prefix8\U_80014_ViewModel.cs" />
     <Compile Include="Views\Prefix8\U_80002_ViewModel.cs" />
+    <Compile Include="Views\Prefix8\U_89010.xaml.cs">
+      <DependentUpon>U_89010.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix8\U_80010.xaml.cs">
+      <DependentUpon>U_80010.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Prefix8\U_80006.xaml.cs">
       <DependentUpon>U_80006.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Prefix8\U_89010_ViewModel.cs" />
+    <Compile Include="Views\Prefix8\U_80010_ViewModel.cs" />
     <Compile Include="Views\Prefix8\U_80006_ViewModel.cs" />
     <Compile Include="Views\Prefix9\U_90209.xaml.cs">
       <DependentUpon>U_90209.xaml</DependentUpon>
@@ -515,6 +551,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Prefix3\U_30043.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix3\U_30042.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix3\U_30041.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Prefix3\U_30063.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -591,6 +639,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Prefix3\U_30010.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Prefix5\U_52303.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -635,11 +687,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Prefix8\U_80003.xaml">
+    <Page Include="Views\Prefix8\U_80002.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Prefix8\U_80002.xaml">
+    <Page Include="Views\Prefix8\U_89010.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix8\U_80010.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

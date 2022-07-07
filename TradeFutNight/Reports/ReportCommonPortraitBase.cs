@@ -219,20 +219,22 @@ namespace TradeFutNight.Reports
 
             Application.Current.Dispatcher.Invoke(() =>
             {
-                //GetGroupHeaderColumns().Controls.Add(ReportNormal.CreateHeaderColumnsTable(rptSetting, gridControl));
-
-                // 如果有資料才要產生內容
-                //if (exportData.Count > 0)
-                //GetDetailBand().Controls.Add(ReportNormal.CreateContentTable(exportData, rptSetting, gridControl));
-
                 var picBox = new XRPictureBox();
                 picBox.WidthF = PageWidth - Margins.Left - Margins.Right;
                 picBox.HeightF = imageDetail.Height;
-                picBox.Sizing = ImageSizeMode.StretchImage;
+
+                if (imageDetail.Width > picBox.WidthF)
+                {
+                    picBox.Sizing = ImageSizeMode.StretchImage;
+                }
+                else
+                {
+                    picBox.Sizing = ImageSizeMode.AutoSize;
+                }
+
                 picBox.ImageSource = new ImageSource(imageDetail);
 
                 GetDetailBand().Controls.Add(picBox);
-                //GetDetailBand().HeightF = picBox.SizeF.Height;
             });
 
             // 如果有填入Header的Memo的話，這就是放一些像是查詢條件之類的額外資訊用的

@@ -35,7 +35,11 @@
             <RowDefinition Height="auto" MinHeight="35" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <dxlc:FlowLayoutControl Grid.Row="0" Orientation="Horizontal">
+
+        <dxlc:FlowLayoutControl
+            Grid.Row="0"
+            Background="LightCyan"
+            Orientation="Horizontal">
             <Label HorizontalAlignment="Right" VerticalAlignment="Center">
                 使用者代號：
             </Label>
@@ -51,6 +55,8 @@
                 查詢
             </Button>
         </dxlc:FlowLayoutControl>
+
+
         <!--<c:DragonDocumentPreviewControl
             x:Name="docPreviewControl"
             Grid.Row="1"
@@ -67,6 +73,7 @@
             Grid.Row="1"
             Width="400"
             HorizontalAlignment="Left"
+            VerticalAlignment="Top"
             HorizontalScrollBarVisibility="Hidden">
             <dxlc:LayoutControl Orientation="Vertical">
                 <dxlc:LayoutGroup Width="600" Orientation="Vertical">
@@ -90,14 +97,8 @@
                             Width="100"
                             Margin="10,0,0,0"
                             HorizontalAlignment="Left"
-                            EditValue="{Binding Path=MainFormData.UPF_USER_NAME, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            <dxmvvm:Interaction.Behaviors>
-                                <dxmvvm:EventToCommand
-                                    Command="{Binding SearchByKeyCommand}"
-                                    EventName="KeyDown"
-                                    PassEventArgsToCommand="True" />
-                            </dxmvvm:Interaction.Behaviors>
-                        </dxe:TextEdit>
+                            EditValue="{Binding Path=MainFormData.UPF_USER_NAME, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            EditValueChanged="TextEdit_EditValueChanged" />
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem
                         AddColonToLabel="True"
@@ -107,7 +108,8 @@
                             Width="100"
                             Margin="10,0,0,0"
                             HorizontalAlignment="Left"
-                            EditValue="{Binding Path=MainFormData.UPF_USER_AD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            EditValue="{Binding Path=MainFormData.UPF_USER_AD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            EditValueChanged="TextEdit_EditValueChanged" />
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem
                         AddColonToLabel="True"
@@ -117,18 +119,20 @@
                             Width="100"
                             Margin="10,0,0,0"
                             HorizontalAlignment="Left"
-                            EditValue="{Binding Path=MainFormData.UPFCRD_CARD_NO, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            EditValue="{Binding Path=MainFormData.UPFCRD_CARD_NO, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            EditValueChanged="TextEdit_EditValueChanged" />
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem
                         AddColonToLabel="True"
                         Label="部門"
                         LabelHorizontalAlignment="Right">
                         <dxe:ComboBoxEdit
-                            Width="100"
+                            Width="140"
                             Margin="10,0,0,0"
                             HorizontalAlignment="Left"
                             DisplayMember="Text"
                             EditValue="{Binding MainFormData.UPF_DEPT_ID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            EditValueChanged="TextEdit_EditValueChanged"
                             IsTextEditable="False"
                             ItemsSource="{Binding Dpt}"
                             ValueMember="Value" />
@@ -141,7 +145,8 @@
                             Width="100"
                             Margin="10,0,0,0"
                             HorizontalAlignment="Left"
-                            EditValue="{Binding Path=MainFormData.UPF_EMPLOYEE_ID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            EditValue="{Binding Path=MainFormData.UPF_EMPLOYEE_ID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            EditValueChanged="TextEdit_EditValueChanged" />
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem
                         AddColonToLabel="True"

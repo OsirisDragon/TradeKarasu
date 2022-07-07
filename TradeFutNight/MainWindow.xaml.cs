@@ -36,7 +36,7 @@ namespace TradeFutNight
             DataConnection.WriteTraceLine = (o, c, t) => Debug.WriteLine(o, c);
 
             // 暫時設定在這邊
-            MagicalHats.UserID = "Q0001";
+            MagicalHats.UserID = "I0001";
             MagicalHats.UserAD = "helloWorld";
             MagicalHats.UserName = "希耶斯塔";
 

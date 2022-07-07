@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using TradeFutNight.Common;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Specific.Prefix8;
@@ -25,6 +24,11 @@ namespace TradeFutNight.Views.Prefix8
         {
             get { return GetProperty(() => MainFormData); }
             set { SetProperty(() => MainFormData, value); }
+        }
+
+        public UIModel_80003 MainFormDataOriginal
+        {
+            get; set;
         }
 
         public IList<ItemInfo> UpfUserIdName
@@ -65,21 +69,23 @@ namespace TradeFutNight.Views.Prefix8
                 using (var das = Factory.CreateDalSession())
                 {
                     var d80003 = new D_80003<UIModel_80003>(das);
-                    MainFormData = d80003.GetUserAndCard(userId);
+                    MainFormDataOriginal = d80003.GetUserAndCard(userId);
+                    MainFormData = MainFormDataOriginal.ShallowCopy();
                 }
             });
 
             await task;
-        }
-
-        public void SearchByKey(KeyEventArgs e)
-        {
         }
     }
 
     [HighlightedClass]
     public class UIModel_80003 : UPF
     {
+        public UIModel_80003 ShallowCopy()
+        {
+            return (UIModel_80003)this.MemberwiseClone();
+        }
+
         public virtual string UPFCRD_CARD_NO { get; set; }
     }
 }

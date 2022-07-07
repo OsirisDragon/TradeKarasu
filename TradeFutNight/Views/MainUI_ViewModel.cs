@@ -1,6 +1,11 @@
-﻿using CrossModel;
-using DevExpress.Mvvm;
-using TradeFutNight.Interfaces;
+﻿using DevExpress.Mvvm;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using TradeFutNight.Common;
+using TradeFutNightData;
+using TradeFutNightData.Gates.Common;
+using TradeFutNightData.Models.Common;
 
 namespace TradeFutNight.Views
 {
@@ -60,8 +65,22 @@ namespace TradeFutNight.Views
             set { SetProperty(() => IsButtonExportEnabled, value); }
         }
 
+        public IList<TxnGroup> TxnGridData
+        {
+            get { return GetProperty(() => TxnGridData); }
+            set { SetProperty(() => TxnGridData, value); }
+        }
+
         public MainUI_ViewModel()
         {
+            using (var das = Factory.CreateDalSession())
+            {
+                var dTXN = new D_TXN(das);
+                var txnData = dTXN.ListByUser(MagicalHats.UserID)
+                    .GroupBy(c => c.TXN_ID.Substring(0, 1))
+                    .Select(c => new TxnGroup(c.Key, c.ToArray()));
+                TxnGridData = new ObservableCollection<TxnGroup>(txnData.ToArray());
+            }
         }
 
         public void ShowLoadingWindow()
@@ -72,6 +91,72 @@ namespace TradeFutNight.Views
         public void HideLoadingWindow()
         {
             IsLoadingVisible = false;
+        }
+
+        public class TxnGroup
+        {
+            public string Name { get; set; }
+            public ObservableCollection<TXN> Txns { get; set; }
+
+            public TxnGroup(string name, IEnumerable<TXN> txns)
+            {
+                switch (name)
+                {
+                    case "2":
+                        Name = "[2] 檔案維護";
+                        break;
+
+                    case "3":
+                        Name = "[3] 檔案維護";
+                        break;
+
+                    case "4":
+                        Name = "[4] 會員管理";
+                        break;
+
+                    case "5":
+                        Name = "[5] 報表製作";
+                        break;
+
+                    case "8":
+                        Name = "[8] 使用者管理";
+                        break;
+
+                    case "9":
+                        Name = "[9] 交易管理";
+                        break;
+
+                    case "A":
+                        Name = "[A] 其它作業";
+                        break;
+
+                    case "B":
+                        Name = "[B] 結算部專用";
+                        break;
+
+                    case "C":
+                        Name = "[C] 交易部專用";
+                        break;
+
+                    case "S":
+                        Name = "[S] Span專用";
+                        break;
+
+                    case "E":
+                        Name = "[E] 結算部異常作業";
+                        break;
+
+                    default:
+                        Name = name;
+                        break;
+                }
+                Txns = new ObservableCollection<TXN>(txns);
+            }
+
+            public override string ToString()
+            {
+                return Name;
+            }
         }
     }
 }

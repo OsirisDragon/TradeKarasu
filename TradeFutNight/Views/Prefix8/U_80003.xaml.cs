@@ -9,10 +9,13 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
+using TradeFutNightData;
 using TradeUtility;
 
 namespace TradeFutNight.Views.Prefix8
@@ -92,9 +95,44 @@ namespace TradeFutNight.Views.Prefix8
 
         public async Task Save()
         {
-            var task = Task.Run(() =>
-           {
-           });
+            VmMainUi.LoadingText = MessageConst.LoadingStatusSaving;
+
+            var task = Task.Run(async () =>
+            {
+                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
+                var domainData = _vm.MapperInstance.Map<IList<TPPINTD>>(trackableData.DeletedItems);
+
+                using (var das = Factory.CreateDalSession())
+                {
+                    das.Begin();
+
+                    try
+                    {
+                        var dTPPINTD = new D_TPPINTD(das);
+                        dTPPINTD.Delete(domainData);
+
+                        UpdateAccessPermission(ProgramID, das);
+
+                        DbLog(MessageConst.Completed, das);
+
+                        das.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        das.Rollback();
+                        throw ex;
+                    }
+                }
+
+                var report = CreateReport(domainData, OperationType.Save);
+                var reportGate = await new ReportGate(report).CreateDocumentAsync();
+                await reportGate.ExportPdf(GetExportFilePath());
+                await reportGate.Print();
+
+                VmMainUi.HideLoadingWindow();
+                MessageBoxExService.Instance().Info(MessageConst.ProcessSuccess);
+                CloseWindow();
+            });
             await task;
         }
 
@@ -240,12 +278,27 @@ namespace TradeFutNight.Views.Prefix8
             }
         }
 
-        private void TextEdit_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        private void TextEdit_EditValueChanged(object sender, EditValueChangedEventArgs e)
         {
+            if (_vm.MainFormDataOriginal == null || _vm.MainFormData == null) return;
+
             var editor = e.Source as TextEdit;
             if (editor == null) return;
 
-            editor.Background = new SolidColorBrush(Color.FromRgb(100, 100, 100));
+            BindingExpression bindingExpression = editor.GetBindingExpression(BaseEdit.EditValueProperty);
+            var propertyName = bindingExpression.ResolvedSourcePropertyName;
+
+            var originalVal = _vm.MainFormDataOriginal.GetType().GetProperty(propertyName).GetValue(_vm.MainFormDataOriginal, null).ToString();
+            var nowVal = _vm.MainFormData.GetType().GetProperty(propertyName).GetValue(_vm.MainFormData, null).ToString();
+
+            if (originalVal == nowVal)
+            {
+                editor.Background = null;
+            }
+            else
+            {
+                editor.Background = Brushes.LightGray;
+            }
         }
     }
 }
