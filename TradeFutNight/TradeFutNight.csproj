@@ -699,6 +699,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Prefix8\U_80014.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix8\U_89004.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Prefix8\U_89010.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
