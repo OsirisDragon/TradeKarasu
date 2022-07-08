@@ -1,6 +1,6 @@
-﻿using CrossModel;
+﻿using AutoMapper;
+using CrossModel;
 using DevExpress.DataAccess.ObjectBinding;
-using DevExpress.XtraReports.UI;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -14,12 +14,6 @@ namespace TradeFutNight.Views.Prefix8
 {
     public class U_80003_ViewModel : ViewModelParent<UIModel_80003>
     {
-        public XtraReport Report
-        {
-            get { return GetProperty(() => Report); }
-            set { SetProperty(() => Report, value); }
-        }
-
         public UIModel_80003 MainFormData
         {
             get { return GetProperty(() => MainFormData); }
@@ -43,21 +37,24 @@ namespace TradeFutNight.Views.Prefix8
             set { SetProperty(() => Dpt, value); }
         }
 
-        public IEnumerable<string> ComboBoxItemsSource { get; set; }
-
         public U_80003_ViewModel()
         {
             MainGridData = new ObservableCollection<UIModel_80003>();
-
-            ComboBoxItemsSource = Enumerable.Range(1, 20)
-                .Select(x => string.Format("Item {0}", x));
         }
 
         public void Open()
         {
-            UpfUserIdName = DropDownItems.UpfUserIdName();
+            MapperInstance = new Mapper(new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<UPF, UIModel_80003>().ReverseMap();
+            }));
+
+            // 下拉選單移除"全部"這個選項
+            var tempUpfUser = DropDownItems.UpfUserName();
+            tempUpfUser.Remove(tempUpfUser.SingleOrDefault(c => c.Value.ToString() == "%"));
+            UpfUserIdName = tempUpfUser;
+
             var tempDpt = DropDownItems.Dpt();
-            // 不用"全部"這個選項
             tempDpt.Remove(tempDpt.SingleOrDefault(c => c.Value.ToString() == "%"));
             Dpt = tempDpt;
         }

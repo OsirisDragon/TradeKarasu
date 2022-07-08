@@ -15,7 +15,7 @@ namespace TradeFutNightData.Gates.Common
 
     public class D_UPFCRD<T> : ParentGate
     {
-        public void Delete(string USER_ID)
+        public void DeleteWithNormalType(string USER_ID)
         {
             _das.DataConn.GetTable<UPFCRD>()
                 .Where(c => c.UPFCRD_USER_ID == USER_ID && c.UPFCRD_CARD_TYPE == 'N')

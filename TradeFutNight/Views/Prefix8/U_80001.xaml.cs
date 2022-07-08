@@ -158,7 +158,7 @@ namespace TradeFutNight.Views.Prefix8
                                 UPFCRD_W_USER_ID = UserID
                             };
                             listCrd.Add(crd);
-                            dUPFCRD.Delete(item.UPF_USER_ID);
+                            dUPFCRD.DeleteWithNormalType(item.UPF_USER_ID);
                         }
                         dUPFCRD.Insert(listCrd);
 

@@ -1,4 +1,5 @@
 ﻿using DataEngine;
+using LinqToDB;
 using System.Collections.Generic;
 using System.Linq;
 using TradeFutNightData.Models.Common;
@@ -37,6 +38,20 @@ namespace TradeFutNightData.Gates.Common
         {
             var query = _das.DataConn.GetTable<UPF>().Where(c => c.UPF_USER_AD == adAccount);
             return query.SingleOrDefault();
+        }
+
+        public void Update(UPF upf)
+        {
+            _das.DataConn.InlineParameters = true;
+            _das.DataConn.GetTable<UPF>()
+                   .Where(c => c.UPF_USER_ID == upf.UPF_USER_ID)
+                   .Set(c => c.UPF_USER_NAME, upf.UPF_USER_NAME)
+                   .Set(c => c.UPF_USER_AD, upf.UPF_USER_AD)
+                   .Set(c => c.UPF_DEPT_ID, upf.UPF_DEPT_ID)
+                   .Set(c => c.UPF_EMPLOYEE_ID, upf.UPF_EMPLOYEE_ID)
+                   .Set(c => c.UPF_W_DATE, upf.UPF_W_DATE)
+                   .Set(c => c.UPF_W_USER_ID, upf.UPF_W_USER_ID)
+                   .Update();
         }
     }
 }

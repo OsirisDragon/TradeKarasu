@@ -55,19 +55,6 @@
                 查詢
             </Button>
         </dxlc:FlowLayoutControl>
-
-
-        <!--<c:DragonDocumentPreviewControl
-            x:Name="docPreviewControl"
-            Grid.Row="1"
-            AutoShowParametersPanel="False"
-            CommandBarStyle="None"
-            DocumentSource="{Binding Report}"
-            HighlightCurrentPage="False"
-            HighlightEditingFields="False"
-            RequestDocumentCreation="True"
-            ShowPageMargins="False"
-            ZoomMode="ActualSize" />-->
         <ScrollViewer
             Name="scrollViewerMain"
             Grid.Row="1"
@@ -105,7 +92,7 @@
                         Label="AD帳號"
                         LabelHorizontalAlignment="Right">
                         <dxe:TextEdit
-                            Width="100"
+                            Width="150"
                             Margin="10,0,0,0"
                             HorizontalAlignment="Left"
                             EditValue="{Binding Path=MainFormData.UPF_USER_AD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -146,7 +133,8 @@
                             Margin="10,0,0,0"
                             HorizontalAlignment="Left"
                             EditValue="{Binding Path=MainFormData.UPF_EMPLOYEE_ID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            EditValueChanged="TextEdit_EditValueChanged" />
+                            EditValueChanged="TextEdit_EditValueChanged"
+                            MaxLength="6" />
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem
                         AddColonToLabel="True"

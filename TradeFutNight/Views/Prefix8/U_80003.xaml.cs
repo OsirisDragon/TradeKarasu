@@ -1,21 +1,18 @@
 ﻿using CrossModel;
-using CrossModel.Enum;
 using DevExpress.Xpf.Editors;
-using DevExpress.Xpf.Printing;
 using DevExpress.XtraReports.UI;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
 using TradeFutNightData;
+using TradeFutNightData.Gates.Common;
+using TradeFutNightData.Models.Common;
 using TradeUtility;
 
 namespace TradeFutNight.Views.Prefix8
@@ -49,9 +46,6 @@ namespace TradeFutNight.Views.Prefix8
         public override void ToolButtonSetting()
         {
             base.ToolButtonSetting();
-            VmMainUi.IsButtonPrintIndexEnabled = true;
-            VmMainUi.IsButtonPrintStockEnabled = true;
-            VmMainUi.IsButtonSaveEnabled = false;
         }
 
         public async Task Open()
@@ -64,14 +58,6 @@ namespace TradeFutNight.Views.Prefix8
                 DbLog(MessageConst.Open);
             });
             await task;
-
-            var report = (U_80003_Report)CreateReport(_vm.MainGridData, OperationType.Query);
-
-            EditingFieldExtensions.Instance.RegisterEditorInfo("ComboBoxEditor", "Custom", "ComboBox Editor");
-            report.xrLabel1.EditOptions.Enabled = true;
-            report.xrLabel1.EditOptions.EditorName = "ComboBoxEditor";
-
-            _vm.Report = report;
         }
 
         public void Insert()
@@ -86,6 +72,13 @@ namespace TradeFutNight.Views.Prefix8
         {
             var task = Task.Run(() =>
             {
+                if (_vm.MainFormData == null)
+                {
+                    VmMainUi.HideLoadingWindow();
+                    MessageBoxExService.Instance().Error("請先查詢使用者");
+                    return false;
+                }
+
                 return true;
             });
             await task;
@@ -99,8 +92,10 @@ namespace TradeFutNight.Views.Prefix8
 
             var task = Task.Run(async () =>
             {
-                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = _vm.MapperInstance.Map<IList<TPPINTD>>(trackableData.DeletedItems);
+                _vm.MainFormData.UPF_W_USER_ID = UserID;
+                _vm.MainFormData.UPF_W_DATE = DateTime.Now;
+
+                var dtoData = _vm.MapperInstance.Map<UPF>(_vm.MainFormData);
 
                 using (var das = Factory.CreateDalSession())
                 {
@@ -108,8 +103,23 @@ namespace TradeFutNight.Views.Prefix8
 
                     try
                     {
-                        var dTPPINTD = new D_TPPINTD(das);
-                        dTPPINTD.Delete(domainData);
+                        var dUpf = new D_UPF(das);
+                        dUpf.Update(dtoData);
+
+                        var dUpfcrd = new D_UPFCRD(das);
+                        dUpfcrd.DeleteWithNormalType(dtoData.UPF_USER_ID);
+
+                        var upfcrd = new UPFCRD()
+                        {
+                            UPFCRD_CARD_NO = _vm.MainFormData.UPFCRD_CARD_NO,
+                            UPFCRD_CARD_TYPE = 'N',
+                            UPFCRD_USER_ID = _vm.MainFormData.UPF_USER_ID,
+                            UPFCRD_DEPT_ID = _vm.MainFormData.UPF_DEPT_ID,
+                            UPFCRD_VALID_DATE = null,
+                            UPFCRD_W_DATE = _vm.MainFormData.UPF_W_DATE,
+                            UPFCRD_W_USER_ID = _vm.MainFormData.UPF_W_USER_ID
+                        };
+                        dUpfcrd.Insert(upfcrd);
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -124,7 +134,12 @@ namespace TradeFutNight.Views.Prefix8
                     }
                 }
 
-                var report = CreateReport(domainData, OperationType.Save);
+                XtraReport report = null;
+                Dispatcher.Invoke(() =>
+                {
+                    report = CreateReport();
+                });
+
                 var reportGate = await new ReportGate(report).CreateDocumentAsync();
                 await reportGate.ExportPdf(GetExportFilePath());
                 await reportGate.Print();
@@ -136,46 +151,15 @@ namespace TradeFutNight.Views.Prefix8
             await task;
         }
 
-        private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
+        private XtraReport CreateReport()
         {
-            string reportTitle = ProgramID + AppSettings.DashForTitle + ProgramName;
-            ReportSetting rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, true, false, true);
+            string reportTitle = ProgramID + "–" + ProgramName;
 
-            U_80003_Report report = new U_80003_Report
-            {
-                DataSource = data,
-                HasHandlePerson = rptSetting.HasHandlePerson,
-                HasConfirmPerson = rptSetting.HasConfirmPerson,
-                HasManagerPerson = rptSetting.HasManagerPerson,
-                PageHeaderVisible = true,
-                TableFooterVisible = true
-            };
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, true, false, true);
+            var image = ImageProcess.CaptureControlImage((UIElement)scrollViewerMain.Content);
+            var reportCommon = ReportNormal.CreateCommonPortraitForScreenImage(image, rptSetting);
 
-            switch (operationType)
-            {
-                case OperationType.Query:
-                    report.HasHandlePerson = false;
-                    report.HasConfirmPerson = false;
-                    report.HasManagerPerson = false;
-                    report.PageHeaderVisible = false;
-                    report.TableFooterVisible = false;
-                    break;
-
-                case OperationType.PrintIndex:
-                    rptSetting.ReportTitle += AppSettings.DashForTitle + "指數類";
-                    break;
-
-                case OperationType.PrintStock:
-                    rptSetting.ReportTitle += AppSettings.DashForTitle + "股票類";
-                    break;
-
-                default:
-                    break;
-            }
-
-            ReportNormal.SetReportHeaderParameters(report, rptSetting);
-
-            return report;
+            return reportCommon;
         }
 
         public async Task Export()
@@ -192,22 +176,8 @@ namespace TradeFutNight.Views.Prefix8
 
         public async Task PrintIndex()
         {
-            //CloseEditor(docPreviewControl);
-
-            SnapShotPNG((UIElement)scrollViewerMain.Content, 1);
-
-            //RenderTargetBitmap rtb = new RenderTargetBitmap((int)this.ActualWidth, (int)this.ActualHeight, 96, 96, PixelFormats.Pbgra32);
-            //rtb.Render(this);
-
-            //PngBitmapEncoder png = new PngBitmapEncoder();
-            //png.Frames.Add(BitmapFrame.Create(rtb));
-            //MemoryStream stream = new MemoryStream();
-            //png.Save(stream);
-            //Image image = Image.FromStream(stream);
-            //image.Save("test.jpg");
-
-            //await Task.FromResult<object>(null);
-            //throw new NotImplementedException();
+            await Task.FromResult<object>(null);
+            throw new NotImplementedException();
         }
 
         public async Task PrintStock()
@@ -231,53 +201,12 @@ namespace TradeFutNight.Views.Prefix8
             VmMainUi.HideLoadingWindow();
         }
 
-        public void SnapShotPNG(UIElement source, int zoom)
-        {
-            try
-            {
-                double actualHeight = source.RenderSize.Height;
-                double actualWidth = source.RenderSize.Width;
-
-                double renderHeight = actualHeight * zoom;
-                double renderWidth = actualWidth * zoom;
-
-                RenderTargetBitmap renderTarget = new RenderTargetBitmap((int)renderWidth, (int)renderHeight, 96, 96, PixelFormats.Pbgra32);
-                VisualBrush sourceBrush = new VisualBrush(source);
-
-                DrawingVisual drawingVisual = new DrawingVisual();
-                DrawingContext drawingContext = drawingVisual.RenderOpen();
-
-                using (drawingContext)
-                {
-                    drawingContext.PushTransform(new ScaleTransform(zoom, zoom));
-                    drawingContext.DrawRectangle(sourceBrush, null, new Rect(new System.Windows.Point(0, 0), new System.Windows.Point(actualWidth, actualHeight)));
-                }
-                renderTarget.Render(drawingVisual);
-
-                PngBitmapEncoder encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(renderTarget));
-                //using (FileStream stream = new FileStream("test.jpg", FileMode.Create, FileAccess.Write))
-                //{
-                //    encoder.Save(stream);
-                //}
-
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    encoder.Save(ms);
-
-                    System.Drawing.Image image = System.Drawing.Image.FromStream(ms);
-
-                    var rptSetting = ReportNormal.CreateSetting(ProgramID, "QQ", UserName, Memo, Ocf.OCF_DATE, true, false, true);
-                    var reportCommon = ReportNormal.CreateCommonPortraitForScreenImage(image, rptSetting);
-                    reportCommon.CreateDocument();
-                    reportCommon.ExportToPdf("test.pdf");
-                }
-            }
-            catch (Exception e)
-            {
-            }
-        }
-
+        /// <summary>
+        /// 這個事件除了更改控制項的文字會觸發之外，當ViewModel Binding時也會更改控制項的值也會觸發
+        /// 所以要判斷跟原本的值一不一樣
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TextEdit_EditValueChanged(object sender, EditValueChangedEventArgs e)
         {
             if (_vm.MainFormDataOriginal == null || _vm.MainFormData == null) return;
@@ -285,9 +214,11 @@ namespace TradeFutNight.Views.Prefix8
             var editor = e.Source as TextEdit;
             if (editor == null) return;
 
+            // 抓取控制項上面的Binding的Property屬性名
             BindingExpression bindingExpression = editor.GetBindingExpression(BaseEdit.EditValueProperty);
             var propertyName = bindingExpression.ResolvedSourcePropertyName;
 
+            // 由屬性名來取值
             var originalVal = _vm.MainFormDataOriginal.GetType().GetProperty(propertyName).GetValue(_vm.MainFormDataOriginal, null).ToString();
             var nowVal = _vm.MainFormData.GetType().GetProperty(propertyName).GetValue(_vm.MainFormData, null).ToString();
 

@@ -56,7 +56,7 @@ namespace TradeFutNight.Views.Prefix8
                 cfg.CreateMap<LOGF, UIModel_80006>().ReverseMap();
             }));
 
-            UpfUserIdName = DropDownItems.UpfUserIdName();
+            UpfUserIdName = DropDownItems.UpfUserName();
             LogfKind = DropDownItems.LogfKind();
             Dpt = DropDownItems.Dpt();
         }

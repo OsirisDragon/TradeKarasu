@@ -170,6 +170,7 @@
     <Compile Include="Common\CustomProp.cs" />
     <Compile Include="Common\DragonDocumentPreviewControl.cs" />
     <Compile Include="Common\DropDownItems.cs" />
+    <Compile Include="Common\ImageProcess.cs" />
     <Compile Include="Common\MagicalHats.cs" />
     <Compile Include="Common\Utility.cs" />
     <Compile Include="Interfaces\IMessageBoxExService.cs" />
@@ -412,12 +413,6 @@
     </Compile>
     <Compile Include="Views\Prefix8\U_80003.xaml.cs">
       <DependentUpon>U_80003.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Prefix8\U_80003_Report.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Views\Prefix8\U_80003_Report.Designer.cs">
-      <DependentUpon>U_80003_Report.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Prefix8\U_80003_ViewModel.cs" />
     <Compile Include="Views\Prefix8\U_80002.xaml.cs">
@@ -687,7 +682,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Prefix8\U_80001.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Prefix8\U_80002.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix8\U_80003.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Prefix8\U_80014.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -824,9 +831,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Prefix5\U_50301_Report.resx">
       <DependentUpon>U_50301_Report.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Prefix8\U_80003_Report.resx">
-      <DependentUpon>U_80003_Report.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

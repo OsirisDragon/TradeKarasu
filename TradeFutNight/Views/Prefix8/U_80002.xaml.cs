@@ -127,7 +127,7 @@ namespace TradeFutNight.Views.Prefix8
                         {
                             dUTP.DeleteUser(item.UPF_USER_ID);
                             dYUTP.DeleteUser(item.UPF_USER_ID);
-                            dUPFCRD.Delete(item.UPF_USER_ID);
+                            dUPFCRD.DeleteWithNormalType(item.UPF_USER_ID);
                         }
 
                         UpdateAccessPermission(ProgramID, das);
