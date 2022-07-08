@@ -171,6 +171,7 @@
     <Compile Include="Common\CustomProp.cs" />
     <Compile Include="Common\DragonDocumentPreviewControl.cs" />
     <Compile Include="Common\DropDownItems.cs" />
+    <Compile Include="Common\ImageProcess.cs" />
     <Compile Include="Common\MagicalHats.cs" />
     <Compile Include="Common\Utility.cs" />
     <Compile Include="Interfaces\IMessageBoxExService.cs" />
@@ -414,6 +415,10 @@
     <Compile Include="Views\Prefix8\U_89004.xaml.cs">
       <DependentUpon>U_89004.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Prefix8\U_80003.xaml.cs">
+      <DependentUpon>U_80003.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Prefix8\U_80003_ViewModel.cs" />
     <Compile Include="Views\Prefix8\U_80002.xaml.cs">
       <DependentUpon>U_80002.xaml</DependentUpon>
     </Compile>
@@ -686,15 +691,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Prefix8\U_80014.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\Prefix8\U_80002.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Prefix8\U_89004.xaml">
+    <Page Include="Views\Prefix8\U_80003.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -3,6 +3,7 @@ using CrossModel.Enum;
 using DevExpress.Xpf.Grid;
 using DevExpress.XtraReports.Parameters;
 using DevExpress.XtraReports.UI;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows;
@@ -149,7 +150,7 @@ namespace TradeFutNight.Reports
 
                 // 如果有資料才要產生內容
                 if (exportData.Count > 0)
-                    GetDetailBand().Controls.Add(ReportNormal.CreateContentTable(exportData, rptSetting, gridControl));
+                    GetDetailBand().Controls.Add(ReportNormal.CreateContentTable((IList)exportData, rptSetting, gridControl));
             });
 
             // 如果有填入Header的Memo的話，這就是放一些像是查詢條件之類的額外資訊用的

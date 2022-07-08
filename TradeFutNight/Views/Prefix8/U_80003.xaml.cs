@@ -1,33 +1,33 @@
-﻿using ChangeTracking;
-using CrossModel;
-using CrossModel.Enum;
+﻿using CrossModel;
+using DevExpress.Xpf.Editors;
 using DevExpress.XtraReports.UI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Media;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Common;
 using TradeFutNightData.Models.Common;
+using TradeUtility;
 
 namespace TradeFutNight.Views.Prefix8
 {
     /// <summary>
-    /// U_80002.xaml 的互動邏輯
+    /// U_80003.xaml 的互動邏輯
     /// </summary>
-    public partial class U_80002 : UserControlParent, IViewSword
+    public partial class U_80003 : UserControlParent, IViewSword
     {
-        private U_80002_ViewModel _vm;
+        private U_80003_ViewModel _vm;
 
-        public U_80002()
+        public U_80003()
         {
             InitializeComponent();
-            _vm = (U_80002_ViewModel)DataContext;
+            _vm = (U_80003_ViewModel)DataContext;
         }
 
         public async Task<bool> IsCanRun()
@@ -62,36 +62,20 @@ namespace TradeFutNight.Views.Prefix8
 
         public void Insert()
         {
-            gridView.CloseEditor();
-            _vm.Insert();
         }
 
         public void Delete()
         {
-            base.Delete(gridMain, _vm);
         }
 
         public async Task<bool> CheckField()
         {
-            if (!BaseCheck(new CheckSettings() { IsCheckNotNullNotEmpty = false }, gridMain, _vm))
-                return false;
-
             var task = Task.Run(() =>
             {
-                if (!IsCanRunProgram())
+                if (_vm.MainFormData == null)
                 {
                     VmMainUi.HideLoadingWindow();
-                    MessageBoxExService.Instance().Error(MessageConst.NotAllowedExcute);
-                    return false;
-                }
-
-                var resultItem = new ResultItem();
-                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-
-                if (trackableData.DeletedItems.Count() == 0)
-                {
-                    VmMainUi.HideLoadingWindow();
-                    MessageBoxExService.Instance().Error(MessageConst.NoDeletedData);
+                    MessageBoxExService.Instance().Error("請先查詢使用者");
                     return false;
                 }
 
@@ -108,8 +92,10 @@ namespace TradeFutNight.Views.Prefix8
 
             var task = Task.Run(async () =>
             {
-                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = _vm.MapperInstance.Map<IList<UPF>>(trackableData.DeletedItems);
+                _vm.MainFormData.UPF_W_USER_ID = UserID;
+                _vm.MainFormData.UPF_W_DATE = DateTime.Now;
+
+                var dtoData = _vm.MapperInstance.Map<UPF>(_vm.MainFormData);
 
                 using (var das = Factory.CreateDalSession())
                 {
@@ -117,18 +103,23 @@ namespace TradeFutNight.Views.Prefix8
 
                     try
                     {
-                        var dUPF = new D_UPF(das);
-                        dUPF.Delete(domainData);
+                        var dUpf = new D_UPF(das);
+                        dUpf.Update(dtoData);
 
-                        var dUTP = new D_UTP(das);
-                        var dYUTP = new D_YUTP(das);
-                        var dUPFCRD = new D_UPFCRD(das);
-                        foreach (var item in domainData)
+                        var dUpfcrd = new D_UPFCRD(das);
+                        dUpfcrd.DeleteWithNormalType(dtoData.UPF_USER_ID);
+
+                        var upfcrd = new UPFCRD()
                         {
-                            dUTP.DeleteUser(item.UPF_USER_ID);
-                            dYUTP.DeleteUser(item.UPF_USER_ID);
-                            dUPFCRD.DeleteWithNormalType(item.UPF_USER_ID);
-                        }
+                            UPFCRD_CARD_NO = _vm.MainFormData.UPFCRD_CARD_NO,
+                            UPFCRD_CARD_TYPE = 'N',
+                            UPFCRD_USER_ID = _vm.MainFormData.UPF_USER_ID,
+                            UPFCRD_DEPT_ID = _vm.MainFormData.UPF_DEPT_ID,
+                            UPFCRD_VALID_DATE = null,
+                            UPFCRD_W_DATE = _vm.MainFormData.UPF_W_DATE,
+                            UPFCRD_W_USER_ID = _vm.MainFormData.UPF_W_USER_ID
+                        };
+                        dUpfcrd.Insert(upfcrd);
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -143,7 +134,12 @@ namespace TradeFutNight.Views.Prefix8
                     }
                 }
 
-                var report = CreateReport(domainData, OperationType.Save);
+                XtraReport report = null;
+                Dispatcher.Invoke(() =>
+                {
+                    report = CreateReport();
+                });
+
                 var reportGate = await new ReportGate(report).CreateDocumentAsync();
                 await reportGate.ExportPdf(GetExportFilePath());
                 await reportGate.Print();
@@ -155,83 +151,85 @@ namespace TradeFutNight.Views.Prefix8
             await task;
         }
 
-        private XtraReport CreateReport<T>(IList<T> data, OperationType operationType)
+        private XtraReport CreateReport()
         {
             string reportTitle = ProgramID + "–" + ProgramName;
 
             var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, true, false, true);
-
-            switch (operationType)
-            {
-                case OperationType.Save:
-                    rptSetting.ReportTitle = reportTitle.Replace("查詢、", "");
-                    break;
-
-                case OperationType.Print:
-                    rptSetting.ReportTitle = reportTitle.Replace("、刪除", "");
-                    rptSetting.HasHandlePerson = false;
-                    rptSetting.HasManagerPerson = false;
-                    rptSetting.HeaderMemoText = "查詢條件：" + cbDptId.Text;
-                    break;
-
-                default:
-                    break;
-            }
-
-            rptSetting.HeaderColumnsFontSize = 10;
-            rptSetting.ContentColumnsFontSize = 10;
-            rptSetting.ContentColumnsWidthScaleFactor = 0.85f;
-            rptSetting.HeaderColumnsWidthScaleFactor = 0.85f;
-
-            var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain, rptSetting);
+            var image = ImageProcess.CaptureControlImage((UIElement)scrollViewerMain.Content);
+            var reportCommon = ReportNormal.CreateCommonPortraitForScreenImage(image, rptSetting);
 
             return reportCommon;
         }
 
         public async Task Export()
         {
-            gridView.CloseEditor();
             await Task.FromResult<object>(null);
             throw new NotImplementedException();
         }
 
         public async Task Print()
         {
-            gridView.CloseEditor();
-
-            var report = CreateReport(_vm.MainGridData, OperationType.Print);
-            var reportGate = await new ReportGate(report).CreateDocumentAsync();
-            await reportGate.ExportPdf(GetExportFilePath());
-            await reportGate.Print();
+            await Task.FromResult<object>(null);
+            throw new NotImplementedException();
         }
 
         public async Task PrintIndex()
         {
-            gridView.CloseEditor();
             await Task.FromResult<object>(null);
             throw new NotImplementedException();
         }
 
         public async Task PrintStock()
         {
-            gridView.CloseEditor();
             await Task.FromResult<object>(null);
             throw new NotImplementedException();
         }
 
         private async void BtnQuery_Click(object sender, RoutedEventArgs e)
         {
+            VmMainUi.ShowLoadingWindow();
+
             var button = ((Button)sender);
             button.IsEnabled = false;
 
-            if (cbDptId.SelectedItem != null)
-            {
-                var dptId = (ItemInfo)cbDptId.SelectedItem;
+            var userId = cbUserId.EditValue.AsString();
 
-                await _vm.Query(dptId.Value.ToString());
-            }
+            await _vm.Query(userId);
 
             button.IsEnabled = true;
+            VmMainUi.HideLoadingWindow();
+        }
+
+        /// <summary>
+        /// 這個事件除了更改控制項的文字會觸發之外，當ViewModel Binding時也會更改控制項的值也會觸發
+        /// 所以要判斷跟原本的值一不一樣
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextEdit_EditValueChanged(object sender, EditValueChangedEventArgs e)
+        {
+            if (_vm.MainFormDataOriginal == null || _vm.MainFormData == null) return;
+
+            var editor = e.Source as TextEdit;
+            if (editor == null) return;
+
+            // 抓取控制項上面的Binding的Property屬性名
+            BindingExpression bindingExpression = editor.GetBindingExpression(BaseEdit.EditValueProperty);
+            var propertyName = bindingExpression.ResolvedSourcePropertyName;
+
+            // 由屬性名來取值
+            var originalVal = _vm.MainFormDataOriginal.GetType().GetProperty(propertyName).GetValue(_vm.MainFormDataOriginal, null).ToString();
+            var nowVal = _vm.MainFormData.GetType().GetProperty(propertyName).GetValue(_vm.MainFormData, null).ToString();
+
+            if (originalVal == nowVal)
+            {
+                editor.Background = null;
+            }
+            else
+            {
+                editor.Background = Brushes.LightGray;
+            }
         }
     }
 }

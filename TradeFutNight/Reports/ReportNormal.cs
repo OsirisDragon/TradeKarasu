@@ -4,6 +4,7 @@ using DevExpress.Xpf.Grid;
 using DevExpress.XtraPrinting;
 using DevExpress.XtraReports.UI;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -21,9 +22,14 @@ namespace TradeFutNight.Reports
             return new ReportCommonLandscape<T>(exportData, gridControl, rptSetting);
         }
 
-        public static ReportCommonPortrait<T> CreateCommonPortrait<T>(IList<T> exportData, GridControl gridControl, ReportSetting rptSetting)
+        public static ReportCommonPortrait CreateCommonPortrait<T>(IList<T> exportData, GridControl gridControl, ReportSetting rptSetting)
         {
-            return new ReportCommonPortrait<T>(exportData, gridControl, rptSetting);
+            return new ReportCommonPortrait((IList)exportData, gridControl, rptSetting);
+        }
+
+        public static ReportCommonPortrait CreateCommonPortraitForScreenImage(Image imageDetail, ReportSetting rptSetting)
+        {
+            return new ReportCommonPortrait(imageDetail, rptSetting);
         }
 
         public static XRTable CreateHeaderColumnsTable(ReportSetting rptSetting, GridControl gridControl)
@@ -83,7 +89,7 @@ namespace TradeFutNight.Reports
             return table;
         }
 
-        public static XRTable CreateContentTable<T>(IList<T> exportData, ReportSetting rptSetting, GridControl gridControl)
+        public static XRTable CreateContentTable(IList exportData, ReportSetting rptSetting, GridControl gridControl)
         {
             var table = new XRTable
             {

@@ -26,10 +26,10 @@ namespace TradeFutNight.Views.Prefix8
             set { SetProperty(() => EndDate, value); }
         }
 
-        public IList<ItemInfo> UpfUserName
+        public IList<ItemInfo> UpfUserIdName
         {
-            get { return GetProperty(() => UpfUserName); }
-            set { SetProperty(() => UpfUserName, value); }
+            get { return GetProperty(() => UpfUserIdName); }
+            set { SetProperty(() => UpfUserIdName, value); }
         }
 
         public IList<ItemInfo> LogfKind
@@ -56,7 +56,7 @@ namespace TradeFutNight.Views.Prefix8
                 cfg.CreateMap<LOGF, UIModel_80006>().ReverseMap();
             }));
 
-            UpfUserName = DropDownItems.UpfUserName();
+            UpfUserIdName = DropDownItems.UpfUserName();
             LogfKind = DropDownItems.LogfKind();
             Dpt = DropDownItems.Dpt();
         }

@@ -87,6 +87,12 @@ namespace DataEngine
             return resultCommand;
         }
 
+        public virtual void Insert<T>(T item)
+        {
+            _das.DataConn.InlineParameters = true;
+            _das.DataConn.Insert(item);
+        }
+
         public virtual void Insert<T>(IEnumerable<T> data)
         {
             _das.DataConn.InlineParameters = true;

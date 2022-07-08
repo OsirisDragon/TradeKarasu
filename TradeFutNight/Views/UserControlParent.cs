@@ -3,6 +3,7 @@ using CrossModel;
 using CrossModel.Enum;
 using DataEngine;
 using DevExpress.Xpf.Grid;
+using DevExpress.Xpf.Printing;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -438,6 +439,25 @@ namespace TradeFutNight.Views
                 var dPdk = new D_PDK(das);
                 var listKindIdStock = dPdk.ListKindIdStock();
                 return listKindIdStock;
+            }
+        }
+
+        public void CloseEditor(object obj)
+        {
+            if (obj is TableView)
+            {
+                ((TableView)obj).CloseEditor();
+            }
+            else if (obj is DocumentPreviewControl)
+            {
+                // 在DevExpress新版V21.1.7之後，才會有在繼承DocumentPreviewControl的Class裡面會有這個新函式
+                // public new void CloseActiveEditingFieldEditor() => base.CloseActiveEditingFieldEditor();
+                // https://supportcenter.devexpress.com/ticket/details/t1029456/custom-controls-in-editing-preview-the-editingfieldchanged-event-is-not-raised-when
+                // https://supportcenter.devexpress.com/ticket/details/t1028945/how-to-force-firing-of-printingsystem-editingfieldchanged-event-every-time-user-types
+                // 目前的這版本是V19.2.12太舊了，所以XtraReport裡面的可編輯控制項，如果編輯了之後直接去按其他按鈕，會變成先觸發按鈕的事件再觸發他的EditingFieldChanged事件
+                // 所以這邊先用去Focus到主視窗上面的一個控制項，讓他先去觸發EditingFieldChanged事件後，接著才會觸發按鈕的事件
+                // 等到之後我們DevExpress的版本有升級再改掉這段
+                ((MainUI)Application.Current.MainWindow.Content).txtTxnId.Focus();
             }
         }
 

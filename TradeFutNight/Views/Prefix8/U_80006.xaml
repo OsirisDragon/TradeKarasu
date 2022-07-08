@@ -41,7 +41,7 @@
                 Margin="0,0,10,0"
                 DisplayMember="Text"
                 IsTextEditable="False"
-                ItemsSource="{Binding UpfUserName}"
+                ItemsSource="{Binding UpfUserIdName}"
                 ValueMember="Value" />
 
             <Label HorizontalAlignment="Right" VerticalAlignment="Center">

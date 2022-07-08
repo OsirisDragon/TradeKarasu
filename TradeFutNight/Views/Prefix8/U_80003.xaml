@@ -1,0 +1,167 @@
+﻿<myTypes:UserControlParent
+    x:Class="TradeFutNight.Views.Prefix8.U_80003"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:TradeFutNight.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
+    xmlns:dxpt="http://schemas.devexpress.com/winfx/2008/xaml/printing/themekeys"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:myTypes="clr-namespace:TradeFutNight.Views"
+    xmlns:myTypesPrefix="clr-namespace:TradeFutNight.Views.Prefix8"
+    Margin="1,1,1,1"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <myTypes:UserControlParent.DataContext>
+        <myTypesPrefix:U_80003_ViewModel />
+    </myTypes:UserControlParent.DataContext>
+    <myTypes:UserControlParent.Resources>
+        <DataTemplate x:Key="{dxpt:EditingFieldThemeKeyExtension ResourceKey=ComboBoxEditor}">
+            <dxe:ComboBoxEdit
+                x:Name="xtraReportComboBoxEditor"
+                IsTextEditable="False"
+                ItemsSource="{Binding Path=(dxp:DocumentPreviewControl.ActualViewer).DataContext.ComboBoxItemsSource, RelativeSource={RelativeSource Self}}" />
+        </DataTemplate>
+    </myTypes:UserControlParent.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" MinHeight="35" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <dxlc:FlowLayoutControl
+            Grid.Row="0"
+            Background="LightCyan"
+            Orientation="Horizontal">
+            <Label HorizontalAlignment="Right" VerticalAlignment="Center">
+                使用者代號：
+            </Label>
+            <dxe:ComboBoxEdit
+                x:Name="cbUserId"
+                MinWidth="170"
+                Margin="0,0,10,0"
+                DisplayMember="Text"
+                IsTextEditable="False"
+                ItemsSource="{Binding UpfUserIdName}"
+                ValueMember="Value" />
+            <Button x:Name="btnQuery" Click="BtnQuery_Click">
+                查詢
+            </Button>
+        </dxlc:FlowLayoutControl>
+        <ScrollViewer
+            Name="scrollViewerMain"
+            Grid.Row="1"
+            Width="400"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            HorizontalScrollBarVisibility="Hidden">
+            <dxlc:LayoutControl Orientation="Vertical">
+                <dxlc:LayoutGroup Width="600" Orientation="Vertical">
+                    <dxlc:LayoutItem
+                        AddColonToLabel="True"
+                        Label="員工代號"
+                        LabelHorizontalAlignment="Right">
+                        <dxe:TextEdit
+                            Width="100"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            EditValue="{Binding Path=MainFormData.UPF_USER_ID}"
+                            IsEnabled="False"
+                            IsReadOnly="True" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem
+                        AddColonToLabel="True"
+                        Label="姓名"
+                        LabelHorizontalAlignment="Right">
+                        <dxe:TextEdit
+                            Width="100"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            EditValue="{Binding Path=MainFormData.UPF_USER_NAME, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            EditValueChanged="TextEdit_EditValueChanged" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem
+                        AddColonToLabel="True"
+                        Label="AD帳號"
+                        LabelHorizontalAlignment="Right">
+                        <dxe:TextEdit
+                            Width="150"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            EditValue="{Binding Path=MainFormData.UPF_USER_AD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            EditValueChanged="TextEdit_EditValueChanged" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem
+                        AddColonToLabel="True"
+                        Label="憑證卡號"
+                        LabelHorizontalAlignment="Right">
+                        <dxe:TextEdit
+                            Width="100"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            EditValue="{Binding Path=MainFormData.UPFCRD_CARD_NO, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            EditValueChanged="TextEdit_EditValueChanged" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem
+                        AddColonToLabel="True"
+                        Label="部門"
+                        LabelHorizontalAlignment="Right">
+                        <dxe:ComboBoxEdit
+                            Width="140"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            DisplayMember="Text"
+                            EditValue="{Binding MainFormData.UPF_DEPT_ID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            EditValueChanged="TextEdit_EditValueChanged"
+                            IsTextEditable="False"
+                            ItemsSource="{Binding Dpt}"
+                            ValueMember="Value" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem
+                        AddColonToLabel="True"
+                        Label="員工編號"
+                        LabelHorizontalAlignment="Right">
+                        <dxe:TextEdit
+                            Width="100"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            EditValue="{Binding Path=MainFormData.UPF_EMPLOYEE_ID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            EditValueChanged="TextEdit_EditValueChanged"
+                            MaxLength="6" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem
+                        AddColonToLabel="True"
+                        Label="異動時間"
+                        LabelHorizontalAlignment="Right">
+                        <dxe:TextEdit
+                            Width="180"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            EditValue="{Binding Path=MainFormData.UPF_W_DATE}"
+                            IsEnabled="False"
+                            IsReadOnly="True" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem
+                        AddColonToLabel="True"
+                        Label="異動者"
+                        LabelHorizontalAlignment="Right">
+                        <dxe:TextEdit
+                            Width="100"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            EditValue="{Binding Path=MainFormData.UPF_W_USER_ID}"
+                            IsEnabled="False"
+                            IsReadOnly="True" />
+                    </dxlc:LayoutItem>
+                </dxlc:LayoutGroup>
+            </dxlc:LayoutControl>
+        </ScrollViewer>
+    </Grid>
+</myTypes:UserControlParent>
