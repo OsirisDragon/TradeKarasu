@@ -1,11 +1,11 @@
 ﻿using CrossModel;
 using CrossModel.Enum;
 using DevExpress.XtraReports.UI;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using TradeFutNight.Common;
 using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
@@ -125,9 +125,9 @@ namespace TradeFutNight.Views.Prefix9
                     Title = "請點選儲存檔案之目錄",
                     FileName = fileName
                 };
-                DialogResult openResult = open.ShowDialog();
+                bool? openResult = open.ShowDialog();
 
-                if (openResult == DialogResult.OK)
+                if (openResult == true)
                 {
                     dir = Path.GetDirectoryName(open.FileName);
                     gridView.PrintColumnHeaders = false;
