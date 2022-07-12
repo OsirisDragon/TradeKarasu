@@ -1,6 +1,0 @@
-<?xml version="1.0" standalone="yes"?>
-<mex_server instanceId = "mex_server.1">
-  <!--<MexIpAddress ip="192.168.178.101" />-->
-  <MexIpAddress ip="192.168.67.23" />
-  <MexPortNumber port="2889" />
-</mex_server>

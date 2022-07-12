@@ -2,7 +2,7 @@
 using DevExpress.Xpf.Core;
 using System.Threading;
 using System.Windows;
-using TradeFutNight.Interfaces;
+using CrossModel.Interfaces;
 using TradeFutNight.Views;
 
 namespace TradeFutNight.Common

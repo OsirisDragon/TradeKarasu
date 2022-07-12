@@ -1,0 +1,105 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dxeh="http://schemas.devexpress.com/winfx/2008/xaml/editors/internal"
+    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys">
+
+    <!--  設定所有的GridControl的共用屬性  -->
+    <Style TargetType="{x:Type dxg:GridControl}">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="AutoGenerateColumns" Value="None" />
+        <Setter Property="EnableSmartColumnsGeneration" Value="True" />
+        <Setter Property="SelectionMode" Value="Row" />
+    </Style>
+
+    <!--  設定所有的TableView的共用屬性  -->
+    <Style TargetType="{x:Type dxg:TableView}">
+        <Setter Property="IsColumnMenuEnabled" Value="False" />
+        <Setter Property="ShowGroupPanel" Value="False" />
+        <Setter Property="ShowTotalSummary" Value="False" />
+        <Setter Property="ShowSearchPanelMode" Value="Never" />
+        <Setter Property="AllowScrollToFocusedRow" Value="True" />
+        <!--  讓Grid的Header的Column在字太多的時候，能夠自動換行和增加高度和置中，和一些基本設定  -->
+        <Setter Property="ColumnHeaderTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock
+                        Text="{Binding}"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap" />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  設定GridColumnHeader的預設顏色  -->
+    <Style TargetType="dxg:GridColumnHeader">
+        <Setter Property="Background" Value="LightCyan" />
+    </Style>
+
+    <!--  GridColumn的設定  -->
+    <Style TargetType="dxg:GridColumn">
+        <Setter Property="HorizontalHeaderContentAlignment" Value="Center" />
+        <Setter Property="AllowSorting" Value="False" />
+        <Setter Property="AllowColumnFiltering" Value="False" />
+        <Setter Property="AllowMoving" Value="False" />
+        <Setter Property="AllowResizing" Value="False" />
+        <Setter Property="IsSmart" Value="True" />
+    </Style>
+
+    <!--  設定在GridColumn的CellStyle裡面，當該Column為ReadOnly時，變為灰色  -->
+    <Style
+        x:Key="CellStyleReadOnlyChangeColor"
+        BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}"
+        TargetType="dxg:LightweightCellEditor">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Column.ReadOnly}" Value="True">
+                <Setter Property="Background" Value="WhiteSmoke" />
+                <Setter Property="IsEnabled" Value="False" />
+                <Setter Property="Focusable" Value="False" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding RowData.IsSelected}" Value="True">
+                <Setter Property="Background" Value="Transparent" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--  設定在GridColumn的CellStyle裡面，當該Column為輸入欄時，變為白色  -->
+    <Style
+        x:Key="CellStyleEditorColor"
+        BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}"
+        TargetType="dxg:LightweightCellEditor">
+        <Setter Property="Background" Value="White" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RowData.IsSelected}" Value="True">
+                <Setter Property="Background" Value="Transparent" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding SelectionState}" Value="Focused">
+                <Setter Property="Background" Value="White" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--  把底色全部一起變，這樣就不用去設定每個欄位，而且這樣的話列印出來的報表底色會是白色的，要設定SelectionMode為Row才有效  -->
+    <Style x:Key="GridControlSpecificStyle" TargetType="dxg:LightweightCellEditor">
+        <Setter Property="IsEnabled" Value="False" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Background" Value="WhiteSmoke" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RowData.IsSelected}" Value="True">
+                <Setter Property="Background" Value="Transparent" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--  把底色全部一起變，這樣就不用去設定每個欄位，而且這樣的話列印出來的報表底色會是白色的，要設定SelectionMode為Row才有效  -->
+    <!--  此為關掉TableView的EnableSelectedRowAppearance版本  -->
+    <Style x:Key="GridControlSpecificStyleWithoutSelectedRowAppearance" TargetType="dxg:LightweightCellEditor">
+        <Setter Property="IsEnabled" Value="False" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Background" Value="WhiteSmoke" />
+    </Style>
+</ResourceDictionary>

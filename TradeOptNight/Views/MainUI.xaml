@@ -1,0 +1,208 @@
+<UserControl
+    x:Class="TradeOptNight.Views.MainUI"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:bars="clr-namespace:DevExpress.Xpf.Bars;assembly=DevExpress.Xpf.Core.v19.2"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxnav="http://schemas.devexpress.com/winfx/2008/xaml/navigation"
+    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+    xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="600"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type dxb:BarButtonItemLinkControl}">
+                <Setter Property="Width" Value="50" />
+            </Style>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ShareStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <DockPanel LastChildFill="True">
+            <dxr:RibbonControl
+                Height="32"
+                DockPanel.Dock="Top"
+                RibbonTitleBarVisibility="Collapsed"
+                ShowApplicationButton="False"
+                ToolbarShowMode="Hide" />
+
+            <dxr:RibbonStatusBarControl
+                MinHeight="30"
+                dx:ThemeManager.Theme="Office2016Black"
+                DockPanel.Dock="Bottom">
+                <dxr:RibbonStatusBarControl.RightItems />
+                <dxr:RibbonStatusBarControl.LeftItems>
+                    <dxb:BarStaticItem Name="barBottomDataBase" />
+                    <dxb:BarStaticItem Name="barBottomUser" />
+                    <dxb:BarStaticItem Name="barBottomDate" />
+                </dxr:RibbonStatusBarControl.LeftItems>
+            </dxr:RibbonStatusBarControl>
+            <dxdo:DockLayoutManager
+                x:Name="dockLayoutManagerMain"
+                ClosedPanelsBarVisibility="Never"
+                ClosingBehavior="ImmediatelyRemove"
+                FloatingMode="Window">
+                <dxdo:LayoutGroup Caption="LayoutRoot">
+                    <dxdo:LayoutPanel
+                        x:Name="layoutPanelLeft"
+                        MinWidth="300"
+                        AllowClose="False"
+                        AllowDock="False"
+                        AllowDrag="False"
+                        AllowDrop="False"
+                        AllowFloat="False"
+                        AllowHide="False"
+                        AllowMove="False"
+                        Caption="選單"
+                        ItemWidth="auto">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                <Label Margin="5,0,10,0" VerticalAlignment="Center">作業代號</Label>
+                                <TextBox
+                                    Name="txtTxnId"
+                                    MinWidth="80"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    CharacterCasing="Upper"
+                                    InputMethod.IsInputMethodEnabled="False"
+                                    InputMethod.PreferredImeState="Off"
+                                    KeyDown="TxtTxnId_KeyDown" />
+                            </StackPanel>
+
+                            <dxa:AccordionControl
+                                Name="menuControl"
+                                Grid.Row="1"
+                                ChildrenPath="Txns"
+                                ExpandMode="SingleOrNone"
+                                ItemsSource="{Binding TxnGridData}"
+                                MouseDoubleClick="MenuControl_MouseDoubleClick" />
+                        </Grid>
+                    </dxdo:LayoutPanel>
+                    <dxdo:LayoutGroup Orientation="Vertical">
+                        <dxdo:LayoutPanel
+                            AllowSizing="False"
+                            ItemHeight="auto"
+                            ShowCaption="False">
+                            <dxb:MainMenuControl
+                                Margin="0,5"
+                                AllowCustomizationMenu="False"
+                                Focusable="False">
+
+                                <dxb:BarButtonItem
+                                    x:Name="btnInsert"
+                                    BarItemDisplayMode="ContentAndGlyph"
+                                    Content="新增列"
+                                    GlyphAlignment="Top"
+                                    IsEnabled="{Binding IsButtonInsertEnabled}"
+                                    ItemClick="BtnInsert_ItemClick"
+                                    LargeGlyph="{dx:DXImage Images/Spreadsheet/InsertSheetRows_32x32.png}" />
+                                <dxb:BarButtonItem
+                                    x:Name="btnSave"
+                                    BarItemDisplayMode="ContentAndGlyph"
+                                    Content="儲存"
+                                    GlyphAlignment="Top"
+                                    IsEnabled="{Binding IsButtonSaveEnabled}"
+                                    ItemClick="BtnSave_ItemClick"
+                                    LargeGlyph="{dx:DXImage Images/Save/Save_32x32.png}" />
+                                <dxb:BarButtonItem
+                                    x:Name="btnDelete"
+                                    BarItemDisplayMode="ContentAndGlyph"
+                                    Content="刪除列"
+                                    GlyphAlignment="Top"
+                                    IsEnabled="{Binding IsButtonDeleteEnabled}"
+                                    ItemClick="BtnDelete_ItemClick"
+                                    LargeGlyph="{dx:DXImage Images/Spreadsheet/DeleteSheetRows_32x32.png}" />
+
+                                <dxb:BarItemSeparator />
+
+                                <dxb:BarButtonItem
+                                    x:Name="btnPrint"
+                                    BarItemDisplayMode="ContentAndGlyph"
+                                    Content="列印"
+                                    GlyphAlignment="Top"
+                                    IsEnabled="{Binding IsButtonPrintEnabled}"
+                                    ItemClick="BtnPrint_ItemClick"
+                                    LargeGlyph="{dx:DXImage Images/Print/Print_32x32.png}" />
+                                <dxb:BarButtonItem
+                                    x:Name="btnPrintIndex"
+                                    BarItemDisplayMode="ContentAndGlyph"
+                                    Content="指數類"
+                                    GlyphAlignment="Top"
+                                    IsEnabled="{Binding IsButtonPrintIndexEnabled}"
+                                    ItemClick="BtnPrintIndex_ItemClick"
+                                    LargeGlyph="{dx:DXImage Images/Print/PrinterNetwork_32x32.png}" />
+                                <dxb:BarButtonItem
+                                    x:Name="btnPrintStock"
+                                    BarItemDisplayMode="ContentAndGlyph"
+                                    Content="股票類"
+                                    GlyphAlignment="Top"
+                                    IsEnabled="{Binding IsButtonPrintStockEnabled}"
+                                    ItemClick="BtnPrintStock_ItemClick"
+                                    LargeGlyph="{dx:DXImage Images/Print/PrinterNetwork_32x32.png}" />
+                                <dxb:BarButtonItem
+                                    x:Name="btnExport"
+                                    BarItemDisplayMode="ContentAndGlyph"
+                                    Content="匯出"
+                                    GlyphAlignment="Top"
+                                    IsEnabled="{Binding IsButtonExportEnabled}"
+                                    ItemClick="BtnExport_ItemClick"
+                                    LargeGlyph="{dx:DXImage Images/Export/ExportFile_32x32.png}" />
+                            </dxb:MainMenuControl>
+                        </dxdo:LayoutPanel>
+
+                        <dxdo:DocumentGroup
+                            x:Name="documentGroupMain"
+                            dx:ThemeManager.ThemeName="Office2016White"
+                            AllowContextMenu="False"
+                            AllowDock="False"
+                            AllowDrag="False"
+                            AllowDrop="False"
+                            AllowFloat="False"
+                            AllowHide="False"
+                            AllowMove="False"
+                            AllowSplitters="False"
+                            ClosePageButtonShowMode="InActiveTabPageHeader"
+                            DestroyOnClosingChildren="False"
+                            FontSize="15"
+                            ItemHeight="1.51*"
+                            ItemWidth="1.48*"
+                            MDIStyle="Tabbed"
+                            SelectedItemChanged="DocumentGroupMain_SelectedItemChanged" />
+                    </dxdo:LayoutGroup>
+                </dxdo:LayoutGroup>
+            </dxdo:DockLayoutManager>
+        </DockPanel>
+        <dx:LoadingDecorator
+            dx:ThemeManager.ThemeName="Office2016White"
+            IsSplashScreenShown="{Binding IsLoadingVisible}"
+            OwnerLock="InputOnly">
+            <dx:LoadingDecorator.SplashScreenTemplate>
+                <DataTemplate>
+                    <dx:WaitIndicator Content="{Binding DataContext.LoadingText, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" DeferedVisibility="True">
+                        <dx:WaitIndicator.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock FontSize="18" Text="處理中..." />
+                                    <TextBlock Text="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </dx:WaitIndicator.ContentTemplate>
+                    </dx:WaitIndicator>
+                </DataTemplate>
+            </dx:LoadingDecorator.SplashScreenTemplate>
+        </dx:LoadingDecorator>
+    </Grid>
+</UserControl>

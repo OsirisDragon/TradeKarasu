@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using TradeFutNight.Common;
-using TradeFutNight.Interfaces;
+using CrossModel.Interfaces;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Common;
 using TradeUtility;

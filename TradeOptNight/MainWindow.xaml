@@ -1,0 +1,19 @@
+﻿<dx:ThemedWindow
+    x:Class="TradeOptNight.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:view="clr-namespace:TradeOptNight.Views"
+    Title="期貨夜盤應用管理系統"
+    Width="1280"
+    Height="810"
+    Padding="0"
+    dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
+    Closed="ThemedWindow_Closed"
+    FontSize="15"
+    ShowIcon="False"
+    UseLayoutRounding="True"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Maximized">
+    <!--<view:MainUI />-->
+</dx:ThemedWindow>

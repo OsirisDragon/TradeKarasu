@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TradeFutNight.Common;
-using TradeFutNight.Interfaces;
+using CrossModel.Interfaces;
 using TradeFutNight.Reports;
 using TradeUtility.File;
 

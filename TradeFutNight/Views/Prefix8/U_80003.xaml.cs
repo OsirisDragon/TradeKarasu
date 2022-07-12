@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using TradeFutNight.Common;
-using TradeFutNight.Interfaces;
+using CrossModel.Interfaces;
 using TradeFutNight.Reports;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Common;

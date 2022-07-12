@@ -14,7 +14,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using TradeFutNight.Auth;
 using TradeFutNight.Common;
-using TradeFutNight.Interfaces;
+using CrossModel.Interfaces;
 using TradeFutNight.Reports;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Common;

@@ -1,4 +1,5 @@
 ﻿using CrossModel;
+using CrossModel.Interfaces;
 using DataEngine;
 using DevExpress.Xpf.Accordion;
 using DevExpress.Xpf.Core;
@@ -10,7 +11,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using TradeFutNight.Common;
-using TradeFutNight.Interfaces;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Common;
 using TradeFutNightData.Models.Common;
@@ -40,7 +40,7 @@ namespace TradeFutNight.Views
             InitializeComponent();
             _vm = new MainUI_ViewModel();
             DataContext = _vm;
-            MessageBoxExService.Instance().VmMainUi = _vm;
+            ((MessageBoxExService)MessageBoxExService.Instance()).VmMainUi = _vm;
 
             txtTxnId.Focus();
 

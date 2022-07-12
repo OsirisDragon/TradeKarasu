@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Setting>
+  <Auth>
+    <!--AD-->
+    <AdDomain>DOMAIN_TEST</AdDomain>
+  </Auth>
+  <Database>
+    <!--交易系統-->
+    <Futures>
+      <ConnectionName>TRADE_DEV_01_FUT</ConnectionName>
+    </Futures>
+    <Options>
+      <ConnectionName>TRADE_DEV_01_OPT</ConnectionName>
+    </Options>
+    <Futures_AH>
+      <ConnectionName>TRADE_AH_DEV_01_FUT</ConnectionName>
+    </Futures_AH>
+    <Options_AH>
+      <ConnectionName>TRADE_AH_DEV_01_OPT</ConnectionName>
+    </Options_AH>
+
+    <!--現貨資料庫-->
+    <Tfxm>
+      <ConnectionName>TFXM_TEST</ConnectionName>
+    </Tfxm>
+    <Tfxm_AH>
+      <ConnectionName>TFXM_AH_TEST</ConnectionName>
+    </Tfxm_AH>
+  </Database>
+
+  <ConnectionStrings>
+    <!--交易系統-->
+    <!--測試環境區段-->
+
+    <!--AD-->
+    <Connection>
+      <Name>DOMAIN_TEST</Name>
+      <ConnectionString>taifex.com.tw</ConnectionString>
+    </Connection>
+
+    <!--DB-->
+    <Connection>
+      <Name>TRADE_DEV_01_FUT</Name>
+      <ConnectionString>Data Source=192.168.67.111;Port=7100;Database=futures;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ProviderName>Sybase.Data.AseClient</ProviderName>
+    </Connection>
+    <Connection>
+      <Name>TRADE_DEV_01_OPT</Name>
+      <ConnectionString>Data Source=192.168.67.111;Port=7100;Database=options;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ProviderName>Sybase.Data.AseClient</ProviderName>
+    </Connection>
+    <Connection>
+      <Name>TRADE_AH_DEV_01_FUT</Name>
+      <ConnectionString>Data Source=192.168.67.111;Port=7102;Database=futures;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ProviderName>Sybase.Data.AseClient</ProviderName>
+    </Connection>
+    <Connection>
+      <Name>TRADE_AH_DEV_01_OPT</Name>
+      <ConnectionString>Data Source=192.168.67.111;Port=7102;Database=options;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ProviderName>Sybase.Data.AseClient</ProviderName>
+    </Connection>
+    <Connection>
+      <Name>BUS_ONE_FUT</Name>
+      <ConnectionString>Data Source=192.168.178.175;Port=9000;Database=futures;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ProviderName>Sybase.Data.AseClient</ProviderName>
+    </Connection>
+    <Connection>
+      <Name>BUS_ONE_OPT</Name>
+      <ConnectionString>Data Source=192.168.178.175;Port=9000;Database=options;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ProviderName>Sybase.Data.AseClient</ProviderName>
+    </Connection>
+    <Connection>
+      <Name>BUS_ONE_AH_FUT</Name>
+      <ConnectionString>Data Source=192.168.178.175;Port=10000;Database=futures;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ProviderName>Sybase.Data.AseClient</ProviderName>
+    </Connection>
+    <Connection>
+      <Name>BUS_ONE_AH_OPT</Name>
+      <ConnectionString>Data Source=192.168.178.175;Port=10000;Database=options;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ProviderName>Sybase.Data.AseClient</ProviderName>
+    </Connection>
+
+    <!--現貨系統-->
+    <!--測試環境區段-->
+    <Connection>
+      <Name>TFXM_TEST</Name>
+      <ConnectionString>Data Source=192.168.178.191;Port=17000;Database=TFXM2;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ProviderName>Sybase.Data.AseClient</ProviderName>
+    </Connection>
+    <Connection>
+      <Name>TFXM_AH_TEST</Name>
+      <ConnectionString>Data Source=192.168.178.96;Port=17000;Database=TFXM2;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ProviderName>Sybase.Data.AseClient</ProviderName>
+    </Connection>
+
+    <!--PROD-->
+    <!--AD-->
+    <Connection>
+      <Name>DOMAIN_PROD</Name>
+      <ConnectionString>taifexprod.com.tw</ConnectionString>
+    </Connection>
+  </ConnectionStrings>
+</Setting>
