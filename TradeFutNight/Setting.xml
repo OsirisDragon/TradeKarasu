@@ -41,56 +41,66 @@
     <!--DB-->
     <Connection>
       <Name>TRADE_DEV_01_FUT</Name>
-      <ConnectionString>Data Source=192.168.67.111;Port=7100;Database=futures;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ConnectionString>Data Source=192.168.67.111;Port=7100;Database=futures;UID=apusr1;PWD=none;TextSize=99999999</ConnectionString>
       <ProviderName>Sybase.Data.AseClient</ProviderName>
+      <EncryptPassword>tELqcfsbuesQACx8/RYP+w==</EncryptPassword>
     </Connection>
     <Connection>
       <Name>TRADE_DEV_01_OPT</Name>
-      <ConnectionString>Data Source=192.168.67.111;Port=7100;Database=options;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ConnectionString>Data Source=192.168.67.111;Port=7100;Database=options;UID=apusr1;PWD=none;TextSize=99999999</ConnectionString>
       <ProviderName>Sybase.Data.AseClient</ProviderName>
+      <EncryptPassword>b+EoHkG2sidvsLT3bQwlBg==</EncryptPassword>
     </Connection>
     <Connection>
       <Name>TRADE_AH_DEV_01_FUT</Name>
-      <ConnectionString>Data Source=192.168.67.111;Port=7102;Database=futures;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ConnectionString>Data Source=192.168.67.111;Port=7102;Database=futures;UID=apusr1;PWD=none;TextSize=99999999</ConnectionString>
       <ProviderName>Sybase.Data.AseClient</ProviderName>
+      <EncryptPassword>8oRnNLcluFv7d5M4AvGZkw==</EncryptPassword>
     </Connection>
     <Connection>
       <Name>TRADE_AH_DEV_01_OPT</Name>
-      <ConnectionString>Data Source=192.168.67.111;Port=7102;Database=options;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ConnectionString>Data Source=192.168.67.111;Port=7102;Database=options;UID=apusr1;PWD=none;TextSize=99999999</ConnectionString>
       <ProviderName>Sybase.Data.AseClient</ProviderName>
+      <EncryptPassword>xnOa/c46Q0BJ/pj0M3jvOA==</EncryptPassword>
     </Connection>
     <Connection>
       <Name>BUS_ONE_FUT</Name>
-      <ConnectionString>Data Source=192.168.178.175;Port=9000;Database=futures;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ConnectionString>Data Source=192.168.178.175;Port=9000;Database=futures;UID=apusr1;PWD=none;TextSize=99999999</ConnectionString>
       <ProviderName>Sybase.Data.AseClient</ProviderName>
+      <EncryptPassword>PDVWvwpAOgXaeU5Qc6VeNg==</EncryptPassword>
     </Connection>
     <Connection>
       <Name>BUS_ONE_OPT</Name>
-      <ConnectionString>Data Source=192.168.178.175;Port=9000;Database=options;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ConnectionString>Data Source=192.168.178.175;Port=9000;Database=options;UID=apusr1;PWD=none;TextSize=99999999</ConnectionString>
       <ProviderName>Sybase.Data.AseClient</ProviderName>
+      <EncryptPassword>bHD2+lU5i/8g9SDLegFYIQ==</EncryptPassword>
     </Connection>
     <Connection>
       <Name>BUS_ONE_AH_FUT</Name>
-      <ConnectionString>Data Source=192.168.178.175;Port=10000;Database=futures;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ConnectionString>Data Source=192.168.178.175;Port=10000;Database=futures;UID=apusr1;PWD=none;TextSize=99999999</ConnectionString>
       <ProviderName>Sybase.Data.AseClient</ProviderName>
+      <EncryptPassword>1+kZsl/37gNVrYoBGEINyQ==</EncryptPassword>
     </Connection>
     <Connection>
       <Name>BUS_ONE_AH_OPT</Name>
-      <ConnectionString>Data Source=192.168.178.175;Port=10000;Database=options;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ConnectionString>Data Source=192.168.178.175;Port=10000;Database=options;UID=apusr1;PWD=none;TextSize=99999999</ConnectionString>
       <ProviderName>Sybase.Data.AseClient</ProviderName>
+      <EncryptPassword>vA9OnLpJy7AhYyhhX4dV0w==</EncryptPassword>
     </Connection>
 
     <!--現貨系統-->
     <!--測試環境區段-->
     <Connection>
       <Name>TFXM_TEST</Name>
-      <ConnectionString>Data Source=192.168.178.191;Port=17000;Database=TFXM2;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ConnectionString>Data Source=192.168.178.191;Port=17000;Database=TFXM2;UID=apusr1;PWD=none;TextSize=99999999</ConnectionString>
       <ProviderName>Sybase.Data.AseClient</ProviderName>
+      <EncryptPassword>y6d3E7LQmesavQP/yEhNaw==</EncryptPassword>
     </Connection>
     <Connection>
       <Name>TFXM_AH_TEST</Name>
-      <ConnectionString>Data Source=192.168.178.96;Port=17000;Database=TFXM2;UID=apusr1;PWD=apusr1;TextSize=99999999</ConnectionString>
+      <ConnectionString>Data Source=192.168.178.96;Port=17000;Database=TFXM2;UID=apusr1;PWD=none;TextSize=99999999</ConnectionString>
       <ProviderName>Sybase.Data.AseClient</ProviderName>
+      <EncryptPassword>h5zGJfavW2S8GKN8zn11Cw==</EncryptPassword>
     </Connection>
 
     <!--PROD-->

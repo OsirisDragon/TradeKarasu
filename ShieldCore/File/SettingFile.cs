@@ -171,7 +171,9 @@ namespace Shield.File
                 // 如果Xml檔案裡面有這個Tag的話且不是空值，就代表要用加密密碼
                 if (!string.IsNullOrEmpty(connection.EncryptPassword))
                 {
-                    string password = StringCipher.Decrypt(connection.EncryptPassword, "InitialD");
+                    var rijndaelKey = new CryptoEnhanced("RacingBattle", "@1B2c3DQQQF6g7H8");
+
+                    string password = rijndaelKey.Decrypt(connection.EncryptPassword);
 
                     string[] partOriginConnectStrs = originConnectionString.Split(';');
 
@@ -192,7 +194,8 @@ namespace Shield.File
                         }
                     }
 
-                    dbInfo.ConnectionString = dbInfo.ConnectionString.Replace(originPasswordKeyValue, realPasswordKeyValue);
+                    if (originPasswordKeyValue != "" && realPasswordKeyValue != "")
+                        dbInfo.ConnectionString = dbInfo.ConnectionString.Replace(originPasswordKeyValue, realPasswordKeyValue);
                 }
             }
             catch (Exception ex)
