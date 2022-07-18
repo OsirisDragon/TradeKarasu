@@ -230,6 +230,12 @@ namespace TradeFutNight.Views.Prefix8
 
         private async void BtnQuery_Click(object sender, RoutedEventArgs e)
         {
+            if (cbUserId.SelectedItem == null)
+            {
+                MessageBoxExService.Instance().Error("請選擇使用者");
+                return;
+            }
+
             VmMainUi.LoadingText = MessageConst.LoadingStatusSaving;
 
             var userId = ((ItemInfo)cbUserId.SelectedItem).Value.AsString();

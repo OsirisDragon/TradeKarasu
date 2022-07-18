@@ -139,7 +139,7 @@
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                         <dxg:GridColumn.EditSettings>
-                            <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                            <dxe:CheckEditSettings HorizontalContentAlignment="Center" />
                         </dxg:GridColumn.EditSettings>
                     </dxg:GridColumn>
                     <dxg:GridColumn
