@@ -113,6 +113,14 @@ namespace TradeFutNight.Common
             return result;
         }
 
+        public static IList<ItemInfo> PhaltTypeTMsgType()
+        {
+            var result = new List<ItemInfo>();
+            result.Add(new ItemInfo() { Text = "限單", Value = 'L' });
+            result.Add(new ItemInfo() { Text = "停單", Value = 'S' });
+            return result;
+        }
+
         public static IList<ItemInfo> PhaltMsgType()
         {
             var result = new List<ItemInfo>();
