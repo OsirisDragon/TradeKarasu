@@ -1,5 +1,6 @@
 ﻿using ChangeTracking;
 using CrossModel;
+using CrossModel.Interfaces;
 using DevExpress.Xpf.Grid;
 using DevExpress.XtraReports.UI;
 using System;
@@ -8,7 +9,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using TradeFutNight.Common;
-using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Common;

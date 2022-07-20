@@ -1,6 +1,7 @@
 ﻿using ChangeTracking;
 using CrossModel;
 using CrossModel.Enum;
+using CrossModel.Interfaces;
 using DevExpress.XtraReports.UI;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using TradeFutNight.Common;
-using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
 using TradeUtility;
 
