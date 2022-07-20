@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using TradeFutNight.Common;
-using CrossModel.Interfaces;
+using TradeFutNight.Interfaces;
 using TradeFutNight.Reports;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Common;
@@ -18,16 +18,16 @@ using TradeUtility;
 namespace TradeFutNight.Views.Prefix8
 {
     /// <summary>
-    /// U_89004.xaml 的互動邏輯
+    /// U_80004.xaml 的互動邏輯
     /// </summary>
-    public partial class U_89004 : UserControlParent, IViewSword
+    public partial class U_80004 : UserControlParent, IViewSword
     {
-        private U_89004_ViewModel _vm;
+        private U_80004_ViewModel _vm;
 
-        public U_89004()
+        public U_80004()
         {
             InitializeComponent();
-            _vm = (U_89004_ViewModel)DataContext;
+            _vm = (U_80004_ViewModel)DataContext;
         }
 
         public async Task<bool> IsCanRun()
@@ -98,8 +98,8 @@ namespace TradeFutNight.Views.Prefix8
                 {
                     Dispatcher.Invoke(() =>
                     {
-                        item.YUTP_W_USER_ID = UserID;
-                        item.YUTP_W_DATE = DateTime.Now;
+                        item.UTP_W_USER_ID = UserID;
+                        item.UTP_W_DATE = DateTime.Now;
                     });
                 }
 
@@ -114,11 +114,11 @@ namespace TradeFutNight.Views.Prefix8
         {
             VmMainUi.LoadingText = MessageConst.LoadingStatusSaving;
 
-            List<UIModel_89004_Change> changeData = new List<UIModel_89004_Change>();
+            List<UIModel_80004_Change> changeData = new List<UIModel_80004_Change>();
 
             var task = Task.Run(async () =>
             {
-                var operate = GetChanges<UIModel_89004, YUTP>(_vm.MainGridData, _vm);
+                var operate = GetChanges<UIModel_80004, UTP>(_vm.MainGridData, _vm);
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
 
                 using (var das = Factory.CreateDalSession())
@@ -127,31 +127,31 @@ namespace TradeFutNight.Views.Prefix8
 
                     try
                     {
-                        var dYUTP = new D_YUTP(das);
-                        dYUTP.Update(operate.ChangedItems);
+                        var dUTP = new D_UTP(das);
+                        dUTP.Update(operate.ChangedItems);
 
                         foreach (var item in trackableData.ChangedItems)
                         {
                             Dispatcher.Invoke(() =>
                             {
-                                var newUtpInfo = new UIModel_89004_Change()
+                                var newUtpInfo = new UIModel_80004_Change()
                                 {
-                                    C_TYPE = item.YUTP_YN_CODE == 'Y' ? "新增" : "刪除",
-                                    YUTP_YTXN_ID = item.YUTP_YTXN_ID,
-                                    YTXN_NAME = item.YTXN_NAME,
-                                    YUTP_USER_ID = cbUserId.Text,
+                                    C_TYPE = item.UTP_YN_CODE == 'Y' ? "新增" : "刪除",
+                                    UTP_TXN_ID = item.UTP_TXN_ID,
+                                    TXN_NAME = item.TXN_NAME,
+                                    UTP_USER_ID = cbUserId.Text,
                                     W_TIME = DateTime.Now
                                 };
                                 changeData.Add(newUtpInfo);
 
-                                string cTypeVal = item.YUTP_YN_CODE == 'Y' ? "A" : "D";
-                                string logMsg = $"{UserID},{UserName},{newUtpInfo.W_TIME.ToString("yyyy/MM/dd HH:mm:ss")},{newUtpInfo.YUTP_USER_ID.Substring(0, 1)}," +
-                                                $"{newUtpInfo.YUTP_USER_ID},{newUtpInfo.YUTP_YTXN_ID},{newUtpInfo.YTXN_NAME},{cTypeVal}";
+                                string cTypeVal = item.UTP_YN_CODE == 'Y' ? "A" : "D";
+                                string logMsg = $"{UserID},{UserName},{newUtpInfo.W_TIME.ToString("yyyy/MM/dd HH:mm:ss")},{newUtpInfo.UTP_USER_ID.Substring(0, 1)}," +
+                                                $"{newUtpInfo.UTP_USER_ID},{newUtpInfo.UTP_TXN_ID},{newUtpInfo.TXN_NAME},{cTypeVal}";
                                 DbLog(logMsg, das);
                             });
                         }
 
-                        _vm.PrintGridData = _vm.MapperInstance.Map<IList<UIModel_89004_Change>>(changeData).AsTrackable();
+                        _vm.PrintGridData = _vm.MapperInstance.Map<IList<UIModel_80004_Change>>(changeData).AsTrackable();
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -247,29 +247,6 @@ namespace TradeFutNight.Views.Prefix8
             }
 
             VmMainUi.HideLoadingWindow();
-        }
-
-        private void BtnInsert_Click(object sender, RoutedEventArgs e)
-        {
-            using (var das = Factory.CreateDalSession())
-            {
-                das.Begin();
-
-                try
-                {
-                    //insert to YUTP(各人作業權限檔),先抓全部ytxn寫入
-                    var dYUTP = new D_YUTP(das);
-                    dYUTP.InsertBySelectYtxnUpf(UserID);
-
-                    das.Commit();
-                    MessageBoxExService.Instance().Info("資料同步完成");
-                }
-                catch (Exception ex)
-                {
-                    das.Rollback();
-                    throw ex;
-                }
-            }
         }
     }
 }

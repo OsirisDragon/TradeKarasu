@@ -72,5 +72,21 @@ namespace TradeFutNightData.Gates.Common
                 .Set(c => c.UTP_W_USER_ID, item.UTP_W_USER_ID)
                 .Update();
         }
+
+        public void Update(IEnumerable<UTP> data)
+        {
+            foreach (var item in data)
+            {
+                _das.DataConn.GetTable<UTP>()
+                    .Where(c => c.UTP_USER_ID == item.OriginalData.UTP_USER_ID &&
+                                c.UTP_TXN_ID == item.OriginalData.UTP_TXN_ID)
+                    .Set(c => c.UTP_USER_ID, item.UTP_USER_ID)
+                    .Set(c => c.UTP_TXN_ID, item.UTP_TXN_ID)
+                    .Set(c => c.UTP_YN_CODE, item.UTP_YN_CODE)
+                    .Set(c => c.UTP_W_DATE, item.UTP_W_DATE)
+                    .Set(c => c.UTP_W_USER_ID, item.UTP_W_USER_ID)
+                    .Update();
+            }
+        }
     }
 }

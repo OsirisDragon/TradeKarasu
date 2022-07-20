@@ -111,7 +111,15 @@ namespace TradeFutNight.Reports
                     if (col.EditSettings is CheckEditSettings)
                     {
                         var checkBox = new XRCheckBox();
-                        checkBox.DataBindings.Add("CheckState", exportData, col.FieldName);
+                        if (col.FieldType != typeof(bool))
+                        {
+                            checkBox.ExpressionBindings.Add(new ExpressionBinding("CheckState", $"Iif([{col.FieldName}]='Y',true,false)"));
+                        }
+                        else
+                        {
+                            checkBox.DataBindings.Add("CheckState", exportData, col.FieldName);
+                        }
+
                         checkBox.LocationF = new PointF(10, 0);
                         checkBox.Borders = BorderSide.None;
                         cell.Controls.Add(checkBox);
