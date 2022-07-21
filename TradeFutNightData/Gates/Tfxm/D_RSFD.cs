@@ -1,6 +1,8 @@
 ﻿using Dapper;
 using DataEngine;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TradeFutNightData.Models.Tfxm;
 
 namespace TradeFutNightData.Gates.Tfxm
@@ -33,6 +35,15 @@ namespace TradeFutNightData.Gates.Tfxm
             var result = _das.Conn.QueryFirstOrDefault<RSFD>(BuildCommand<RSFD>(sql, p));
 
             return result;
+        }
+
+        public IList<RSFD> ListByStockIdAndDate(DateTime ocfDate, string stockId)
+        {
+            IQueryable<RSFD> query = _das.DataConn.GetTable<RSFD>()
+                                         .Where(c => c.RSFD_DATE == ocfDate &&
+                                                     c.RSFD_SID == stockId);
+
+            return query.ToList();
         }
     }
 }

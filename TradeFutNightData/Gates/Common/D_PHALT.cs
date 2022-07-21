@@ -27,5 +27,15 @@ namespace TradeFutNightData.Gates.Common
 
             return query.ToList();
         }
+
+        public IList<PHALT> ListByDateAndProd(DateTime tradeDate, DateTime pauseDate, string prodId)
+        {
+            var query = _das.DataConn.GetTable<PHALT>()
+                .Where(c => c.PHALT_TRADE_DATE == tradeDate &&
+                          c.PHALT_TRADE_PAUSE_DATE == pauseDate &&
+                          c.PHALT_PROD_ID == prodId);
+
+            return query.ToList();
+        }
     }
 }
