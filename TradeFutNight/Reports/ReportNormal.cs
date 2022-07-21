@@ -102,6 +102,83 @@ namespace TradeFutNight.Reports
                 HeightF = 15f
             };
 
+            #region FormatConditions先轉換
+
+            // FormatConditions先轉換成一個Dictionary，將同樣FieldName和PropertyName的歸類成同一個Key，多個條件的Iif合成一個
+            // 最後一個空白字串就是傳DefaultValue這個屬性
+            // 範例：Iif([SLT_PRICE_FLUC] = 'P', 'Red', Iif([SLT_PRICE_FLUC] = 'F', 'Blue', ''))
+            var expressProps = new Dictionary<Tuple<string, string>, ExpressProp>();
+
+            var formatConditions = ((TableView)gridControl.View).FormatConditions;
+
+            if (formatConditions.Count != 0)
+            {
+                foreach (var condition in formatConditions)
+                {
+                    if (condition is FormatCondition fc)
+                    {
+                        var expressProp = new ExpressProp();
+                        expressProp.FieldName = fc.FieldName;
+
+                        if (fc.Format.Foreground != null)
+                        {
+                            expressProp.PropertyName = "ForeColor";
+                            expressProp.Expression = "Iif(" + fc.Expression + ",'" + fc.Format.Foreground.ToString() + "'";
+                            expressProp.DefaultValue = "'Black'";
+                        }
+
+                        if (fc.Format.Background != null)
+                        {
+                            expressProp.PropertyName = "BackColor";
+                            expressProp.Expression = "Iif(" + fc.Expression + ",'" + fc.Format.Background.ToString() + "'";
+                            expressProp.DefaultValue = "'White'";
+                        }
+
+                        if (fc.Format.FontWeight != null)
+                        {
+                            if (fc.Format.FontWeight == System.Windows.FontWeights.Bold)
+                            {
+                                expressProp.PropertyName = "Font.Bold";
+                                expressProp.Expression = "Iif(" + fc.Expression + ", true";
+                                expressProp.DefaultValue = "false";
+                            }
+                        }
+
+                        if (expressProp.PropertyName != "")
+                        {
+                            var tupleKey = new Tuple<string, string>(fc.FieldName, expressProp.PropertyName);
+
+                            if (expressProps.ContainsKey(tupleKey))
+                            {
+                                ExpressProp existEp;
+                                expressProps.TryGetValue(tupleKey, out existEp);
+                                existEp.Expression = existEp.Expression + "," + expressProp.Expression;
+                                existEp.NumberOfExpression++;
+                            }
+                            else
+                            {
+                                expressProp.NumberOfExpression++;
+                                expressProps.Add(tupleKey, expressProp);
+                            }
+                        }
+                    }
+                }
+
+                foreach (var expProp in expressProps)
+                {
+                    var exp = expProp.Value;
+                    exp.Expression += "," + exp.DefaultValue;
+
+                    // 有幾個Iif就要有幾個結束的括號
+                    for (int i = 0; i < exp.NumberOfExpression; i++)
+                    {
+                        exp.Expression += ")";
+                    }
+                }
+            }
+
+            #endregion FormatConditions先轉換
+
             foreach (var col in gridControl.Columns)
             {
                 XRTableCell cell = new XRTableCell();
@@ -198,39 +275,21 @@ namespace TradeFutNight.Reports
 
                 #endregion Cell Color
 
-                #region FormatConditions
+                #region FormatConditions設定進去
 
-                var formatConditions = ((TableView)gridControl.View).FormatConditions;
-
-                if (formatConditions.Count != 0)
+                if (expressProps.Count != 0)
                 {
-                    foreach (var condition in formatConditions)
+                    foreach (var expProp in expressProps)
                     {
-                        if (condition is FormatCondition fc)
+                        // 找跟欄位一樣名的條件
+                        if (expProp.Key.Item1 == col.FieldName)
                         {
-                            if (fc.FieldName == col.FieldName)
-                            {
-                                if (fc.Format.Foreground != null)
-                                {
-                                    cell.ExpressionBindings.Add(new ExpressionBinding("ForeColor", "Iif(" + fc.Expression + ",'" + fc.Format.Foreground.ToString() + "','Black' )"));
-                                }
-
-                                if (fc.Format.Background != null)
-                                {
-                                    cell.ExpressionBindings.Add(new ExpressionBinding("BackColor", "Iif(" + fc.Expression + ",'" + fc.Format.Background.ToString() + "','White' )"));
-                                }
-
-                                if (fc.Format.FontWeight != null)
-                                {
-                                    if (fc.Format.FontWeight == System.Windows.FontWeights.Bold)
-                                        cell.ExpressionBindings.Add(new ExpressionBinding("Font.Bold", "Iif(" + fc.Expression + ",true, false )"));
-                                }
-                            }
+                            cell.ExpressionBindings.Add(new ExpressionBinding(expProp.Value.PropertyName, expProp.Value.Expression));
                         }
                     }
                 }
 
-                #endregion FormatConditions
+                #endregion FormatConditions設定進去
 
                 row.Cells.Add(cell);
             }
@@ -265,7 +324,7 @@ namespace TradeFutNight.Reports
         private static string TransformExpress(GridColumn col)
         {
             // 將下拉選單List物件轉成Iif的報表判斷表達字串
-            //範例：Iif([SLT_PRICE_FLUC] = 'P', '百分比', Iif([SLT_PRICE_FLUC] = 'F', '固定點數', ''))
+            // 範例：Iif([SLT_PRICE_FLUC] = 'P', '百分比', Iif([SLT_PRICE_FLUC] = 'F', '固定點數', ''))
             string field = "[" + col.FieldName + "]";
             string result = "";
 
@@ -319,5 +378,14 @@ namespace TradeFutNight.Reports
 
             return resultAlign;
         }
+    }
+
+    public class ExpressProp
+    {
+        public string FieldName { get; set; }
+        public string PropertyName { get; set; }
+        public string Expression { get; set; }
+        public string DefaultValue { get; set; }
+        public int NumberOfExpression { get; set; }
     }
 }
