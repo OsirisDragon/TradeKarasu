@@ -290,7 +290,7 @@ namespace TradeFutNight.Reports
                         // 找跟欄位一樣名的條件
                         if (expProp.Key.Item1 == col.FieldName)
                         {
-                            cell.ExpressionBindings.Add(new ExpressionBinding(expProp.Value.PropertyName, TransformConditionFormatToXtrareportExpression(expProp.Value.Expression)));
+                            cell.ExpressionBindings.Add(new ExpressionBinding(expProp.Value.PropertyName, expProp.Value.Expression));
                         }
                     }
                 }
@@ -355,17 +355,6 @@ namespace TradeFutNight.Reports
             }
 
             return result;
-        }
-
-        private static string TransformConditionFormatToXtrareportExpression(string uiFormat)
-        {
-            uiFormat = uiFormat.Replace("&lt;", "<");
-            uiFormat = uiFormat.Replace("&gt;", ">");
-            uiFormat = uiFormat.Replace("&amp;", "&");
-            uiFormat = uiFormat.Replace("&quot;", "\"");
-            uiFormat = uiFormat.Replace("&apos;", "'");
-
-            return uiFormat;
         }
 
         private static TextAlignment TransformAlignment(System.Windows.HorizontalAlignment align)
