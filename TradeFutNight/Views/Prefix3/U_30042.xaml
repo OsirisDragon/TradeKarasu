@@ -96,11 +96,11 @@
             <dxg:GridColumn
                 Width="100"
                 FieldName="TPPST_M_PRICE_LIMIT"
-                Header="現貨開盤後&#xA;偏離濾網(%)" />
+                Header="期貨開盤後&#xA;偏離濾網(%)" />
             <dxg:GridColumn
                 Width="100"
                 FieldName="TPPST_M_PRICE_LIMIT_F"
-                Header="現貨開盤前&#xA;偏離濾網(%)" />
+                Header="期貨開盤前&#xA;偏離濾網(%)" />
             <dxg:GridColumn
                 Width="80"
                 FieldName="TPPST_M_INTERVAL"

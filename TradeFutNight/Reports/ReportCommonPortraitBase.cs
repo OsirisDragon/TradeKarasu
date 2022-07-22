@@ -147,7 +147,7 @@ namespace TradeFutNight.Reports
 
             Application.Current.Dispatcher.Invoke(() =>
             {
-                GetGroupHeaderColumns().Controls.Add(ReportNormal.CreateHeaderColumnsTable(rptSetting, gridControl));
+                GetGroupHeaderColumns().Controls.Add(ReportNormal.CreateHeaderColumnsTable(this, rptSetting, gridControl));
 
                 // 如果有資料才要產生內容
                 if (exportData.Count > 0)

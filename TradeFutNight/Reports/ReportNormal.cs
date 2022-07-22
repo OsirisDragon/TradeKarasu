@@ -32,7 +32,7 @@ namespace TradeFutNight.Reports
             return new ReportCommonPortrait(imageDetail, rptSetting);
         }
 
-        public static XRTable CreateHeaderColumnsTable(ReportSetting rptSetting, GridControl gridControl)
+        public static XRTable CreateHeaderColumnsTable(XtraReport report, ReportSetting rptSetting, GridControl gridControl)
         {
             var table = new XRTable
             {
@@ -73,6 +73,18 @@ namespace TradeFutNight.Reports
                         cell.Borders = BorderSide.None;
                         cell.BackColor = Color.White;
                     }
+                }
+
+                // 用CalculatedField的方式加入進報表，後面其他的Expression才能用中括號[加入的這個的CalcField的Name]存取到此欄位
+                if (col.UnboundExpression != "")
+                {
+                    CalculatedField calcField = new CalculatedField();
+                    report.CalculatedFields.Add(calcField);
+
+                    calcField.DataSource = report.DataSource;
+                    calcField.DataMember = report.DataMember;
+                    calcField.Name = col.FieldName;
+                    calcField.Expression = col.UnboundExpression;
                 }
 
                 cell.Font = new Font(rptSetting.HeaderColumnsFontName, rptSetting.HeaderColumnsFontSize);
@@ -201,33 +213,27 @@ namespace TradeFutNight.Reports
                         checkBox.Borders = BorderSide.None;
                         cell.Controls.Add(checkBox);
                     }
+
                     if (col.EditSettings is ComboBoxEditSettings)
                     {
                         var expressText = TransformExpress(col);
                         if (!string.IsNullOrEmpty(expressText))
                             cell.ExpressionBindings.Add(new ExpressionBinding("Text", expressText));
                     }
-                    else if (col.EditSettings != null && !String.IsNullOrEmpty(col.EditSettings.DisplayFormat))
-                    {
-                        cell.DataBindings.Add("Text", exportData, col.FieldName, col.EditSettings.DisplayFormat);
-                    }
                     else
                     {
                         cell.DataBindings.Add("Text", exportData, col.FieldName);
+                    }
+
+                    if (col.EditSettings != null && !String.IsNullOrEmpty(col.EditSettings.DisplayFormat))
+                    {
+                        cell.TextFormatString = col.EditSettings.DisplayFormat;
                     }
 
                     if (col.FieldName == "ModifyMark")
                     {
                         if (String.IsNullOrEmpty(col.Header.ToString()))
                             cell.Borders = BorderSide.None;
-                    }
-
-                    if (col.UnboundExpression != "")
-                    {
-                        cell.ExpressionBindings.Add(new ExpressionBinding("Text", col.UnboundExpression));
-
-                        if (col.EditSettings != null && !String.IsNullOrEmpty(col.EditSettings.DisplayFormat))
-                            cell.TextFormatString = col.EditSettings.DisplayFormat;
                     }
                 }
                 else
@@ -284,7 +290,7 @@ namespace TradeFutNight.Reports
                         // 找跟欄位一樣名的條件
                         if (expProp.Key.Item1 == col.FieldName)
                         {
-                            cell.ExpressionBindings.Add(new ExpressionBinding(expProp.Value.PropertyName, expProp.Value.Expression));
+                            cell.ExpressionBindings.Add(new ExpressionBinding(expProp.Value.PropertyName, TransformConditionFormatToXtrareportExpression(expProp.Value.Expression)));
                         }
                     }
                 }
@@ -349,6 +355,17 @@ namespace TradeFutNight.Reports
             }
 
             return result;
+        }
+
+        private static string TransformConditionFormatToXtrareportExpression(string uiFormat)
+        {
+            uiFormat = uiFormat.Replace("&lt;", "<");
+            uiFormat = uiFormat.Replace("&gt;", ">");
+            uiFormat = uiFormat.Replace("&amp;", "&");
+            uiFormat = uiFormat.Replace("&quot;", "\"");
+            uiFormat = uiFormat.Replace("&apos;", "'");
+
+            return uiFormat;
         }
 
         private static TextAlignment TransformAlignment(System.Windows.HorizontalAlignment align)
