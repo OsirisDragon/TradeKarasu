@@ -18,6 +18,12 @@ namespace TradeFutNight.Views.PrefixC
 {
     public class U_C2100_ViewModel : ViewModelParent<UIModel_C2100>
     {
+        public string PdkKindId
+        {
+            get { return GetProperty(() => PdkKindId); }
+            set { SetProperty(() => PdkKindId, value); }
+        }
+
         public IList<ItemInfo> IsAdjustNextDate
         {
             get { return GetProperty(() => IsAdjustNextDate); }
@@ -44,7 +50,7 @@ namespace TradeFutNight.Views.PrefixC
             using (var das = Factory.CreateDalSession())
             {
                 var dC2100 = new D_C2100<UIModel_C2100>(das);
-                data = dC2100.ListAllData(MagicalHats.Ocf.OCF_PREV_DATE.Value).ToList().AsTrackable();
+                data = dC2100.ListAllData(MagicalHats.Ocf.OCF_PREV_DATE.Value).ToList();
 
                 var dTPPST = new D_TPPST(das);
                 var dPHALT = new D_PHALT(das);
@@ -176,7 +182,8 @@ namespace TradeFutNight.Views.PrefixC
             #endregion 契約提前下市規則，所有月份次日期貨開盤基準價=最近1個可交易月份本日期貨最後一筆基準價
 
             data = data.OrderBy(c => c.PDK_ON_CODE).ThenBy(c => c.PDK_STOCK_ID).ThenBy(c => c.PDK_KIND_ID).ThenBy(c => c.PROD_SETTLE_DATE).ToList();
-            MainGridData = data;
+
+            MainGridData = data.AsTrackable();
         }
 
         public void Insert()

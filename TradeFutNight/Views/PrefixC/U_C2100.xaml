@@ -41,6 +41,19 @@
             <Button x:Name="btnImport" Click="BtnImport_Click">
                 匯入CSV檔案
             </Button>
+
+            <dxe:TextEdit
+                Name="txtKindId"
+                MinWidth="70"
+                Margin="20,0,10,0"
+                CharacterCasing="Upper"
+                EditValue="{Binding PdkKindId}"
+                MaxLength="3"
+                NullText=""
+                NullValue="" />
+            <Button x:Name="btnSearch" Click="BtnSearch_Click">
+                搜尋
+            </Button>
         </dxlc:FlowLayoutControl>
         <dxg:GridControl
             x:Name="gridMain"
@@ -55,7 +68,7 @@
                     CellValueChanged="view_CellValueChanged">
                     <dxg:TableView.FormatConditions>
                         <dxg:FormatCondition Expression="ABS([COMPUTE_SPREAD_PERCENT]) &gt;= 0.02" FieldName="COMPUTE_SPREAD_PERCENT">
-                            <dx:Format Background="Red" />
+                            <dx:Format Background="#FFFF7D7D" />
                         </dxg:FormatCondition>
                         <dxg:FormatCondition Expression="ABS([COMPUTE_SPREAD_PERCENT]) &gt; 0.01 and ABS([COMPUTE_SPREAD_PERCENT]) &lt; 0.02" FieldName="COMPUTE_SPREAD_PERCENT">
                             <dx:Format Background="Silver" />
@@ -115,6 +128,7 @@
                 ReadOnly="True"
                 UnboundExpression="Iif([TARGET_PRICE] &lt;&gt; 0, [TPPBP_THERICAL_P_REF] / [TARGET_PRICE] - 1,-1)"
                 UnboundType="Decimal">
+
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings DisplayFormat="P2" />
                 </dxg:GridColumn.EditSettings>

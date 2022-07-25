@@ -1,9 +1,13 @@
-﻿using CrossModel;
+﻿using ChangeTracking;
+using CrossModel;
 using CrossModel.Enum;
 using CrossModel.Interfaces;
+using DevExpress.DataProcessing;
 using DevExpress.XtraReports.UI;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,6 +16,7 @@ using TradeFutNight.Reports;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Common;
 using TradeFutNightData.Models.Common;
+using TradeUtility;
 using TradeUtility.File;
 
 namespace TradeFutNight.Views.PrefixC
@@ -22,8 +27,6 @@ namespace TradeFutNight.Views.PrefixC
     public partial class U_C2100 : UserControlParent, IViewSword
     {
         private U_C2100_ViewModel _vm;
-
-        private bool _canSave = false;
 
         public U_C2100()
         {
@@ -80,18 +83,40 @@ namespace TradeFutNight.Views.PrefixC
             if (!BaseCheck(new CheckSettings() { IsCheckNotNullNotEmpty = false }, gridMain, _vm))
                 return false;
 
-            if (!_canSave)
-            {
-                MessageBoxExService.Instance().Error("此盤已開盤無法儲存");
-                return false;
-            }
-
             var task = Task.Run(() =>
             {
                 if (!IsCanRunProgram())
                 {
                     VmMainUi.HideLoadingWindow();
                     MessageBoxExService.Instance().Error(MessageConst.NotAllowedExcute);
+                    return false;
+                }
+                var resultItem = new ResultItem();
+                var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
+
+                foreach (var item in trackableData)
+                {
+                    if (item.TPPBP_THERICAL_P_REF == null || item.TPPBP_THERICAL_P_REF <= 0)
+                    {
+                        resultItem.AppendErrorMessage($"{item.TPPBP_PROD_ID}的夜盤期貨開盤基準價不得為空值或小於等於0");
+                    }
+
+                    using (var das = Factory.CreateDalSession())
+                    {
+                        var putUnit = new D_PUT(das).GetPutUnit(item.PDK_PARAM_KEY, item.TPPBP_THERICAL_P_REF);
+
+                        // 取至最接近tick
+                        if (!Utility.IsValidTick(item.TPPBP_THERICAL_P_REF, putUnit))
+                        {
+                            resultItem.AppendErrorMessage($"{item.TPPBP_PROD_ID}的夜盤期貨開盤基準價不符合TICK值{putUnit}的檢查");
+                        }
+                    }
+                }
+
+                if (resultItem.HasError)
+                {
+                    VmMainUi.HideLoadingWindow();
+                    MessageBoxExService.Instance().Error(resultItem.ErrorMessage);
                     return false;
                 }
 
@@ -133,7 +158,7 @@ namespace TradeFutNight.Views.PrefixC
                     }
                 }
 
-                var report = CreateReport(operate.ChangedItems.ToList(), OperationType.Save);
+                var report = CreateReport(_vm.MainGridData, OperationType.Save);
                 var reportGate = await new ReportGate(report).CreateDocumentAsync();
                 await reportGate.ExportPdf(GetExportFilePath());
                 await reportGate.Print();
@@ -200,6 +225,53 @@ namespace TradeFutNight.Views.PrefixC
 
         private void BtnImport_Click(object sender, RoutedEventArgs e)
         {
+            // CSV檔案內容格式:
+            // 商品代號,次日期貨開盤基準價
+            // 例:NYFA0,99
+
+            var open = new OpenFileDialog
+            {
+                Filter = $"*.csv (*.csv)|*.csv",
+                Title = "請點選資料來源檔案"
+            };
+
+            bool? openResult = open.ShowDialog();
+
+            if (openResult == true)
+            {
+                var importData = ImportElf.FileToDataTable(open.FileName, FileType.Csv, false).AsEnumerable()
+                                        .Select(c => new
+                                        {
+                                            PROD_ID = c.ItemArray[0].AsString(),
+                                            TPPBP_THERICAL_P_REF = c.ItemArray[1].AsDecimal()
+                                        });
+
+                foreach (var item in importData)
+                {
+                    var foundRow = _vm.MainGridData.Where(c => c.TPPBP_PROD_ID == item.PROD_ID).SingleOrDefault();
+
+                    if (foundRow != null)
+                    {
+                        if (foundRow.TPPBP_THERICAL_P_REF == null || foundRow.TPPBP_THERICAL_P_REF != item.TPPBP_THERICAL_P_REF)
+                        {
+                            foundRow.TPPBP_THERICAL_P_REF = item.TPPBP_THERICAL_P_REF;
+                            foundRow.ModifyMark = "*";
+                        }
+                    }
+                }
+            }
+        }
+
+        private void BtnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            var foundRow = _vm.MainGridData.Where(c => c.PDK_KIND_ID == _vm.PdkKindId).FirstOrDefault();
+
+            if (foundRow != null)
+            {
+                gridMain.CurrentColumn = gridMain.Columns[nameof(foundRow.TPPBP_THERICAL_P_REF)];
+                gridView.FocusedRowHandle = _vm.MainGridData.IndexOf(foundRow);
+                gridMain.CurrentItem = gridMain.SelectedItem = foundRow;
+            }
         }
     }
 }

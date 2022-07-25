@@ -12,7 +12,6 @@ using TradeFutNightData;
 using TradeFutNightData.Gates.Specific.PrefixC;
 using TradeFutNightData.Gates.Tfxm;
 using TradeFutNightData.Models.Common;
-using TradeFutNightData.Models.Tfxm;
 
 namespace TradeFutNight.Views.PrefixC
 {
@@ -38,7 +37,7 @@ namespace TradeFutNight.Views.PrefixC
         {
             MapperInstance = new Mapper(new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<FRP, UIModel_C1270>().ReverseMap();
+                cfg.CreateMap<TPPBP, UIModel_C1270>().ReverseMap();
             }));
             var task = Task.Run(() =>
             {
