@@ -276,16 +276,11 @@ namespace TradeFutNight.Views
             IViewSword viewInstance = null;
 
             // 看panel有沒有存在已經開啟的視窗裡面
-            var panel = (DocumentPanel)dockLayoutManagerMain.GetItem(panelName);
-
-            if (panel != null)
-            {
-                dockLayoutManagerMain.DockController.RemovePanel(panel);
-            }
+            var panelOriginal = (DocumentPanel)dockLayoutManagerMain.GetItem(panelName);
 
             // 加入DocumentPanel
             // 這會觸發DocumentGroupMain_SelectedItemChanged事件(如果是新增第一個DocumentPanel才會觸發)
-            panel = dockLayoutManagerMain.DockController.AddDocumentPanel(documentGroupMain,
+            var panel = dockLayoutManagerMain.DockController.AddDocumentPanel(documentGroupMain,
             new Uri(@"Views\Prefix" + programID[0] + @"\U_" + programID + ".xaml", UriKind.Relative));
 
             panel.Name = panelName;
@@ -302,8 +297,15 @@ namespace TradeFutNight.Views
             ((UserControlParent)viewInstance).Init(programID, programName, _vm, this);
 
             _isNewOpenProgram = true;
+
             // 這會觸發DocumentGroupMain_SelectedItemChanged事件
             dockLayoutManagerMain.LayoutController.Activate(panel);
+
+            // 把已存在的移除
+            if (panelOriginal != null)
+            {
+                dockLayoutManagerMain.DockController.RemovePanel(panelOriginal);
+            }
 
             bool isCanRun = await IsCanRun(panel);
             if (!isCanRun)
