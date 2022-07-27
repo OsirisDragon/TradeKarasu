@@ -10,14 +10,14 @@ namespace TradeUtility.File
 {
     public static class ExportElf
     {
-        public static void ToCsv<T>(IEnumerable<T> items, string filePath, bool hasHeader, char valueSeparator = ',')
+        public static void ToCsv<T>(IEnumerable<T> items, string filePath, bool hasHeader, bool writePreamble = true, char valueSeparator = ',')
         {
-            ExportToFile(items, FileType.Csv, filePath, hasHeader, valueSeparator);
+            ExportToFile(items, FileType.Csv, filePath, hasHeader, writePreamble, valueSeparator);
         }
 
-        public static void ToTxt<T>(IEnumerable<T> items, string filePath, bool hasHeader, char valueSeparator = '\t')
+        public static void ToTxt<T>(IEnumerable<T> items, string filePath, bool hasHeader, bool writePreamble = true, char valueSeparator = '\t')
         {
-            ExportToFile(items, FileType.Txt, filePath, hasHeader, valueSeparator);
+            ExportToFile(items, FileType.Txt, filePath, hasHeader, writePreamble, valueSeparator);
         }
 
         public static void ToXlsx<T>(IEnumerable<T> items, string filePath, bool hasHeader)
@@ -40,13 +40,13 @@ namespace TradeUtility.File
             wb.SaveDocument(filePath, ConvertFileType(FileType.Xlsx));
         }
 
-        private static void ExportToFile<T>(this IEnumerable<T> items, FileType fileType, string filePath, bool hasHeader, char valueSeparator = ',')
+        private static void ExportToFile<T>(this IEnumerable<T> items, FileType fileType, string filePath, bool hasHeader, bool writePreamble = true, char valueSeparator = ',')
         {
             Workbook wb = new Workbook();
 
             // 預設的Csv輸出中文會是亂碼，所以要加這行
-            wb.Options.Export.Csv.WritePreamble = true;
-            wb.Options.Export.Txt.WritePreamble = true;
+            wb.Options.Export.Csv.WritePreamble = writePreamble;
+            wb.Options.Export.Txt.WritePreamble = writePreamble;
 
             wb.Options.Export.Csv.ValueSeparator = valueSeparator;
             wb.Options.Export.Txt.ValueSeparator = valueSeparator;

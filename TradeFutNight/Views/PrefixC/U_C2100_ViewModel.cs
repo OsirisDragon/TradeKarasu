@@ -57,7 +57,7 @@ namespace TradeFutNight.Views.PrefixC
 
                 #region 只有設定在TPPST裡面的商品才要出現
 
-                foreach (var item in data)
+                foreach (var item in data.ToList())
                 {
                     var count = dTPPST.ListByKindId(item.PDK_KIND_ID.Substring(0, 2)).Count;
                     if (count <= 0)
@@ -163,7 +163,7 @@ namespace TradeFutNight.Views.PrefixC
                 {
                     string cvarKindId = itemCvar.CVAR_KIND_ID;
                     int cvarKindIdLen = cvarKindId.Length;
-                    var foundRow = data.Where(c => c.TPPBP_PROD_ID.Substring(0, cvarKindIdLen) == cvarKindId).SingleOrDefault();
+                    var foundRow = data.Where(c => c.TPPBP_PROD_ID.Substring(0, cvarKindIdLen) == cvarKindId).FirstOrDefault();
                     if (foundRow != null)
                     {
                         decimal nearMonthTppbpThericalP = foundRow.TPPBP_THERICAL_P.Value;

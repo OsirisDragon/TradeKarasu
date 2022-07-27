@@ -174,7 +174,7 @@ namespace TradeFutNight.Views.PrefixC
         {
             string reportTitle = ProgramID + "–" + ProgramName;
 
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, true, false, true);
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, true, true, true);
             rptSetting.HeaderColumnsFontSize = 10;
             rptSetting.ContentColumnsFontSize = 10;
             rptSetting.ContentColumnsWidthScaleFactor = 0.94f;
@@ -219,7 +219,7 @@ namespace TradeFutNight.Views.PrefixC
         {
             var exportData = _vm.MainGridData.Select(c => new { c.TPPBP_PROD_ID, c.TPPBP_THERICAL_P_REF });
             string filePath = GetExportFilePath(FileType.Csv);
-            ExportElf.ToCsv(exportData, filePath, false);
+            ExportElf.ToCsv(exportData, filePath, false, false);
             MessageBoxExService.Instance().Info($"成功產生檔案至{filePath}");
         }
 
@@ -271,6 +271,10 @@ namespace TradeFutNight.Views.PrefixC
                 gridMain.CurrentColumn = gridMain.Columns[nameof(foundRow.TPPBP_THERICAL_P_REF)];
                 gridView.FocusedRowHandle = _vm.MainGridData.IndexOf(foundRow);
                 gridMain.CurrentItem = gridMain.SelectedItem = foundRow;
+            }
+            else
+            {
+                MessageBoxExService.Instance().Error($"找不到這個商品");
             }
         }
     }
