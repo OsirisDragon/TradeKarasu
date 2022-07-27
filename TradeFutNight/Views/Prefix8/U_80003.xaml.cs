@@ -1,4 +1,5 @@
 ﻿using CrossModel;
+using CrossModel.Interfaces;
 using DevExpress.Xpf.Editors;
 using DevExpress.XtraReports.UI;
 using System;
@@ -8,7 +9,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using TradeFutNight.Common;
-using CrossModel.Interfaces;
 using TradeFutNight.Reports;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Common;
@@ -119,7 +119,7 @@ namespace TradeFutNight.Views.Prefix8
                             UPFCRD_W_DATE = _vm.MainFormData.UPF_W_DATE,
                             UPFCRD_W_USER_ID = _vm.MainFormData.UPF_W_USER_ID
                         };
-                        dUpfcrd.Insert(upfcrd);
+                        dUpfcrd.InsertSingle(upfcrd);
 
                         UpdateAccessPermission(ProgramID, das);
 
