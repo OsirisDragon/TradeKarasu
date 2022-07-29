@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using TradeFutNight.Common;
 using TradeFutNight.Reports;
 using TradeFutNightData;
@@ -17,16 +19,16 @@ using TradeFutNightData.Models.Common;
 namespace TradeFutNight.Views.Prefix4
 {
     /// <summary>
-    /// U_40201.xaml 的互動邏輯
+    /// U_40203.xaml 的互動邏輯
     /// </summary>
-    public partial class U_40201 : UserControlParent, IViewSword
+    public partial class U_40203 : UserControlParent, IViewSword
     {
-        private U_40201_ViewModel _vm;
+        private U_40203_ViewModel _vm;
 
-        public U_40201()
+        public U_40203()
         {
             InitializeComponent();
-            _vm = (U_40201_ViewModel)DataContext;
+            _vm = (U_40203_ViewModel)DataContext;
         }
 
         public async Task<bool> IsCanRun()
@@ -55,10 +57,6 @@ namespace TradeFutNight.Views.Prefix4
             {
                 _vm.Open();
                 DbLog(MessageConst.Open);
-                Dispatcher.Invoke(() =>
-                {
-                    Insert();
-                });
             });
             await task;
         }
@@ -71,12 +69,12 @@ namespace TradeFutNight.Views.Prefix4
 
         public void Delete()
         {
-            base.Delete(gridMain, _vm, false);
+            base.Delete(gridMain, _vm);
         }
 
         public async Task<bool> CheckField()
         {
-            if (!BaseCheck(new CheckSettings() { IsCheckNotNullNotEmpty = true }, gridMain, _vm))
+            if (!BaseCheck(new CheckSettings() { IsCheckNotNullNotEmpty = false }, gridMain, _vm))
                 return false;
 
             var task = Task.Run(() =>
@@ -90,35 +88,18 @@ namespace TradeFutNight.Views.Prefix4
 
                 var resultItem = new ResultItem();
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
+                var resumeData = trackableData.Where(c => c.IS_RESUME == true);
 
-                if (trackableData.AddedItems.Count() == 0)
-                {
-                    VmMainUi.HideLoadingWindow();
-                    MessageBoxExService.Instance().Error(MessageConst.NoAddedData);
-                    return false;
-                }
-
-                foreach (var item in trackableData.AddedItems)
+                foreach (var item in resumeData)
                 {
                     Dispatcher.Invoke(() =>
                     {
-                        item.PHALT_TRADE_DATE = Ocf.OCF_DATE;
-                        item.PHALT_TYPE = 'T';
-                        item.PHALT_TRADE_PAUSE_DATE = DateTime.Today;
-                        item.PHALT_TRADE_PAUSE_TIME = DateTime.Now.ToString("HHmmss");
-                        item.PHALT_STOCK_ID = item.PHALT_PROD_ID;
+                        item.PHALT_TRADE_RESUME_DATE = DateTime.Today;
+                        item.PHALT_TRADE_RESUME_TIME = DateTime.Now.ToString("HHmmss");
                         item.PHALT_USER_ID = UserID;
                         item.PHALT_W_TIME = DateTime.Now;
                     });
                 }
-
-                if (resultItem.HasError)
-                {
-                    VmMainUi.HideLoadingWindow();
-                    MessageBoxExService.Instance().Error(resultItem.ErrorMessage);
-                    return false;
-                }
-
                 return true;
             });
             await task;
@@ -133,8 +114,9 @@ namespace TradeFutNight.Views.Prefix4
             var task = Task.Run(async () =>
             {
                 var trackableData = _vm.MainGridData.CastToIChangeTrackableCollection();
-                var domainData = _vm.MapperInstance.Map<IList<PHALT>>(trackableData.AddedItems);
+                var resumeData = _vm.MainGridData.Where(c => c.IS_RESUME == true).ToList();
 
+                var operate = GetChanges<UIModel_40203, PHALT>(_vm.MainGridData, _vm);
                 using (var das = Factory.CreateDalSession())
                 {
                     das.Begin();
@@ -142,9 +124,9 @@ namespace TradeFutNight.Views.Prefix4
                     try
                     {
                         var dPhalt = new D_PHALT(das);
-                        dPhalt.Insert(domainData);
+                        dPhalt.Update(operate.ChangedItems);
 
-                        SendMsgToServer(trackableData.AddedItems.ToList());
+                        SendMsgToServer(resumeData);
 
                         UpdateAccessPermission(ProgramID, das);
 
@@ -159,7 +141,7 @@ namespace TradeFutNight.Views.Prefix4
                     }
                 }
 
-                var report = CreateReport(domainData);
+                var report = CreateReport(_vm.MainGridData);
                 var reportGate = await new ReportGate(report).CreateDocumentAsync();
                 await reportGate.ExportPdf(GetExportFilePath());
                 await reportGate.Print();
@@ -169,14 +151,13 @@ namespace TradeFutNight.Views.Prefix4
                 MessageBoxExService.Instance().Info(MessageConst.ProcessSuccess + "\n請注意，本功能係日夜盤分開設定，各自獨立!");
                 CloseWindow();
             });
-
             await task;
         }
 
         private XtraReport CreateReport<T>(IList<T> data)
         {
             string reportTitle = ProgramID + "–" + ProgramName;
-            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, Memo, Ocf.OCF_DATE, true, false, true);
+            var rptSetting = ReportNormal.CreateSetting(ProgramID, reportTitle, UserName, "", Ocf.OCF_DATE, true, false, true);
             var reportCommon = ReportNormal.CreateCommonPortrait(data, gridMain, rptSetting);
 
             return reportCommon;
@@ -192,8 +173,11 @@ namespace TradeFutNight.Views.Prefix4
         public async Task Print()
         {
             gridView.CloseEditor();
-            await Task.FromResult<object>(null);
-            throw new NotImplementedException();
+
+            var report = CreateReport(_vm.MainGridData);
+            var reportGate = await new ReportGate(report).CreateDocumentAsync();
+            await reportGate.ExportPdf(GetExportFilePath());
+            await reportGate.Print();
         }
 
         public async Task PrintIndex()
@@ -210,7 +194,22 @@ namespace TradeFutNight.Views.Prefix4
             throw new NotImplementedException();
         }
 
-        private void SendMsgToServer(List<UIModel_40201> mainData)
+        private async void BtnQuery_Click(object sender, RoutedEventArgs e)
+        {
+            var button = ((Button)sender);
+            button.IsEnabled = false;
+
+            await _vm.Query();
+
+            if (_vm.MainGridData.Count == 0)
+            {
+                MessageBoxExService.Instance().Info("查無資料");
+            }
+
+            button.IsEnabled = true;
+        }
+
+        private void SendMsgToServer(List<UIModel_40203> mainData)
         {
             string subject = "";
             if (AppSettings.SystemType == SystemType.FutDay || AppSettings.SystemType == SystemType.FutNight)
@@ -228,7 +227,9 @@ namespace TradeFutNight.Views.Prefix4
                 ea.AddEagleContent(new EagleContent() { Item = "TYPE", Value = "SUR_STKCOD" });
                 ea.AddEagleContent(new EagleContent() { Item = "PROD_ID", Value = item.PHALT_PROD_ID });
                 ea.AddEagleContent(new EagleContent() { Item = "MSG_TYPE", Value = "5" });
-                ea.AddEagleContent(new EagleContent() { Item = "STATUS", Value = item.PHALT_MSG_TYPE });
+
+                // 解除要傳一個空白
+                ea.AddEagleContent(new EagleContent() { Item = "STATUS", Value = " " });
                 ea.AddEagleContent(new EagleContent() { Item = "TRADE_DATE", Value = "X" });
                 ea.AddEagleContent(new EagleContent() { Item = "TRADE_PAUSE_TIME", Value = "X" });
 

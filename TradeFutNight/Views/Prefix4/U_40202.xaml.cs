@@ -12,7 +12,7 @@ using TradeFutNight.Common;
 using TradeFutNight.Reports;
 using TradeUtility;
 
-namespace TradeFutNight.Views.Prefix3
+namespace TradeFutNight.Views.Prefix4
 {
     /// <summary>
     /// U_40202.xaml 的互動邏輯

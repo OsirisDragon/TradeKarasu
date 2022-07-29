@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using ChangeTracking;
 using CrossModel;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -12,36 +11,24 @@ using TradeFutNightData.Models.Common;
 
 namespace TradeFutNight.Views.Prefix4
 {
-    public class U_40202_ViewModel : ViewModelParent<UIModel_40202>
+    public class U_40203_ViewModel : ViewModelParent<UIModel_40203>
     {
-        public DateTime StartDate
-        {
-            get { return GetProperty(() => StartDate); }
-            set { SetProperty(() => StartDate, value); }
-        }
-
-        public DateTime EndDate
-        {
-            get { return GetProperty(() => EndDate); }
-            set { SetProperty(() => EndDate, value); }
-        }
-
         public IList<ItemInfo> PhaltTypeTMsgTypeInfos
         {
             get { return GetProperty(() => PhaltTypeTMsgTypeInfos); }
             set { SetProperty(() => PhaltTypeTMsgTypeInfos, value); }
         }
 
-        public U_40202_ViewModel()
+        public U_40203_ViewModel()
         {
-            MainGridData = new ObservableCollection<UIModel_40202>();
+            MainGridData = new ObservableCollection<UIModel_40203>();
         }
 
         public async void Open()
         {
             MapperInstance = new Mapper(new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<PHALT, UIModel_40202>().ReverseMap();
+                cfg.CreateMap<PHALT, UIModel_40203>().ReverseMap();
             }));
 
             await Query();
@@ -51,12 +38,12 @@ namespace TradeFutNight.Views.Prefix4
 
         public void Insert()
         {
-            MainGridData.Insert(0, new UIModel_40202());
+            MainGridData.Insert(0, new UIModel_40203());
         }
 
         public void Delete(object item)
         {
-            MainGridData.Remove((UIModel_40202)item);
+            MainGridData.Remove((UIModel_40203)item);
         }
 
         public async Task Query()
@@ -66,7 +53,7 @@ namespace TradeFutNight.Views.Prefix4
                 using (var das = Factory.CreateDalSession())
                 {
                     var dPHALT = new D_PHALT(das);
-                    MainGridData = MapperInstance.Map<IList<UIModel_40202>>(dPHALT.ListByDate(StartDate, EndDate)).AsTrackable();
+                    MainGridData = MapperInstance.Map<IList<UIModel_40203>>(dPHALT.ListNotResume()).AsTrackable();
                 }
             });
 
@@ -74,7 +61,8 @@ namespace TradeFutNight.Views.Prefix4
         }
     }
 
-    public class UIModel_40202 : PHALT
+    public class UIModel_40203 : PHALT
     {
+        public virtual bool IS_RESUME { get; set; }
     }
 }
