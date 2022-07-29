@@ -118,7 +118,7 @@ namespace Eagle
         private string GenerateJsonStr()
         {
             string jsonStr = "";
-            jsonStr += "[";
+            jsonStr += "\"[";
 
             foreach (var everyList in GetListEagleContent())
             {
@@ -153,7 +153,7 @@ namespace Eagle
             }
 
             jsonStr = jsonStr.TrimEnd(',');
-            jsonStr += "]";
+            jsonStr += "]\"";
             return jsonStr;
         }
 
