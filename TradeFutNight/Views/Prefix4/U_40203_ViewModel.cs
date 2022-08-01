@@ -3,7 +3,6 @@ using ChangeTracking;
 using CrossModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using TradeFutNight.Common;
 using TradeFutNightData;
 using TradeFutNightData.Gates.Common;
@@ -31,7 +30,11 @@ namespace TradeFutNight.Views.Prefix4
                 cfg.CreateMap<PHALT, UIModel_40203>().ReverseMap();
             }));
 
-            await Query();
+            using (var das = Factory.CreateDalSession())
+            {
+                var dPHALT = new D_PHALT(das);
+                MainGridData = MapperInstance.Map<IList<UIModel_40203>>(dPHALT.ListNotResume()).AsTrackable();
+            }
 
             PhaltTypeTMsgTypeInfos = DropDownItems.PhaltTypeTMsgType();
         }
@@ -44,20 +47,6 @@ namespace TradeFutNight.Views.Prefix4
         public void Delete(object item)
         {
             MainGridData.Remove((UIModel_40203)item);
-        }
-
-        public async Task Query()
-        {
-            var task = Task.Run(() =>
-            {
-                using (var das = Factory.CreateDalSession())
-                {
-                    var dPHALT = new D_PHALT(das);
-                    MainGridData = MapperInstance.Map<IList<UIModel_40203>>(dPHALT.ListNotResume()).AsTrackable();
-                }
-            });
-
-            await task;
         }
     }
 

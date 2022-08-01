@@ -238,9 +238,9 @@ namespace TradeFutNight.Views.Prefix4
                 ea.AddEagleContent(new EagleContent() { Item = "MATCH_RESUME_TIME", Value = "X" });
 
                 eagleGate.AddArgument(ea);
-
-                eagleGate.Send();
             }
+            eagleGate.Send();
+
             DbLog(MessageConst.SendMsg + ":" + eagleGate.Subject);
         }
     }

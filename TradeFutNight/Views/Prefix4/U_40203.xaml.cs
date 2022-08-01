@@ -8,8 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 using TradeFutNight.Common;
 using TradeFutNight.Reports;
 using TradeFutNightData;
@@ -59,6 +57,11 @@ namespace TradeFutNight.Views.Prefix4
                 DbLog(MessageConst.Open);
             });
             await task;
+
+            if (_vm.MainGridData.Count == 0)
+            {
+                MessageBoxExService.Instance().Info("查無資料");
+            }
         }
 
         public void Insert()
@@ -194,21 +197,6 @@ namespace TradeFutNight.Views.Prefix4
             throw new NotImplementedException();
         }
 
-        private async void BtnQuery_Click(object sender, RoutedEventArgs e)
-        {
-            var button = ((Button)sender);
-            button.IsEnabled = false;
-
-            await _vm.Query();
-
-            if (_vm.MainGridData.Count == 0)
-            {
-                MessageBoxExService.Instance().Info("查無資料");
-            }
-
-            button.IsEnabled = true;
-        }
-
         private void SendMsgToServer(List<UIModel_40203> mainData)
         {
             string subject = "";
@@ -239,9 +227,9 @@ namespace TradeFutNight.Views.Prefix4
                 ea.AddEagleContent(new EagleContent() { Item = "MATCH_RESUME_TIME", Value = "X" });
 
                 eagleGate.AddArgument(ea);
-
-                eagleGate.Send();
             }
+            eagleGate.Send();
+
             DbLog(MessageConst.SendMsg + ":" + eagleGate.Subject);
         }
     }
